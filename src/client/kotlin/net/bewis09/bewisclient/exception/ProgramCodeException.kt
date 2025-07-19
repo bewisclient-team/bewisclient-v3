@@ -2,6 +2,16 @@ package net.bewis09.bewisclient.exception
 
 import net.bewis09.bewisclient.data.Constants
 
+/**
+ * Exception thrown by Bewisclient when there is a bug in the code or an extension of it.
+ *
+ * This exception is used to indicate that there is a problem in the Bewisclient code itself,
+ * and it is not something that can be fixed by the user.
+ *
+ * The user is advised to report this issue to the Bewisclient team for further investigation.
+ *
+ * @param message The detail message of the exception.
+ */
 open class ProgramCodeException(message: String): BewisclientException(message) {
     init {
         error("""Exception thrown by Bewisclient. "$message"

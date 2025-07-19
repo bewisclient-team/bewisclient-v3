@@ -26,6 +26,12 @@
 				"value": "net.bewis09.bewisclient.BewisclientDataGenerator",
 				"adapter": "kotlin"
 			}
+		],
+		"bewisclient": [
+			{
+				"value": "net.bewis09.bewisclient.BewisclientSelfAPIEntrypoint",
+				"adapter": "kotlin"
+			}
 		]
 	},
 	"mixins": [
