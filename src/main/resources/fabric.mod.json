@@ -15,12 +15,6 @@
 	"icon": "assets/bewisclient/icon.png",
 	"environment": "*",
 	"entrypoints": {
-		"main": [
-			{
-				"value": "net.bewis09.bewisclient.Bewisclient",
-				"adapter": "kotlin"
-			}
-		],
 		"client": [
 			{
 				"value": "net.bewis09.bewisclient.BewisclientClient",
@@ -35,7 +29,6 @@
 		]
 	},
 	"mixins": [
-		"bewisclient.mixins.json",
 		{
 			"config": "bewisclient.client.mixins.json",
 			"environment": "client"

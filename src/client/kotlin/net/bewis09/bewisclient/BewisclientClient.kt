@@ -1,9 +1,11 @@
 package net.bewis09.bewisclient
 
+import net.bewis09.bewisclient.logic.Bewisclient
+import net.bewis09.bewisclient.logic.EntrypointReceiver
 import net.fabricmc.api.ClientModInitializer
 
-object BewisclientClient : ClientModInitializer {
+object BewisclientClient : Bewisclient, ClientModInitializer {
 	override fun onInitializeClient() {
-		// This entrypoint is suitable for setting up client-specific logic, such as rendering.
+		EntrypointReceiver.onAllEntrypoints { e: EntrypointReceiver -> e.onInitializeClient() }
 	}
 }
