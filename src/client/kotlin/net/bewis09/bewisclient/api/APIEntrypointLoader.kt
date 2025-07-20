@@ -13,6 +13,11 @@ object APIEntrypointLoader {
     /**
      * Execute the given action for each [BewisclientAPIEntrypoint] that is registered in the mod.
      */
+    fun <T> mapEntrypoint(action: (BewisclientAPIEntrypoint) -> T): List<T> = entrypoints.map(action)
+
+    /**
+     * Execute the given action for each [BewisclientAPIEntrypoint] that is registered in the mod.
+     */
     fun forEachEntrypoint(action: (BewisclientAPIEntrypoint) -> Unit) {
         entrypoints.forEach(action)
     }

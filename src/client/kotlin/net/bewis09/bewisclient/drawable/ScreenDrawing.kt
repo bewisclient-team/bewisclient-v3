@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.drawable
 
+import kotlin.math.atan
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gl.RenderPipelines
@@ -13,18 +14,24 @@ import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 import org.joml.Quaternionf
 import org.joml.Vector3f
-import kotlin.math.atan
 
 /**
- * A class representing a screen drawing context in Bewisclient.
- * This class is used to encapsulate the drawing context
+ * A class representing a screen drawing context in Bewisclient. This class is used to encapsulate
+ * the drawing context
  *
- * @param drawContext The DrawContext used for drawing operations. Using it directly is extremely discouraged.
+ * @param drawContext The DrawContext used for drawing operations. Using it directly is extremely
+ * discouraged.
  */
 @Suppress("Unused")
-class ScreenDrawing(val drawContext: DrawContext) {
-    private val textRenderer: TextRenderer
-        get() = MinecraftClient.getInstance().textRenderer
+class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer) {
+    /**
+     * Fills a rectangle on the screen with the specified color.
+     *
+     * @param color The color to fill the rectangle with, represented as an ARGB integer.
+     */
+    fun fill(x: Int, y: Int, width: Int, height: Int, color: Long) {
+        drawContext.fill(x, y, x + width, y + height, color.toInt())
+    }
 
     /**
      * Fills a rectangle on the screen with the specified color.
@@ -38,11 +45,13 @@ class ScreenDrawing(val drawContext: DrawContext) {
     /**
      * Fills a rectangle on the screen with the specified color and alpha value.
      *
-     * @param color The color to fill the rectangle with, represented as an RGB integer. The alpha value is applied separately.
-     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param color The color to fill the rectangle with, represented as an RGB integer. The alpha
+     * value is applied separately.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
      */
     fun fill(x: Int, y: Int, width: Int, height: Int, color: Int, alpha: Float) {
-        fill(x, y, width, height, color or (alpha * 255).toInt() shl 24)
+        fill(x, y, width, height, combineLong(color, alpha))
     }
 
     /**
@@ -51,10 +60,20 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param r The red component of the color, ranging from 0 to 255.
      * @param g The green component of the color, ranging from 0 to 255.
      * @param b The blue component of the color, ranging from 0 to 255.
-     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
      */
-    fun fill(x: Int, y: Int, width: Int, height: Int, r: Int, g: Int, b: Int, alpha: Float = 1.0f) {
-        fill(x, y, width, height, ((alpha * 255).toInt() shl 24) or (r shl 16) or (g shl 8) or b)
+    fun fill(
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int,
+            r: UByte,
+            g: UByte,
+            b: UByte,
+            alpha: Float = 1.0f
+    ) {
+        fill(x, y, width, height, combineLong(r, g, b, alpha))
     }
 
     /**
@@ -63,10 +82,38 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param r The red component of the color, ranging from 0.0 to 1.0.
      * @param g The green component of the color, ranging from 0.0 to 1.0.
      * @param b The blue component of the color, ranging from 0.0 to 1.0.
-     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
      */
-    fun fill(x: Int, y: Int, width: Int, height: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f) {
-        fill(x, y, width, height, (r * 255).toInt(), (g * 255).toInt(), (b * 255).toInt(), alpha)
+    fun fill(
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int,
+            r: Float,
+            g: Float,
+            b: Float,
+            alpha: Float = 1.0f
+    ) {
+        fill(
+                x,
+                y,
+                width,
+                height,
+                (r * 255).toInt().toUByte(),
+                (g * 255).toInt().toUByte(),
+                (b * 255).toInt().toUByte(),
+                alpha
+        )
+    }
+
+    /**
+     * Draws a border inside a rectangle on the screen with the specified color.
+     *
+     * @param color The color to fill the rectangle with, represented as an ARGB integer.
+     */
+    fun drawBorder(x: Int, y: Int, width: Int, height: Int, color: Long) {
+        drawContext.drawBorder(x, y, width, height, color.toInt())
     }
 
     /**
@@ -81,11 +128,13 @@ class ScreenDrawing(val drawContext: DrawContext) {
     /**
      * Draws a border inside a rectangle on the screen with the specified color and alpha value.
      *
-     * @param color The color to fill the rectangle with, represented as an RGB integer. The alpha value is applied separately.
-     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param color The color to fill the rectangle with, represented as an RGB integer. The alpha
+     * value is applied separately.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
      */
     fun drawBorder(x: Int, y: Int, width: Int, height: Int, color: Int, alpha: Float) {
-        drawBorder(x, y, width, height, color or (alpha * 255).toInt() shl 24)
+        drawBorder(x, y, width, height, combineLong(color, alpha))
     }
 
     /**
@@ -94,10 +143,20 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param r The red component of the color, ranging from 0 to 255.
      * @param g The green component of the color, ranging from 0 to 255.
      * @param b The blue component of the color, ranging from 0 to 255.
-     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
      */
-    fun drawBorder(x: Int, y: Int, width: Int, height: Int, r: Int, g: Int, b: Int, alpha: Float = 1.0f) {
-        drawBorder(x, y, width, height, ((alpha * 255).toInt() shl 24) or (r shl 16) or (g shl 8) or b)
+    fun drawBorder(
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int,
+            r: UByte,
+            g: UByte,
+            b: UByte,
+            alpha: Float = 1.0f
+    ) {
+        drawBorder(x, y, width, height, combineLong(r, g, b, alpha))
     }
 
     /**
@@ -106,10 +165,40 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param r The red component of the color, ranging from 0.0 to 1.0.
      * @param g The green component of the color, ranging from 0.0 to 1.0.
      * @param b The blue component of the color, ranging from 0.0 to 1.0.
-     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
      */
-    fun drawBorder(x: Int, y: Int, width: Int, height: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f) {
-        drawBorder(x, y, width, height, (r * 255).toInt(), (g * 255).toInt(), (b * 255).toInt(), alpha)
+    fun drawBorder(
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int,
+            r: Float,
+            g: Float,
+            b: Float,
+            alpha: Float = 1.0f
+    ) {
+        drawBorder(
+                x,
+                y,
+                width,
+                height,
+                (r * 255).toInt().toUByte(),
+                (g * 255).toInt().toUByte(),
+                (b * 255).toInt().toUByte(),
+                alpha
+        )
+    }
+
+    /**
+     * Draws a rectangle and a border with the specified colors on screen.
+     *
+     * @param color The color to fill the rectangle with, represented as an ARGB integer.
+     * @param borderColor The color of the border, represented as an ARGB integer.
+     */
+    fun fillWithBorder(x: Int, y: Int, width: Int, height: Int, color: Long, borderColor: Long) {
+        fill(x, y, width, height, color)
+        drawBorder(x, y, width, height, borderColor)
     }
 
     /**
@@ -128,11 +217,20 @@ class ScreenDrawing(val drawContext: DrawContext) {
      *
      * @param color The color to fill the rectangle with, represented as an RGB integer.
      * @param borderColor The color of the border, represented as an RGB integer.
-     * @param alpha The alpha value for both the rectangle and the border, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param alpha The alpha value for both the rectangle and the border, ranging from 0.0 (fully
+     * transparent) to 1.0 (fully opaque).
      */
-    fun fillWithBorder(x: Int, y: Int, width: Int, height: Int, color: Int, borderColor: Int, alpha: Float) {
-        fill(x, y, width, height, color or (alpha * 255).toInt() shl 24)
-        drawBorder(x, y, width, height, borderColor or (alpha * 255).toInt() shl 24)
+    fun fillWithBorder(
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int,
+            color: Int,
+            borderColor: Int,
+            alpha: Float
+    ) {
+        fill(x, y, width, height, combineLong(color, alpha))
+        drawBorder(x, y, width, height, combineLong(borderColor, alpha))
     }
 
     /**
@@ -144,11 +242,24 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param borderR The red component of the border color, ranging from 0 to 255.
      * @param borderG The green component of the border color, ranging from 0 to 255.
      * @param borderB The blue component of the border color, ranging from 0 to 255.
-     * @param alpha The alpha value for both the rectangle and the border, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param alpha The alpha value for both the rectangle and the border, ranging from 0.0 (fully
+     * transparent) to 1.0 (fully opaque).
      */
-    fun fillWithBorder(x: Int, y: Int, width: Int, height: Int, r: Int, g: Int, b: Int, borderR: Int, borderG: Int, borderB: Int, alpha: Float = 1.0f) {
-        fill(x, y, width, height, ((alpha * 255).toInt() shl 24) or (r shl 16) or (g shl 8) or b)
-        drawBorder(x, y, width, height, ((alpha * 255).toInt() shl 24) or (borderR shl 16) or (borderG shl 8) or borderB)
+    fun fillWithBorder(
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int,
+            r: UByte,
+            g: UByte,
+            b: UByte,
+            borderR: UByte,
+            borderG: UByte,
+            borderB: UByte,
+            alpha: Float = 1.0f
+    ) {
+        fill(x, y, width, height, combineLong(r, g, b, alpha))
+        drawBorder(x, y, width, height, combineLong(borderR, borderG, borderB, alpha))
     }
 
     /**
@@ -160,24 +271,66 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param borderR The red component of the border color, ranging from 0.0 to 1.0.
      * @param borderG The green component of the border color, ranging from 0.0 to 1.0.
      * @param borderB The blue component of the border color, ranging from 0.0 to 1.0.
-     * @param alpha The alpha value for both the rectangle and the border, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param alpha The alpha value for both the rectangle and the border, ranging from 0.0 (fully
+     * transparent) to 1.0 (fully opaque).
      */
-    fun fillWithBorder(x: Int, y: Int, width: Int, height: Int, r: Float, g: Float, b: Float, borderR: Float, borderG: Float, borderB: Float, alpha: Float = 1.0f) {
-        fill(x, y, width, height, (r * 255).toInt(), (g * 255).toInt(), (b * 255).toInt(), alpha)
-        drawBorder(x, y, width, height, (borderR * 255).toInt(), (borderG * 255).toInt(), (borderB * 255).toInt(), alpha)
+    fun fillWithBorder(
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int,
+            r: Float,
+            g: Float,
+            b: Float,
+            borderR: Float,
+            borderG: Float,
+            borderB: Float,
+            alpha: Float = 1.0f
+    ) {
+        fill(
+                x,
+                y,
+                width,
+                height,
+                (r * 255).toInt().toUByte(),
+                (g * 255).toInt().toUByte(),
+                (b * 255).toInt().toUByte(),
+                alpha
+        )
+        drawBorder(
+                x,
+                y,
+                width,
+                height,
+                (borderR * 255).toInt().toUByte(),
+                (borderG * 255).toInt().toUByte(),
+                (borderB * 255).toInt().toUByte(),
+                alpha
+        )
     }
 
     /**
      * Draws a rectangle and a border with the specified colors on screen.
      *
      * @param color The color to fill the rectangle with, represented as an RGB integer.
-     * @param alpha The alpha value for the rectangle, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param alpha The alpha value for the rectangle, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
      * @param borderColor The color of the border, represented as an RGB integer.
-     * @param borderAlpha The alpha value for the border, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param borderAlpha The alpha value for the border, ranging from 0.0 (fully transparent) to
+     * 1.0 (fully opaque).
      */
-    fun fillWithBorder(x: Int, y: Int, width: Int, height: Int, color: Int, alpha: Float, borderColor: Int, borderAlpha: Float) {
-        fill(x, y, width, height, color or (alpha * 255).toInt() shl 24)
-        drawBorder(x, y, width, height, borderColor or (borderAlpha * 255).toInt() shl 24)
+    fun fillWithBorder(
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int,
+            color: Int,
+            alpha: Float,
+            borderColor: Int,
+            borderAlpha: Float
+    ) {
+        fill(x, y, width, height, combineLong(color, alpha))
+        drawBorder(x, y, width, height, combineLong(borderColor, borderAlpha))
     }
 
     /**
@@ -186,15 +339,30 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param r The red component of the rectangle color, ranging from 0 to 255.
      * @param g The green component of the rectangle color, ranging from 0 to 255.
      * @param b The blue component of the rectangle color, ranging from 0 to 255.
-     * @param alpha The alpha value for the rectangle, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param alpha The alpha value for the rectangle, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
      * @param borderR The red component of the border color, ranging from 0 to 255.
      * @param borderG The green component of the border color, ranging from 0 to 255.
      * @param borderB The blue component of the border color, ranging from 0 to 255.
-     * @param borderAlpha The alpha value for the border, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param borderAlpha The alpha value for the border, ranging from 0.0 (fully transparent) to
+     * 1.0 (fully opaque).
      */
-    fun fillWithBorder(x: Int, y: Int, width: Int, height: Int, r: Int, g: Int, b: Int, alpha: Float = 1.0f, borderR: Int, borderG: Int, borderB: Int, borderAlpha: Float = 1.0f) {
-        fill(x, y, width, height, ((alpha * 255).toInt() shl 24) or (r shl 16) or (g shl 8) or b)
-        drawBorder(x, y, width, height, ((borderAlpha * 255).toInt() shl 24) or (borderR shl 16) or (borderG shl 8) or borderB)
+    fun fillWithBorder(
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int,
+            r: UByte,
+            g: UByte,
+            b: UByte,
+            alpha: Float = 1.0f,
+            borderR: UByte,
+            borderG: UByte,
+            borderB: UByte,
+            borderAlpha: Float = 1.0f
+    ) {
+        fill(x, y, width, height, combineLong(r, g, b, alpha))
+        drawBorder(x, y, width, height, combineLong(borderR, borderG, borderB, borderAlpha))
     }
 
     /**
@@ -203,15 +371,48 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param r The red component of the rectangle color, ranging from 0.0 to 1.0.
      * @param g The green component of the rectangle color, ranging from 0.0 to 1.0.
      * @param b The blue component of the rectangle color, ranging from 0.0 to 1.0.
-     * @param alpha The alpha value for the rectangle, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param alpha The alpha value for the rectangle, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
      * @param borderR The red component of the border color, ranging from 0.0 to 1.0.
      * @param borderG The green component of the border color, ranging from 0.0 to 1.0.
      * @param borderB The blue component of the border color, ranging from 0.0 to 1.0.
-     * @param borderAlpha The alpha value for the border, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param borderAlpha The alpha value for the border, ranging from 0.0 (fully transparent) to
+     * 1.0 (fully opaque).
      */
-    fun fillWithBorder(x: Int, y: Int, width: Int, height: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f, borderR: Float, borderG: Float, borderB: Float, borderAlpha: Float = 1.0f) {
-        fill(x, y, width, height, (r * 255).toInt(), (g * 255).toInt(), (b * 255).toInt(), alpha)
-        drawBorder(x, y, width, height, (borderR * 255).toInt(), (borderG * 255).toInt(), (borderB * 255).toInt(), borderAlpha)
+    fun fillWithBorder(
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int,
+            r: Float,
+            g: Float,
+            b: Float,
+            alpha: Float = 1.0f,
+            borderR: Float,
+            borderG: Float,
+            borderB: Float,
+            borderAlpha: Float = 1.0f
+    ) {
+        fill(
+                x,
+                y,
+                width,
+                height,
+                (r * 255).toInt().toUByte(),
+                (g * 255).toInt().toUByte(),
+                (b * 255).toInt().toUByte(),
+                alpha
+        )
+        drawBorder(
+                x,
+                y,
+                width,
+                height,
+                (borderR * 255).toInt().toUByte(),
+                (borderG * 255).toInt().toUByte(),
+                (borderB * 255).toInt().toUByte(),
+                borderAlpha
+        )
     }
 
     /**
@@ -221,7 +422,7 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param y The y offset to translate the context by.
      */
     fun translate(x: Float, y: Float) {
-        drawContext.matrices.translate(x,y)
+        drawContext.matrices.translate(x, y)
     }
 
     /**
@@ -231,7 +432,7 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param y The y factor to scale the context by.
      */
     fun scale(x: Float, y: Float) {
-        drawContext.matrices.scale(x,y)
+        drawContext.matrices.scale(x, y)
     }
 
     /**
@@ -253,38 +454,45 @@ class ScreenDrawing(val drawContext: DrawContext) {
     }
 
     /**
-     * Pushes a new matrix onto the drawing context's matrix stack.
-     * This is used to save the current transformation state so that it can be restored later.
+     * Pushes a new matrix onto the drawing context's matrix stack. This is used to save the current
+     * transformation state so that it can be restored later.
      */
     fun push() {
         drawContext.matrices.pushMatrix()
     }
 
     /**
-     * Pops the last matrix from the drawing context's matrix stack.
-     * This restores the previous transformation state that was saved by a push operation.
+     * Pops the last matrix from the drawing context's matrix stack. This restores the previous
+     * transformation state that was saved by a push operation.
      */
     fun pop() {
         drawContext.matrices.popMatrix()
     }
 
     /**
-     * Moves the drawing context up one layer in the rendering stack.
-     * This is used to change the rendering order of elements on the screen.
+     * Moves the drawing context up one layer in the rendering stack. This is used to change the
+     * rendering order of elements on the screen.
      */
     fun goUpLayer() {
         drawContext.state.goUpLayer()
     }
 
     /**
-     * Moves the drawing context down one layer in the rendering stack.
-     * This is used to change the rendering order of elements on the screen.
+     * Moves the drawing context down one layer in the rendering stack. This is used to change the
+     * rendering order of elements on the screen.
      */
     fun goDownLayer() {
         drawContext.state.goDownLayer()
     }
 
-    // Text rendering methods
+    /**
+     * Draws text at the specified position with the given color.
+     *
+     * @param color The color of the text, represented as an ARGB integer.
+     */
+    fun drawText(text: String, x: Int, y: Int, color: Long) {
+        drawContext.drawText(textRenderer, text, x, y, color.toInt(), false)
+    }
 
     /**
      * Draws text at the specified position with the given color.
@@ -298,11 +506,22 @@ class ScreenDrawing(val drawContext: DrawContext) {
     /**
      * Draws text at the specified position with the given color and alpha value.
      *
-     * @param color The color of the text, represented as an RGB integer. The alpha value is applied separately.
-     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param color The color of the text, represented as an RGB integer. The alpha value is applied
+     * separately.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
      */
     fun drawText(text: String, x: Int, y: Int, color: Int, alpha: Float) {
-        drawContext.drawText(textRenderer, text, x, y, color or (alpha * 255).toInt() shl 24, false)
+        drawContext.drawText(textRenderer, text, x, y, combineInt(color, alpha), false)
+    }
+
+    /**
+     * Draws text at the specified position with the given color.
+     *
+     * @param color The color of the text, represented as an ARGB integer.
+     */
+    fun drawText(text: Text, x: Int, y: Int, color: Long) {
+        drawContext.drawText(textRenderer, text, x, y, (color).toInt(), false)
     }
 
     /**
@@ -317,11 +536,90 @@ class ScreenDrawing(val drawContext: DrawContext) {
     /**
      * Draws text at the specified position with the given color and alpha value.
      *
-     * @param color The color of the text, represented as an RGB integer. The alpha value is applied separately.
-     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param color The color of the text, represented as an RGB integer. The alpha value is applied
+     * separately.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
      */
     fun drawText(text: Text, x: Int, y: Int, color: Int, alpha: Float) {
-        drawContext.drawText(textRenderer, text, x, y, color or (alpha * 255).toInt() shl 24, false)
+        drawContext.drawText(textRenderer, text, x, y, combineInt(color, alpha), false)
+    }
+
+    /**
+     * Draws text at the specified position with the given RGBA color.
+     *
+     * @param r The red component of the color, ranging from 0 to 255.
+     * @param g The green component of the color, ranging from 0 to 255.
+     * @param b The blue component of the color, ranging from 0 to 255.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
+     */
+    fun drawText(text: String, x: Int, y: Int, r: UByte, g: UByte, b: UByte, alpha: Float = 1.0f) {
+        drawContext.drawText(textRenderer, text, x, y, combineInt(r, g, b, alpha), false)
+    }
+
+    /**
+     * Draws text at the specified position with the given RGBA color.
+     *
+     * @param r The red component of the color, ranging from 0.0 to 1.0.
+     * @param g The green component of the color, ranging from 0.0 to 1.0.
+     * @param b The blue component of the color, ranging from 0.0 to 1.0.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
+     */
+    fun drawText(text: String, x: Int, y: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f) {
+        drawText(
+                text,
+                x,
+                y,
+                (r * 255).toInt().toUByte(),
+                (g * 255).toInt().toUByte(),
+                (b * 255).toInt().toUByte(),
+                alpha
+        )
+    }
+
+    /**
+     * Draws text at the specified position with the given RGBA color.
+     *
+     * @param r The red component of the color, ranging from 0 to 255.
+     * @param g The green component of the color, ranging from 0 to 255.
+     * @param b The blue component of the color, ranging from 0 to 255.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
+     */
+    fun drawText(text: Text, x: Int, y: Int, r: UByte, g: UByte, b: UByte, alpha: Float = 1.0f) {
+        drawContext.drawText(textRenderer, text, x, y, combineInt(r, g, b, alpha), false)
+    }
+
+    /**
+     * Draws text at the specified position with the given RGBA color.
+     *
+     * @param r The red component of the color, ranging from 0.0 to 1.0.
+     * @param g The green component of the color, ranging from 0.0 to 1.0.
+     * @param b The blue component of the color, ranging from 0.0 to 1.0.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
+     */
+    fun drawText(text: Text, x: Int, y: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f) {
+        drawText(
+                text,
+                x,
+                y,
+                (r * 255).toInt().toUByte(),
+                (g * 255).toInt().toUByte(),
+                (b * 255).toInt().toUByte(),
+                alpha
+        )
+    }
+
+    /**
+     * Draws text with a shadow at the specified position.
+     *
+     * @param color The color of the text, represented as an ARGB integer.
+     */
+    fun drawTextWithShadow(text: String, x: Int, y: Int, color: Long) {
+        drawContext.drawText(textRenderer, text, x, y, color.toInt(), true)
     }
 
     /**
@@ -336,11 +634,22 @@ class ScreenDrawing(val drawContext: DrawContext) {
     /**
      * Draws text with a shadow at the specified position.
      *
-     * @param color The color of the text, represented as an RGB integer. The alpha value is applied separately.
-     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param color The color of the text, represented as an RGB integer. The alpha value is applied
+     * separately.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
      */
     fun drawTextWithShadow(text: String, x: Int, y: Int, color: Int, alpha: Float) {
-        drawContext.drawText(textRenderer, text, x, y, color or (alpha * 255).toInt() shl 24, true)
+        drawContext.drawText(textRenderer, text, x, y, combineInt(color, alpha), true)
+    }
+
+    /**
+     * Draws text with a shadow at the specified position.
+     *
+     * @param color The color of the text, represented as an ARGB integer.
+     */
+    fun drawTextWithShadow(text: Text, x: Int, y: Int, color: Long) {
+        drawContext.drawText(textRenderer, text, x, y, color.toInt(), true)
     }
 
     /**
@@ -355,11 +664,123 @@ class ScreenDrawing(val drawContext: DrawContext) {
     /**
      * Draws text with a shadow at the specified position.
      *
-     * @param color The color of the text, represented as an RGB integer. The alpha value is applied separately.
-     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param color The color of the text, represented as an RGB integer. The alpha value is applied
+     * separately.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
      */
     fun drawTextWithShadow(text: Text, x: Int, y: Int, color: Int, alpha: Float) {
-        drawContext.drawText(textRenderer, text, x, y, color or (alpha * 255).toInt() shl 24, true)
+        drawContext.drawText(textRenderer, text, x, y, combineInt(color, alpha), true)
+    }
+
+    /**
+     * Draws text with a shadow at the specified position with the given RGBA color.
+     *
+     * @param r The red component of the color, ranging from 0 to 255.
+     * @param g The green component of the color, ranging from 0 to 255.
+     * @param b The blue component of the color, ranging from 0 to 255.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
+     */
+    fun drawTextWithShadow(
+            text: String,
+            x: Int,
+            y: Int,
+            r: UByte,
+            g: UByte,
+            b: UByte,
+            alpha: Float = 1.0f
+    ) {
+        drawContext.drawText(textRenderer, text, x, y, combineInt(r, g, b, alpha), true)
+    }
+
+    /**
+     * Draws text with a shadow at the specified position with the given RGBA color.
+     *
+     * @param r The red component of the color, ranging from 0.0 to 1.0.
+     * @param g The green component of the color, ranging from 0.0 to 1.0.
+     * @param b The blue component of the color, ranging from 0.0 to 1.0.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
+     */
+    fun drawTextWithShadow(
+            text: String,
+            x: Int,
+            y: Int,
+            r: Float,
+            g: Float,
+            b: Float,
+            alpha: Float = 1.0f
+    ) {
+        drawTextWithShadow(
+                text,
+                x,
+                y,
+                (r * 255).toInt().toUByte(),
+                (g * 255).toInt().toUByte(),
+                (b * 255).toInt().toUByte(),
+                alpha
+        )
+    }
+
+    /**
+     * Draws text with a shadow at the specified position with the given RGBA color.
+     *
+     * @param r The red component of the color, ranging from 0 to 255.
+     * @param g The green component of the color, ranging from 0 to 255.
+     * @param b The blue component of the color, ranging from 0 to 255.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
+     */
+    fun drawTextWithShadow(
+            text: Text,
+            x: Int,
+            y: Int,
+            r: UByte,
+            g: UByte,
+            b: UByte,
+            alpha: Float = 1.0f
+    ) {
+        drawContext.drawText(textRenderer, text, x, y, combineInt(r, g, b, alpha), true)
+    }
+
+    /**
+     * Draws text with a shadow at the specified position with the given RGBA color.
+     *
+     * @param r The red component of the color, ranging from 0.0 to 1.0.
+     * @param g The green component of the color, ranging from 0.0 to 1.0.
+     * @param b The blue component of the color, ranging from 0.0 to 1.0.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
+     */
+    fun drawTextWithShadow(
+            text: Text,
+            x: Int,
+            y: Int,
+            r: Float,
+            g: Float,
+            b: Float,
+            alpha: Float = 1.0f
+    ) {
+        drawTextWithShadow(
+                text,
+                x,
+                y,
+                (r * 255).toInt().toUByte(),
+                (g * 255).toInt().toUByte(),
+                (b * 255).toInt().toUByte(),
+                alpha
+        )
+    }
+
+    /**
+     * Draws text centered at the specified x position.
+     *
+     * @param color The color of the text, represented as an ARGB integer.
+     */
+    fun drawCenteredText(text: String, centerX: Int, y: Int, color: Long) {
+        val textWidth = textRenderer.getWidth(text)
+        drawContext.drawText(textRenderer, text, centerX - textWidth / 2, y, color.toInt(), false)
     }
 
     /**
@@ -375,12 +796,89 @@ class ScreenDrawing(val drawContext: DrawContext) {
     /**
      * Draws text centered at the specified x position.
      *
-     * @param color The color of the text, represented as an RGB integer. The alpha value is applied separately.
-     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param color The color of the text, represented as an RGB integer. The alpha value is applied
+     * separately.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
      */
     fun drawCenteredText(text: String, centerX: Int, y: Int, color: Int, alpha: Float) {
         val textWidth = textRenderer.getWidth(text)
-        drawContext.drawText(textRenderer, text, centerX - textWidth / 2, y, color or (alpha * 255).toInt() shl 24, false)
+        drawContext.drawText(
+                textRenderer,
+                text,
+                centerX - textWidth / 2,
+                y,
+                combineInt(color, alpha),
+                false
+        )
+    }
+
+    /**
+     * Draws text centered at the specified x position with the given RGBA color.
+     *
+     * @param r The red component of the color, ranging from 0 to 255.
+     * @param g The green component of the color, ranging from 0 to 255.
+     * @param b The blue component of the color, ranging from 0 to 255.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
+     */
+    fun drawCenteredText(
+            text: String,
+            centerX: Int,
+            y: Int,
+            r: UByte,
+            g: UByte,
+            b: UByte,
+            alpha: Float = 1.0f
+    ) {
+        val textWidth = textRenderer.getWidth(text)
+        drawContext.drawText(
+                textRenderer,
+                text,
+                centerX - textWidth / 2,
+                y,
+                combineInt(r, g, b, alpha),
+                false
+        )
+    }
+
+    /**
+     * Draws text centered at the specified x position with the given RGBA color.
+     *
+     * @param r The red component of the color, ranging from 0.0 to 1.0.
+     * @param g The green component of the color, ranging from 0.0 to 1.0.
+     * @param b The blue component of the color, ranging from 0.0 to 1.0.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
+     */
+    fun drawCenteredText(
+            text: String,
+            centerX: Int,
+            y: Int,
+            r: Float,
+            g: Float,
+            b: Float,
+            alpha: Float = 1.0f
+    ) {
+        drawCenteredText(
+                text,
+                centerX,
+                y,
+                (r * 255).toInt().toUByte(),
+                (g * 255).toInt().toUByte(),
+                (b * 255).toInt().toUByte(),
+                alpha
+        )
+    }
+
+    /**
+     * Draws text centered at the specified x position with a shadow.
+     *
+     * @param color The color of the text, represented as an ARGB integer.
+     */
+    fun drawCenteredTextWithShadow(text: String, centerX: Int, y: Int, color: Long) {
+        val textWidth = textRenderer.getWidth(text)
+        drawContext.drawText(textRenderer, text, centerX - textWidth / 2, y, color.toInt(), true)
     }
 
     /**
@@ -396,12 +894,90 @@ class ScreenDrawing(val drawContext: DrawContext) {
     /**
      * Draws text centered at the specified x position with a shadow.
      *
-     * @param color The color of the text, represented as an RGB integer. The alpha value is applied separately.
-     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param color The color of the text, represented as an RGB integer. The alpha value is applied
+     * separately.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
      */
     fun drawCenteredTextWithShadow(text: String, centerX: Int, y: Int, color: Int, alpha: Float) {
         val textWidth = textRenderer.getWidth(text)
-        drawContext.drawText(textRenderer, text, centerX - textWidth / 2, y, color or (alpha * 255).toInt() shl 24, true)
+        drawContext.drawText(
+                textRenderer,
+                text,
+                centerX - textWidth / 2,
+                y,
+                combineInt(color, alpha),
+                true
+        )
+    }
+
+    /**
+     * Draws text centered at the specified x position with a shadow and the given RGBA color.
+     *
+     * @param r The red component of the color, ranging from 0 to 255.
+     * @param g The green component of the color, ranging from 0 to 255.
+     * @param b The blue component of the color, ranging from 0 to 255.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
+     */
+    fun drawCenteredTextWithShadow(
+            text: String,
+            centerX: Int,
+            y: Int,
+            r: UByte,
+            g: UByte,
+            b: UByte,
+            alpha: Float = 1.0f
+    ) {
+        val textWidth = textRenderer.getWidth(text)
+        drawContext.drawText(
+                textRenderer,
+                text,
+                centerX - textWidth / 2,
+                y,
+                combineInt(r, g, b, alpha),
+                true
+        )
+    }
+
+    /**
+     * Draws text centered at the specified x position with a shadow and the given RGBA color.
+     *
+     * @param r The red component of the color, ranging from 0.0 to 1.0.
+     * @param g The green component of the color, ranging from 0.0 to 1.0.
+     * @param b The blue component of the color, ranging from 0.0 to 1.0.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
+     */
+    fun drawCenteredTextWithShadow(
+            text: String,
+            centerX: Int,
+            y: Int,
+            r: Float,
+            g: Float,
+            b: Float,
+            alpha: Float = 1.0f
+    ) {
+        drawCenteredTextWithShadow(
+                text,
+                centerX,
+                y,
+                (r * 255).toInt().toUByte(),
+                (g * 255).toInt().toUByte(),
+                (b * 255).toInt().toUByte(),
+                alpha
+        )
+    }
+
+    /**
+     * Draws text right-aligned at the specified x position.
+     *
+     * @param rightX The x coordinate where the text should end (right edge).
+     * @param color The color of the text, represented as an ARGB integer.
+     */
+    fun drawRightAlignedText(text: String, rightX: Int, y: Int, color: Long) {
+        val textWidth = textRenderer.getWidth(text)
+        drawContext.drawText(textRenderer, text, rightX - textWidth, y, color.toInt(), false)
     }
 
     /**
@@ -419,12 +995,92 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * Draws text right-aligned at the specified x position.
      *
      * @param rightX The x coordinate where the text should end (right edge).
-     * @param color The color of the text, represented as an RGB integer. The alpha value is applied separately.
-     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param color The color of the text, represented as an RGB integer. The alpha value is applied
+     * separately.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
      */
     fun drawRightAlignedText(text: String, rightX: Int, y: Int, color: Int, alpha: Float) {
         val textWidth = textRenderer.getWidth(text)
-        drawContext.drawText(textRenderer, text, rightX - textWidth, y, color or (alpha * 255).toInt() shl 24, false)
+        drawContext.drawText(
+                textRenderer,
+                text,
+                rightX - textWidth,
+                y,
+                combineInt(color, alpha),
+                false
+        )
+    }
+
+    /**
+     * Draws text right-aligned at the specified x position with the given RGBA color.
+     *
+     * @param rightX The x coordinate where the text should end (right edge).
+     * @param r The red component of the color, ranging from 0 to 255.
+     * @param g The green component of the color, ranging from 0 to 255.
+     * @param b The blue component of the color, ranging from 0 to 255.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
+     */
+    fun drawRightAlignedText(
+            text: String,
+            rightX: Int,
+            y: Int,
+            r: UByte,
+            g: UByte,
+            b: UByte,
+            alpha: Float = 1.0f
+    ) {
+        val textWidth = textRenderer.getWidth(text)
+        drawContext.drawText(
+                textRenderer,
+                text,
+                rightX - textWidth,
+                y,
+                combineInt(r, g, b, alpha),
+                false
+        )
+    }
+
+    /**
+     * Draws text right-aligned at the specified x position with the given RGBA color.
+     *
+     * @param rightX The x coordinate where the text should end (right edge).
+     * @param r The red component of the color, ranging from 0.0 to 1.0.
+     * @param g The green component of the color, ranging from 0.0 to 1.0.
+     * @param b The blue component of the color, ranging from 0.0 to 1.0.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
+     */
+    fun drawRightAlignedText(
+            text: String,
+            rightX: Int,
+            y: Int,
+            r: Float,
+            g: Float,
+            b: Float,
+            alpha: Float = 1.0f
+    ) {
+        drawRightAlignedText(
+                text,
+                rightX,
+                y,
+                (r * 255).toInt().toUByte(),
+                (g * 255).toInt().toUByte(),
+                (b * 255).toInt().toUByte(),
+                alpha
+        )
+    }
+
+    /**
+     * Draws text right-aligned at the specified x position with a shadow.
+     *
+     * @param rightX The x coordinate where the text should end (right edge).
+     * @param color The color of the text, represented as an ARGB integer.
+     */
+    fun drawRightAlignedTextWithShadow(text: String, rightX: Int, y: Int, color: Long) {
+        val textWidth = textRenderer.getWidth(text)
+        drawContext.drawText(textRenderer, text, rightX - textWidth, y, color.toInt(), true)
     }
 
     /**
@@ -442,12 +1098,87 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * Draws text right-aligned at the specified x position with a shadow.
      *
      * @param rightX The x coordinate where the text should end (right edge).
-     * @param color The color of the text, represented as an RGB integer. The alpha value is applied separately.
-     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param color The color of the text, represented as an RGB integer. The alpha value is applied
+     * separately.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
      */
-    fun drawRightAlignedTextWithShadow(text: String, rightX: Int, y: Int, color: Int, alpha: Float) {
+    fun drawRightAlignedTextWithShadow(
+            text: String,
+            rightX: Int,
+            y: Int,
+            color: Int,
+            alpha: Float
+    ) {
         val textWidth = textRenderer.getWidth(text)
-        drawContext.drawText(textRenderer, text, rightX - textWidth, y, color or (alpha * 255).toInt() shl 24, true)
+        drawContext.drawText(
+                textRenderer,
+                text,
+                rightX - textWidth,
+                y,
+                combineInt(color, alpha),
+                true
+        )
+    }
+
+    /**
+     * Draws text right-aligned at the specified x position with a shadow and the given RGBA color.
+     *
+     * @param rightX The x coordinate where the text should end (right edge).
+     * @param r The red component of the color, ranging from 0 to 255.
+     * @param g The green component of the color, ranging from 0 to 255.
+     * @param b The blue component of the color, ranging from 0 to 255.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
+     */
+    fun drawRightAlignedTextWithShadow(
+            text: String,
+            rightX: Int,
+            y: Int,
+            r: UByte,
+            g: UByte,
+            b: UByte,
+            alpha: Float = 1.0f
+    ) {
+        val textWidth = textRenderer.getWidth(text)
+        drawContext.drawText(
+                textRenderer,
+                text,
+                rightX - textWidth,
+                y,
+                combineInt(r, g, b, alpha),
+                true
+        )
+    }
+
+    /**
+     * Draws text right-aligned at the specified x position with a shadow and the given RGBA color.
+     *
+     * @param rightX The x coordinate where the text should end (right edge).
+     * @param r The red component of the color, ranging from 0.0 to 1.0.
+     * @param g The green component of the color, ranging from 0.0 to 1.0.
+     * @param b The blue component of the color, ranging from 0.0 to 1.0.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
+     */
+    fun drawRightAlignedTextWithShadow(
+            text: String,
+            rightX: Int,
+            y: Int,
+            r: Float,
+            g: Float,
+            b: Float,
+            alpha: Float = 1.0f
+    ) {
+        drawRightAlignedTextWithShadow(
+                text,
+                rightX,
+                y,
+                (r * 255).toInt().toUByte(),
+                (g * 255).toInt().toUByte(),
+                (b * 255).toInt().toUByte(),
+                alpha
+        )
     }
 
     /**
@@ -457,11 +1188,18 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param color The color of the text, represented as an ARGB integer.
      * @return A list of strings representing the drawn lines of wrapped text.
      */
-    fun drawWrappedText(text: String, x: Int, y: Int, maxWidth: Int, color: Int): List<String> {
+    fun drawWrappedText(text: String, x: Int, y: Int, maxWidth: Int, color: Long): List<String> {
         return wrapText(text, maxWidth).let { lines ->
             val lineHeight = textRenderer.fontHeight
             for (i in lines.indices) {
-                drawContext.drawText(textRenderer, lines[i], x, y + i * lineHeight, color, false)
+                drawContext.drawText(
+                        textRenderer,
+                        lines[i],
+                        x,
+                        y + i * lineHeight,
+                        color.toInt(),
+                        false
+                )
             }
             lines
         }
@@ -471,19 +1209,106 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * Draws wrapped text within the specified width bounds.
      *
      * @param maxWidth The maximum width for text wrapping.
-     * @param color The color of the text, represented as an RGB integer. The alpha value is applied separately.
-     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param color The color of the text, represented as an RGB integer. The alpha value is applied
+     * separately.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
      * @return A list of strings representing the drawn lines of wrapped text.
      */
-    fun drawWrappedText(text: String, x: Int, y: Int, maxWidth: Int, color: Int, alpha: Float): List<String> {
+    fun drawWrappedText(
+            text: String,
+            x: Int,
+            y: Int,
+            maxWidth: Int,
+            color: Int,
+            alpha: Float
+    ): List<String> {
         return wrapText(text, maxWidth).let { lines ->
             val lineHeight = textRenderer.fontHeight
-            val colorWithAlpha = color or (alpha * 255).toInt() shl 24
+            val colorWithAlpha = combineInt(color, alpha)
             for (i in lines.indices) {
-                drawContext.drawText(textRenderer, lines[i], x, y + i * lineHeight, colorWithAlpha, false)
+                drawContext.drawText(
+                        textRenderer,
+                        lines[i],
+                        x,
+                        y + i * lineHeight,
+                        colorWithAlpha,
+                        false
+                )
             }
             lines
         }
+    }
+
+    /**
+     * Draws wrapped text within the specified width bounds with the given RGBA color.
+     *
+     * @param maxWidth The maximum width for text wrapping.
+     * @param r The red component of the color, ranging from 0 to 255.
+     * @param g The green component of the color, ranging from 0 to 255.
+     * @param b The blue component of the color, ranging from 0 to 255.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
+     * @return A list of strings representing the drawn lines of wrapped text.
+     */
+    fun drawWrappedText(
+            text: String,
+            x: Int,
+            y: Int,
+            maxWidth: Int,
+            r: UByte,
+            g: UByte,
+            b: UByte,
+            alpha: Float = 1.0f
+    ): List<String> {
+        return wrapText(text, maxWidth).let { lines ->
+            val lineHeight = textRenderer.fontHeight
+            val colorWithAlpha = combineInt(r, g, b, alpha)
+            for (i in lines.indices) {
+                drawContext.drawText(
+                        textRenderer,
+                        lines[i],
+                        x,
+                        y + i * lineHeight,
+                        colorWithAlpha,
+                        false
+                )
+            }
+            lines
+        }
+    }
+
+    /**
+     * Draws wrapped text within the specified width bounds with the given RGBA color.
+     *
+     * @param maxWidth The maximum width for text wrapping.
+     * @param r The red component of the color, ranging from 0.0 to 1.0.
+     * @param g The green component of the color, ranging from 0.0 to 1.0.
+     * @param b The blue component of the color, ranging from 0.0 to 1.0.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
+     * @return A list of strings representing the drawn lines of wrapped text.
+     */
+    fun drawWrappedText(
+            text: String,
+            x: Int,
+            y: Int,
+            maxWidth: Int,
+            r: Float,
+            g: Float,
+            b: Float,
+            alpha: Float = 1.0f
+    ): List<String> {
+        return drawWrappedText(
+                text,
+                x,
+                y,
+                maxWidth,
+                (r * 255).toInt().toUByte(),
+                (g * 255).toInt().toUByte(),
+                (b * 255).toInt().toUByte(),
+                alpha
+        )
     }
 
     /**
@@ -493,7 +1318,7 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param color The color of the text, represented as an ARGB integer.
      * @return A list of strings representing the drawn lines of wrapped text.
      */
-    fun drawWrappedText(text: Text, x: Int, y: Int, maxWidth: Int, color: Int): List<String> {
+    fun drawWrappedText(text: Text, x: Int, y: Int, maxWidth: Int, color: Long): List<String> {
         return drawWrappedText(text.string, x, y, maxWidth, color)
     }
 
@@ -501,12 +1326,69 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * Draws wrapped text within the specified width bounds.
      *
      * @param maxWidth The maximum width for text wrapping.
-     * @param color The color of the text, represented as an RGB integer. The alpha value is applied separately.
-     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param color The color of the text, represented as an RGB integer. The alpha value is applied
+     * separately.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
      * @return A list of strings representing the drawn lines of wrapped text.
      */
-    fun drawWrappedText(text: Text, x: Int, y: Int, maxWidth: Int, color: Int, alpha: Float): List<String> {
+    fun drawWrappedText(
+            text: Text,
+            x: Int,
+            y: Int,
+            maxWidth: Int,
+            color: Int,
+            alpha: Float
+    ): List<String> {
         return drawWrappedText(text.string, x, y, maxWidth, color, alpha)
+    }
+
+    /**
+     * Draws wrapped text within the specified width bounds with the given RGBA color.
+     *
+     * @param maxWidth The maximum width for text wrapping.
+     * @param r The red component of the color, ranging from 0 to 255.
+     * @param g The green component of the color, ranging from 0 to 255.
+     * @param b The blue component of the color, ranging from 0 to 255.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
+     * @return A list of strings representing the drawn lines of wrapped text.
+     */
+    fun drawWrappedText(
+            text: Text,
+            x: Int,
+            y: Int,
+            maxWidth: Int,
+            r: UByte,
+            g: UByte,
+            b: UByte,
+            alpha: Float = 1.0f
+    ): List<String> {
+        return drawWrappedText(text.string, x, y, maxWidth, r, g, b, alpha)
+    }
+
+    /**
+     * Draws wrapped text within the specified width bounds with the given RGBA color.
+     *
+     * @param maxWidth The maximum width for text wrapping.
+     * @param r The red component of the color, ranging from 0.0 to 1.0.
+     * @param g The green component of the color, ranging from 0.0 to 1.0.
+     * @param b The blue component of the color, ranging from 0.0 to 1.0.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
+     * @return A list of strings representing the drawn lines of wrapped text.
+     */
+    fun drawWrappedText(
+            text: Text,
+            x: Int,
+            y: Int,
+            maxWidth: Int,
+            r: Float,
+            g: Float,
+            b: Float,
+            alpha: Float = 1.0f
+    ): List<String> {
+        return drawWrappedText(text.string, x, y, maxWidth, r, g, b, alpha)
     }
 
     /**
@@ -535,10 +1417,13 @@ class ScreenDrawing(val drawContext: DrawContext) {
                         currentLine = word
                     }
 
-                    while (textRenderer.getWidth(currentLine) > maxWidth && currentLine.isNotEmpty()) {
+                    while (textRenderer.getWidth(currentLine) > maxWidth &&
+                            currentLine.isNotEmpty()) {
                         var cutIndex = currentLine.length - 1
 
-                        while (cutIndex > 0 && textRenderer.getWidth(currentLine.substring(0, cutIndex)) > maxWidth) {
+                        while (cutIndex > 0 &&
+                                textRenderer.getWidth(currentLine.substring(0, cutIndex)) >
+                                        maxWidth) {
                             cutIndex--
                         }
 
@@ -590,7 +1475,18 @@ class ScreenDrawing(val drawContext: DrawContext) {
      */
     fun drawTexture(texture: Identifier, x: Int, y: Int, width: Int, height: Int) {
         // This may need to be adjusted based on available DrawContext methods
-        drawContext.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, 0f, 0f, width, height, width, height)
+        drawContext.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                texture,
+                x,
+                y,
+                0f,
+                0f,
+                width,
+                height,
+                width,
+                height
+        )
     }
 
     /**
@@ -602,8 +1498,29 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param textureWidth The total width of the texture.
      * @param textureHeight The total height of the texture.
      */
-    fun drawTexture(texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, textureWidth: Int, textureHeight: Int) {
-        drawContext.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, textureWidth, textureHeight)
+    fun drawTexture(
+            texture: Identifier,
+            x: Int,
+            y: Int,
+            u: Float,
+            v: Float,
+            width: Int,
+            height: Int,
+            textureWidth: Int,
+            textureHeight: Int
+    ) {
+        drawContext.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                texture,
+                x,
+                y,
+                u,
+                v,
+                width,
+                height,
+                textureWidth,
+                textureHeight
+        )
     }
 
     /**
@@ -616,8 +1533,68 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param textureHeight The total height of the texture.
      * @param color The color tint to apply, represented as an ARGB integer.
      */
-    fun drawTexture(texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, textureWidth: Int, textureHeight: Int, color: Int) {
-        drawContext.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, textureWidth, textureHeight, color)
+    fun drawTexture(
+            texture: Identifier,
+            x: Int,
+            y: Int,
+            u: Float,
+            v: Float,
+            width: Int,
+            height: Int,
+            textureWidth: Int,
+            textureHeight: Int,
+            color: Long
+    ) {
+        drawContext.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                texture,
+                x,
+                y,
+                u,
+                v,
+                width,
+                height,
+                textureWidth,
+                textureHeight,
+                color.toInt()
+        )
+    }
+
+    /**
+     * Draws a texture at the specified position with UV coordinates and color tint.
+     *
+     * @param texture The texture identifier to draw.
+     * @param u The U coordinate (x) in the texture atlas.
+     * @param v The V coordinate (y) in the texture atlas.
+     * @param textureWidth The total width of the texture.
+     * @param textureHeight The total height of the texture.
+     * @param color The color tint to apply, represented as an ARGB integer.
+     */
+    fun drawTexture(
+            texture: Identifier,
+            x: Int,
+            y: Int,
+            u: Float,
+            v: Float,
+            width: Int,
+            height: Int,
+            textureWidth: Int,
+            textureHeight: Int,
+            color: Int
+    ) {
+        drawContext.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                texture,
+                x,
+                y,
+                u,
+                v,
+                width,
+                height,
+                textureWidth,
+                textureHeight,
+                color
+        )
     }
 
     /**
@@ -625,10 +1602,31 @@ class ScreenDrawing(val drawContext: DrawContext) {
      *
      * @param texture The texture identifier to draw.
      * @param color The color tint to apply, represented as an RGB integer.
-     * @param alpha The alpha value for the tint, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param alpha The alpha value for the tint, ranging from 0.0 (fully transparent) to 1.0 (fully
+     * opaque).
      */
-    fun drawTexture(texture: Identifier, x: Int, y: Int, width: Int, height: Int, color: Int, alpha: Float) {
-        drawContext.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, 0f, 0f, width, height, width, height, color or (alpha * 255).toInt() shl 24)
+    fun drawTexture(
+            texture: Identifier,
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int,
+            color: Int,
+            alpha: Float
+    ) {
+        drawContext.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                texture,
+                x,
+                y,
+                0f,
+                0f,
+                width,
+                height,
+                width,
+                height,
+                combineInt(color, alpha)
+        )
     }
 
     /**
@@ -638,10 +1636,33 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param r The red component of the tint, ranging from 0 to 255.
      * @param g The green component of the tint, ranging from 0 to 255.
      * @param b The blue component of the tint, ranging from 0 to 255.
-     * @param alpha The alpha value for the tint, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param alpha The alpha value for the tint, ranging from 0.0 (fully transparent) to 1.0 (fully
+     * opaque).
      */
-    fun drawTexture(texture: Identifier, x: Int, y: Int, width: Int, height: Int, r: Int, g: Int, b: Int, alpha: Float = 1.0f) {
-        drawContext.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, 0f, 0f, width, height, width, height, ((alpha * 255).toInt() shl 24) or (r shl 16) or (g shl 8) or b)
+    fun drawTexture(
+            texture: Identifier,
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int,
+            r: UByte,
+            g: UByte,
+            b: UByte,
+            alpha: Float = 1.0f
+    ) {
+        drawContext.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                texture,
+                x,
+                y,
+                0.0f,
+                0.0f,
+                width,
+                height,
+                width,
+                height,
+                combineInt(r, g, b, alpha)
+        )
     }
 
     /**
@@ -651,10 +1672,31 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param r The red component of the tint, ranging from 0.0 to 1.0.
      * @param g The green component of the tint, ranging from 0.0 to 1.0.
      * @param b The blue component of the tint, ranging from 0.0 to 1.0.
-     * @param alpha The alpha value for the tint, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param alpha The alpha value for the tint, ranging from 0.0 (fully transparent) to 1.0 (fully
+     * opaque).
      */
-    fun drawTexture(texture: Identifier, x: Int, y: Int, width: Int, height: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f) {
-        drawTexture(texture, x, y, width, height, (r * 255).toInt(), (g * 255).toInt(), (b * 255).toInt(), alpha)
+    fun drawTexture(
+            texture: Identifier,
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int,
+            r: Float,
+            g: Float,
+            b: Float,
+            alpha: Float = 1.0f
+    ) {
+        drawTexture(
+                texture,
+                x,
+                y,
+                width,
+                height,
+                (r * 255).toInt().toUByte(),
+                (g * 255).toInt().toUByte(),
+                (b * 255).toInt().toUByte(),
+                alpha
+        )
     }
 
     /**
@@ -666,10 +1708,35 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param textureWidth The total width of the texture.
      * @param textureHeight The total height of the texture.
      * @param color The color tint to apply, represented as an RGB integer.
-     * @param alpha The alpha value for the tint, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param alpha The alpha value for the tint, ranging from 0.0 (fully transparent) to 1.0 (fully
+     * opaque).
      */
-    fun drawTexture(texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, textureWidth: Int, textureHeight: Int, color: Int, alpha: Float) {
-        drawContext.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, textureWidth, textureHeight, color or (alpha * 255).toInt() shl 24)
+    fun drawTexture(
+            texture: Identifier,
+            x: Int,
+            y: Int,
+            u: Float,
+            v: Float,
+            width: Int,
+            height: Int,
+            textureWidth: Int,
+            textureHeight: Int,
+            color: Int,
+            alpha: Float
+    ) {
+        drawContext.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                texture,
+                x,
+                y,
+                u,
+                v,
+                width,
+                height,
+                textureWidth,
+                textureHeight,
+                combineInt(color, alpha)
+        )
     }
 
     /**
@@ -683,10 +1750,37 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param r The red component of the tint, ranging from 0 to 255.
      * @param g The green component of the tint, ranging from 0 to 255.
      * @param b The blue component of the tint, ranging from 0 to 255.
-     * @param alpha The alpha value for the tint, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param alpha The alpha value for the tint, ranging from 0.0 (fully transparent) to 1.0 (fully
+     * opaque).
      */
-    fun drawTexture(texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, textureWidth: Int, textureHeight: Int, r: Int, g: Int, b: Int, alpha: Float = 1.0f) {
-        drawContext.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, textureWidth, textureHeight, ((alpha * 255).toInt() shl 24) or (r shl 16) or (g shl 8) or b)
+    fun drawTexture(
+            texture: Identifier,
+            x: Int,
+            y: Int,
+            u: Float,
+            v: Float,
+            width: Int,
+            height: Int,
+            textureWidth: Int,
+            textureHeight: Int,
+            r: UByte,
+            g: UByte,
+            b: UByte,
+            alpha: Float = 1.0f
+    ) {
+        drawContext.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                texture,
+                x,
+                y,
+                u,
+                v,
+                width,
+                height,
+                textureWidth,
+                textureHeight,
+                combineInt(r, g, b, alpha)
+        )
     }
 
     /**
@@ -700,10 +1794,39 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param r The red component of the tint, ranging from 0.0 to 1.0.
      * @param g The green component of the tint, ranging from 0.0 to 1.0.
      * @param b The blue component of the tint, ranging from 0.0 to 1.0.
-     * @param alpha The alpha value for the tint, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param alpha The alpha value for the tint, ranging from 0.0 (fully transparent) to 1.0 (fully
+     * opaque).
      */
-    fun drawTexture(texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, textureWidth: Int, textureHeight: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f) {
-        drawTexture(texture, x, y, u, v, width, height, textureWidth, textureHeight, (r * 255).toInt(), (g * 255).toInt(), (b * 255).toInt(), alpha)
+    fun drawTexture(
+            texture: Identifier,
+            x: Int,
+            y: Int,
+            u: Float,
+            v: Float,
+            width: Int,
+            height: Int,
+            textureWidth: Int,
+            textureHeight: Int,
+            r: Float,
+            g: Float,
+            b: Float,
+            alpha: Float = 1.0f
+    ) {
+        drawTexture(
+                texture,
+                x,
+                y,
+                u,
+                v,
+                width,
+                height,
+                textureWidth,
+                textureHeight,
+                (r * 255).toInt().toUByte(),
+                (g * 255).toInt().toUByte(),
+                (b * 255).toInt().toUByte(),
+                alpha
+        )
     }
 
     /**
@@ -717,8 +1840,33 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param textureWidth The total width of the texture.
      * @param textureHeight The total height of the texture.
      */
-    fun drawTextureRegion(texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, regionWidth: Int, regionHeight: Int, textureWidth: Int, textureHeight: Int) {
-        drawContext.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight)
+    fun drawTextureRegion(
+            texture: Identifier,
+            x: Int,
+            y: Int,
+            u: Float,
+            v: Float,
+            width: Int,
+            height: Int,
+            regionWidth: Int,
+            regionHeight: Int,
+            textureWidth: Int,
+            textureHeight: Int
+    ) {
+        drawContext.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                texture,
+                x,
+                y,
+                u,
+                v,
+                width,
+                height,
+                regionWidth,
+                regionHeight,
+                textureWidth,
+                textureHeight
+        )
     }
 
     /**
@@ -733,8 +1881,78 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param textureHeight The total height of the texture.
      * @param color The color tint to apply, represented as an ARGB integer.
      */
-    fun drawTextureRegion(texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, regionWidth: Int, regionHeight: Int, textureWidth: Int, textureHeight: Int, color: Int) {
-        drawContext.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, color)
+    fun drawTextureRegion(
+            texture: Identifier,
+            x: Int,
+            y: Int,
+            u: Float,
+            v: Float,
+            width: Int,
+            height: Int,
+            regionWidth: Int,
+            regionHeight: Int,
+            textureWidth: Int,
+            textureHeight: Int,
+            color: Long
+    ) {
+        drawContext.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                texture,
+                x,
+                y,
+                u,
+                v,
+                width,
+                height,
+                regionWidth,
+                regionHeight,
+                textureWidth,
+                textureHeight,
+                color.toInt()
+        )
+    }
+
+    /**
+     * Draws a texture with specific region dimensions and color tint.
+     *
+     * @param texture The texture identifier to draw.
+     * @param u The U coordinate (x) in the texture atlas.
+     * @param v The V coordinate (y) in the texture atlas.
+     * @param regionWidth The width of the texture region to draw.
+     * @param regionHeight The height of the texture region to draw.
+     * @param textureWidth The total width of the texture.
+     * @param textureHeight The total height of the texture.
+     * @param color The color tint to apply, represented as an ARGB integer.
+     */
+    fun drawTextureRegion(
+            texture: Identifier,
+            x: Int,
+            y: Int,
+            u: Float,
+            v: Float,
+            width: Int,
+            height: Int,
+            regionWidth: Int,
+            regionHeight: Int,
+            textureWidth: Int,
+            textureHeight: Int,
+            color: Int
+    ) {
+        drawContext.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                texture,
+                x,
+                y,
+                u,
+                v,
+                width,
+                height,
+                regionWidth,
+                regionHeight,
+                textureWidth,
+                textureHeight,
+                color
+        )
     }
 
     /**
@@ -748,10 +1966,39 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param textureWidth The total width of the texture.
      * @param textureHeight The total height of the texture.
      * @param color The color tint to apply, represented as an RGB integer.
-     * @param alpha The alpha value for the tint, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param alpha The alpha value for the tint, ranging from 0.0 (fully transparent) to 1.0 (fully
+     * opaque).
      */
-    fun drawTextureRegion(texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, regionWidth: Int, regionHeight: Int, textureWidth: Int, textureHeight: Int, color: Int, alpha: Float) {
-        drawContext.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, color or (alpha * 255).toInt() shl 24)
+    fun drawTextureRegion(
+            texture: Identifier,
+            x: Int,
+            y: Int,
+            u: Float,
+            v: Float,
+            width: Int,
+            height: Int,
+            regionWidth: Int,
+            regionHeight: Int,
+            textureWidth: Int,
+            textureHeight: Int,
+            color: Int,
+            alpha: Float
+    ) {
+        drawContext.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                texture,
+                x,
+                y,
+                u,
+                v,
+                width,
+                height,
+                regionWidth,
+                regionHeight,
+                textureWidth,
+                textureHeight,
+                combineInt(color, alpha)
+        )
     }
 
     /**
@@ -767,10 +2014,41 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param r The red component of the tint, ranging from 0 to 255.
      * @param g The green component of the tint, ranging from 0 to 255.
      * @param b The blue component of the tint, ranging from 0 to 255.
-     * @param alpha The alpha value for the tint, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param alpha The alpha value for the tint, ranging from 0.0 (fully transparent) to 1.0 (fully
+     * opaque).
      */
-    fun drawTextureRegion(texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, regionWidth: Int, regionHeight: Int, textureWidth: Int, textureHeight: Int, r: Int, g: Int, b: Int, alpha: Float = 1.0f) {
-        drawContext.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, ((alpha * 255).toInt() shl 24) or (r shl 16) or (g shl 8) or b)
+    fun drawTextureRegion(
+            texture: Identifier,
+            x: Int,
+            y: Int,
+            u: Float,
+            v: Float,
+            width: Int,
+            height: Int,
+            regionWidth: Int,
+            regionHeight: Int,
+            textureWidth: Int,
+            textureHeight: Int,
+            r: UByte,
+            g: UByte,
+            b: UByte,
+            alpha: Float = 1.0f
+    ) {
+        drawContext.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                texture,
+                x,
+                y,
+                u,
+                v,
+                width,
+                height,
+                regionWidth,
+                regionHeight,
+                textureWidth,
+                textureHeight,
+                combineInt(r, g, b, alpha)
+        )
     }
 
     /**
@@ -786,10 +2064,43 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param r The red component of the tint, ranging from 0.0 to 1.0.
      * @param g The green component of the tint, ranging from 0.0 to 1.0.
      * @param b The blue component of the tint, ranging from 0.0 to 1.0.
-     * @param alpha The alpha value for the tint, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param alpha The alpha value for the tint, ranging from 0.0 (fully transparent) to 1.0 (fully
+     * opaque).
      */
-    fun drawTextureRegion(texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, regionWidth: Int, regionHeight: Int, textureWidth: Int, textureHeight: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f) {
-        drawTextureRegion(texture, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, (r * 255).toInt(), (g * 255).toInt(), (b * 255).toInt(), alpha)
+    fun drawTextureRegion(
+            texture: Identifier,
+            x: Int,
+            y: Int,
+            u: Float,
+            v: Float,
+            width: Int,
+            height: Int,
+            regionWidth: Int,
+            regionHeight: Int,
+            textureWidth: Int,
+            textureHeight: Int,
+            r: Float,
+            g: Float,
+            b: Float,
+            alpha: Float = 1.0f
+    ) {
+        drawTextureRegion(
+                texture,
+                x,
+                y,
+                u,
+                v,
+                width,
+                height,
+                regionWidth,
+                regionHeight,
+                textureWidth,
+                textureHeight,
+                (r * 255).toInt().toUByte(),
+                (g * 255).toInt().toUByte(),
+                (b * 255).toInt().toUByte(),
+                alpha
+        )
     }
 
     /**
@@ -801,8 +2112,29 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param textureWidth The total width of the texture atlas.
      * @param textureHeight The total height of the texture atlas.
      */
-    fun drawSprite(texture: Identifier, x: Int, y: Int, width: Int, height: Int, spriteU: Float, spriteV: Float, textureWidth: Int, textureHeight: Int) {
-        drawContext.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, spriteU, spriteV, width, height, textureWidth, textureHeight)
+    fun drawSprite(
+            texture: Identifier,
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int,
+            spriteU: Float,
+            spriteV: Float,
+            textureWidth: Int,
+            textureHeight: Int
+    ) {
+        drawContext.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                texture,
+                x,
+                y,
+                spriteU,
+                spriteV,
+                width,
+                height,
+                textureWidth,
+                textureHeight
+        )
     }
 
     /**
@@ -815,8 +2147,68 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param textureHeight The total height of the texture atlas.
      * @param color The color tint to apply, represented as an ARGB integer.
      */
-    fun drawSprite(texture: Identifier, x: Int, y: Int, width: Int, height: Int, spriteU: Float, spriteV: Float, textureWidth: Int, textureHeight: Int, color: Int) {
-        drawContext.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, spriteU, spriteV, width, height, textureWidth, textureHeight, color)
+    fun drawSprite(
+            texture: Identifier,
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int,
+            spriteU: Float,
+            spriteV: Float,
+            textureWidth: Int,
+            textureHeight: Int,
+            color: Long
+    ) {
+        drawContext.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                texture,
+                x,
+                y,
+                spriteU,
+                spriteV,
+                width,
+                height,
+                textureWidth,
+                textureHeight,
+                color.toInt()
+        )
+    }
+
+    /**
+     * Draws a simple sprite from a texture atlas with color tint.
+     *
+     * @param texture The texture identifier to draw.
+     * @param spriteU The U coordinate of the sprite in the atlas.
+     * @param spriteV The V coordinate of the sprite in the atlas.
+     * @param textureWidth The total width of the texture atlas.
+     * @param textureHeight The total height of the texture atlas.
+     * @param color The color tint to apply, represented as an ARGB integer.
+     */
+    fun drawSprite(
+            texture: Identifier,
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int,
+            spriteU: Float,
+            spriteV: Float,
+            textureWidth: Int,
+            textureHeight: Int,
+            color: Int
+    ) {
+        drawContext.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                texture,
+                x,
+                y,
+                spriteU,
+                spriteV,
+                width,
+                height,
+                textureWidth,
+                textureHeight,
+                color
+        )
     }
 
     /**
@@ -828,10 +2220,35 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param textureWidth The total width of the texture atlas.
      * @param textureHeight The total height of the texture atlas.
      * @param color The color tint to apply, represented as an RGB integer.
-     * @param alpha The alpha value for the tint, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param alpha The alpha value for the tint, ranging from 0.0 (fully transparent) to 1.0 (fully
+     * opaque).
      */
-    fun drawSprite(texture: Identifier, x: Int, y: Int, width: Int, height: Int, spriteU: Float, spriteV: Float, textureWidth: Int, textureHeight: Int, color: Int, alpha: Float) {
-        drawContext.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, spriteU, spriteV, width, height, textureWidth, textureHeight, color or (alpha * 255).toInt() shl 24)
+    fun drawSprite(
+            texture: Identifier,
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int,
+            spriteU: Float,
+            spriteV: Float,
+            textureWidth: Int,
+            textureHeight: Int,
+            color: Int,
+            alpha: Float
+    ) {
+        drawContext.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                texture,
+                x,
+                y,
+                spriteU,
+                spriteV,
+                width,
+                height,
+                textureWidth,
+                textureHeight,
+                combineInt(color, alpha)
+        )
     }
 
     /**
@@ -845,10 +2262,37 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param r The red component of the tint, ranging from 0 to 255.
      * @param g The green component of the tint, ranging from 0 to 255.
      * @param b The blue component of the tint, ranging from 0 to 255.
-     * @param alpha The alpha value for the tint, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param alpha The alpha value for the tint, ranging from 0.0 (fully transparent) to 1.0 (fully
+     * opaque).
      */
-    fun drawSprite(texture: Identifier, x: Int, y: Int, width: Int, height: Int, spriteU: Float, spriteV: Float, textureWidth: Int, textureHeight: Int, r: Int, g: Int, b: Int, alpha: Float = 1.0f) {
-        drawContext.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, spriteU, spriteV, width, height, textureWidth, textureHeight, ((alpha * 255).toInt() shl 24) or (r shl 16) or (g shl 8) or b)
+    fun drawSprite(
+            texture: Identifier,
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int,
+            spriteU: Float,
+            spriteV: Float,
+            textureWidth: Int,
+            textureHeight: Int,
+            r: UByte,
+            g: UByte,
+            b: UByte,
+            alpha: Float = 1.0f
+    ) {
+        drawContext.drawTexture(
+                RenderPipelines.GUI_TEXTURED,
+                texture,
+                x,
+                y,
+                spriteU,
+                spriteV,
+                width,
+                height,
+                textureWidth,
+                textureHeight,
+                combineInt(r, g, b, alpha)
+        )
     }
 
     /**
@@ -862,20 +2306,48 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param r The red component of the tint, ranging from 0.0 to 1.0.
      * @param g The green component of the tint, ranging from 0.0 to 1.0.
      * @param b The blue component of the tint, ranging from 0.0 to 1.0.
-     * @param alpha The alpha value for the tint, ranging from 0.0 (fully transparent) to 1.0 (fully opaque).
+     * @param alpha The alpha value for the tint, ranging from 0.0 (fully transparent) to 1.0 (fully
+     * opaque).
      */
-    fun drawSprite(texture: Identifier, x: Int, y: Int, width: Int, height: Int, spriteU: Float, spriteV: Float, textureWidth: Int, textureHeight: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f) {
-        drawSprite(texture, x, y, width, height, spriteU, spriteV, textureWidth, textureHeight, (r * 255).toInt(), (g * 255).toInt(), (b * 255).toInt(), alpha)
+    fun drawSprite(
+            texture: Identifier,
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int,
+            spriteU: Float,
+            spriteV: Float,
+            textureWidth: Int,
+            textureHeight: Int,
+            r: Float,
+            g: Float,
+            b: Float,
+            alpha: Float = 1.0f
+    ) {
+        drawSprite(
+                texture,
+                x,
+                y,
+                width,
+                height,
+                spriteU,
+                spriteV,
+                textureWidth,
+                textureHeight,
+                (r * 255).toInt().toUByte(),
+                (g * 255).toInt().toUByte(),
+                (b * 255).toInt().toUByte(),
+                alpha
+        )
     }
 
     /**
-     * Gets access to the underlying DrawContext for advanced texture operations.
-     * Use this only when the wrapper methods are insufficient.
+     * Draws a horizontal line.
      *
-     * @return The underlying DrawContext instance.
+     * @param color The color of the line, represented as an ARGB integer.
      */
-    fun getDrawContext(): DrawContext {
-        return drawContext
+    fun drawHorizontalLine(startX: Int, y: Int, width: Int, color: Long) {
+        fill(startX, y, width, 1, color)
     }
 
     /**
@@ -905,8 +2377,25 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param b The blue component of the color, ranging from 0 to 255.
      * @param alpha The alpha value for the line, ranging from 0.0 to 1.0.
      */
-    fun drawHorizontalLine(startX: Int, y: Int, width: Int, r: Int, g: Int, b: Int, alpha: Float = 1.0f) {
+    fun drawHorizontalLine(
+            startX: Int,
+            y: Int,
+            width: Int,
+            r: UByte,
+            g: UByte,
+            b: UByte,
+            alpha: Float = 1.0f
+    ) {
         fill(startX, y, width, 1, r, g, b, alpha)
+    }
+
+    /**
+     * Draws a vertical line.
+     *
+     * @param color The color of the line, represented as an ARGB integer.
+     */
+    fun drawVerticalLine(x: Int, startY: Int, height: Int, color: Long) {
+        fill(x, startY, 1, height, color)
     }
 
     /**
@@ -936,7 +2425,15 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param b The blue component of the color, ranging from 0 to 255.
      * @param alpha The alpha value for the line, ranging from 0.0 to 1.0.
      */
-    fun drawVerticalLine(x: Int, startY: Int, height: Int, r: Int, g: Int, b: Int, alpha: Float = 1.0f) {
+    fun drawVerticalLine(
+            x: Int,
+            startY: Int,
+            height: Int,
+            r: UByte,
+            g: UByte,
+            b: UByte,
+            alpha: Float = 1.0f
+    ) {
         fill(x, startY, 1, height, r, g, b, alpha)
     }
 
@@ -948,7 +2445,31 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param startColor The starting color on the left, represented as an ARGB integer.
      * @param endColor The ending color on the right, represented as an ARGB integer.
      */
-    fun drawHorizontalGradient(x: Int, y: Int, width: Int, height: Int, startColor: Int, endColor: Int) {
+    fun drawHorizontalGradient(
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int,
+            startColor: Long,
+            endColor: Long
+    ) {
+        drawContext.fillGradient(x, y, x + width, y + height, startColor.toInt(), endColor.toInt())
+    }
+
+    /**
+     * Draws a horizontal gradient from left to right.
+     *
+     * @param startColor The starting color on the left, represented as an ARGB integer.
+     * @param endColor The ending color on the right, represented as an ARGB integer.
+     */
+    fun drawHorizontalGradient(
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int,
+            startColor: Int,
+            endColor: Int
+    ) {
         drawContext.fillGradient(x, y, x + width, y + height, startColor, endColor)
     }
 
@@ -959,10 +2480,25 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param endColor The ending color on the right, represented as an RGB integer.
      * @param alpha The alpha value for both colors, ranging from 0.0 to 1.0.
      */
-    fun drawHorizontalGradient(x: Int, y: Int, width: Int, height: Int, startColor: Int, endColor: Int, alpha: Float) {
-        val startColorWithAlpha = startColor or (alpha * 255).toInt() shl 24
-        val endColorWithAlpha = endColor or (alpha * 255).toInt() shl 24
-        drawContext.fillGradient(x, y, x + width, y + height, startColorWithAlpha, endColorWithAlpha)
+    fun drawHorizontalGradient(
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int,
+            startColor: Int,
+            endColor: Int,
+            alpha: Float
+    ) {
+        val startColorWithAlpha = combineInt(startColor, alpha)
+        val endColorWithAlpha = combineInt(endColor, alpha)
+        drawContext.fillGradient(
+                x,
+                y,
+                x + width,
+                y + height,
+                startColorWithAlpha,
+                endColorWithAlpha
+        )
     }
 
     /**
@@ -971,8 +2507,36 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param startColor The starting color at the top, represented as an ARGB integer.
      * @param endColor The ending color at the bottom, represented as an ARGB integer.
      */
-    fun drawVerticalGradient(x: Int, y: Int, width: Int, height: Int, startColor: Int, endColor: Int) {
-        drawContext.fillGradient(x, y, x + width, y + height, startColor, endColor)
+    fun drawVerticalGradient(
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int,
+            startColor: Long,
+            endColor: Long
+    ) {
+        drawContext.fillGradient(x, y, x + width, y + height, startColor.toInt(), endColor.toInt())
+    }
+
+    /**
+     * Draws a vertical gradient from top to bottom.
+     *
+     * @param startColor The starting color at the top, represented as an ARGB integer.
+     * @param endColor The ending color at the bottom, represented as an ARGB integer.
+     */
+    fun drawVerticalGradient(
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int,
+            startColor: Int,
+            endColor: Int
+    ) {
+        push()
+        rotate(-90f)
+        translate((x - width).toFloat(), -y.toFloat())
+        drawContext.fillGradient(0, 0, height, width, startColor, endColor)
+        pop()
     }
 
     /**
@@ -984,17 +2548,36 @@ class ScreenDrawing(val drawContext: DrawContext) {
      * @param endColor The ending color at the bottom, represented as an RGB integer.
      * @param alpha The alpha value for both colors, ranging from 0.0 to 1.0.
      */
-    fun drawVerticalGradient(x: Int, y: Int, width: Int, height: Int, startColor: Int, endColor: Int, alpha: Float) {
-        val startColorWithAlpha = startColor or (alpha * 255).toInt() shl 24
-        val endColorWithAlpha = endColor or (alpha * 255).toInt() shl 24
+    fun drawVerticalGradient(
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int,
+            startColor: Int,
+            endColor: Int,
+            alpha: Float
+    ) {
+        val startColorWithAlpha = combineInt(startColor, alpha)
+        val endColorWithAlpha = combineInt(endColor, alpha)
         push()
         rotate(-90f)
-        translate((x-width).toFloat(), -y.toFloat())
+        translate((x - width).toFloat(), -y.toFloat())
         drawContext.fillGradient(0, 0, height, width, startColorWithAlpha, endColorWithAlpha)
         pop()
     }
 
-    fun drawEntity(context: DrawContext, x1: Int, y1: Int, x2: Int, y2: Int, size: Int, scale: Float, mouseX: Float, mouseY: Float, entity: LivingEntity) {
+    fun drawEntity(
+            context: DrawContext,
+            x1: Int,
+            y1: Int,
+            x2: Int,
+            y2: Int,
+            size: Int,
+            scale: Float,
+            mouseX: Float,
+            mouseY: Float,
+            entity: LivingEntity
+    ) {
         val f = (x1 + x2).toFloat() / 2.0f
         val g = (y1 + y2).toFloat() / 2.0f
         context.enableScissor(x1, y1, x2, y2)
@@ -1016,7 +2599,18 @@ class ScreenDrawing(val drawContext: DrawContext) {
         val o = entity.scale
         val vector3f = Vector3f(0.0f, entity.height / 2.0f + scale * o, 0.0f)
         val p = size.toFloat() / o
-        InventoryScreen.drawEntity(context, x1, y1, x2, y2, p, vector3f, quaternion, quaternion2, entity)
+        InventoryScreen.drawEntity(
+                context,
+                x1,
+                y1,
+                x2,
+                y2,
+                p,
+                vector3f,
+                quaternion,
+                quaternion2,
+                entity
+        )
         entity.bodyYaw = j
         entity.yaw = k
         entity.pitch = l
@@ -1025,12 +2619,34 @@ class ScreenDrawing(val drawContext: DrawContext) {
         context.disableScissor()
     }
 
-    fun drawEntity(drawer: DrawContext, x1: Int, y1: Int, x2: Int, y2: Int, scale: Float, translation: Vector3f?, rotation: Quaternionf?, overrideCameraAngle: Quaternionf?, entity: LivingEntity?) {
+    fun drawEntity(
+            drawer: DrawContext,
+            x1: Int,
+            y1: Int,
+            x2: Int,
+            y2: Int,
+            scale: Float,
+            translation: Vector3f?,
+            rotation: Quaternionf?,
+            overrideCameraAngle: Quaternionf?,
+            entity: LivingEntity?
+    ) {
         val entityRenderDispatcher = MinecraftClient.getInstance().entityRenderDispatcher
-        val entityRenderer: EntityRenderer<in LivingEntity, *> = entityRenderDispatcher.getRenderer(entity)
+        val entityRenderer: EntityRenderer<in LivingEntity, *> =
+                entityRenderDispatcher.getRenderer(entity)
         val entityRenderState = entityRenderer.getAndUpdateRenderState(entity, 1.0f)
         entityRenderState.hitbox = null
-        drawer.addEntity(entityRenderState as EntityRenderState, scale, translation, rotation, overrideCameraAngle, x1, y1, x2, y2)
+        drawer.addEntity(
+                entityRenderState as EntityRenderState,
+                scale,
+                translation,
+                rotation,
+                overrideCameraAngle,
+                x1,
+                y1,
+                x2,
+                y2
+        )
     }
 
     /**
@@ -1083,10 +2699,17 @@ class ScreenDrawing(val drawContext: DrawContext) {
         pop()
     }
 
-    /**
-     * Checks if the mouse is hovering over a specific area and executes the appropriate action.
-     */
-    fun hoverSeparate(mouseX: Float, mouseY: Float, x: Int, y: Int, width: Int, height: Int, normal: () -> Unit, hovered: () -> Unit) {
+    /** Checks if the mouse is hovering over a specific area and executes the appropriate action. */
+    fun hoverSeparate(
+            mouseX: Float,
+            mouseY: Float,
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int,
+            normal: () -> Unit,
+            hovered: () -> Unit
+    ) {
         if (isMouseOver(mouseX, mouseY, x, y, width, height)) {
             hovered()
         } else {
@@ -1094,10 +2717,17 @@ class ScreenDrawing(val drawContext: DrawContext) {
         }
     }
 
-    /**
-     * Checks if the mouse is hovering over a specific area and executes the appropriate action.
-     */
-    fun hoverSeparate(mouseX: Float, mouseY: Float, x: Int, y: Int, width: Int, height: Int, normal: (x: Int, y: Int, width: Int, height: Int) -> Unit, hovered: (x: Int, y: Int, width: Int, height: Int) -> Unit) {
+    /** Checks if the mouse is hovering over a specific area and executes the appropriate action. */
+    fun hoverSeparate(
+            mouseX: Float,
+            mouseY: Float,
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int,
+            normal: (x: Int, y: Int, width: Int, height: Int) -> Unit,
+            hovered: (x: Int, y: Int, width: Int, height: Int) -> Unit
+    ) {
         if (isMouseOver(mouseX, mouseY, x, y, width, height)) {
             hovered(x, y, width, height)
         } else {
@@ -1105,7 +2735,46 @@ class ScreenDrawing(val drawContext: DrawContext) {
         }
     }
 
-    fun isMouseOver(mouseX: Float, mouseY: Float, x: Int, y: Int, width: Int, height: Int): Boolean {
+    fun isMouseOver(
+            mouseX: Float,
+            mouseY: Float,
+            x: Int,
+            y: Int,
+            width: Int,
+            height: Int
+    ): Boolean {
         return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height
+    }
+
+    fun combineInt(rgb: Int, alpha: Float): Int {
+        return (rgb.toLong() or (alpha * 255).toLong() shl 24).toInt()
+    }
+
+    fun combineLong(rgb: Int, alpha: Float): Long {
+        return (rgb.toLong() or (alpha * 255).toLong() shl 24)
+    }
+
+    fun combineInt(r: UByte, g: UByte, b: UByte, alpha: Float): Int {
+        return combineLong(r, g, b, alpha).toInt()
+    }
+
+    fun combineLong(r: UByte, g: UByte, b: UByte, alpha: Float): Long {
+        return ((alpha * 255).toLong() shl 24) or
+                (r.toLong() shl 16) or
+                (g.toLong() shl 8) or
+                b.toLong()
+    }
+
+    fun combineInt(r: Float, g: Float, b: Float, alpha: Float): Int {
+        return combineLong(r, g, b, alpha).toInt()
+    }
+
+    fun combineLong(r: Float, g: Float, b: Float, alpha: Float): Long {
+        return combineLong(
+                (r * 255).toInt().toUByte(),
+                (g * 255).toInt().toUByte(),
+                (b * 255).toInt().toUByte(),
+                alpha
+        )
     }
 }

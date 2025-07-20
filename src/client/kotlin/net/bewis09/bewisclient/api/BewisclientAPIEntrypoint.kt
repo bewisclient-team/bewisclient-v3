@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.api
 
+import net.bewis09.bewisclient.game.Keybind
 import net.bewis09.bewisclient.logic.BewisclientInterface
 import net.bewis09.bewisclient.logic.EventEntrypoint
 import net.bewis09.bewisclient.settings.Settings
@@ -22,7 +23,18 @@ interface BewisclientAPIEntrypoint: BewisclientInterface {
         return emptyList()
     }
 
+    /**
+     * Returns a list of [Settings] objects that are registered in the mod.
+     * This is used to register settings for the Bewisclient API.
+     * Each [Settings] object should be a singleton that holds the settings for your mod.
+     *
+     * @return A list of [Settings] objects that are registered in the mod.
+     */
     fun getSettingsObjects(): List<Settings> {
+        return emptyList()
+    }
+
+    fun getKeybinds(): List<Keybind> {
         return emptyList()
     }
 }

@@ -23,13 +23,13 @@
 		],
 		"fabric-datagen": [
 			{
-				"value": "net.bewis09.bewisclient.BewisclientDataGenerator",
+				"value": "net.bewis09.bewisclient.logic.BewisclientDataGenerator",
 				"adapter": "kotlin"
 			}
 		],
 		"bewisclient": [
 			{
-				"value": "net.bewis09.bewisclient.BewisclientSelfAPIEntrypoint",
+				"value": "net.bewis09.bewisclient.impl.BewisclientSelfAPIEntrypoint",
 				"adapter": "kotlin"
 			}
 		]
