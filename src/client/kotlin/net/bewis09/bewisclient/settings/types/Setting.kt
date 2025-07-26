@@ -2,19 +2,18 @@ package net.bewis09.bewisclient.settings.types
 
 import com.google.gson.JsonElement
 import net.bewis09.bewisclient.logic.BewisclientInterface
-import net.bewis09.bewisclient.settings.Settings
+import net.bewis09.bewisclient.settings.SettingsLoader
 
 /**
  * Base class for settings that can be stored in the settings file.
  * It provides methods to get and set the value, as well as to convert the value to and from a JSON element.
  *
  * @param T The type of the setting value.
- * @param settings The settings instance to which this setting belongs.
  * @param default The default value of the setting.
  * @param onChangeListener An optional listener that is called when the setting value changes.
  */
-abstract class Setting<T>(val settings: Settings, val default: T, val onChangeListener: ((oldValue: T?, newValue: T?) -> Unit)?): BewisclientInterface {
-    constructor(settings: Settings, default: T) : this(settings, default, null)
+abstract class Setting<T>(val default: T, val onChangeListener: ((oldValue: T?, newValue: T?) -> Unit)?) : BewisclientInterface {
+    constructor(default: T) : this(default, null)
 
     /**
      * The current value of the setting.
@@ -63,7 +62,7 @@ abstract class Setting<T>(val settings: Settings, val default: T, val onChangeLi
      * This method should be called after setting a value to ensure that the changes are persisted.
      */
     fun save() {
-        settings.save()
+        SettingsLoader.getAllSettings().forEach { it.save() }
     }
 
     /**

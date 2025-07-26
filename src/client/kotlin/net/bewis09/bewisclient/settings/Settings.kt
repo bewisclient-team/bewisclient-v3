@@ -6,7 +6,7 @@ import com.google.gson.JsonElement
 import net.bewis09.bewisclient.logic.BewisclientInterface
 import net.bewis09.bewisclient.settings.types.Setting
 
-interface Settings: BewisclientInterface {
+interface Settings : BewisclientInterface {
     companion object {
         val gson: Gson = GsonBuilder().setPrettyPrinting().create()
     }
@@ -20,7 +20,7 @@ interface Settings: BewisclientInterface {
     fun getMainSetting(): Setting<*>?
 
     fun load() {
-        val data = readRelativeFile("bewisclient", getId()+".json")
+        val data = readRelativeFile("bewisclient", getId() + ".json")
         getMainSetting()?.setFromElement(gson.fromJson(data, JsonElement::class.java))
     }
 
@@ -28,6 +28,6 @@ interface Settings: BewisclientInterface {
         val mainSetting = getMainSetting() ?: return
         val jsonElement = mainSetting.convertToElement()
         val jsonString = gson.toJson(jsonElement)
-        saveRelativeFile(jsonString, "bewisclient", getId()+".json")
+        saveRelativeFile(jsonString, "bewisclient", getId() + ".json")
     }
 }

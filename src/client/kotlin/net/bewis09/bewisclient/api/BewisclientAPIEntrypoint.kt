@@ -12,7 +12,7 @@ import net.bewis09.bewisclient.settings.Settings
  * To add your own Bewisclient API entrypoint, implement this interface in your mod.
  * Then register your entrypoint in your `fabric.mod.json` file under `custom`, `bewisclient`
  */
-interface BewisclientAPIEntrypoint: BewisclientInterface {
+interface BewisclientAPIEntrypoint : BewisclientInterface {
     /**
      * Returns a list of [EventEntrypoint]s that are registered in the mod.
      * This is used to register event handlers for the Bewisclient API.

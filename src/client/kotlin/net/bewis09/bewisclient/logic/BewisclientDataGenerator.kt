@@ -12,31 +12,33 @@ import java.util.concurrent.CompletableFuture
  * This is mostly used for translations
  */
 object BewisclientDataGenerator : DataGeneratorEntrypoint {
-	val translations = hashMapOf<String, String>()
+    val translations = hashMapOf<String, String>()
 
-	override fun onInitializeDataGenerator(fabricDataGenerator: FabricDataGenerator) {
-		val pack: FabricDataGenerator.Pack = fabricDataGenerator.createPack()
+    override fun onInitializeDataGenerator(fabricDataGenerator: FabricDataGenerator) {
+        EventEntrypoint.onAllEventEntrypoints { it.onDatagen() }
 
-		pack.addProvider(::BewisclientEnglishLangProvider)
-	}
+        val pack: FabricDataGenerator.Pack = fabricDataGenerator.createPack()
 
-	class BewisclientEnglishLangProvider(dataOutput: FabricDataOutput?, registryLookup: CompletableFuture<WrapperLookup?>?) : FabricLanguageProvider(dataOutput, "en_us", registryLookup) {
-		override fun generateTranslations(wrapperLookup: WrapperLookup?, translationBuilder: TranslationBuilder?) {
-			translations.forEach { (key, value) ->
-				translationBuilder?.add(key, value)
-			}
-		}
-	}
+        pack.addProvider(::BewisclientEnglishLangProvider)
+    }
+
+    class BewisclientEnglishLangProvider(dataOutput: FabricDataOutput?, registryLookup: CompletableFuture<WrapperLookup?>?) : FabricLanguageProvider(dataOutput, "en_us", registryLookup) {
+        override fun generateTranslations(wrapperLookup: WrapperLookup?, translationBuilder: TranslationBuilder?) {
+            translations.forEach { (key, value) ->
+                translationBuilder?.add(key, value)
+            }
+        }
+    }
 }
 
 fun addTranslation(key: String, @Suppress("LocalVariableName") en_us: String) {
-	if (key.isEmpty()) {
-		throw IllegalArgumentException("Translation key cannot be empty")
-	}
+    if (key.isEmpty()) {
+        throw IllegalArgumentException("Translation key cannot be empty")
+    }
 
-	if (en_us.isEmpty()) {
-		throw IllegalArgumentException("Translation value cannot be empty")
-	}
+    if (en_us.isEmpty()) {
+        throw IllegalArgumentException("Translation value cannot be empty")
+    }
 
-	BewisclientDataGenerator.translations["bewisclient.$key"] = en_us
+    BewisclientDataGenerator.translations["bewisclient.$key"] = en_us
 }

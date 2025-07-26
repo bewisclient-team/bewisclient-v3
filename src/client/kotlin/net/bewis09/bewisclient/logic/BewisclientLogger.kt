@@ -8,7 +8,6 @@ import org.slf4j.Logger
 interface BewisclientLogger {
     fun getLogger(): Logger
 
-    fun debug(vararg msg: Any?) = getLogger().debug(msg.joinToString(" ") { it.toString() })
     fun info(vararg msg: Any?) = getLogger().info(msg.joinToString(" ") { it.toString() })
     fun warn(vararg msg: Any?) = getLogger().warn(msg.joinToString(" ") { it.toString() })
     fun error(vararg msg: Any?) = getLogger().error(msg.joinToString(" ") { it.toString() })

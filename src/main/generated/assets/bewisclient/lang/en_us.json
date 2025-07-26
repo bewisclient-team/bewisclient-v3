@@ -1,4 +1,20 @@
 {
   "bewisclient.key.category": "Bewisclient",
-  "bewisclient.key.open_option_screen": "Open Option Screen"
+  "bewisclient.key.open_option_screen": "Open Option Screen",
+  "bewisclient.menu.category.better_visibility": "Better Visibility",
+  "bewisclient.menu.category.block_highlight": "Block Highlight",
+  "bewisclient.menu.category.chat_enhancements": "Chat Enhancements",
+  "bewisclient.menu.category.cleaner_debug_menu": "Cleaner Debug Menu",
+  "bewisclient.menu.category.contact": "Contact",
+  "bewisclient.menu.category.cosmetics": "Cosmetics",
+  "bewisclient.menu.category.crosshair": "Crosshair",
+  "bewisclient.menu.category.extensions": "Extensions",
+  "bewisclient.menu.category.fullbright": "Fullbright",
+  "bewisclient.menu.category.held_item_info": "Held Item Info",
+  "bewisclient.menu.category.pumpkin_overlay": "Pumpkin Overlay",
+  "bewisclient.menu.category.scoreboard": "Scoreboard",
+  "bewisclient.menu.category.settings": "Settings",
+  "bewisclient.menu.category.utilities": "Utilities",
+  "bewisclient.menu.category.widgets": "Widgets",
+  "bewisclient.menu.category.zoom": "Zoom"
 }

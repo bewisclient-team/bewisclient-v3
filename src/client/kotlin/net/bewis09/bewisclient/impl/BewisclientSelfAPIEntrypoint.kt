@@ -4,17 +4,19 @@ import net.bewis09.bewisclient.api.BewisclientAPIEntrypoint
 import net.bewis09.bewisclient.game.Keybind
 import net.bewis09.bewisclient.game.KeybindingImplementer
 import net.bewis09.bewisclient.logic.EventEntrypoint
-import net.bewis09.bewisclient.settings.BewisclientSettings
+import net.bewis09.bewisclient.impl.settings.BewisclientSettings
 import net.bewis09.bewisclient.settings.Settings
 import net.bewis09.bewisclient.settings.SettingsLoader
 import net.bewis09.bewisclient.widget.WidgetEventEntrypoint
+import net.bewis09.bewisclient.impl.OpenOptionScreen
 
-class BewisclientSelfAPIEntrypoint: BewisclientAPIEntrypoint {
+class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint {
     override fun getEventEntrypoints(): List<EventEntrypoint> {
         return listOf(
             WidgetEventEntrypoint(),
             SettingsLoader,
-            KeybindingImplementer
+            KeybindingImplementer,
+            TranslationLoader
         )
     }
 

@@ -9,8 +9,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
-	@Inject(at = @At("HEAD"), method = "onInitFinished")
-	private void onInitFinished(MinecraftClient.LoadingContext loadingContext, CallbackInfoReturnable<Runnable> cir) {
-		EventEntrypointMixin.INSTANCE.onMinecraftClientInitFinished();
-	}
+    @Inject(at = @At("HEAD"), method = "onInitFinished")
+    private void onInitFinished(MinecraftClient.LoadingContext loadingContext, CallbackInfoReturnable<Runnable> cir) {
+        EventEntrypointMixin.INSTANCE.onMinecraftClientInitFinished();
+    }
 }

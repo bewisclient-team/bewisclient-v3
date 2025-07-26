@@ -4,16 +4,14 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import net.bewis09.bewisclient.settings.Settings
 
-open class ObjectSetting: Setting<JsonObject> {
+open class ObjectSetting : Setting<JsonObject> {
     /**
      * A map of all settings in this object setting.
      * Changing this map will not result in a change of the json object, and therefore it will not be saved.
      */
     val map: HashMap<String, Setting<*>> = hashMapOf()
 
-    constructor(
-        settings: Settings
-    ) : super(settings, JsonObject())
+    constructor() : super(JsonObject())
 
     override fun convertToElement(): JsonElement {
         val jsonObject = JsonObject()
@@ -35,7 +33,7 @@ open class ObjectSetting: Setting<JsonObject> {
                 try {
                     setting.setFromElement(newValue.get(it.key))
                 } catch (e: Exception) {
-                    error("Failed to set value for setting ${setting.settings.getId()}.${it.key}: ${Settings.gson.toJson(newValue.get(it.key))} (${e.message})")
+                    error("Failed to set value for setting ${it.key}: ${Settings.gson.toJson(newValue.get(it.key))} (${e.message})")
                 }
             } else {
                 setting.setFromElement(null)
@@ -60,8 +58,10 @@ open class ObjectSetting: Setting<JsonObject> {
     }
 
     override fun setFromElement(data: JsonElement?) {
-        try { setWithoutSave(data?.asJsonObject) } catch (e: Exception) {
-            error("Failed to deserialize ObjectSetting in setting ${this.settings.getId()}: ${Settings.gson.toJson(data)} (${e.message})")
+        try {
+            setWithoutSave(data?.asJsonObject)
+        } catch (e: Exception) {
+            error("Failed to deserialize ObjectSetting: ${Settings.gson.toJson(data)} (${e.message})")
         }
     }
 }

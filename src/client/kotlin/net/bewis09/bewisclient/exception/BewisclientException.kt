@@ -7,4 +7,4 @@ import net.bewis09.bewisclient.logic.BewisclientInterface
  *
  * @param message The detail message of the exception.
  */
-open class BewisclientException(message: String): Exception("[Bewisclient] $message"), BewisclientInterface
+open class BewisclientException(message: String) : Exception("[Bewisclient] $message"), BewisclientInterface

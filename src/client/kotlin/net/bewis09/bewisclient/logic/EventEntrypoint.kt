@@ -6,7 +6,7 @@ import net.bewis09.bewisclient.exception.ProgramCodeException
 /**
  * A class when it is needed to do something when those entrypoints are called.
  */
-open class EventEntrypoint: BewisclientInterface {
+open class EventEntrypoint : BewisclientInterface {
     companion object {
         private val eventEntrypointReceivers = mutableListOf<EventEntrypoint>()
         private var isRegistered = false
@@ -44,6 +44,14 @@ open class EventEntrypoint: BewisclientInterface {
      * This is only called when the game starts, not when the resources are reloaded.
      */
     open fun onMinecraftClientInitFinished() {
+
+    }
+
+    /**
+     * Called before the data generation starts.
+     * This is the place to register data generators or other things that need to be done before the data generation.
+     */
+    open fun onDatagen() {
 
     }
 }

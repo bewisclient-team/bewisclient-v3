@@ -10,7 +10,16 @@ import net.bewis09.bewisclient.exception.ProgramCodeException
  * @param interpolationType A function that takes a delta value (0 to 1) and returns an interpolated value.
  * @param initial An optional initial map of values to start the animation from.
  */
-class Animator(val duration: Long, val interpolationType: (delta: Float) -> Float = LINEAR, initial: HashMap<String, Float>? = null) {
+class Animator(val duration: Long, val interpolationType: (delta: Float) -> Float = LINEAR, vararg initial: Pair<String, Float>) {
+    private val map: HashMap<String, Float> = hashMapOf()
+    private val animationStartMap: HashMap<String, Long> = hashMapOf()
+    private val beforeAnimationMap: HashMap<String, Float> = hashMapOf()
+    private val finishMap: HashMap<String, () -> Unit> = hashMapOf()
+
+    init {
+        initial.forEach { (key, value) -> map[key] = value }
+    }
+
     companion object {
         val LINEAR = { delta: Float -> delta }
         val EASE_IN = { delta: Float -> delta * delta }
@@ -24,47 +33,25 @@ class Animator(val duration: Long, val interpolationType: (delta: Float) -> Floa
         }
     }
 
-    private val values: HashMap<String, Float> = (initial ?: hashMapOf())
-    private val animationStartMap: HashMap<String, Long> = hashMapOf()
-    private val beforeAnimationMap: HashMap<String, Float> = hashMapOf()
-    private val beforeChangeMap: HashMap<String, Float> = hashMapOf()
-    private val animatedMap: HashMap<String, Float> = hashMapOf()
-
-    /**
-     * This function should be called when applying the animation.
-     * If the value for a key has changed, it will start the animation for that key.
-     */
-    fun invoke(applyCallback: (HashMap<String, Float>) -> Unit, execute: (Map<String, Float>) -> Unit) {
-        beforeChangeMap.putAll(values)
-        applyCallback(beforeChangeMap)
-
-        beforeChangeMap.forEach {
-            values[it.key]?.let { value ->
-                if (it.value != value) {
-                    beforeAnimationMap[it.key] = getAnimatedValue(it.key)
-                    animationStartMap[it.key] = System.currentTimeMillis()
-                }
-            }
-        }
-
-        values.putAll(beforeChangeMap)
-
-        values.forEach {
-            animatedMap[it.key] = getAnimatedValue(it.key)
-        }
-
-        execute(animatedMap)
+    fun getWithoutInterpolation(key: String): Float {
+        return map[key] ?: throw ProgramCodeException("Animation for key '$key' has not been initialized")
     }
 
     /**
      * Returns the current animated value for a given key.
      */
-    fun getAnimatedValue(key: String): Float {
-        val delta = (System.currentTimeMillis() - (animationStartMap[key] ?: 0))/duration.toFloat()
+    operator fun get(key: String): Float {
+        val delta = (System.currentTimeMillis() - (animationStartMap[key] ?: 0)) / duration.toFloat()
 
-        val value = values[key] ?: throw ProgramCodeException("Animation for key '$key' has not been initialized")
+        val value = map[key] ?: throw ProgramCodeException("Animation for key '$key' has not been initialized")
 
-        if (delta >= 1) return value
+        if (delta >= 1) {
+            finishMap[key]?.invoke()
+
+            finishMap.remove(key)
+
+            return value
+        }
 
         val beforeValue = beforeAnimationMap[key]
 
@@ -78,6 +65,30 @@ class Animator(val duration: Long, val interpolationType: (delta: Float) -> Floa
 
         return beforeValue + (value - beforeValue) * interpolationType(delta)
     }
+
+    /**
+     * Sets a value in the animation map.
+     * @param key The key for the value.
+     * @param value The value to set.
+     */
+    operator fun set(key: String, value: Float) {
+        if (map[key] == value) return
+
+        val old = if (map[key] != null) this[key] else value
+        map[key] = value
+
+        animationStartMap[key] = System.currentTimeMillis()
+        beforeAnimationMap[key] = old
+
+        finishMap[key]?.invoke()
+        finishMap.remove(key)
+    }
+
+    fun set(key: String, value: Float, onFinish: () -> Unit) {
+        set(key, value)
+
+        finishMap[key] = onFinish
+    }
 }
 
 /**
@@ -90,7 +101,7 @@ class Animator(val duration: Long, val interpolationType: (delta: Float) -> Floa
 fun animate(
     duration: Long,
     interpolationType: (delta: Float) -> Float = Animator.LINEAR,
-    initial: HashMap<String, Float>? = null
+    vararg initial: Pair<String, Float>
 ): Animator {
-    return Animator(duration, interpolationType, initial)
+    return Animator(duration, interpolationType, *initial)
 }

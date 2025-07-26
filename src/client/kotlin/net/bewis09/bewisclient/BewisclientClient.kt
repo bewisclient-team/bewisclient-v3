@@ -5,8 +5,8 @@ import net.bewis09.bewisclient.logic.EventEntrypoint
 import net.fabricmc.api.ClientModInitializer
 
 object BewisclientClient : BewisclientInterface, ClientModInitializer {
-	override fun onInitializeClient() {
-		EventEntrypoint.registerEntrypoints()
-		EventEntrypoint.onAllEventEntrypoints { e: EventEntrypoint -> e.onInitializeClient() }
-	}
+    override fun onInitializeClient() {
+        EventEntrypoint.registerEntrypoints()
+        EventEntrypoint.onAllEventEntrypoints { e: EventEntrypoint -> e.onInitializeClient() }
+    }
 }

@@ -1,22 +1,22 @@
 package net.bewis09.bewisclient.drawable
 
-abstract class Renderable {
-    var x: Int
-    var y: Int
-    var width: Int = 0
-        set(value) {if (field != value) { field = value; resize() }}
-    var height: Int = 0
-        set(value) {if (field != value) { field = value; resize() }}
+import net.bewis09.bewisclient.logic.BewisclientInterface
+
+abstract class Renderable : BewisclientInterface {
+    private var x: UInt
+    private var y: UInt
+    private var width: UInt
+    private var height: UInt
 
     constructor(x: Int, y: Int, width: Int, height: Int) {
-        this.x = x
-        this.y = y
-        this.width = width
-        this.height = height
+        this.x = x.toUInt()
+        this.y = y.toUInt()
+        this.width = width.toUInt()
+        this.height = height.toUInt()
         this.renderables = mutableListOf<Renderable>()
     }
 
-    constructor(): this(0, 0, 0, 0)
+    constructor() : this(0, 0, 0, 0)
 
     val renderables: MutableList<Renderable>
 
@@ -30,10 +30,70 @@ abstract class Renderable {
         renderables.forEach { it.render(screenDrawing, mouseX, mouseY) }
     }
 
+    fun addRenderable(renderable: Renderable) {
+        renderables.add(renderable)
+    }
+
     fun resize() {
         renderables.clear()
         init()
         renderables.forEach { it.resize() }
+    }
+
+    fun setX(x: Int): Renderable {
+        this.x = x.toUInt()
+        return this
+    }
+
+    fun setY(y: Int): Renderable {
+        this.y = y.toUInt()
+        return this
+    }
+
+    fun setPosition(x: Int, y: Int): Renderable {
+        this.x = x.toUInt()
+        this.y = y.toUInt()
+        return this
+    }
+
+    fun getX(): Int = x.toInt()
+    fun getY(): Int = y.toInt()
+    fun getWidth(): Int = width.toInt()
+    fun getHeight(): Int = height.toInt()
+
+    fun setSize(width: Int, height: Int): Renderable {
+        if (width < 0) throw IllegalArgumentException("Width cannot be negative")
+        if (height < 0) throw IllegalArgumentException("Height cannot be negative")
+        if (width.toUInt() == this.width && height.toUInt() == this.height) return this
+
+        this.width = width.toUInt()
+        this.height = height.toUInt()
+        resize()
+        return this
+    }
+
+    fun setWidth(width: Int): Renderable {
+        if (width < 0) throw IllegalArgumentException("Width cannot be negative")
+        if (width.toUInt() == this.width) return this
+
+        this.width = width.toUInt()
+        resize()
+        return this
+    }
+
+    fun setHeight(height: Int): Renderable {
+        if (height < 0) throw IllegalArgumentException("Height cannot be negative")
+        if (height.toUInt() == this.height) return this
+
+        this.height = height.toUInt()
+        resize()
+        return this
+    }
+
+    fun setBounds(x: Int, y: Int, width: Int, height: Int): Renderable {
+        setPosition(x, y)
+        setSize(width, height)
+        return this
     }
 
     open fun init() {
@@ -96,7 +156,12 @@ abstract class Renderable {
     open fun onCharTyped(character: Char, modifiers: Int): Boolean = false
 
     fun isMouseOver(mouseX: Double, mouseY: Double): Boolean {
-        return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height
+        return mouseX >= getX() && mouseX <= getX() + getWidth() && mouseY >= getY() && mouseY <= getY() + getHeight()
+    }
+
+    operator fun invoke(x: Int, y: Int, width: Int, height: Int): Renderable {
+        setBounds(x, y, width, height)
+        return this
     }
 }
 
