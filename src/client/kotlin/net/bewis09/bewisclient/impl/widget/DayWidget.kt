@@ -1,0 +1,23 @@
+package net.bewis09.bewisclient.impl.widget
+
+import net.bewis09.bewisclient.game.Translation
+import net.bewis09.bewisclient.widget.logic.RelativePosition
+import net.bewis09.bewisclient.widget.logic.WidgetPosition
+import net.bewis09.bewisclient.widget.types.LineWidget
+import net.minecraft.util.Identifier
+
+object DayWidget: LineWidget() {
+    val dayText = Translation("widget.day_widget.day", "Day %d")
+
+    override fun getLines(): List<String> = listOf(dayText(
+        net.minecraft.client.MinecraftClient.getInstance().world?.time?.div(24000L)?.toInt() ?: 0
+    ).string)
+
+    override fun defaultPosition(): WidgetPosition {
+        return RelativePosition("bewisclient:fps_widget", "bottom")
+    }
+
+    override fun getId(): Identifier = Identifier.of("bewisclient", "day_widget")
+
+    override fun getWidth(): Int = 80
+}

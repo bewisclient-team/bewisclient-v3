@@ -9,7 +9,6 @@ import net.bewis09.bewisclient.drawable.renderables.Button
 import net.bewis09.bewisclient.drawable.renderables.Rectangle
 import net.bewis09.bewisclient.drawable.renderables.VerticalAlignScrollPlane
 import net.bewis09.bewisclient.interfaces.BackgroundEffectProvider
-import net.minecraft.util.Identifier
 import org.lwjgl.glfw.GLFW
 
 class OptionScreen : Renderable(), BackgroundEffectProvider {
@@ -35,7 +34,7 @@ class OptionScreen : Renderable(), BackgroundEffectProvider {
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         screenDrawing.pushAlpha(alphaMainAnimation["alpha"])
-        screenDrawing.setFont(Identifier.of("bewisclient", "screen"))
+        screenDrawing.setBewisclientFont()
         screenDrawing.fillWithBorderRounded(30, 30, getWidth() - 60, getHeight() - 60, 10, 0x000000, 0.5f, 0xFFFFFF, 0.15f)
         renderRenderables(screenDrawing, mouseX, mouseY)
         screenDrawing.defaultFont()

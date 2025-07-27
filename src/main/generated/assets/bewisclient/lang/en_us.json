@@ -16,5 +16,7 @@
   "bewisclient.menu.category.settings": "Settings",
   "bewisclient.menu.category.utilities": "Utilities",
   "bewisclient.menu.category.widgets": "Widgets",
-  "bewisclient.menu.category.zoom": "Zoom"
+  "bewisclient.menu.category.zoom": "Zoom",
+  "bewisclient.widget.biome_widget.unknown_biome": "Unknown Biome",
+  "bewisclient.widget.day_widget.day": "Day %d"
 }

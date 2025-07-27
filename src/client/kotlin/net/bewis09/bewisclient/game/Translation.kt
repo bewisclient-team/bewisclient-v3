@@ -16,16 +16,16 @@ class Translation(private val key: String, @Suppress("PropertyName") val en_us: 
         addTranslation(key, en_us)
     }
 
-    fun getTranslatableText(): Text {
+    fun getTranslatedText(): Text {
         return Text.translatable("bewisclient.$key")
     }
 
-    fun getTranslatableText(vararg args: Any): Text {
+    fun getTranslatedText(vararg args: Any): Text {
         return Text.translatable("bewisclient.$key", *args)
     }
 
-    fun getTranslatableString(): String {
-        return getTranslatableText().string
+    fun getTranslatedString(): String {
+        return getTranslatedText().string
     }
 
     fun getKey(): String {
@@ -33,11 +33,11 @@ class Translation(private val key: String, @Suppress("PropertyName") val en_us: 
     }
 
     operator fun invoke(): Text {
-        return getTranslatableText()
+        return getTranslatedText()
     }
 
     operator fun invoke(vararg args: Any): Text {
-        return getTranslatableText(*args)
+        return getTranslatedText(*args)
     }
 }
 

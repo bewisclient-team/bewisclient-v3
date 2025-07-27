@@ -50,7 +50,7 @@ class SettingsStructure(val screen: OptionScreen) {
     )
 
     fun createSidebarCategory(name: Translation, settings: List<SettingCategory>): Button {
-        return Button(name.getTranslatableString()) {
+        return Button(name.getTranslatedString()) {
             screen.optionsPane = ScrollGrid(
                 { settings.map { it.setHeight(90) } },
                 5,

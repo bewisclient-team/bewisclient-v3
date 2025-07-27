@@ -180,6 +180,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
         )).toInt()
     }
 
+    fun setBewisclientFont() {
+        setFont(Identifier.of("bewisclient", "screen"))
+    }
+
     fun setFont(font: Identifier) {
         style = Style.EMPTY.withFont(font)
     }
@@ -2651,6 +2655,8 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
         fill(x, y + adjustedRadius, width, height - 2 * adjustedRadius, color)
         fill(x + adjustedRadius, y + height - radius, width - 2 * adjustedRadius, radius, color)
 
+        if (adjustedRadius <= 0) return
+
         // Draw rounded corners using circles
         drawRoundedCorner(x + adjustedRadius, y + adjustedRadius, adjustedRadius, color, 180f) // Top-left
         drawRoundedCorner(x + width - adjustedRadius, y + adjustedRadius, adjustedRadius, color, 270f) // Top-right
@@ -2749,6 +2755,8 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
         drawHorizontalLine(x + adjustedRadius, y + height - 1, width - 2 * adjustedRadius, color) // Bottom
         drawVerticalLine(x, y + adjustedRadius, height - 2 * adjustedRadius, color) // Left
         drawVerticalLine(x + width - 1, y + adjustedRadius, height - 2 * adjustedRadius, color) // Right
+        
+        if (adjustedRadius <= 0) return
 
         // Draw rounded corner borders
         drawRoundedCornerBorder(x + adjustedRadius, y + adjustedRadius, adjustedRadius, color, 180f) // Top-left

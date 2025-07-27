@@ -4,6 +4,7 @@ import net.bewis09.bewisclient.game.Keybind
 import net.bewis09.bewisclient.logic.BewisclientInterface
 import net.bewis09.bewisclient.logic.EventEntrypoint
 import net.bewis09.bewisclient.settings.Settings
+import net.bewis09.bewisclient.widget.Widget
 
 /**
  * The Bewisclient API entrypoint interface.
@@ -34,7 +35,23 @@ interface BewisclientAPIEntrypoint : BewisclientInterface {
         return emptyList()
     }
 
+    /**
+     * Returns a list of [Keybind]s that are registered in the mod.
+     * This is used to register keybinds for the Bewisclient API.
+     *
+     * @return A list of [Keybind]s that are registered in the mod.
+     */
     fun getKeybinds(): List<Keybind> {
+        return emptyList()
+    }
+
+    /**
+     * Returns a list of [Widget]s that are registered in the mod.
+     * This is used to register widgets for the Bewisclient API.
+     *
+     * @return A list of [Widget]s that are registered in the mod.
+     */
+    fun getWidgets(): List<Widget> {
         return emptyList()
     }
 }
