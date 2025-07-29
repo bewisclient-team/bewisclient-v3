@@ -8,6 +8,10 @@ class ColorSetting(default: ColorSaver): Setting<ColorSaver>(default) {
     override fun convertToElement(): JsonElement? {
         val jsonObject = JsonObject()
 
+        if (getWithoutDefault() == null) {
+            return null
+        }
+
         jsonObject.addProperty("type", get().getType())
         jsonObject.add("data", get().saveToJson())
 

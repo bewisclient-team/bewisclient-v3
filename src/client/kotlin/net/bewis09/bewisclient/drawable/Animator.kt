@@ -46,9 +46,9 @@ class Animator(val duration: Long, val interpolationType: (delta: Float) -> Floa
         val value = map[key] ?: throw ProgramCodeException("Animation for key '$key' has not been initialized")
 
         if (delta >= 1) {
-            finishMap[key]?.invoke()
-
+            val finishAction = finishMap[key]
             finishMap.remove(key)
+            finishAction?.invoke()
 
             return value
         }
@@ -80,8 +80,9 @@ class Animator(val duration: Long, val interpolationType: (delta: Float) -> Floa
         animationStartMap[key] = System.currentTimeMillis()
         beforeAnimationMap[key] = old
 
-        finishMap[key]?.invoke()
+        val finishAction = finishMap[key]
         finishMap.remove(key)
+        finishAction?.invoke()
     }
 
     fun set(key: String, value: Float, onFinish: () -> Unit) {

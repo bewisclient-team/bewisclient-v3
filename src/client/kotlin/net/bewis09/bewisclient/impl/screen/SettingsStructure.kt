@@ -1,42 +1,46 @@
 package net.bewis09.bewisclient.impl.screen
 
+import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.Button
+import net.bewis09.bewisclient.drawable.renderables.DescriptionSettingCategory
 import net.bewis09.bewisclient.drawable.renderables.ScrollGrid
-import net.bewis09.bewisclient.drawable.renderables.SettingCategory
+import net.bewis09.bewisclient.drawable.renderables.ImageSettingCategory
+import net.bewis09.bewisclient.drawable.renderables.Text
 import net.bewis09.bewisclient.game.Translation
+import net.bewis09.bewisclient.widget.WidgetLoader
 import kotlin.collections.listOf
 
 class SettingsStructure(val screen: OptionScreen) {
     val utilities = listOf(
-        SettingCategory("fullbright", Translation("menu.category.fullbright", "Fullbright"), arrayOf()),
-        SettingCategory("block_highlight", Translation("menu.category.block_highlight", "Block Highlight"), arrayOf()),
-        SettingCategory("held_item_info", Translation("menu.category.held_item_info", "Held Item Info"), arrayOf()),
-        SettingCategory("zoom", Translation("menu.category.zoom", "Zoom"), arrayOf()),
-        SettingCategory("pumpkin_overlay", Translation("menu.category.pumpkin_overlay", "Pumpkin Overlay"), arrayOf()),
-        SettingCategory("crosshair", Translation("menu.category.crosshair", "Crosshair"), arrayOf()),
-        SettingCategory("better_visibility", Translation("menu.category.better_visibility", "Better Visibility"), arrayOf()),
-        SettingCategory("scoreboard", Translation("menu.category.scoreboard", "Scoreboard"), arrayOf()),
-        SettingCategory("cleaner_debug_menu", Translation("menu.category.cleaner_debug_menu", "Cleaner Debug Menu"), arrayOf()),
-        SettingCategory("chat_enhancements", Translation("menu.category.chat_enhancements", "Chat Enhancements"), arrayOf()),
+        ImageSettingCategory("fullbright", Translation("menu.category.fullbright", "Fullbright"), arrayOf()),
+        ImageSettingCategory("block_highlight", Translation("menu.category.block_highlight", "Block Highlight"), arrayOf()),
+        ImageSettingCategory("held_item_info", Translation("menu.category.held_item_info", "Held Item Info"), arrayOf()),
+        ImageSettingCategory("zoom", Translation("menu.category.zoom", "Zoom"), arrayOf()),
+        ImageSettingCategory("pumpkin_overlay", Translation("menu.category.pumpkin_overlay", "Pumpkin Overlay"), arrayOf()),
+        ImageSettingCategory("crosshair", Translation("menu.category.crosshair", "Crosshair"), arrayOf()),
+        ImageSettingCategory("better_visibility", Translation("menu.category.better_visibility", "Better Visibility"), arrayOf()),
+        ImageSettingCategory("scoreboard", Translation("menu.category.scoreboard", "Scoreboard"), arrayOf()),
+        ImageSettingCategory("cleaner_debug_menu", Translation("menu.category.cleaner_debug_menu", "Cleaner Debug Menu"), arrayOf()),
+        ImageSettingCategory("chat_enhancements", Translation("menu.category.chat_enhancements", "Chat Enhancements"), arrayOf()),
     )
 
-    val widgets = listOf<SettingCategory>(
+    val widgets = WidgetLoader.widgets.map {
+        DescriptionSettingCategory(it.getTranslation(), it.getDescription(), arrayListOf<Renderable>().also { list -> it.appendSettingsRenderables(list) }.toTypedArray())
+    }
 
-    )
-
-    val settings = listOf<SettingCategory>(
-
-    )
-
-    val cosmetics = listOf<SettingCategory>(
+    val settings = listOf<ImageSettingCategory>(
 
     )
 
-    val extensions = listOf<SettingCategory>(
+    val cosmetics = listOf<ImageSettingCategory>(
 
     )
 
-    val contact = listOf<SettingCategory>(
+    val extensions = listOf<ImageSettingCategory>(
+
+    )
+
+    val contact = listOf<ImageSettingCategory>(
 
     )
 
@@ -49,14 +53,12 @@ class SettingsStructure(val screen: OptionScreen) {
         createSidebarCategory(Translation("menu.category.contact", "Contact"), contact)
     )
 
-    fun createSidebarCategory(name: Translation, settings: List<SettingCategory>): Button {
+    fun createSidebarCategory(name: Translation, settings: List<Renderable>): Button {
         return Button(name.getTranslatedString()) {
-            screen.optionsPane = ScrollGrid(
-                { settings.map { it.setHeight(90) } },
-                5,
-                80
+            screen.transformInside(
+                Text(name.getTranslatedString(), centered = true).setHeight(12),
+                ScrollGrid({ settings.map { it.setHeight(90) } }, 5, 80)
             )
-            screen.resize()
         }.setHeight(14) as Button
     }
 }

@@ -1,6 +1,11 @@
 package net.bewis09.bewisclient.impl.widget
 
+import com.google.gson.Gson
+import com.google.gson.JsonElement
+import com.google.gson.JsonObject
 import net.bewis09.bewisclient.game.Translation
+import net.bewis09.bewisclient.logic.EventEntrypoint
+import net.bewis09.bewisclient.logic.TextColors
 import net.bewis09.bewisclient.logic.catch
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
@@ -13,11 +18,51 @@ import net.minecraft.util.Identifier
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.biome.Biome
 
-object BiomeWidget: LineWidget() {
+object BiomeWidget: LineWidget(), EventEntrypoint {
     val unknownBiome = Translation("widget.biome_widget.unknown_biome", "Unknown Biome")
 
+    val biomeCodes = hashMapOf<Identifier, String>()
+    var colorCodeBiome: Boolean? = null
+
+    val biomeWidgetTranslation = Translation("widget.biome_widget.name", "Biome Widget")
+    val biomeWidgetDescription = Translation("widget.biome_widget.description", "Displays the current biome at your position.")
+
+    override fun getTranslation(): Translation = biomeWidgetTranslation
+    override fun getDescription(): Translation = biomeWidgetDescription
+
+    override fun onMinecraftClientInitFinished() {
+        val resources = MinecraftClient.getInstance().resourceManager.findAllResources(
+            "bewisclient/biome_codes"
+        ) { it.path.endsWith(".json") }
+
+        resources.entries.forEach {
+            it.value.forEach { resource ->
+                val jsonElement = Gson().fromJson(resource.reader, JsonElement::class.java)
+
+                if (jsonElement.isJsonObject) {
+                    val jsonObject = jsonElement.asJsonObject
+
+                    jsonObject.keySet().forEach { key ->
+                        val biomeCode = jsonObject.get(key)
+                        if (biomeCode.isJsonPrimitive) {
+                            TextColors.COLORS[biomeCode.asString]?.let { s ->
+                                biomeCodes[Identifier.of(key)] = s
+                            } ?: run {
+                                warn("Unknown biome color code: ${biomeCode.asString} in ${it.key}")
+                            }
+                        } else {
+                            warn("Invalid biome code format for $key in ${it.key}")
+                        }
+                    }
+                } else {
+                    warn("Invalid biome code JSON format in ${it.key}")
+                }
+            }
+        }
+    }
+
     override fun getLines(): List<String> = listOf(
-        catch { getText() } ?: unknownBiome.getTranslatedString()
+        catch { getText(colorCodeBiome ?: false) } ?: unknownBiome.getTranslatedString()
     )
 
     override fun defaultPosition(): WidgetPosition = SidedPosition(5, 5, SidedPosition.TransformerType.START, SidedPosition.TransformerType.END)
@@ -30,9 +75,23 @@ object BiomeWidget: LineWidget() {
         return biome?.keyOrValue?.map({ biomeKey: RegistryKey<Biome> -> biomeKey.value.toString() }, { b: Biome -> "[unregistered $b]" }) ?: unknownBiome.getTranslatedString()
     }
 
-    fun getText(): String {
-        return Text.translatable(Identifier.of(MinecraftClient.getInstance().world?.getBiome(MinecraftClient.getInstance().cameraEntity?.blockPos
+    fun getText(colorCoded: Boolean): String {
+        val biome = Identifier.of(MinecraftClient.getInstance().world?.getBiome(MinecraftClient.getInstance().cameraEntity?.blockPos
             ?: BlockPos(0, 0, 0)
-        )?.let { getBiomeString(it) }).toTranslationKey("biome")).string
+        )?.let { getBiomeString(it) })
+
+        return (if (colorCoded) biomeCodes[biome] else "") + Text.translatable(biome.toTranslationKey("biome")).string
+    }
+
+    override fun saveProperties(properties: JsonObject) {
+        super.saveProperties(properties)
+
+        properties.addProperty("color_code_biome", colorCodeBiome)
+    }
+
+    override fun loadProperties(properties: JsonObject) {
+        super.loadProperties(properties)
+
+        colorCodeBiome = catch { properties.get("color_code_biome")?.asBoolean }
     }
 }

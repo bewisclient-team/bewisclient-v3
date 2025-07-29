@@ -10,7 +10,7 @@ import net.minecraft.client.MinecraftClient
  * The entrypoint for the Bewisclient widget events.
  * This is used to register widget-related events in the Bewisclient.
  */
-object WidgetLoader : EventEntrypoint() {
+object WidgetLoader : EventEntrypoint {
     val widgets: MutableList<Widget> = mutableListOf()
 
     override fun onInitializeClient() {

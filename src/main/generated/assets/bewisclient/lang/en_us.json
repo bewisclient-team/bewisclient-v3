@@ -17,6 +17,20 @@
   "bewisclient.menu.category.utilities": "Utilities",
   "bewisclient.menu.category.widgets": "Widgets",
   "bewisclient.menu.category.zoom": "Zoom",
+  "bewisclient.widget.biome_widget.description": "Displays the current biome at your position.",
+  "bewisclient.widget.biome_widget.name": "Biome Widget",
   "bewisclient.widget.biome_widget.unknown_biome": "Unknown Biome",
-  "bewisclient.widget.day_widget.day": "Day %d"
+  "bewisclient.widget.coordinates_widget.description": "Displays your current coordinates in the world",
+  "bewisclient.widget.coordinates_widget.name": "Coordinates Widget",
+  "bewisclient.widget.cps_widget.description": "Displays your current clicks per second (CPS).",
+  "bewisclient.widget.cps_widget.name": "CPS Widget",
+  "bewisclient.widget.day_widget.day": "Day %d",
+  "bewisclient.widget.day_widget.description": "Displays the current in-game day.",
+  "bewisclient.widget.day_widget.name": "Day Widget",
+  "bewisclient.widget.daytime_widget.description": "Displays the current in-game time in hours and minutes.",
+  "bewisclient.widget.daytime_widget.name": "Daytime Widget",
+  "bewisclient.widget.fps_widget.description": "Displays your current frames per second (FPS).",
+  "bewisclient.widget.fps_widget.name": "FPS Widget",
+  "bewisclient.widget.ping_widget.description": "Displays your current ping in milliseconds (ms).",
+  "bewisclient.widget.ping_widget.name": "Ping Widget"
 }

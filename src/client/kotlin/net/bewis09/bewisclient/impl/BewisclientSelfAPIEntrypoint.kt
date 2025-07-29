@@ -5,9 +5,7 @@ import net.bewis09.bewisclient.game.Keybind
 import net.bewis09.bewisclient.game.KeybindingImplementer
 import net.bewis09.bewisclient.logic.EventEntrypoint
 import net.bewis09.bewisclient.impl.settings.BewisclientSettings
-import net.bewis09.bewisclient.impl.widget.BiomeWidget
-import net.bewis09.bewisclient.impl.widget.DayWidget
-import net.bewis09.bewisclient.impl.widget.FPSWidget
+import net.bewis09.bewisclient.impl.widget.*
 import net.bewis09.bewisclient.settings.Settings
 import net.bewis09.bewisclient.settings.SettingsLoader
 import net.bewis09.bewisclient.widget.Widget
@@ -19,7 +17,8 @@ class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint {
             WidgetLoader,
             SettingsLoader,
             KeybindingImplementer,
-            TranslationLoader
+            TranslationLoader,
+            BiomeWidget
         )
     }
 
@@ -39,7 +38,11 @@ class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint {
         return listOf(
             FPSWidget,
             BiomeWidget,
-            DayWidget
+            DayWidget,
+            CoordinatesWidget,
+            DaytimeWidget,
+            PingWidget,
+            CPSWidget
         )
     }
 }

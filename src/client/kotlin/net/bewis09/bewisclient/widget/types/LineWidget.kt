@@ -14,7 +14,7 @@ abstract class LineWidget(): ScalableWidget() {
     var lineSpacing: Int? = null
 
     abstract fun getLines(): List<String>
-    fun isCentered(): Boolean = true
+    open fun isCentered(): Boolean = true
 
     override fun render(screenDrawing: ScreenDrawing) {
         val textColor = textColor?.getColor() ?: getSettings().widgetSettings.defaults.textColor.get().getColor()
@@ -27,15 +27,15 @@ abstract class LineWidget(): ScalableWidget() {
         val lines = getLines()
         if (lines.isEmpty()) return
 
-        screenDrawing.fillWithBorderRounded(getX(), getY(), getWidth(), lines.size * (9 + lineSpacing) - 2 + 2 * paddingSize - lineSpacing, borderRadius, backgroundColor, borderColor)
+        screenDrawing.fillWithBorderRounded(getX(), getY(), getWidth(), getHeight(), borderRadius, backgroundColor, borderColor)
 
         lines.forEach { line ->
             val x = getX()
-            val y = getY() + (lines.indexOf(line) * (9 + lineSpacing)) + paddingSize - lineSpacing
+            val y = getY() + (lines.indexOf(line) * (9 + lineSpacing)) + paddingSize
             if (isCentered()) {
-                screenDrawing.drawCenteredText(line, x + getWidth() / 2, y + 2, textColor)
+                screenDrawing.drawCenteredText(line, x + getWidth() / 2, y, textColor)
             } else {
-                screenDrawing.drawText(line, x, y, textColor)
+                screenDrawing.drawText(line, x + paddingSize, y, textColor)
             }
         }
     }
@@ -67,6 +67,6 @@ abstract class LineWidget(): ScalableWidget() {
         val lines = getLines()
         if (lines.isEmpty()) return 0
 
-        return lines.size * (9 + lineSpacing) - 2 + 2 * paddingSize - lineSpacing
+        return lines.size * (9 + lineSpacing) + 2 * paddingSize - lineSpacing - 2
     }
 }

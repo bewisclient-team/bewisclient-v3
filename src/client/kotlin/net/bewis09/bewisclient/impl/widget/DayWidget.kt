@@ -9,6 +9,12 @@ import net.minecraft.util.Identifier
 object DayWidget: LineWidget() {
     val dayText = Translation("widget.day_widget.day", "Day %d")
 
+    val dayWidgetTranslation = Translation("widget.day_widget.name", "Day Widget")
+    val dayWidgetDescription = Translation("widget.day_widget.description", "Displays the current in-game day.")
+
+    override fun getTranslation(): Translation = dayWidgetTranslation
+    override fun getDescription(): Translation = dayWidgetDescription
+
     override fun getLines(): List<String> = listOf(dayText(
         net.minecraft.client.MinecraftClient.getInstance().world?.time?.div(24000L)?.toInt() ?: 0
     ).string)

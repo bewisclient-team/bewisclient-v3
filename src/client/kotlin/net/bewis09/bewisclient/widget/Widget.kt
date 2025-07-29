@@ -1,7 +1,9 @@
 package net.bewis09.bewisclient.widget
 
 import com.google.gson.JsonObject
+import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.ScreenDrawing
+import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.logic.BewisclientInterface
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.minecraft.client.MinecraftClient
@@ -79,4 +81,9 @@ abstract class Widget: BewisclientInterface {
 
     fun getX() = (position ?: defaultPosition()).getX(this)
     fun getY() = (position ?: defaultPosition()).getY(this)
+
+    abstract fun getTranslation(): Translation
+    abstract fun getDescription(): Translation
+
+    fun appendSettingsRenderables(list: ArrayList<Renderable>) {}
 }

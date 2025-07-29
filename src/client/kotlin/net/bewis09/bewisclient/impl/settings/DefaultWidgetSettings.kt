@@ -10,7 +10,7 @@ class DefaultWidgetSettings: ObjectSetting() {
     val backgroundColor = ColorSetting(StaticColorSaver(0f, 0f, 0f, 0.5f))
     val borderColor = ColorSetting(StaticColorSaver(0f, 0f, 0f, 0f))
     val paddingSize = IntegerSetting(4)
-    val lineSpacing = IntegerSetting(2)
+    val lineSpacing = IntegerSetting(3)
     val textColor = ColorSetting(StaticColorSaver(1f,1f,1f,1f))
     val borderRadius = IntegerSetting(0)
     val scale = FloatSetting(1f)
