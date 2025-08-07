@@ -198,7 +198,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param color The color to fill the rectangle with, represented as an ARGB integer.
      */
     fun fill(x: Int, y: Int, width: Int, height: Int, color: Long) {
-        fill(x, y, x + width, y + height, color.toInt())
+        fill(x, y, width, height, color.toInt())
     }
 
     /**
@@ -3221,4 +3221,20 @@ fun combineLong(r: Float, g: Float, b: Float, alpha: Float): Long {
         (b * 255).toInt().toUByte(),
         alpha
     )
+}
+
+fun interpolateColor(startColor: Int, endColor: Int, factor: Float): Int {
+    val startRed = (startColor shr 16) and 0xFF
+    val startGreen = (startColor shr 8) and 0xFF
+    val startBlue = startColor and 0xFF
+
+    val endRed = (endColor shr 16) and 0xFF
+    val endGreen = (endColor shr 8) and 0xFF
+    val endBlue = endColor and 0xFF
+
+    val red = ((startRed + (endRed - startRed) * factor).toInt() shl 16)
+    val green = ((startGreen + (endGreen - startGreen) * factor).toInt() shl 8)
+    val blue = (startBlue + (endBlue - startBlue) * factor).toInt()
+
+    return red or green or blue
 }

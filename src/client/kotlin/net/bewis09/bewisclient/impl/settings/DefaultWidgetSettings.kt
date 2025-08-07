@@ -1,6 +1,7 @@
 package net.bewis09.bewisclient.impl.settings
 
 import net.bewis09.bewisclient.logic.color.StaticColorSaver
+import net.bewis09.bewisclient.logic.number.Precision
 import net.bewis09.bewisclient.settings.types.ColorSetting
 import net.bewis09.bewisclient.settings.types.FloatSetting
 import net.bewis09.bewisclient.settings.types.IntegerSetting
@@ -13,7 +14,7 @@ class DefaultWidgetSettings: ObjectSetting() {
     val lineSpacing = IntegerSetting(3)
     val textColor = ColorSetting(StaticColorSaver(1f,1f,1f,1f))
     val borderRadius = IntegerSetting(0)
-    val scale = FloatSetting(1f)
+    val scale = FloatSetting(1f, Precision(0.1f, 2f, 0.1f, 1))
     val gap = IntegerSetting(2)
 
     init {

@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory
 /**
  * Interface for the Bewisclient which should be implemented by most classes in the Bewisclient codebase to access important utilities more easily.
  */
-interface BewisclientInterface : BewisclientLogger, FileLogic {
+interface BewisclientInterface : BewisclientLogger, FileLogic, InGameLogic {
     companion object {
         private val logger = LoggerFactory.getLogger("Bewisclient")
     }

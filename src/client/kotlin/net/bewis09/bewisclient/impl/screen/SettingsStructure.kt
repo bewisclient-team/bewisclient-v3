@@ -5,14 +5,21 @@ import net.bewis09.bewisclient.drawable.renderables.Button
 import net.bewis09.bewisclient.drawable.renderables.DescriptionSettingCategory
 import net.bewis09.bewisclient.drawable.renderables.ScrollGrid
 import net.bewis09.bewisclient.drawable.renderables.ImageSettingCategory
+import net.bewis09.bewisclient.drawable.renderables.Plane
 import net.bewis09.bewisclient.drawable.renderables.Text
+import net.bewis09.bewisclient.drawable.renderables.VerticalAlignScrollPlane
 import net.bewis09.bewisclient.game.Translation
+import net.bewis09.bewisclient.logic.BewisclientInterface
 import net.bewis09.bewisclient.widget.WidgetLoader
 import kotlin.collections.listOf
 
-class SettingsStructure(val screen: OptionScreen) {
+class SettingsStructure(val screen: OptionScreen): BewisclientInterface {
     val utilities = listOf(
-        ImageSettingCategory("fullbright", Translation("menu.category.fullbright", "Fullbright"), arrayOf()),
+        ImageSettingCategory("fullbright", Translation("menu.category.fullbright", "Fullbright"), arrayOf(
+            getSettings().fullbright.enabled.createRenderable("fullbright.enabled", "Fullbright"),
+            getSettings().fullbright.nightVision.createRenderable("fullbright.night_vision", "Night Vision"),
+            getSettings().fullbright.brightness.createRenderable("fullbright.brightness", "Brightness")
+        )),
         ImageSettingCategory("block_highlight", Translation("menu.category.block_highlight", "Block Highlight"), arrayOf()),
         ImageSettingCategory("held_item_info", Translation("menu.category.held_item_info", "Held Item Info"), arrayOf()),
         ImageSettingCategory("zoom", Translation("menu.category.zoom", "Zoom"), arrayOf()),
@@ -44,8 +51,26 @@ class SettingsStructure(val screen: OptionScreen) {
 
     )
 
+    val defaultWidgetSettings = VerticalAlignScrollPlane({
+        listOf(
+
+        )
+    }, 5)
+
+    val widgetsPlane = Plane { x, y, width, height ->
+        listOf(
+            Button(Translation("menu.widgets.default_widget_settings", "Default Widget Settings").getTranslatedString()) {
+                screen.transformInside(
+                    Text(Translation("menu.widgets.default_widget_settings", "Default Widget Settings").getTranslatedString(), centered = true).setHeight(12),
+                    defaultWidgetSettings
+                )
+            }(x, y, width, 14),
+            ScrollGrid({ widgets.map { a -> a.setHeight(90) } }, 5, 80).invoke(x, y + 19, width, height - 19)
+        )
+    }
+
     val sidebarCategories = listOf(
-        createSidebarCategory(Translation("menu.category.widgets", "Widgets"), widgets),
+        createSidebarCategory(Translation("menu.category.widgets", "Widgets"), widgetsPlane),
         createSidebarCategory(Translation("menu.category.utilities", "Utilities"), utilities),
         createSidebarCategory(Translation("menu.category.settings", "Settings"), settings),
         createSidebarCategory(Translation("menu.category.cosmetics", "Cosmetics"), cosmetics),
@@ -58,6 +83,15 @@ class SettingsStructure(val screen: OptionScreen) {
             screen.transformInside(
                 Text(name.getTranslatedString(), centered = true).setHeight(12),
                 ScrollGrid({ settings.map { it.setHeight(90) } }, 5, 80)
+            )
+        }.setHeight(14) as Button
+    }
+
+    fun createSidebarCategory(name: Translation, renderable: Renderable): Button {
+        return Button(name.getTranslatedString()) {
+            screen.transformInside(
+                Text(name.getTranslatedString(), centered = true).setHeight(12),
+                renderable
             )
         }.setHeight(14) as Button
     }

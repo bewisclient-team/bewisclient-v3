@@ -38,7 +38,7 @@ abstract class SettingCategory(val text: Translation, val setting: Array<Rendera
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
         OptionScreen.currentInstance?.transformInside(
             Text(text.getTranslatedString(), centered = true).setHeight(12),
-            VerticalAlignScrollPlane({ setting.toList() }, 5)
+            VerticalAlignScrollPlane({ setting.toList() }, 1)
         )
 
         return true

@@ -3,10 +3,10 @@ package net.bewis09.bewisclient.drawable
 import net.bewis09.bewisclient.logic.BewisclientInterface
 
 abstract class Renderable : BewisclientInterface {
-    private var x: UInt
-    private var y: UInt
-    private var width: UInt
-    private var height: UInt
+    protected var x: UInt
+    protected var y: UInt
+    protected var width: UInt
+    protected var height: UInt
 
     constructor(x: Int, y: Int, width: Int, height: Int) {
         this.x = x.toUInt()

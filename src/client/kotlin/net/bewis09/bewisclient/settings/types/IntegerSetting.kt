@@ -2,6 +2,8 @@ package net.bewis09.bewisclient.settings.types
 
 import com.google.gson.JsonElement
 import com.google.gson.JsonPrimitive
+import net.bewis09.bewisclient.drawable.renderables.settings.IntegerSettingRenderable
+import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.settings.Settings
 
 class IntegerSetting : Setting<Int> {
@@ -20,4 +22,13 @@ class IntegerSetting : Setting<Int> {
             info("Failed to deserialize IntegerSetting: ${Settings.gson.toJson(data)} (${e.message})")
         }
     }
+
+    fun createRenderable(id: String, title: String, description: String, min: Int, max: Int) =
+        IntegerSettingRenderable(
+            Translation("menu.$id", title),
+            Translation("menu.$id.description", description),
+            this,
+            min,
+            max
+        )
 }
