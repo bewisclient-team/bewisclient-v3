@@ -4,7 +4,23 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import net.bewis09.bewisclient.logic.color.ColorSaver
 
-class ColorSetting(default: ColorSaver): Setting<ColorSaver>(default) {
+/**
+ * A setting that allows the user to select a color.
+ *
+ * @param types the types of colors that can be selected. If not specified, all types are allowed.
+ */
+class ColorSetting(default: ColorSaver, vararg val types: String = ALL): Setting<ColorSaver>(default) {
+    companion object {
+        val ALL = ColorSaver.types.map { it.getType() }.toTypedArray()
+        val STATIC = "static"
+        val OPAQUE_STATIC = "opaque_static"
+        val CHANGING = "changing"
+
+        fun without(vararg types: String): Array<String> {
+            return ALL.filterNot { it in types }.toTypedArray()
+        }
+    }
+
     override fun convertToElement(): JsonElement? {
         val jsonObject = JsonObject()
 

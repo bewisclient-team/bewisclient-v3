@@ -36,6 +36,8 @@ import kotlin.math.sqrt
 class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer) {
     private var style: Style = Style.EMPTY
 
+    val afterDrawStack = hashMapOf<String, () -> Unit>()
+
     companion object {
         val roundFillCache = mutableMapOf<Pair<Int, Int>, Identifier>()
         val roundBorderCache = mutableMapOf<Pair<Int, Int>, Identifier>()
@@ -190,6 +192,16 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
 
     fun defaultFont() {
         style = Style.EMPTY
+    }
+
+    fun afterDraw(id: String, func: () -> Unit) {
+        afterDrawStack.put(id, func)
+    }
+
+    fun runAfterDraw() {
+        for (function in afterDrawStack) {
+            function.value()
+        }
     }
 
     /**
@@ -1299,19 +1311,28 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @return A list of strings representing the drawn lines of wrapped text.
      */
     fun drawWrappedText(text: String, x: Int, y: Int, maxWidth: Int, color: Int): List<String> {
-        return wrapText(text, maxWidth).let { lines ->
-            val lineHeight = textRenderer.fontHeight
-            for (i in lines.indices) {
-                drawContext.drawText(
-                    textRenderer,
-                    Text.literal(lines[i]).fillStyle(style),
-                    x,
-                    y + i * lineHeight,
-                    applyAlpha(color),
-                    false
-                )
-            }
-            lines
+        return wrapText(text, maxWidth).also { drawWrappedText(it, x, y, color) }
+    }
+
+    /**
+     * Draws wrapped text within the specified width bounds.
+     *
+     * @param lines The list of strings representing the lines of text to be drawn.
+     * @param x The x coordinate where the text should start.
+     * @param y The y coordinate where the text should start.
+     * @param color The color of the text, represented as an ARGB integer.
+     */
+    fun drawWrappedText(lines: List<String>, x: Int, y: Int, color: Int) {
+        val lineHeight = textRenderer.fontHeight
+        for (i in lines.indices) {
+            drawContext.drawText(
+                textRenderer,
+                Text.literal(lines[i]).fillStyle(style),
+                x,
+                y + i * lineHeight,
+                applyAlpha(color),
+                false
+            )
         }
     }
 
@@ -1757,7 +1778,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @return The width of the text in pixels.
      */
     fun getTextWidth(text: String): Int {
-        return textRenderer.getWidth(text)
+        return textRenderer.getWidth(Text.literal(text).setStyle(style))
     }
 
     /**
@@ -1766,7 +1787,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @return The width of the text in pixels.
      */
     fun getTextWidth(text: Text): Int {
-        return textRenderer.getWidth(text)
+        return textRenderer.getWidth(text.copy().setStyle(style))
     }
 
     /**

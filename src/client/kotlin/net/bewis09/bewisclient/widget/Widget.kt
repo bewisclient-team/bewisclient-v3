@@ -18,6 +18,7 @@ abstract class Widget: BewisclientInterface {
 
     fun renderScaled(screenDrawing: ScreenDrawing) {
         screenDrawing.push()
+        screenDrawing.translate(getX(), getY())
         screenDrawing.scale(getScale(), getScale())
         render(screenDrawing)
         screenDrawing.pop()
@@ -67,12 +68,20 @@ abstract class Widget: BewisclientInterface {
         return jsonObject
     }
 
-    fun getScaledScreenWidth(): Int {
-        return (MinecraftClient.getInstance().window.scaledWidth / getScale()).toInt()
+    fun getScreenWidth(): Int {
+        return (MinecraftClient.getInstance().window.scaledWidth)
     }
 
-    fun getScaledScreenHeight(): Int {
-        return (MinecraftClient.getInstance().window.scaledHeight / getScale()).toInt()
+    fun getScreenHeight(): Int {
+        return (MinecraftClient.getInstance().window.scaledHeight)
+    }
+
+    fun getScaledWidth(): Float {
+        return (getWidth() * getScale())
+    }
+
+    fun getScaledHeight(): Float {
+        return (getHeight() * getScale())
     }
 
     abstract fun getWidth(): Int

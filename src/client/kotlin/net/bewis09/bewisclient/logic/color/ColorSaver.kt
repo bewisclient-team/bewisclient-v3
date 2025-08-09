@@ -11,7 +11,8 @@ interface ColorSaver {
     companion object {
         val types = listOf<ColorSaverFactory<*>>(
             StaticColorSaver.Factory,
-            ChangingColorSaver.Factory
+            ChangingColorSaver.Factory,
+            OpaqueStaticColorSaver.Factory
         )
 
         fun fromJson(jsonElement: JsonElement?): ColorSaver? {

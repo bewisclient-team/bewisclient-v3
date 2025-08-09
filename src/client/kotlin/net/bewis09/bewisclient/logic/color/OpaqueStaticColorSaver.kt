@@ -3,26 +3,22 @@ package net.bewis09.bewisclient.logic.color
 import com.google.gson.JsonElement
 import com.google.gson.JsonPrimitive
 
-open class StaticColorSaver: ColorSaver {
+open class OpaqueStaticColorSaver: ColorSaver {
     private val color: Int
 
     constructor(color: Int) {
-        this.color = color
+        this.color = color and 0xFFFFFF
     }
 
-    constructor(r: Float, g: Float, b: Float, a: Float) {
-        this.color = ((a * 255).toInt() shl 24) or ((r * 255).toInt() shl 16) or ((g * 255).toInt() shl 8) or (b * 255).toInt()
-    }
+    constructor(r: Float, g: Float, b: Float): this((r * 255).toInt() shl 16 or ((g * 255).toInt() shl 8) or (b * 255).toInt())
 
-    constructor(r: Int, g: Int, b: Int, a: Int) {
-        this.color = (a shl 24) or (r shl 16) or (g shl 8) or b
-    }
+    constructor(r: Int, g: Int, b: Int): this((r shl 16) or (g shl 8) or b)
 
     override fun getColor(): Int {
         return color
     }
 
-    override fun getType(): String = "static"
+    override fun getType(): String = "opaque_static"
 
     override fun saveToJson(): JsonElement {
         return JsonPrimitive(getColorString())
@@ -31,14 +27,14 @@ open class StaticColorSaver: ColorSaver {
     companion object {
         fun fromColorString(colorString: String): StaticColorSaver? {
             if (colorString.startsWith("#")) {
-                return StaticColorSaver(colorString.substring(1).toIntOrNull(16) ?: 0xFFFFFFFF.toInt())
+                return StaticColorSaver(colorString.substring(1).toIntOrNull(16) ?: 0xFFFFFF)
             }
             return null
         }
     }
 
     fun getColorString(): String {
-        return String.format("#%08X", color)
+        return String.format("#%06X", color)
     }
 
     object Factory : ColorSaverFactory<StaticColorSaver> {
@@ -50,6 +46,6 @@ open class StaticColorSaver: ColorSaver {
             }
         }
 
-        override fun getType(): String = "static"
+        override fun getType(): String = "opaque_static"
     }
 }

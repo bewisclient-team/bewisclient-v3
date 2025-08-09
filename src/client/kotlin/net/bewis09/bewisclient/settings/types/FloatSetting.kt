@@ -24,7 +24,7 @@ class FloatSetting : Setting<Float> {
 
     override fun setFromElement(data: JsonElement?) {
         try {
-            setWithoutSave(data?.asFloat?.let { precision.parse(it) })
+            setWithoutSave(processChange(data?.asFloat))
         } catch (e: Throwable) {
             info("Failed to deserialize FloatSetting: ${Settings.gson.toJson(data)} (${e.message})")
         }
@@ -40,4 +40,8 @@ class FloatSetting : Setting<Float> {
         this,
         precision
     )
+
+    override fun processChange(value: Float?): Float? = value?.let {
+        precision.parse(it)
+    }
 }

@@ -11,4 +11,8 @@ open class Hoverable: Renderable() {
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         hoverAnimation["hovering"] = if(isMouseOver(mouseX.toDouble(), mouseY.toDouble())) 1f else 0f
     }
+
+    override fun init() {
+        hoverAnimation.pauseForOnce()
+    }
 }

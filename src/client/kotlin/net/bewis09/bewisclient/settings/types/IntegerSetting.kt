@@ -6,10 +6,7 @@ import net.bewis09.bewisclient.drawable.renderables.settings.IntegerSettingRende
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.settings.Settings
 
-class IntegerSetting : Setting<Int> {
-    constructor(default: Int, onChangeListener: ((oldValue: Int?, newValue: Int?) -> Unit)? = null) : super(default, onChangeListener)
-
-    constructor(default: Int) : super(default)
+class IntegerSetting(default: Int, val min: Int, val max: Int, onChangeListener: ((oldValue: Int?, newValue: Int?) -> Unit)? = null) : Setting<Int>(default, onChangeListener) {
 
     override fun convertToElement(): JsonElement? {
         return getWithoutDefault()?.let { JsonPrimitive(it) }
@@ -23,10 +20,10 @@ class IntegerSetting : Setting<Int> {
         }
     }
 
-    fun createRenderable(id: String, title: String, description: String, min: Int, max: Int) =
+    fun createRenderable(id: String, title: String, description: String? = null) =
         IntegerSettingRenderable(
             Translation("menu.$id", title),
-            Translation("menu.$id.description", description),
+            description?.let { Translation("menu.$id.description", it) },
             this,
             min,
             max

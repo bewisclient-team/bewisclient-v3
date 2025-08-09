@@ -7,7 +7,7 @@ import net.bewis09.bewisclient.impl.screen.OptionScreen
 import net.minecraft.util.Identifier
 
 class ImageSettingCategory(val image: Identifier, text: Translation, setting: Array<Renderable>): SettingCategory(text, setting) {
-    constructor(image: String, text: Translation, setting: Array<Renderable>): this(Identifier.of("bewisclient", "textures/gui/settings/$image.png"), text, setting)
+    constructor(image: String, text: Translation, setting: Array<Renderable>): this(Identifier.of("bewisclient", "textures/gui/functionalities/$image.png"), text, setting)
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)

@@ -4,10 +4,14 @@ import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.ScreenDrawing
 import net.bewis09.bewisclient.drawable.animate
 import net.bewis09.bewisclient.drawable.interpolateColor
+import net.bewis09.bewisclient.logic.Gettable
 import kotlin.math.abs
 
-class Switch(var state: Boolean, val onChange: (new: Boolean) -> Unit): Hoverable() {
-    val stateAnimation = animate(200, Animator.EASE_IN_OUT, "state" to if (state) 1f else 0f)
+/**
+
+ */
+class Switch(var state: Gettable<Boolean>, val onChange: (new: Boolean) -> Unit): Hoverable() {
+    val stateAnimation = animate(200, Animator.EASE_IN_OUT, "state" to if (state.get()) 1f else 0f)
 
     init {
         width = 28u
@@ -16,6 +20,9 @@ class Switch(var state: Boolean, val onChange: (new: Boolean) -> Unit): Hoverabl
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
+
+        stateAnimation["state"] = if (state.get()) 1f else 0f
+
         screenDrawing.fillWithBorderRounded(getX(), getY(), getWidth(), getHeight(), 7, interpolateColor(0xAAAAAA, 0x00FF00, stateAnimation["state"]), hoverAnimation["hovering"] * 0.15f + 0.15f, interpolateColor(0xAAAAAA, 0x00AA00, stateAnimation["state"]), hoverAnimation["hovering"] * 0.5f + 0.5f)
         screenDrawing.push()
         screenDrawing.translate(getX() + ((getWidth() - 14) * stateAnimation["state"]) + 7f, getY() + 7f)
@@ -34,10 +41,13 @@ class Switch(var state: Boolean, val onChange: (new: Boolean) -> Unit): Hoverabl
         screenDrawing.pop()
     }
 
+    override fun init() {
+        stateAnimation.pauseForOnce()
+        super.init()
+    }
+
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
-        state = !state
-        onChange(state)
-        stateAnimation["state"] = if (state) 1f else 0f
+        onChange(!state.get())
         return true
     }
 }

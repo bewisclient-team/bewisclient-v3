@@ -1,15 +1,22 @@
 package net.bewis09.bewisclient.drawable.renderables.settings
 
 import net.bewis09.bewisclient.drawable.ScreenDrawing
-import net.bewis09.bewisclient.drawable.renderables.Hoverable
+import net.bewis09.bewisclient.drawable.Translations
+import net.bewis09.bewisclient.drawable.renderables.ImageButton
 import net.bewis09.bewisclient.drawable.renderables.Switch
+import net.bewis09.bewisclient.drawable.renderables.TooltipHoverable
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.settings.types.Setting
+import net.minecraft.util.Identifier
 
-class BooleanSettingRenderable(val title: Translation, val description: Translation?, val setting: Setting<Boolean>): Hoverable() {
-    val switch = Switch(setting.get()) { new ->
+class BooleanSettingRenderable(val title: Translation, val description: Translation?, val setting: Setting<Boolean>): TooltipHoverable(description) {
+    val switch = Switch(setting) { new ->
         setting.set(new)
     }
+
+    val resetButton = ImageButton(Identifier.of("bewisclient", "textures/gui/sprites/reset.png"), {
+        setting.set(null)
+    }, Translations.RESET).setImagePadding(2).setSize(14, 14)
 
     init {
         height = 22u
@@ -26,6 +33,8 @@ class BooleanSettingRenderable(val title: Translation, val description: Translat
     }
 
     override fun init() {
-        addRenderable(switch.setPosition(getX() + getWidth() - switch.getWidth() - 4, getY() + 4))
+        super.init()
+        addRenderable(resetButton.setPosition(getX() + getWidth() - resetButton.getWidth() - 4, getY() + 4))
+        addRenderable(switch.setPosition(getX() + getWidth() - switch.getWidth() - 8 - resetButton.getWidth(), getY() + 4))
     }
 }

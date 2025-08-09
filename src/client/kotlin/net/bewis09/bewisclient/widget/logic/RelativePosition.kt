@@ -6,30 +6,30 @@ import net.bewis09.bewisclient.widget.Widget
 import net.bewis09.bewisclient.widget.WidgetLoader
 
 class RelativePosition(val parent: String, val side: String): WidgetPosition {
-    override fun getX(widget: Widget): Int {
-        val parentWidget = WidgetLoader.widgets.find { it.getId().toString() == parent } ?: return 0
+    override fun getX(widget: Widget): Float {
+        val parentWidget = WidgetLoader.widgets.find { it.getId().toString() == parent } ?: return 0f
         val gap = widget.getSettings().widgetSettings.defaults.gap.get()
 
         return when (side) {
-            "left" -> parentWidget.getX() * parentWidget.getScale() / widget.getScale() - widget.getWidth() - gap
-            "right" -> parentWidget.getX() * parentWidget.getScale() / widget.getScale() + parentWidget.getWidth() + gap
+            "left" -> parentWidget.getX() - widget.getScaledWidth() - gap
+            "right" -> parentWidget.getX() + parentWidget.getScaledWidth() + gap
             "top" -> (parentWidget.position ?: parentWidget.defaultPosition()).getX(widget)
             "bottom" -> (parentWidget.position ?: parentWidget.defaultPosition()).getX(widget)
-            else -> 0
-        }.toInt()
+            else -> 0f
+        }
     }
 
-    override fun getY(widget: Widget): Int {
-        val parentWidget = WidgetLoader.widgets.find { it.getId().toString() == parent } ?: return 0
+    override fun getY(widget: Widget): Float {
+        val parentWidget = WidgetLoader.widgets.find { it.getId().toString() == parent } ?: return 0f
         val gap = widget.getSettings().widgetSettings.defaults.gap.get()
 
         return when (side) {
             "left" -> (parentWidget.position ?: parentWidget.defaultPosition()).getY(widget)
             "right" -> (parentWidget.position ?: parentWidget.defaultPosition()).getY(widget)
-            "top" -> parentWidget.getY() * parentWidget.getScale() / widget.getScale() - widget.getHeight() - gap
-            "bottom" -> parentWidget.getY() * parentWidget.getScale() / widget.getScale() + parentWidget.getHeight() + gap
-            else -> 0
-        }.toInt()
+            "top" -> parentWidget.getY() - widget.getScaledHeight() - gap
+            "bottom" -> parentWidget.getY() + parentWidget.getScaledHeight() + gap
+            else -> 0f
+        }
     }
 
     override fun saveToJson(): JsonElement = JsonObject().also {

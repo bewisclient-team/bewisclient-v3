@@ -5,12 +5,12 @@ import com.google.gson.JsonObject
 import net.bewis09.bewisclient.widget.Widget
 
 class SidedPosition(val x: Int, val y: Int, val xTransformer: TransformerType, val yTransformer: TransformerType) : WidgetPosition {
-    override fun getX(widget: Widget): Int {
-        return xTransformer.transformer(x, widget.getScaledScreenWidth(), widget.getWidth())
+    override fun getX(widget: Widget): Float {
+        return xTransformer.transformer(x, widget.getScreenWidth(), widget.getScaledWidth())
     }
 
-    override fun getY(widget: Widget): Int {
-        return yTransformer.transformer(y, widget.getScaledScreenHeight(), widget.getHeight())
+    override fun getY(widget: Widget): Float {
+        return yTransformer.transformer(y, widget.getScreenHeight(), widget.getScaledHeight())
     }
 
     override fun saveToJson(): JsonElement {
@@ -26,9 +26,9 @@ class SidedPosition(val x: Int, val y: Int, val xTransformer: TransformerType, v
 
     override fun getType(): String = "sided"
 
-    enum class TransformerType(val id: String, val transformer: (Int, Int, Int) -> Int) {
-        START("start", { pos: Int, _: Int, _: Int -> pos }),
-        END("end", { pos: Int, size: Int, widgetSize: Int -> size - pos - widgetSize })
+    enum class TransformerType(val id: String, val transformer: (Int, Int, Float) -> Float) {
+        START("start", { pos: Int, _: Int, _: Float -> pos.toFloat() }),
+        END("end", { pos: Int, size: Int, widgetSize: Float -> size - pos - widgetSize })
     }
 
     object Factory: WidgetPositionFactory<SidedPosition> {

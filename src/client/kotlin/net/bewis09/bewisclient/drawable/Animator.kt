@@ -16,6 +16,8 @@ class Animator(val duration: Long, val interpolationType: (delta: Float) -> Floa
     private val beforeAnimationMap: HashMap<String, Float> = hashMapOf()
     private val finishMap: HashMap<String, () -> Unit> = hashMapOf()
 
+    private var pauseAnimation = arrayListOf<String>()
+
     init {
         initial.forEach { (key, value) -> map[key] = value }
     }
@@ -33,6 +35,10 @@ class Animator(val duration: Long, val interpolationType: (delta: Float) -> Floa
         }
     }
 
+    fun pauseForOnce() {
+        pauseAnimation = arrayListOf(*map.keys.toTypedArray())
+    }
+
     fun getWithoutInterpolation(key: String): Float {
         return map[key] ?: throw ProgramCodeException("Animation for key '$key' has not been initialized")
     }
@@ -41,6 +47,8 @@ class Animator(val duration: Long, val interpolationType: (delta: Float) -> Floa
      * Returns the current animated value for a given key.
      */
     operator fun get(key: String): Float {
+        if (key in pauseAnimation) pauseAnimation.remove(key)
+
         val delta = (System.currentTimeMillis() - (animationStartMap[key] ?: 0)) / duration.toFloat()
 
         val value = map[key] ?: throw ProgramCodeException("Animation for key '$key' has not been initialized")
@@ -72,12 +80,18 @@ class Animator(val duration: Long, val interpolationType: (delta: Float) -> Floa
      * @param value The value to set.
      */
     operator fun set(key: String, value: Float) {
+        val paused = pauseAnimation.contains(key)
+
+        if (paused) {
+            pauseAnimation.remove(key)
+        }
+
         if (map[key] == value) return
 
         val old = if (map[key] != null) this[key] else value
         map[key] = value
 
-        animationStartMap[key] = System.currentTimeMillis()
+        animationStartMap[key] = if (paused) 0 else System.currentTimeMillis()
         beforeAnimationMap[key] = old
 
         val finishAction = finishMap[key]

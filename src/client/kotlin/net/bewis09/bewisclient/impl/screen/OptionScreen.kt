@@ -43,7 +43,7 @@ class OptionScreen : Renderable(), BackgroundEffectProvider {
 
     var optionsHeader: Renderable? = null
     var optionsPane: Renderable? = null
-    val settings = SettingsStructure(this)
+    val settings = OptionsScreenSettingStructure(this)
 
     val image = RainbowImage(Identifier.of("bewisclient", "icon_long.png"), 0xFFFFFF, 0.5f)
 

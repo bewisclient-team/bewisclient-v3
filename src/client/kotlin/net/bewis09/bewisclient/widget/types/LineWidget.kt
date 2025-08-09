@@ -27,15 +27,14 @@ abstract class LineWidget(): ScalableWidget() {
         val lines = getLines()
         if (lines.isEmpty()) return
 
-        screenDrawing.fillWithBorderRounded(getX(), getY(), getWidth(), getHeight(), borderRadius, backgroundColor, borderColor)
+        screenDrawing.fillWithBorderRounded(0, 0, getWidth(), getHeight(), borderRadius, backgroundColor, borderColor)
 
         lines.forEach { line ->
-            val x = getX()
-            val y = getY() + (lines.indexOf(line) * (9 + lineSpacing)) + paddingSize
+            val y = (lines.indexOf(line) * (9 + lineSpacing)) + paddingSize
             if (isCentered()) {
-                screenDrawing.drawCenteredText(line, x + getWidth() / 2, y, textColor)
+                screenDrawing.drawCenteredText(line, getWidth() / 2, y, textColor)
             } else {
-                screenDrawing.drawText(line, x + paddingSize, y, textColor)
+                screenDrawing.drawText(line, paddingSize, y, textColor)
             }
         }
     }

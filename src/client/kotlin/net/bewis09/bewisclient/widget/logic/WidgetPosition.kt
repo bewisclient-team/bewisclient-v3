@@ -4,8 +4,8 @@ import com.google.gson.JsonElement
 import net.bewis09.bewisclient.widget.Widget
 
 interface WidgetPosition {
-    fun getX(widget: Widget): Int
-    fun getY(widget: Widget): Int
+    fun getX(widget: Widget): Float
+    fun getY(widget: Widget): Float
 
     fun saveToJson(): JsonElement
 

@@ -13,7 +13,9 @@ class RenderableScreen(val renderable: Renderable) : Screen(Text.empty()) {
     }
 
     override fun render(context: DrawContext, mouseX: Int, mouseY: Int, deltaTicks: Float) {
-        renderable.render(ScreenDrawing(context, textRenderer), mouseX, mouseY)
+        val screenDrawing = ScreenDrawing(context, textRenderer)
+        renderable.render(screenDrawing, mouseX, mouseY)
+        screenDrawing.runAfterDraw()
     }
 
     override fun renderDarkening(context: DrawContext, x: Int, y: Int, width: Int, height: Int) {

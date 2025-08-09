@@ -4,8 +4,9 @@
   "compatibilityLevel": "JAVA_21",
   "client": [
     "GameOptionsMixin",
-    "MinecraftClientMixin",
-    "LivingEntityMixin"
+    "LightmapTextureManagerMixin",
+    "LivingEntityMixin",
+    "MinecraftClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1

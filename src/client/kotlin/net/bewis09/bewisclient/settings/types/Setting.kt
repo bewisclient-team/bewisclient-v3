@@ -2,6 +2,7 @@ package net.bewis09.bewisclient.settings.types
 
 import com.google.gson.JsonElement
 import net.bewis09.bewisclient.logic.BewisclientInterface
+import net.bewis09.bewisclient.logic.Gettable
 import net.bewis09.bewisclient.settings.SettingsLoader
 
 /**
@@ -12,7 +13,7 @@ import net.bewis09.bewisclient.settings.SettingsLoader
  * @param default The default value of the setting.
  * @param onChangeListener An optional listener that is called when the setting value changes.
  */
-abstract class Setting<T>(val default: T, val onChangeListener: ((oldValue: T?, newValue: T?) -> Unit)?) : BewisclientInterface {
+abstract class Setting<T>(val default: T, val onChangeListener: ((oldValue: T?, newValue: T?) -> Unit)?) : BewisclientInterface, Gettable<T> {
     constructor(default: T) : this(default, null)
 
     /**
@@ -22,7 +23,7 @@ abstract class Setting<T>(val default: T, val onChangeListener: ((oldValue: T?, 
      */
     private var value: T? = null
 
-    fun get(): T {
+    override fun get(): T {
         return value ?: default
     }
 
@@ -43,6 +44,9 @@ abstract class Setting<T>(val default: T, val onChangeListener: ((oldValue: T?, 
      */
     fun set(value: T?) {
         val oldValue = this.value
+        if (value == this.value) {
+            return // No change, do nothing
+        }
         this.value = value
         onChange(oldValue, value)
         onChangeListener?.invoke(oldValue, value)
@@ -73,9 +77,12 @@ abstract class Setting<T>(val default: T, val onChangeListener: ((oldValue: T?, 
      */
     fun setWithoutSave(value: T?) {
         val oldValue = this.value
-        this.value = value
-        onChange(oldValue, value)
-        onChangeListener?.invoke(oldValue, value)
+        if (value == this.value) {
+            return // No change, do nothing
+        }
+        this.value = processChange(value)
+        onChange(oldValue, this.value)
+        onChangeListener?.invoke(oldValue, this.value)
     }
 
     /**
@@ -104,4 +111,6 @@ abstract class Setting<T>(val default: T, val onChangeListener: ((oldValue: T?, 
     open fun onChange(oldValue: T?, newValue: T?) {
 
     }
+
+    open fun processChange(value: T?) = value
 }

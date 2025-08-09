@@ -1,6 +1,7 @@
 package net.bewis09.bewisclient.game
 
 import net.bewis09.bewisclient.logic.addTranslation
+import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 
 class Translation(private val key: String, @Suppress("PropertyName") val en_us: String) {
@@ -16,11 +17,11 @@ class Translation(private val key: String, @Suppress("PropertyName") val en_us: 
         addTranslation(key, en_us)
     }
 
-    fun getTranslatedText(): Text {
+    fun getTranslatedText(): MutableText {
         return Text.translatable("bewisclient.$key")
     }
 
-    fun getTranslatedText(vararg args: Any): Text {
+    fun getTranslatedText(vararg args: Any): MutableText {
         return Text.translatable("bewisclient.$key", *args)
     }
 
@@ -32,11 +33,11 @@ class Translation(private val key: String, @Suppress("PropertyName") val en_us: 
         return "bewisclient.$key"
     }
 
-    operator fun invoke(): Text {
+    operator fun invoke(): MutableText {
         return getTranslatedText()
     }
 
-    operator fun invoke(vararg args: Any): Text {
+    operator fun invoke(vararg args: Any): MutableText {
         return getTranslatedText(*args)
     }
 }

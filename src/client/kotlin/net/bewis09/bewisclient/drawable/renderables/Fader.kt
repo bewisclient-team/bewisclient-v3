@@ -2,9 +2,10 @@ package net.bewis09.bewisclient.drawable.renderables
 
 import net.bewis09.bewisclient.drawable.ScreenDrawing
 import net.bewis09.bewisclient.drawable.interpolateColor
+import net.bewis09.bewisclient.logic.Gettable
 import net.bewis09.bewisclient.logic.number.Precision
 
-class Fader(var value: Float, val precision: Precision, val onChange: (new: Float) -> Unit) : Hoverable() {
+class Fader(val value: Gettable<Float>, val precision: Precision, val onChange: (new: Float) -> Unit) : Hoverable() {
     init {
         width = 100u
         height = 14u
@@ -12,7 +13,7 @@ class Fader(var value: Float, val precision: Precision, val onChange: (new: Floa
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
-        val normalizedValue = precision.normalize(value)
+        val normalizedValue = precision.normalize(value.get())
         screenDrawing.fillRounded(
             getX(), getY() + 5, getWidth(), 4,
             2, 0xAAAAAA, hoverAnimation["hovering"] * 0.15f + 0.15f
@@ -36,9 +37,8 @@ class Fader(var value: Float, val precision: Precision, val onChange: (new: Floa
         )
         newValue = precision.getNearestStep(newValue)
         newValue = precision.round(newValue)
-        if (newValue == value) return true
-        value = newValue
-        onChange(value)
+        if (newValue == value.get()) return true
+        onChange(newValue)
         return true
     }
 }

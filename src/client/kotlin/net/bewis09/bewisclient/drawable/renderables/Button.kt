@@ -1,8 +1,11 @@
 package net.bewis09.bewisclient.drawable.renderables
 
 import net.bewis09.bewisclient.drawable.ScreenDrawing
+import net.bewis09.bewisclient.game.Translation
 
-class Button(val text: String, val onClick: (Button) -> Unit): Hoverable() {
+class Button(val text: String, val onClick: (Button) -> Unit, tooltip: Translation?): TooltipHoverable(tooltip) {
+    constructor(text: String, onClick: (Button) -> Unit): this(text, onClick, null)
+
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
         screenDrawing.fillRounded(getX(), getY(), getWidth(), getHeight(), 5, 0xFFFFFF, hoverAnimation["hovering"] * 0.15f + 0.15f)
