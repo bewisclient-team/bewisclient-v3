@@ -2,6 +2,8 @@ package net.bewis09.bewisclient.settings.types
 
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
+import net.bewis09.bewisclient.drawable.renderables.settings.ColorSettingRenderable
+import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.logic.color.ColorSaver
 
 /**
@@ -12,9 +14,9 @@ import net.bewis09.bewisclient.logic.color.ColorSaver
 class ColorSetting(default: ColorSaver, vararg val types: String = ALL): Setting<ColorSaver>(default) {
     companion object {
         val ALL = ColorSaver.types.map { it.getType() }.toTypedArray()
-        val STATIC = "static"
-        val OPAQUE_STATIC = "opaque_static"
-        val CHANGING = "changing"
+        const val STATIC = "static"
+        const val OPAQUE_STATIC = "opaque_static"
+        const val CHANGING = "changing"
 
         fun without(vararg types: String): Array<String> {
             return ALL.filterNot { it in types }.toTypedArray()
@@ -36,5 +38,13 @@ class ColorSetting(default: ColorSaver, vararg val types: String = ALL): Setting
 
     override fun setFromElement(data: JsonElement?) {
         setWithoutSave(ColorSaver.fromJson(data))
+    }
+
+    fun createRenderable(id: String, title: String, description: String? = null): ColorSettingRenderable {
+        return ColorSettingRenderable(Translation("menu.$id", title), description?.let { Translation("menu.$id.description", it) }, this, types.map { it }.toTypedArray())
+    }
+
+    override fun processChange(value: ColorSaver?): ColorSaver? {
+        return if(value?.getType() in types) value else null
     }
 }

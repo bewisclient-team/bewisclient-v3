@@ -1,16 +1,18 @@
 package net.bewis09.bewisclient.impl
 
 import net.bewis09.bewisclient.impl.functionalities.fullbright.Fullbright
-import net.bewis09.bewisclient.impl.screen.OptionScreen
-import net.bewis09.bewisclient.impl.screen.OptionsScreenSettingStructure
+import net.bewis09.bewisclient.drawable.OptionScreen
+import net.bewis09.bewisclient.drawable.SettingStructure
 import net.bewis09.bewisclient.logic.EventEntrypoint
+import net.bewis09.bewisclient.logic.colors
 
 object TranslationLoader: EventEntrypoint {
     override fun onDatagen() {
         @Suppress("SimpleRedundantLet")
-        OptionsScreenSettingStructure(OptionScreen()).let {
+        SettingStructure(OptionScreen()).let {
             it.widgetsPlane.init(0, 0, 1000, 1000)
         }
         Fullbright
+        colors
     }
 }

@@ -6,7 +6,8 @@
     "GameOptionsMixin",
     "LightmapTextureManagerMixin",
     "LivingEntityMixin",
-    "MinecraftClientMixin"
+    "MinecraftClientMixin",
+    "WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

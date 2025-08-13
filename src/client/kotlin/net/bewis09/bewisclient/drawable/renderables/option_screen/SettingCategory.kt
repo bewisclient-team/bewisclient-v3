@@ -1,12 +1,15 @@
-package net.bewis09.bewisclient.drawable.renderables
+package net.bewis09.bewisclient.drawable.renderables.option_screen
 
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
-import net.bewis09.bewisclient.impl.screen.OptionScreen
+import net.bewis09.bewisclient.drawable.OptionScreen
+import net.bewis09.bewisclient.drawable.renderables.Hoverable
+import net.bewis09.bewisclient.drawable.renderables.Text
+import net.bewis09.bewisclient.drawable.renderables.VerticalAlignScrollPlane
 import net.minecraft.util.Identifier
 
-class ImageSettingCategory(val image: Identifier, text: Translation, setting: Array<Renderable>): SettingCategory(text, setting) {
+open class ImageSettingCategory(val image: Identifier, text: Translation, setting: Array<Renderable>): SettingCategory(text, setting) {
     constructor(image: String, text: Translation, setting: Array<Renderable>): this(Identifier.of("bewisclient", "textures/gui/functionalities/$image.png"), text, setting)
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
@@ -21,7 +24,7 @@ class ImageSettingCategory(val image: Identifier, text: Translation, setting: Ar
     }
 }
 
-class DescriptionSettingCategory(text: Translation, val description: Translation, setting: Array<Renderable>): SettingCategory(text, setting) {
+open class DescriptionSettingCategory(text: Translation, val description: Translation, setting: Array<Renderable>): SettingCategory(text, setting) {
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
 

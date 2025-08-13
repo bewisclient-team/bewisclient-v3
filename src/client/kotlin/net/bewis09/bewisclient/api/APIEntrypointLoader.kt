@@ -7,7 +7,9 @@ object APIEntrypointLoader {
      * A list of all [BewisclientAPIEntrypoint]s that are registered in the mod. This list is lazily initialized
      */
     private val entrypoints: List<BewisclientAPIEntrypoint> by lazy {
-        FabricLoader.getInstance().getEntrypoints("bewisclient", BewisclientAPIEntrypoint::class.java).filterIsInstance<BewisclientAPIEntrypoint>()
+        FabricLoader.getInstance().getEntrypointContainers("bewisclient", BewisclientAPIEntrypoint::class.java)
+            .sortedBy { it.provider.metadata.id?.let { id -> if(id == "bewisclient") "" else id } }
+            .map { it.entrypoint }
     }
 
     /**

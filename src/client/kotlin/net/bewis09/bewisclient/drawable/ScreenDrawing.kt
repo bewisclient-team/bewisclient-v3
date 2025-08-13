@@ -1,12 +1,11 @@
 package net.bewis09.bewisclient.drawable
 
+import net.bewis09.bewisclient.logic.BewisclientInterface
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gl.RenderPipelines
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.ingame.InventoryScreen
-import net.minecraft.client.texture.NativeImage
-import net.minecraft.client.texture.NativeImageBackedTexture
 import net.minecraft.entity.LivingEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.text.Style
@@ -14,11 +13,6 @@ import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 import org.joml.Quaternionf
 import org.joml.Vector3f
-import java.awt.image.BufferedImage
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-import java.io.InputStream
-import javax.imageio.ImageIO
 import kotlin.math.atan
 import kotlin.math.pow
 import kotlin.math.roundToInt
@@ -33,10 +27,12 @@ import kotlin.math.sqrt
  * discouraged.
  */
 @Suppress("Unused")
-class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer) {
+class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer): BewisclientInterface {
     private var style: Style = Style.EMPTY
 
-    val afterDrawStack = hashMapOf<String, () -> Unit>()
+    val afterDrawStack = hashMapOf<String, AfterDraw>()
+
+    class AfterDraw(val layer: Int, val func: () -> Unit)
 
     companion object {
         val roundFillCache = mutableMapOf<Pair<Int, Int>, Identifier>()
@@ -54,32 +50,23 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
 
         val identifier = Identifier.of("bewisclient", "rounded_${radius}_$scale")
 
-        val image = BufferedImage(radius * scale, radius * scale, BufferedImage.TYPE_INT_ARGB)
-
         val r = radius * scale
 
-        for (i in 0 until r) {
-            val height = sqrt((r * r - i * i).toDouble()).roundToInt()
-            for (j in 0 until height) {
-                image.setRGB(i, j, 0xFFFFFFFF.toInt())
+        createTexture(identifier, r, r) {
+            for (i in 0 until r) {
+                val height = sqrt((r * r - i * i).toDouble()).roundToInt()
+                for (j in 0 until height) {
+                    it.setRGB(i, j, 0xFFFFFFFF.toInt())
+                }
+            }
+
+            for (i in 0 until r) {
+                val height = sqrt((r * r - i * i).toDouble()).roundToInt()
+                for (j in 0 until height) {
+                    it.setRGB(j, i, 0xFFFFFFFF.toInt())
+                }
             }
         }
-
-        for (i in 0 until r) {
-            val height = sqrt((r * r - i * i).toDouble()).roundToInt()
-            for (j in 0 until height) {
-                image.setRGB(j, i, 0xFFFFFFFF.toInt())
-            }
-        }
-
-        val os = ByteArrayOutputStream()
-        ImageIO.write(image, "png", os)
-        val fis: InputStream = ByteArrayInputStream(os.toByteArray())
-
-        MinecraftClient.getInstance().textureManager.registerTexture(
-            identifier,
-            NativeImageBackedTexture({ identifier.toString() }, NativeImage.read(fis))
-        )
 
         roundFillCache[radius to scale] = identifier
 
@@ -97,34 +84,25 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
 
         val identifier = Identifier.of("bewisclient", "rounded_border_${radius}_$scale")
 
-        val image = BufferedImage(radius * scale, radius * scale, BufferedImage.TYPE_INT_ARGB)
-
         val r = radius * scale
 
-        for (i in 0 until r) {
-            val height = sqrt((r * r - i * i).toDouble()).roundToInt()
-            val inner = sqrt(0.0.coerceAtLeast(((r - scale).toDouble()).pow(2) - i * i)).roundToInt()
-            for (j in inner until height) {
-                image.setRGB(i, j, 0xFFFFFFFF.toInt())
+        createTexture(identifier, r, r) {
+            for (i in 0 until r) {
+                val height = sqrt((r * r - i * i).toDouble()).roundToInt()
+                val inner = sqrt(0.0.coerceAtLeast(((r - scale).toDouble()).pow(2) - i * i)).roundToInt()
+                for (j in inner until height) {
+                    it.setRGB(i, j, 0xFFFFFFFF.toInt())
+                }
+            }
+
+            for (i in 0 until r) {
+                val height = sqrt((r * r - i * i).toDouble()).roundToInt()
+                val inner = sqrt(0.0.coerceAtLeast(((r - scale).toDouble()).pow(2) - i * i)).roundToInt()
+                for (j in inner until height) {
+                    it.setRGB(j, i, 0xFFFFFFFF.toInt())
+                }
             }
         }
-
-        for (i in 0 until r) {
-            val height = sqrt((r * r - i * i).toDouble()).roundToInt()
-            val inner = sqrt(0.0.coerceAtLeast(((r - scale).toDouble()).pow(2) - i * i)).roundToInt()
-            for (j in inner until height) {
-                image.setRGB(j, i, 0xFFFFFFFF.toInt())
-            }
-        }
-
-        val os = ByteArrayOutputStream()
-        ImageIO.write(image, "png", os)
-        val fis: InputStream = ByteArrayInputStream(os.toByteArray())
-
-        MinecraftClient.getInstance().textureManager.registerTexture(
-            identifier,
-            NativeImageBackedTexture({ identifier.toString() }, NativeImage.read(fis))
-        )
 
         roundBorderCache[radius to scale] = identifier
 
@@ -194,13 +172,13 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
         style = Style.EMPTY
     }
 
-    fun afterDraw(id: String, func: () -> Unit) {
-        afterDrawStack.put(id, func)
+    fun afterDraw(id: String, func: () -> Unit, layer: Int = 0) {
+        afterDrawStack.put(id, AfterDraw(layer, func))
     }
 
     fun runAfterDraw() {
-        for (function in afterDrawStack) {
-            function.value()
+        for (function in afterDrawStack.values.sortedBy { it.layer }) {
+            function.func()
         }
     }
 

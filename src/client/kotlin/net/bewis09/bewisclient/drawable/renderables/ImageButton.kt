@@ -13,16 +13,10 @@ class ImageButton(val image: Identifier, val onClick: (ImageButton) -> Unit, too
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
-        
-        // Zeichne den Button-Hintergrund (gleich wie in Button Klasse)
+
         screenDrawing.fillRounded(getX(), getY(), getWidth(), getHeight(), 5, 0xFFFFFF, hoverAnimation["hovering"] * 0.15f + 0.15f)
-        
-        // Zeichne das Bild in der Mitte des Buttons mit Padding
-        val imageSize = minOf(getWidth() - imagePadding * 2, getHeight() - imagePadding * 2)
-        val imageX = getX() + (getWidth() - imageSize) / 2
-        val imageY = getY() + (getHeight() - imageSize) / 2
-        
-        screenDrawing.drawTexture(image, imageX, imageY, imageSize, imageSize, imageColor, imageAlpha)
+
+        screenDrawing.drawTexture(image, getX() + imagePadding, getY() + imagePadding, getWidth() - imagePadding * 2, getHeight() - imagePadding * 2, imageColor, imageAlpha)
     }
 
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {

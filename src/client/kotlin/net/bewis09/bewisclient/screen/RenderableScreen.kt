@@ -8,6 +8,9 @@ import net.minecraft.client.gui.screen.Screen
 import net.minecraft.text.Text
 
 class RenderableScreen(val renderable: Renderable) : Screen(Text.empty()) {
+    var startX = 0.0
+    var startY = 0.0
+
     override fun init() {
         renderable(0, 0, width, height)
     }
@@ -27,6 +30,8 @@ class RenderableScreen(val renderable: Renderable) : Screen(Text.empty()) {
     }
 
     override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {
+        startX = mouseX
+        startY = mouseY
         return renderable.mouseClick(mouseX, mouseY, button) || super.mouseClicked(mouseX, mouseY, button)
     }
 
@@ -35,7 +40,7 @@ class RenderableScreen(val renderable: Renderable) : Screen(Text.empty()) {
     }
 
     override fun mouseDragged(mouseX: Double, mouseY: Double, button: Int, deltaX: Double, deltaY: Double): Boolean {
-        return renderable.mouseDrag(mouseX, mouseY, mouseX - deltaX, mouseY - deltaY, button) || super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY)
+        return renderable.mouseDrag(mouseX, mouseY, startX, startY, button) || super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY)
     }
 
     override fun mouseScrolled(mouseX: Double, mouseY: Double, horizontalAmount: Double, verticalAmount: Double): Boolean {

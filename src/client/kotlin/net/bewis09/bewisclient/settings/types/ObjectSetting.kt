@@ -18,7 +18,6 @@ open class ObjectSetting : Setting<JsonObject> {
         map.forEach { (key, setting) ->
             setting.convertToElement()?.let { jsonObject.add(key, it) }
         }
-        setWithoutSave(jsonObject)
         return jsonObject
     }
 

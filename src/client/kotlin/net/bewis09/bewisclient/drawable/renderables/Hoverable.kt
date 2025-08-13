@@ -9,7 +9,7 @@ open class Hoverable: Renderable() {
     val hoverAnimation = Animator(200, LINEAR, "hovering" to 0f)
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        hoverAnimation["hovering"] = if(isMouseOver(mouseX.toDouble(), mouseY.toDouble())) 1f else 0f
+        hoverAnimation["hovering"] = if(isMouseOver(mouseX.toDouble(), mouseY.toDouble()) && screenDrawing.drawContext.scissorContains(mouseX, mouseY)) 1f else 0f
     }
 
     override fun init() {

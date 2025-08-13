@@ -1,10 +1,5 @@
-package net.bewis09.bewisclient.impl.screen
+package net.bewis09.bewisclient.drawable
 
-import net.bewis09.bewisclient.drawable.Animator
-import net.bewis09.bewisclient.drawable.Animator.Companion.EASE_IN_OUT
-import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.bewisclient.drawable.ScreenDrawing
-import net.bewis09.bewisclient.drawable.combineInt
 import net.bewis09.bewisclient.drawable.renderables.Button
 import net.bewis09.bewisclient.drawable.renderables.RainbowImage
 import net.bewis09.bewisclient.drawable.renderables.Rectangle
@@ -14,12 +9,12 @@ import net.minecraft.util.Identifier
 import org.lwjgl.glfw.GLFW
 
 class OptionScreen : Renderable(), BackgroundEffectProvider {
-    val alphaMainAnimation = Animator(getSettings().optionsMenu.animationTime.get().toLong(), EASE_IN_OUT, "alpha" to 0f, "inside" to 1f)
+    val alphaMainAnimation = Animator(getSettings().optionsMenu.animationTime.get().toLong(), Animator.Companion.EASE_IN_OUT, "alpha" to 0f, "inside" to 1f)
 
     val homeButton = Button("Home") {
         info("Home button clicked")
     }
-    val editHUDButton = Button( "Edit HUD") {
+    val editHUDButton = Button("Edit HUD") {
         info("Edit HUD button clicked")
     }
     val sectionVerticalLine = Rectangle(combineInt(0xFFFFFF, 0.15f))
@@ -41,9 +36,11 @@ class OptionScreen : Renderable(), BackgroundEffectProvider {
         var currentInstance: OptionScreen? = null
     }
 
+    var popup: Popup? = null
+
     var optionsHeader: Renderable? = null
     var optionsPane: Renderable? = null
-    val settings = OptionsScreenSettingStructure(this)
+    val settings = SettingStructure(this)
 
     val image = RainbowImage(Identifier.of("bewisclient", "icon_long.png"), 0xFFFFFF, 0.5f)
 
@@ -53,21 +50,26 @@ class OptionScreen : Renderable(), BackgroundEffectProvider {
     }
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+        val mx = if (popup != null) Integer.MIN_VALUE else mouseX
+        val my = if (popup != null) Integer.MAX_VALUE else mouseY
+
         screenDrawing.pushAlpha(alphaMainAnimation["alpha"])
         screenDrawing.setBewisclientFont()
         screenDrawing.fillWithBorderRounded(30, 30, getWidth() - 60, getHeight() - 60, 10, 0x000000, 0.5f, 0xFFFFFF, 0.15f)
-        sectionVerticalLine.render(screenDrawing, mouseX, mouseY)
-        sidebarPlane.render(screenDrawing, mouseX, mouseY)
-        image.render(screenDrawing, mouseX, mouseY)
+        sectionVerticalLine.render(screenDrawing, mx, my)
+        sidebarPlane.render(screenDrawing, mx, my)
+        image.render(screenDrawing, mx, my)
         screenDrawing.pushAlpha(alphaMainAnimation["inside"])
-        optionsHeader?.render(screenDrawing, mouseX, mouseY)
-        optionsPane?.render(screenDrawing, mouseX, mouseY)
+        optionsHeader?.render(screenDrawing, mx, my)
+        optionsPane?.render(screenDrawing, mx, my)
         screenDrawing.popColor()
+        screenDrawing.popColor()
+        popup?.render(screenDrawing, mouseX, mouseY)
         screenDrawing.defaultFont()
-        screenDrawing.popColor()
     }
 
     override fun init() {
+        popup?.invoke(0,0,getWidth(), getHeight())?.let { addRenderable(it) }
         addRenderable(sectionVerticalLine(163,37,1, getHeight() - 74))
         addRenderable(sidebarPlane(37, 37, 120, getHeight() - 101))
         addRenderable(image(37, getHeight() - 59, 120, 22))
@@ -86,6 +88,70 @@ class OptionScreen : Renderable(), BackgroundEffectProvider {
             resize()
             alphaMainAnimation["inside"] = 1f
         }
+    }
+
+    class Popup(val child: Renderable): Renderable() {
+        val alphaAnimation = Animator(200, Animator.EASE_IN_OUT, "alpha" to 0f)
+
+        init {
+            alphaAnimation["alpha"] = 1f
+        }
+
+        override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {
+            if (key == GLFW.GLFW_KEY_ESCAPE) {
+                alphaAnimation.set("alpha", 0f) {
+                    currentInstance?.popup?.let { a ->
+                        currentInstance?.renderables?.remove(a)
+                    }
+                    currentInstance?.popup = null
+                }
+                return true
+            }
+            return super.onKeyPress(key, scanCode, modifiers)
+        }
+
+        override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+            screenDrawing.pushAlpha(alphaAnimation["alpha"])
+            screenDrawing.fill(0,0,getWidth(),getHeight(), 0x000000, 0.5f)
+            child.render(screenDrawing, mouseX, mouseY)
+            screenDrawing.popColor()
+        }
+
+        override fun init() {
+            addRenderable(child(0, 0, getWidth(), getHeight()))
+        }
+
+        override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int) = true
+
+        override fun onMouseRelease(mouseX: Double, mouseY: Double, button: Int) = true
+
+        override fun onMouseDrag(mouseX: Double, mouseY: Double, startX: Double, startY: Double, button: Int) = true
+
+        override fun onMouseScroll(mouseX: Double, mouseY: Double, horizontalAmount: Double, verticalAmount: Double) = true
+
+        override fun onKeyRelease(key: Int, scanCode: Int, modifiers: Int) = true
+
+        override fun onCharTyped(character: Char, modifiers: Int) = true
+    }
+
+    fun closePopup() {
+        if (popup != null) {
+            popup?.alphaAnimation?.set("alpha", 0f) {
+                currentInstance?.popup?.let { a ->
+                    currentInstance?.renderables?.remove(a)
+                }
+                currentInstance?.popup = null
+            }
+        }
+    }
+
+    fun openPopup(popupRenderable: Renderable) {
+        if (popup != null) {
+            popup?.let { renderables.remove(it) }
+        }
+        popup = Popup(popupRenderable)
+        renderables.addFirst(popup!!)
+        popup?.invoke(0,0,getWidth(),getHeight())?.resize()
     }
 
     override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {

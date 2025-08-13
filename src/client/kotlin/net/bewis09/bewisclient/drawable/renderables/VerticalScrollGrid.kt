@@ -4,7 +4,7 @@ import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.ScreenDrawing
 import kotlin.math.floor
 
-class ScrollGrid(val init: (Int) -> List<Renderable>, val gap: Int, val minWidth: Int): Scrollable() {
+class VerticalScrollGrid(val init: (Int) -> List<Renderable>, val gap: Int, val minWidth: Int): Scrollable(Direction.VERTICAL) {
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         val elementsInRow = floor(((getWidth() + gap) / (minWidth + gap)).toDouble())
         val elementWidth = (getWidth() + gap) / elementsInRow - gap
@@ -19,7 +19,7 @@ class ScrollGrid(val init: (Int) -> List<Renderable>, val gap: Int, val minWidth
             it.setPosition(getX() + (columnIndex * (elementWidth + gap)).toInt(), getY() + min + scrollAnimation["scrollY"].toInt())
             columnHeights[columnIndex] += it.getHeight() + gap
         }
-        innerHeight = (columnHeights.max() - gap).toFloat()
+        innerSize = (columnHeights.max() - gap).toFloat()
         renderRenderables(screenDrawing, mouseX, mouseY)
         screenDrawing.disableScissors()
     }

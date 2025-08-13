@@ -1,10 +1,13 @@
 package net.bewis09.bewisclient.api
 
+import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.game.Keybind
 import net.bewis09.bewisclient.logic.BewisclientInterface
 import net.bewis09.bewisclient.logic.EventEntrypoint
 import net.bewis09.bewisclient.settings.Settings
 import net.bewis09.bewisclient.widget.Widget
+import net.bewis09.bewisclient.drawable.renderables.option_screen.SettingCategory
+import net.bewis09.bewisclient.drawable.renderables.option_screen.SidebarCategory
 
 /**
  * The Bewisclient API entrypoint interface.
@@ -52,6 +55,28 @@ interface BewisclientAPIEntrypoint : BewisclientInterface {
      * @return A list of [Widget]s that are registered in the mod.
      */
     fun getWidgets(): List<Widget> {
+        return emptyList()
+    }
+
+    /**
+     * Should return a list of [Renderable]s that are displayed in the Bewisclient utilities tab.
+     * Those should preferably be a subclass of [SettingCategory]
+     */
+    fun getUtilities(): List<Renderable> {
+        return emptyList()
+    }
+
+    /**
+     * Should return a list of the sidebar categories that are displayed in the Bewisclient options screen.
+     */
+    fun getSidebarCategories(): List<SidebarCategory> {
+        return emptyList()
+    }
+
+    /**
+     * Should return a list of [Renderable]s that are settings for multiple widgets so you can change the default settings for all widgets at once.
+     */
+    fun getDefaultWidgetSettings(): List<Renderable> {
         return emptyList()
     }
 }

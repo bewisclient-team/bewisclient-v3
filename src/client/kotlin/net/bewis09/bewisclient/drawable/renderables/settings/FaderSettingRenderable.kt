@@ -11,9 +11,13 @@ import net.bewis09.bewisclient.settings.types.Setting
 import net.minecraft.util.Identifier
 
 open class FaderSettingRenderable<T: Number>(val title: Translation, val description: Translation?, val setting: Setting<T>, val precision: Precision, val parser: (original: Float) -> T): TooltipHoverable(description) {
-    val fader = Fader({ setting.get().toFloat() }, precision) { new ->
-        setting.set(parser(new))
-    }
+    val fader = Fader(
+        value = { setting.get().toFloat() },
+        onChange = { value ->
+            setting.set(parser(value))
+        },
+        precision = precision
+    )
 
     val resetButton = ImageButton(Identifier.of("bewisclient", "textures/gui/sprites/reset.png"), {
         setting.set(null)
