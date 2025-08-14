@@ -1,26 +1,20 @@
 package net.bewis09.bewisclient.widget.types
 
-import com.google.gson.JsonObject
+import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.widget.Widget
 
 abstract class ScalableWidget(): Widget() {
-    var scale: Float? = null
+    var scale = getSettings().widgetSettings.defaults.scale.cloneWithDefault()
 
-    override fun loadProperties(properties: JsonObject) {
-        scale = try {
-            properties.get("scale")?.asFloat
-        } catch (_: Exception) {
-            null
-        }
-    }
-
-    override fun saveProperties(properties: JsonObject) {
-        scale?.let {
-            properties.addProperty("scale", it)
-        }
+    init {
+        create("scale", scale)
     }
 
     override fun getScale(): Float {
-        return scale ?: getSettings().widgetSettings.defaults.scale.get()
+        return scale.get()
+    }
+
+    override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
+        list.add(scale.createRenderable("widget.scale", "Scale"))
     }
 }

@@ -11,11 +11,13 @@ import net.bewis09.bewisclient.logic.color.ColorSaver
  *
  * @param types the types of colors that can be selected. If not specified, all types are allowed.
  */
-class ColorSetting(default: ColorSaver, vararg val types: String = ALL): Setting<ColorSaver>(default) {
+class ColorSetting(default: () -> ColorSaver, vararg val types: String = ALL): Setting<ColorSaver>(default) {
+    constructor(default: ColorSaver): this({ default }, *ALL)
+    constructor(default: ColorSaver, vararg types: String): this({ default }, *types)
+
     companion object {
         val ALL = ColorSaver.types.map { it.getType() }.toTypedArray()
         const val STATIC = "static"
-        const val OPAQUE_STATIC = "opaque_static"
         const val CHANGING = "changing"
 
         fun without(vararg types: String): Array<String> {
@@ -24,11 +26,11 @@ class ColorSetting(default: ColorSaver, vararg val types: String = ALL): Setting
     }
 
     override fun convertToElement(): JsonElement? {
-        val jsonObject = JsonObject()
-
         if (getWithoutDefault() == null) {
             return null
         }
+
+        val jsonObject = JsonObject()
 
         jsonObject.addProperty("type", get().getType())
         jsonObject.add("data", get().saveToJson())
@@ -46,5 +48,9 @@ class ColorSetting(default: ColorSaver, vararg val types: String = ALL): Setting
 
     override fun processChange(value: ColorSaver?): ColorSaver? {
         return if(value?.getType() in types) value else null
+    }
+
+    fun cloneWithDefault(): ColorSetting {
+        return ColorSetting({ get() }, *types)
     }
 }

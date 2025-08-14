@@ -64,11 +64,16 @@ class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint {
     )
 
     override fun getDefaultWidgetSettings(): List<Renderable> = listOf(
+        getSettings().widgetSettings.defaults.backgroundColor.createRenderable("widget.background_color", "Background Color"),
+        getSettings().widgetSettings.defaults.backgroundOpacity.createRenderable("widget.background_opacity", "Background Opacity"),
+        getSettings().widgetSettings.defaults.borderColor.createRenderable("widget.border_color", "Border Color"),
+        getSettings().widgetSettings.defaults.borderOpacity.createRenderable("widget.border_opacity", "Border Opacity"),
         getSettings().widgetSettings.defaults.paddingSize.createRenderable("widget.padding_size", "Padding Size"),
         getSettings().widgetSettings.defaults.lineSpacing.createRenderable("widget.line_spacing", "Line Spacing"),
+        getSettings().widgetSettings.defaults.textColor.createRenderable("widget.text_color", "Text Color"),
         getSettings().widgetSettings.defaults.borderRadius.createRenderable("widget.border_radius", "Border Radius"),
         getSettings().widgetSettings.defaults.scale.createRenderable("widget.scale", "Scale"),
-        getSettings().widgetSettings.defaults.gap.createRenderable("widget.gap", "Gap"),
+        getSettings().widgetSettings.defaults.gap.createRenderable("widget.gap", "Gap")
     )
 
     override fun getSidebarCategories(): List<SidebarCategory> = listOf(

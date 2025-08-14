@@ -13,8 +13,12 @@ import net.bewis09.bewisclient.settings.SettingsLoader
  * @param default The default value of the setting.
  * @param onChangeListener An optional listener that is called when the setting value changes.
  */
-abstract class Setting<T>(val default: T, val onChangeListener: ((oldValue: T?, newValue: T?) -> Unit)?) : BewisclientInterface, Gettable<T> {
-    constructor(default: T) : this(default, null)
+abstract class Setting<T>(val default: () -> T, val onChangeListener: ((oldValue: T?, newValue: T?) -> Unit)?) : BewisclientInterface, Gettable<T> {
+    constructor(default: () -> T) : this(default, null)
+
+    constructor(default: T, onChangeListener: ((oldValue: T?, newValue: T?) -> Unit)? = null) : this({ default }, onChangeListener)
+
+    constructor(default: T) : this({ default }, null)
 
     /**
      * The current value of the setting.
@@ -24,7 +28,7 @@ abstract class Setting<T>(val default: T, val onChangeListener: ((oldValue: T?, 
     private var value: T? = null
 
     override fun get(): T {
-        return value ?: default
+        return value ?: default()
     }
 
     /**

@@ -13,8 +13,8 @@ class RelativePosition(val parent: String, val side: String): WidgetPosition {
         return when (side) {
             "left" -> parentWidget.getX() - widget.getScaledWidth() - gap
             "right" -> parentWidget.getX() + parentWidget.getScaledWidth() + gap
-            "top" -> (parentWidget.position ?: parentWidget.defaultPosition()).getX(widget)
-            "bottom" -> (parentWidget.position ?: parentWidget.defaultPosition()).getX(widget)
+            "top" -> parentWidget.position.get().getX(widget)
+            "bottom" -> parentWidget.position.get().getX(widget)
             else -> 0f
         }
     }
@@ -24,8 +24,8 @@ class RelativePosition(val parent: String, val side: String): WidgetPosition {
         val gap = widget.getSettings().widgetSettings.defaults.gap.get()
 
         return when (side) {
-            "left" -> (parentWidget.position ?: parentWidget.defaultPosition()).getY(widget)
-            "right" -> (parentWidget.position ?: parentWidget.defaultPosition()).getY(widget)
+            "left" -> parentWidget.position.get().getY(widget)
+            "right" -> parentWidget.position.get().getY(widget)
             "top" -> parentWidget.getY() - widget.getScaledHeight() - gap
             "bottom" -> parentWidget.getY() + parentWidget.getScaledHeight() + gap
             else -> 0f

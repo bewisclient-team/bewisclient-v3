@@ -9,7 +9,7 @@ class WidgetsSetting: Setting<JsonObject>(JsonObject()) {
         val jsonObject = JsonObject()
 
         WidgetLoader.widgets.forEach {
-            jsonObject.add(it.getId().toString(), it.saveToJson())
+            jsonObject.add(it.getId().toString(), it.convertToElement())
         }
 
         return jsonObject
@@ -27,7 +27,7 @@ class WidgetsSetting: Setting<JsonObject>(JsonObject()) {
             val widgetData = entry.value
 
             if (widgetData.isJsonObject) {
-                WidgetLoader.widgets.find { it.getId().toString() == widgetId }?.loadFromJson(widgetData.asJsonObject)
+                WidgetLoader.widgets.find { it.getId().toString() == widgetId }?.setFromElement(widgetData.asJsonObject)
             }
         }
     }

@@ -41,18 +41,27 @@ abstract class Renderable : BewisclientInterface {
     }
 
     fun setX(x: Int): Renderable {
+        if (x == getX()) return this
+
         this.x = x.toUInt()
+        resize()
         return this
     }
 
     fun setY(y: Int): Renderable {
+        if (y == getY()) return this
+
         this.y = y.toUInt()
+        resize()
         return this
     }
 
     fun setPosition(x: Int, y: Int): Renderable {
+        if (x == getX() && y == getY()) return this
+
         this.x = x.toUInt()
         this.y = y.toUInt()
+        resize()
         return this
     }
 
@@ -91,8 +100,19 @@ abstract class Renderable : BewisclientInterface {
     }
 
     fun setBounds(x: Int, y: Int, width: Int, height: Int): Renderable {
-        setPosition(x, y)
-        setSize(width, height)
+        if (x == getX() && y == getY() && width.toUInt() == this.width && height.toUInt() == this.height) return this
+
+        if (width < 0) throw IllegalArgumentException("Width cannot be negative")
+        if (height < 0) throw IllegalArgumentException("Height cannot be negative")
+
+        this.x = x.toUInt()
+        this.y = y.toUInt()
+
+        this.width = width.toUInt()
+        this.height = height.toUInt()
+        
+        resize()
+
         return this
     }
 

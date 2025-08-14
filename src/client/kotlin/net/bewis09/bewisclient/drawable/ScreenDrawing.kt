@@ -3191,11 +3191,11 @@ fun isMouseOver(
 }
 
 fun combineInt(rgb: Int, alpha: Float): Int {
-    return (rgb.toLong() or ((alpha * 255).toLong() shl 24)).toInt()
+    return ((rgb.toLong() and 0xFFFFFF) or ((alpha * 255).toLong() shl 24)).toInt()
 }
 
 fun combineLong(rgb: Int, alpha: Float): Long {
-    return (rgb.toLong() or ((alpha * 255).toLong() shl 24))
+    return ((rgb.toLong() and 0xFFFFFF) or ((alpha * 255).toLong() shl 24))
 }
 
 fun combineInt(r: UByte, g: UByte, b: UByte, alpha: Float): Int {

@@ -2,11 +2,12 @@ package net.bewis09.bewisclient.impl.widget
 
 import com.google.gson.Gson
 import com.google.gson.JsonElement
-import com.google.gson.JsonObject
+import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.logic.EventEntrypoint
 import net.bewis09.bewisclient.logic.TextColors
 import net.bewis09.bewisclient.logic.catch
+import net.bewis09.bewisclient.settings.types.BooleanSetting
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
@@ -22,7 +23,11 @@ object BiomeWidget: LineWidget(), EventEntrypoint {
     val unknownBiome = Translation("widget.biome_widget.unknown_biome", "Unknown Biome")
 
     val biomeCodes = hashMapOf<Identifier, String>()
-    var colorCodeBiome: Boolean? = null
+    var colorCodeBiome = BooleanSetting(false)
+
+    init {
+        create("color_code_biome", colorCodeBiome)
+    }
 
     val biomeWidgetTranslation = Translation("widget.biome_widget.name", "Biome Widget")
     val biomeWidgetDescription = Translation("widget.biome_widget.description", "Displays the current biome at your position.")
@@ -62,7 +67,7 @@ object BiomeWidget: LineWidget(), EventEntrypoint {
     }
 
     override fun getLines(): List<String> = listOf(
-        catch { getText(colorCodeBiome ?: false) } ?: unknownBiome.getTranslatedString()
+        catch { getText(colorCodeBiome.get()) } ?: unknownBiome.getTranslatedString()
     )
 
     override fun defaultPosition(): WidgetPosition = SidedPosition(5, 5, SidedPosition.TransformerType.START, SidedPosition.TransformerType.END)
@@ -83,15 +88,8 @@ object BiomeWidget: LineWidget(), EventEntrypoint {
         return (if (colorCoded) biomeCodes[biome] else "") + Text.translatable(biome.toTranslationKey("biome")).string
     }
 
-    override fun saveProperties(properties: JsonObject) {
-        super.saveProperties(properties)
-
-        properties.addProperty("color_code_biome", colorCodeBiome)
-    }
-
-    override fun loadProperties(properties: JsonObject) {
-        super.loadProperties(properties)
-
-        colorCodeBiome = catch { properties.get("color_code_biome")?.asBoolean }
+    override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
+        list.add(colorCodeBiome.createRenderable("widget.color_code_biome", "Color Code Biome"))
+        super.appendSettingsRenderables(list)
     }
 }

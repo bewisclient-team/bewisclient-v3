@@ -10,11 +10,19 @@ import net.bewis09.bewisclient.settings.Settings
 class FloatSetting : Setting<Float> {
     val precision: Precision
 
-    constructor(default: Float, precision: Precision, onChangeListener: ((oldValue: Float?, newValue: Float?) -> Unit)? = null) : super(default, onChangeListener) {
+    constructor(default: () -> Float, precision: Precision, onChangeListener: ((oldValue: Float?, newValue: Float?) -> Unit)? = null) : super(default, onChangeListener) {
         this.precision = precision
     }
 
-    constructor(default: Float, precision: Precision) : super(default) {
+    constructor(default: () -> Float, precision: Precision) : super(default) {
+        this.precision = precision
+    }
+
+    constructor(default: Float, precision: Precision, onChangeListener: ((oldValue: Float?, newValue: Float?) -> Unit)? = null) : super({ default }, onChangeListener) {
+        this.precision = precision
+    }
+
+    constructor(default: Float, precision: Precision) : super({ default }) {
         this.precision = precision
     }
 
@@ -43,5 +51,9 @@ class FloatSetting : Setting<Float> {
 
     override fun processChange(value: Float?): Float? = value?.let {
         precision.parse(it)
+    }
+
+    fun cloneWithDefault(): FloatSetting {
+        return FloatSetting({ get() }, precision)
     }
 }

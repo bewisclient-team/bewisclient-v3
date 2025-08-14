@@ -9,6 +9,10 @@ class StringSetting : Setting<String> {
 
     constructor(default: String) : super(default)
 
+    constructor(default: () -> String, onChangeListener: ((oldValue: String?, newValue: String?) -> Unit)? = null) : super(default, onChangeListener)
+
+    constructor(default: () -> String) : super(default)
+
     override fun convertToElement(): JsonElement? {
         return getWithoutDefault()?.let { JsonPrimitive(it) }
     }

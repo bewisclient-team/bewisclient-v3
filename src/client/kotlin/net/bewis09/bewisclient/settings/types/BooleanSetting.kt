@@ -7,9 +7,13 @@ import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.settings.Settings
 
 class BooleanSetting : Setting<Boolean> {
-    constructor(default: Boolean, onChangeListener: ((oldValue: Boolean?, newValue: Boolean?) -> Unit)? = null) : super(default, onChangeListener)
+    constructor(default: () -> Boolean, onChangeListener: ((oldValue: Boolean?, newValue: Boolean?) -> Unit)? = null) : super(default, onChangeListener)
 
-    constructor(default: Boolean) : super(default)
+    constructor(default: () -> Boolean) : super(default)
+
+    constructor(default: Boolean, onChangeListener: ((oldValue: Boolean?, newValue: Boolean?) -> Unit)? = null) : super({ default }, onChangeListener)
+
+    constructor(default: Boolean) : super({ default })
 
     override fun convertToElement(): JsonElement? {
         return getWithoutDefault()?.let { JsonPrimitive(it) }
@@ -29,5 +33,9 @@ class BooleanSetting : Setting<Boolean> {
 
     fun createRenderable(id: String, title: String, description: String? = null): BooleanSettingRenderable {
         return BooleanSettingRenderable(Translation("menu.$id", title), description?.let { Translation("menu.$id.description", it) }, this)
+    }
+
+    fun cloneWithDefault(): BooleanSetting {
+        return BooleanSetting({ get() })
     }
 }
