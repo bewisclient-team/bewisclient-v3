@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.mixin.client;
 
-import net.bewis09.bewisclient.logic.Bewisclient;
+import net.bewis09.bewisclient.impl.settings.functionalities.BlockHighlightSettings;
 import net.minecraft.client.render.VertexRendering;
 import net.minecraft.client.render.WorldRenderer;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,8 +17,8 @@ public class WorldRendererMixin {
             double x, double y, double z, int c) {
         var color = c;
 
-        if (Bewisclient.INSTANCE.getSettings().getBlockHighlight().getEnabled().get()) {
-            color = (Bewisclient.INSTANCE.getSettings().getBlockHighlight().getColor().get().getColor() & 0x00FFFFFF) | ((int) (Bewisclient.INSTANCE.getSettings().getBlockHighlight().getThickness().get() * 255f) << 24);
+        if (BlockHighlightSettings.INSTANCE.getEnabled().get()) {
+            color = (BlockHighlightSettings.INSTANCE.getColor().get().getColor() & 0x00FFFFFF) | ((int) (BlockHighlightSettings.INSTANCE.getThickness().get() * 255f) << 24);
         }
 
         VertexRendering.drawOutline(matrixStack, vertexConsumer, voxelShape, x, y, z, color);

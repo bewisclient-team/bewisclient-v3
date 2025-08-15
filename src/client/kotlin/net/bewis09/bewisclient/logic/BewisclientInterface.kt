@@ -1,7 +1,5 @@
 package net.bewis09.bewisclient.logic
 
-import net.bewis09.bewisclient.impl.settings.BewisclientSettings
-import net.bewis09.bewisclient.impl.settings.BewisclientSettingsObject
 import net.minecraft.client.MinecraftClient
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -12,10 +10,6 @@ import org.slf4j.LoggerFactory
 interface BewisclientInterface : BewisclientLogger, FileLogic, InGameLogic, TextureLogic {
     companion object {
         private val logger = LoggerFactory.getLogger("Bewisclient")
-    }
-
-    fun getSettings(): BewisclientSettingsObject {
-        return BewisclientSettings.settingsObject
     }
 
     override fun getLogger(): Logger = logger

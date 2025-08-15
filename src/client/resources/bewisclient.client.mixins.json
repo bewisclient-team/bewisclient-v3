@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_21",
   "client": [
     "GameOptionsMixin",
+    "GameRendererMixin",
     "LightmapTextureManagerMixin",
     "LivingEntityMixin",
     "MinecraftClientMixin",

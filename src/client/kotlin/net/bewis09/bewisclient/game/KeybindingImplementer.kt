@@ -22,7 +22,11 @@ object KeybindingImplementer : EventEntrypoint {
         ClientTickEvents.END_CLIENT_TICK.register(ClientTickEvents.EndTick { client: MinecraftClient? ->
             keybinds.forEach {
                 while (it.keyBinding.wasPressed()) {
-                    it.action()
+                    it.action?.invoke()
+                }
+
+                it.tick?.let { a ->
+                    a(it.keyBinding.isPressed)
                 }
             }
         })

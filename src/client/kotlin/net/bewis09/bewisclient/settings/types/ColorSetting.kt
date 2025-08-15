@@ -2,6 +2,8 @@ package net.bewis09.bewisclient.settings.types
 
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
+import net.bewis09.bewisclient.drawable.Translations
+import net.bewis09.bewisclient.drawable.renderables.settings.ColorFaderSettingRenderable
 import net.bewis09.bewisclient.drawable.renderables.settings.ColorSettingRenderable
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.logic.color.ColorSaver
@@ -44,6 +46,10 @@ class ColorSetting(default: () -> ColorSaver, vararg val types: String = ALL): S
 
     fun createRenderable(id: String, title: String, description: String? = null): ColorSettingRenderable {
         return ColorSettingRenderable(Translation("menu.$id", title), description?.let { Translation("menu.$id.description", it) }, this, types.map { it }.toTypedArray())
+    }
+
+    fun createRenderableWithFader(id: String, title: String, description: String? = null, faderSetting: FloatSetting): ColorFaderSettingRenderable {
+        return ColorFaderSettingRenderable(Translation("menu.$id", title), description?.let { Translation("menu.$id.description", it) }, this, types.map { it }.toTypedArray(), faderSetting, Translations.OPACITY)
     }
 
     override fun processChange(value: ColorSaver?): ColorSaver? {

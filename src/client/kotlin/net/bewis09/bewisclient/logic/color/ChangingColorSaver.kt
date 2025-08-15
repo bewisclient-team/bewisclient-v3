@@ -31,7 +31,7 @@ class ChangingColorSaver: ColorSaver {
     }
 
     fun getHue(): Float {
-        return ((System.currentTimeMillis() - startTime) % changingSpeed) / changingSpeed.toFloat() + startHue
+        return (((System.currentTimeMillis() - startTime) % changingSpeed) / changingSpeed.toFloat() + startHue) % 1f
     }
 
     override fun getColor(): Int {
@@ -41,7 +41,7 @@ class ChangingColorSaver: ColorSaver {
     override fun getType(): String = "changing"
 
     override fun saveToJson(): JsonElement {
-        return JsonPrimitive(changingSpeed.toString())
+        return JsonPrimitive(changingSpeed)
     }
 
     object Factory : ColorSaverFactory<ChangingColorSaver> {
@@ -90,6 +90,10 @@ class ChangingColorSaver: ColorSaver {
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             renderRenderables(screenDrawing, mouseX, mouseY)
+            screenDrawing.push()
+            screenDrawing.translate(get().getHue() * (getWidth() - 1),0f)
+            screenDrawing.drawVerticalLine(getX(), getY() + 36, 8, 0, 1f)
+            screenDrawing.pop()
         }
 
         override fun init() {

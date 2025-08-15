@@ -7,7 +7,7 @@ import net.bewis09.bewisclient.settings.types.FloatSetting
 import net.bewis09.bewisclient.settings.types.IntegerSetting
 import net.bewis09.bewisclient.settings.types.ObjectSetting
 
-class DefaultWidgetSettings: ObjectSetting() {
+object DefaultWidgetSettings: ObjectSetting() {
     val backgroundColor = ColorSetting(StaticColorSaver(0f, 0f, 0f), ColorSetting.STATIC, ColorSetting.CHANGING)
     val backgroundOpacity = FloatSetting(0.5f, Precision(0.01f, 1f, 0.01f, 2))
     val borderColor = ColorSetting(StaticColorSaver(0f, 0f, 0f), ColorSetting.STATIC, ColorSetting.CHANGING)

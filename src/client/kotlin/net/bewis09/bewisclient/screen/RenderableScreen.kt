@@ -29,10 +29,10 @@ class RenderableScreen(val renderable: Renderable) : Screen(Text.empty()) {
         }
     }
 
-    override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int): Boolean {
+    override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int, bl: Boolean): Boolean {
         startX = mouseX
         startY = mouseY
-        return renderable.mouseClick(mouseX, mouseY, button) || super.mouseClicked(mouseX, mouseY, button)
+        return renderable.mouseClick(mouseX, mouseY, button) || super.mouseClicked(mouseX, mouseY, button, bl)
     }
 
     override fun mouseReleased(mouseX: Double, mouseY: Double, button: Int): Boolean {

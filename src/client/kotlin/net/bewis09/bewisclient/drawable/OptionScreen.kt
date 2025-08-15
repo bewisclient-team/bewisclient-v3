@@ -4,18 +4,23 @@ import net.bewis09.bewisclient.drawable.renderables.Button
 import net.bewis09.bewisclient.drawable.renderables.RainbowImage
 import net.bewis09.bewisclient.drawable.renderables.Rectangle
 import net.bewis09.bewisclient.drawable.renderables.VerticalAlignScrollPlane
+import net.bewis09.bewisclient.drawable.renderables.hud_edit_screen.HudEditScreen
+import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.interfaces.BackgroundEffectProvider
+import net.bewis09.bewisclient.screen.RenderableScreen
 import net.minecraft.util.Identifier
 import org.lwjgl.glfw.GLFW
 
 class OptionScreen : Renderable(), BackgroundEffectProvider {
-    val alphaMainAnimation = Animator(getSettings().optionsMenu.animationTime.get().toLong(), Animator.Companion.EASE_IN_OUT, "alpha" to 0f, "inside" to 1f)
+    val alphaMainAnimation = Animator(OptionsMenuSettings.animationTime.get().toLong(), Animator.Companion.EASE_IN_OUT, "alpha" to 0f, "inside" to 1f)
 
     val homeButton = Button("Home") {
         info("Home button clicked")
     }
     val editHUDButton = Button("Edit HUD") {
-        info("Edit HUD button clicked")
+        alphaMainAnimation.set("alpha", 0f) {
+            getClient().setScreen(RenderableScreen(HudEditScreen()))
+        }
     }
     val sectionVerticalLine = Rectangle(combineInt(0xFFFFFF, 0.15f))
     val sectionHorizontalLine = Rectangle(combineInt(0xFFFFFF, 0.15f))

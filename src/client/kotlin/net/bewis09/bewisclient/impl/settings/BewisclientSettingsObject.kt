@@ -2,18 +2,15 @@ package net.bewis09.bewisclient.impl.settings
 
 import net.bewis09.bewisclient.impl.settings.functionalities.BlockHighlightSettings
 import net.bewis09.bewisclient.impl.settings.functionalities.FullbrightSettings
+import net.bewis09.bewisclient.impl.settings.functionalities.ZoomSettings
 import net.bewis09.bewisclient.settings.types.ObjectSetting
 
-class BewisclientSettingsObject() : ObjectSetting() {
-    val optionsMenu = OptionsMenuSettings()
-    val widgetSettings = WidgetSettings()
-    val fullbright = FullbrightSettings()
-    val blockHighlight = BlockHighlightSettings()
-
+object BewisclientSettingsObject : ObjectSetting() {
     init {
-        create("options_menu", optionsMenu)
-        create("widgets", widgetSettings)
-        create("fullbright", fullbright)
-        create("block_highlight", blockHighlight)
+        create("options_menu", OptionsMenuSettings)
+        create("widgets", WidgetSettings)
+        create("fullbright", FullbrightSettings)
+        create("block_highlight", BlockHighlightSettings)
+        create("zoom", ZoomSettings)
     }
 }

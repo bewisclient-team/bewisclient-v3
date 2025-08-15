@@ -4,7 +4,7 @@ import net.bewis09.bewisclient.drawable.interpolateColor
 import net.bewis09.bewisclient.drawable.renderables.option_screen.ImageSettingCategory
 import net.bewis09.bewisclient.game.Keybind
 import net.bewis09.bewisclient.game.Translation
-import net.bewis09.bewisclient.logic.Bewisclient
+import net.bewis09.bewisclient.impl.settings.functionalities.FullbrightSettings
 import net.bewis09.bewisclient.logic.TextColors
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.effect.StatusEffects
@@ -13,13 +13,12 @@ import org.lwjgl.glfw.GLFW
 
 object Fullbright: ImageSettingCategory(
     "fullbright", Translation("menu.category.fullbright", "Fullbright"), arrayOf(
-    Bewisclient.getSettings().fullbright.enabled.createRenderable("fullbright.enabled", "Fullbright", "Enable or disable fullbright functionality"),
-    Bewisclient.getSettings().fullbright.brightness.createRenderable(
+    FullbrightSettings.enabled.createRenderable("fullbright.enabled", "Fullbright", "Enable or disable fullbright functionality"),
+    FullbrightSettings.brightness.createRenderable(
         "fullbright.brightness",
         "Brightness",
         "Adjust the brightness level. 0.0 to 1.0 are the normal levels, while 1.0 to 15.0 is lighting up the world according to the brightness level"
-    ),
-    Bewisclient.getSettings().fullbright.nightVision.createRenderable("fullbright.night_vision", "Night Vision", "Allows you to have the visual effect of night vision without actually having it"),
+    ), FullbrightSettings.nightVision.createRenderable("fullbright.night_vision", "Night Vision", "Allows you to have the visual effect of night vision without actually having it"),
 )) {
     val nightVisionEnabledTranslation = Translation("fullbright.night_vision.enabled", TextColors.YELLOW + "Night Vision Enabled")
     val nightVisionDisabledTranslation = Translation("fullbright.night_vision.disabled", TextColors.RED + "Night Vision Disabled")
@@ -27,7 +26,7 @@ object Fullbright: ImageSettingCategory(
     val brightnessTranslation = Translation("fullbright.brightness", "Brightness: %s")
 
     object ToggleNightVision : Keybind(GLFW.GLFW_KEY_H, "fullbright.toggle_night_vision", "Toggle Night Vision", {
-        getSettings().fullbright.nightVision.toggle()
+        FullbrightSettings.nightVision.toggle()
         if (hasNightVision()) {
             showTitle(nightVisionEnabledTranslation())
         } else {
@@ -36,33 +35,33 @@ object Fullbright: ImageSettingCategory(
     })
 
     object ToggleFullbright : Keybind(GLFW.GLFW_KEY_G, "fullbright.toggle_fullbright", "Toggle Fullbright", {
-        val value = getSettings().fullbright.brightness.get()
+        val value = FullbrightSettings.brightness.get()
 
         if (value > 1f) {
-            getSettings().fullbright.brightness.set(1f)
+            FullbrightSettings.brightness.set(1f)
         } else {
-            getSettings().fullbright.brightness.set(15f)
+            FullbrightSettings.brightness.set(15f)
         }
 
-        getSettings().fullbright.enabled.set(true)
+        FullbrightSettings.enabled.set(true)
 
         showFullbrightMessage()
     })
 
     object IncreaseBrightness : Keybind(GLFW.GLFW_KEY_UP, "fullbright.increase_brightness", "Increase Brightness", {
-        val current = getSettings().fullbright.brightness.get()
-        getSettings().fullbright.brightness.set(15f.coerceAtMost(current + 0.25f))
+        val current = FullbrightSettings.brightness.get()
+        FullbrightSettings.brightness.set(15f.coerceAtMost(current + 0.25f))
         showFullbrightMessage()
     })
 
     object DecreaseBrightness : Keybind(GLFW.GLFW_KEY_DOWN, "fullbright.decrease_brightness", "Decrease Brightness", {
-        val current = getSettings().fullbright.brightness.get()
-        getSettings().fullbright.brightness.set(0f.coerceAtLeast(current - 0.25f))
+        val current = FullbrightSettings.brightness.get()
+        FullbrightSettings.brightness.set(0f.coerceAtLeast(current - 0.25f))
         showFullbrightMessage()
     })
 
     fun showFullbrightMessage() {
-        val value = getSettings().fullbright.brightness.get()
+        val value = FullbrightSettings.brightness.get()
         showTitle(brightnessTranslation((value * 100).toString() + "%").setStyle(Style.EMPTY.withColor(interpolateColor(0xFF0000, 0xFFFF00, value / 15))))
     }
 
@@ -73,6 +72,6 @@ object Fullbright: ImageSettingCategory(
     }
 
     fun hasNightVision(): Boolean {
-        return getSettings().fullbright.nightVision.get()
+        return FullbrightSettings.nightVision.get()
     }
 }

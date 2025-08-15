@@ -28,6 +28,7 @@ class SidedPosition(val x: Int, val y: Int, val xTransformer: TransformerType, v
 
     enum class TransformerType(val id: String, val transformer: (Int, Int, Float) -> Float) {
         START("start", { pos: Int, _: Int, _: Float -> pos.toFloat() }),
+        CENTER("center", { pos: Int, size: Int, widgetSize: Float -> size / 2 - widgetSize / 2 }),
         END("end", { pos: Int, size: Int, widgetSize: Float -> size - pos - widgetSize })
     }
 

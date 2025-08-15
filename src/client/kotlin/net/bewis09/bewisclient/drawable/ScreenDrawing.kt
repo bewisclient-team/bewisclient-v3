@@ -9,6 +9,7 @@ import net.minecraft.client.gui.screen.ingame.InventoryScreen
 import net.minecraft.entity.LivingEntity
 import net.minecraft.item.ItemStack
 import net.minecraft.text.Style
+import net.minecraft.text.StyleSpriteSource
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 import org.joml.Quaternionf
@@ -165,7 +166,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
     }
 
     fun setFont(font: Identifier) {
-        style = Style.EMPTY.withFont(font)
+        style = Style.EMPTY.withFont(StyleSpriteSource.Font(font))
     }
 
     fun defaultFont() {
@@ -280,7 +281,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param color The color to fill the rectangle with, represented as an ARGB integer.
      */
     fun drawBorder(x: Int, y: Int, width: Int, height: Int, color: Int) {
-        drawContext.drawBorder(x, y, width, height, applyAlpha(color))
+        drawContext.fill(x, y, x + width, y + 1, applyAlpha(color))
+        drawContext.fill(x, y + height - 1, x + width, y + height, applyAlpha(color))
+        drawContext.fill(x, y, x + 1, y + height, applyAlpha(color))
+        drawContext.fill(x + width - 1, y, x + width, y + height, applyAlpha(color))
     }
 
     /**
@@ -633,14 +637,6 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      */
     fun goUpLayer() {
         drawContext.state.goUpLayer()
-    }
-
-    /**
-     * Moves the drawing context down one layer in the rendering stack. This is used to change the
-     * rendering order of elements on the screen.
-     */
-    fun goDownLayer() {
-        drawContext.state.goDownLayer()
     }
 
     /**

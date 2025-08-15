@@ -4,7 +4,7 @@ import net.bewis09.bewisclient.settings.types.BooleanSetting
 import net.bewis09.bewisclient.settings.types.IntegerSetting
 import net.bewis09.bewisclient.settings.types.ObjectSetting
 
-class OptionsMenuSettings: ObjectSetting() {
+object OptionsMenuSettings: ObjectSetting() {
     val animationTime = IntegerSetting(150,0, 500)
     val blurBackground = BooleanSetting(true)
 

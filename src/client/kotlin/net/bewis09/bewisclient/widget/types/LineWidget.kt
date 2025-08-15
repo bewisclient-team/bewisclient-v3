@@ -2,16 +2,17 @@ package net.bewis09.bewisclient.widget.types
 
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.ScreenDrawing
+import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 
 abstract class LineWidget(): ScalableWidget() {
-    var backgroundColor = getSettings().widgetSettings.defaults.backgroundColor.cloneWithDefault()
-    var backgroundOpacity = getSettings().widgetSettings.defaults.backgroundOpacity.cloneWithDefault()
-    var borderColor = getSettings().widgetSettings.defaults.borderColor.cloneWithDefault()
-    var borderOpacity = getSettings().widgetSettings.defaults.borderOpacity.cloneWithDefault()
-    var paddingSize = getSettings().widgetSettings.defaults.paddingSize.cloneWithDefault()
-    var lineSpacing = getSettings().widgetSettings.defaults.lineSpacing.cloneWithDefault()
-    var textColor = getSettings().widgetSettings.defaults.textColor.cloneWithDefault()
-    var borderRadius = getSettings().widgetSettings.defaults.borderRadius.cloneWithDefault()
+    var backgroundColor = DefaultWidgetSettings.backgroundColor.cloneWithDefault()
+    var backgroundOpacity = DefaultWidgetSettings.backgroundOpacity.cloneWithDefault()
+    var borderColor = DefaultWidgetSettings.borderColor.cloneWithDefault()
+    var borderOpacity = DefaultWidgetSettings.borderOpacity.cloneWithDefault()
+    var paddingSize = DefaultWidgetSettings.paddingSize.cloneWithDefault()
+    var lineSpacing = DefaultWidgetSettings.lineSpacing.cloneWithDefault()
+    var textColor = DefaultWidgetSettings.textColor.cloneWithDefault()
+    var borderRadius = DefaultWidgetSettings.borderRadius.cloneWithDefault()
 
     init {
         create("text_color", textColor)
@@ -23,6 +24,8 @@ abstract class LineWidget(): ScalableWidget() {
         create("padding_size", paddingSize)
         create("line_spacing", lineSpacing)
     }
+
+    open fun hasMultipleLines(): Boolean = false
 
     abstract fun getLines(): List<String>
     open fun isCentered(): Boolean = true
@@ -63,14 +66,13 @@ abstract class LineWidget(): ScalableWidget() {
     }
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
-        list.add(backgroundColor.createRenderable("widget.background_color", "Background Color"))
-        list.add(backgroundOpacity.createRenderable("widget.background_opacity", "Background Opacity"))
-        list.add(borderColor.createRenderable("widget.border_color", "Border Color"))
-        list.add(borderOpacity.createRenderable("widget.border_opacity", "Border Opacity"))
-        list.add(paddingSize.createRenderable("widget.padding_size", "Padding Size"))
-        list.add(lineSpacing.createRenderable("widget.line_spacing", "Line Spacing"))
-        list.add(textColor.createRenderable("widget.text_color", "Text Color"))
-        list.add(borderRadius.createRenderable("widget.border_radius", "Border Radius"))
+        list.add(backgroundColor.createRenderableWithFader("widget.background", "Background", "Set the color and opacity of the widget", backgroundOpacity))
+        list.add(borderColor.createRenderableWithFader("widget.border", "Border", "Set the color and opacity of the widget's border", borderOpacity))
+        list.add(paddingSize.createRenderable("widget.padding_size", "Padding Size", "Set the padding at the edge of the widget to the text"))
+        if (hasMultipleLines())
+            list.add(lineSpacing.createRenderable("widget.line_spacing", "Line Spacing", "Set the spacing between lines of text in the widget"))
+        list.add(textColor.createRenderable("widget.text_color", "Text Color", "Set the color of the text in the widget"))
+        list.add(borderRadius.createRenderable("widget.border_radius", "Border Radius", "Set the radius of the widget's border corners"))
         super.appendSettingsRenderables(list)
     }
 }

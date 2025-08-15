@@ -5,7 +5,7 @@ import net.bewis09.bewisclient.settings.types.BooleanSetting
 import net.bewis09.bewisclient.settings.types.FloatSetting
 import net.bewis09.bewisclient.settings.types.ObjectSetting
 
-class FullbrightSettings: ObjectSetting() {
+object FullbrightSettings: ObjectSetting() {
     val enabled = BooleanSetting(false)
     val nightVision = BooleanSetting(false)
     val brightness = FloatSetting(1f, Precision(0f, 15f, 0.01f, 2))

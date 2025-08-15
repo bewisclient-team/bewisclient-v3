@@ -13,6 +13,13 @@ object CoordinatesWidget: LineWidget() {
     var colorCodeBiome = BooleanSetting(false)
     var showBiome = BooleanSetting(false)
 
+    init {
+        create("color_code_biome", colorCodeBiome)
+        create("show_biome", showBiome)
+    }
+
+    override fun hasMultipleLines(): Boolean = true
+
     val coordinatesWidgetTranslation = Translation("widget.coordinates_widget.name", "Coordinates Widget")
     val coordinatesWidgetDescription = Translation("widget.coordinates_widget.description", "Displays your current coordinates in the world")
 

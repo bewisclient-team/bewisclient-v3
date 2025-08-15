@@ -2,13 +2,17 @@ package net.bewis09.bewisclient.widget.logic
 
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
+import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.bewis09.bewisclient.widget.Widget
 import net.bewis09.bewisclient.widget.WidgetLoader
 
 class RelativePosition(val parent: String, val side: String): WidgetPosition {
+    val parentWidget = WidgetLoader.widgets.find { it.getId().toString() == parent }
+
     override fun getX(widget: Widget): Float {
-        val parentWidget = WidgetLoader.widgets.find { it.getId().toString() == parent } ?: return 0f
-        val gap = widget.getSettings().widgetSettings.defaults.gap.get()
+        parentWidget ?: return 0f
+
+        val gap = DefaultWidgetSettings.gap.get()
 
         return when (side) {
             "left" -> parentWidget.getX() - widget.getScaledWidth() - gap
@@ -20,8 +24,9 @@ class RelativePosition(val parent: String, val side: String): WidgetPosition {
     }
 
     override fun getY(widget: Widget): Float {
-        val parentWidget = WidgetLoader.widgets.find { it.getId().toString() == parent } ?: return 0f
-        val gap = widget.getSettings().widgetSettings.defaults.gap.get()
+        parentWidget ?: return 0f
+
+        val gap = DefaultWidgetSettings.gap.get()
 
         return when (side) {
             "left" -> parentWidget.position.get().getY(widget)
@@ -30,6 +35,16 @@ class RelativePosition(val parent: String, val side: String): WidgetPosition {
             "bottom" -> parentWidget.getY() + parentWidget.getScaledHeight() + gap
             else -> 0f
         }
+    }
+
+    fun isInDependencyStack(widget: Widget): Boolean {
+        var latest = parentWidget
+
+        while (latest != null && latest != widget) {
+            latest = (latest.position.get() as? RelativePosition)?.parentWidget
+        }
+
+        return latest == widget
     }
 
     override fun saveToJson(): JsonElement = JsonObject().also {

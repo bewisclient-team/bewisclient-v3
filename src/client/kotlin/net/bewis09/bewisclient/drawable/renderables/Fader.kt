@@ -20,8 +20,9 @@ class Fader(val value: Gettable<Float>, val precision: Precision, val onChange: 
         )
         screenDrawing.push()
         screenDrawing.translate(getX() + normalizedValue * (getWidth() - 8) + 4,getY() + 2f)
+        screenDrawing.scale(0.1f,0.1f)
         screenDrawing.fillRounded(
-            -2,0, 4, 10, 2, interpolateColor(0xAAAAAA, 0xDDDDDD, hoverAnimation["hovering"]), 1f
+            -20,0, 40, 100, 20, interpolateColor(0xAAAAAA, 0xDDDDDD, hoverAnimation["hovering"]), 1f
         )
         screenDrawing.pop()
     }

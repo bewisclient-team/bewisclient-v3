@@ -10,7 +10,13 @@ import net.bewis09.bewisclient.exception.ProgramCodeException
  * @param interpolationType A function that takes a delta value (0 to 1) and returns an interpolated value.
  * @param initial An optional initial map of values to start the animation from.
  */
-class Animator(val duration: Long, val interpolationType: (delta: Float) -> Float = LINEAR, vararg initial: Pair<String, Float>) {
+class Animator(val duration: () -> Long, val interpolationType: (delta: Float) -> Float = LINEAR, vararg initial: Pair<String, Float>) {
+    constructor(
+        duration: Long,
+        interpolationType: (delta: Float) -> Float = LINEAR,
+        vararg initial: Pair<String, Float>
+    ) : this({ duration }, interpolationType, *initial)
+
     private val map: HashMap<String, Float> = hashMapOf()
     private val animationStartMap: HashMap<String, Long> = hashMapOf()
     private val beforeAnimationMap: HashMap<String, Float> = hashMapOf()
@@ -49,7 +55,7 @@ class Animator(val duration: Long, val interpolationType: (delta: Float) -> Floa
     operator fun get(key: String): Float {
         if (key in pauseAnimation) pauseAnimation.remove(key)
 
-        val delta = (System.currentTimeMillis() - (animationStartMap[key] ?: 0)) / duration.toFloat()
+        val delta = (System.currentTimeMillis() - (animationStartMap[key] ?: 0)) / duration().toFloat()
 
         val value = map[key] ?: throw ProgramCodeException("Animation for key '$key' has not been initialized")
 
