@@ -6,26 +6,28 @@ import net.minecraft.text.Text
 
 class Translation(private val key: String, @Suppress("PropertyName") val en_us: String) {
     init {
-        if (key.isEmpty()) {
-            throw IllegalArgumentException("Translation key cannot be empty")
-        }
-
-        if (en_us.isEmpty()) {
-            throw IllegalArgumentException("Translation en_us cannot be empty")
-        }
-
-        addTranslation(key, en_us)
+        if(!key.isEmpty())
+            addTranslation(key, en_us)
     }
 
     fun getTranslatedText(): MutableText {
+        if (key.isEmpty()) {
+            return Text.literal(en_us)
+        }
         return Text.translatable("bewisclient.$key")
     }
 
     fun getTranslatedText(vararg args: Any): MutableText {
+        if (key.isEmpty()) {
+            return Text.literal(en_us)
+        }
         return Text.translatable("bewisclient.$key", *args)
     }
 
     fun getTranslatedString(): String {
+        if (key.isEmpty()) {
+            return en_us
+        }
         return getTranslatedText().string
     }
 
@@ -39,6 +41,10 @@ class Translation(private val key: String, @Suppress("PropertyName") val en_us: 
 
     operator fun invoke(vararg args: Any): MutableText {
         return getTranslatedText(*args)
+    }
+
+    companion object {
+        fun literal(tooltip: String): Translation = Translation("", tooltip)
     }
 }
 

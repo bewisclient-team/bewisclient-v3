@@ -18,6 +18,7 @@ object DefaultWidgetSettings: ObjectSetting() {
     val borderRadius = IntegerSetting(0, 0, 20)
     val scale = FloatSetting(1f, Precision(0.1f, 2f, 0.01f, 2))
     val gap = IntegerSetting(2, 0, 20)
+    val screenEdgeDistance = IntegerSetting(5, 0, 10)
 
     init {
         create("background_color", backgroundColor)

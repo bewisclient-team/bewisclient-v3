@@ -3,6 +3,7 @@ package net.bewis09.bewisclient.settings.types
 import com.google.gson.JsonElement
 import com.google.gson.JsonPrimitive
 import net.bewis09.bewisclient.drawable.renderables.settings.BooleanSettingRenderable
+import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSettingsRenderable
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.settings.Settings
 
@@ -35,7 +36,11 @@ class BooleanSetting : Setting<Boolean> {
         return BooleanSettingRenderable(Translation("menu.$id", title), description?.let { Translation("menu.$id.description", it) }, this)
     }
 
+    fun createRenderablePart(id: String, title: String, description: String? = null): MultipleBooleanSettingsRenderable.Part<*> {
+        return MultipleBooleanSettingsRenderable.Part(Translation("menu.$id", title), description?.let { Translation("menu.$id.description", it) }, this)
+    }
+
     fun cloneWithDefault(): BooleanSetting {
-        return BooleanSetting({ get() })
+        return BooleanSetting { get() }
     }
 }

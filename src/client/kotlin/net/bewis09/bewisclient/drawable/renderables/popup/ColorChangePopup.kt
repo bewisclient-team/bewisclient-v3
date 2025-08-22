@@ -1,34 +1,35 @@
-package net.bewis09.bewisclient.drawable.renderables
+package net.bewis09.bewisclient.drawable.renderables.popup
 
-import net.bewis09.bewisclient.drawable.OptionScreen
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.ScreenDrawing
-import net.bewis09.bewisclient.logic.Gettable
+import net.bewis09.bewisclient.drawable.renderables.Button
+import net.bewis09.bewisclient.drawable.renderables.Rectangle
+import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
+import net.bewis09.bewisclient.interfaces.Gettable
 import net.bewis09.bewisclient.logic.color.ColorSaver
 
 class ColorChangePopup(state: Gettable<ColorSaver>, onChange: (ColorSaver) -> Unit, types: Array<String>): Renderable() {
-    val inner = ColorChangePopupInner(state, onChange, types)
+    val inner = Inner(state, onChange, types)
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         renderRenderables(screenDrawing, mouseX, mouseY)
     }
 
     override fun init() {
-        super.init()
         addRenderable(inner.setPosition(getWidth() / 2 - inner.getWidth() / 2, getHeight() / 2 - inner.getHeight() / 2))
     }
 
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
         if (!inner.isMouseOver(mouseX, mouseY)) {
-            OptionScreen.currentInstance?.closePopup()
+            OptionScreen.Companion.currentInstance?.closePopup()
             return true
         }
         return super.onMouseClick(mouseX, mouseY, button)
     }
 
-    class ColorChangePopupInner(val state: Gettable<ColorSaver>, val onChange: (ColorSaver) -> Unit, val types: Array<String>): Renderable() {
+    class Inner(val state: Gettable<ColorSaver>, val onChange: (ColorSaver) -> Unit, val types: Array<String>): Renderable() {
         val buttons = types.map { type ->
-            ColorSaver.getType(type)?.let {
+            ColorSaver.Companion.getType(type)?.let {
                 Button(it.getTranslation().getTranslatedString(), { newColor ->
                     if (state.get().getType() != type) {
                         onChange(it.getDefault())
@@ -63,7 +64,7 @@ class ColorChangePopup(state: Gettable<ColorSaver>, onChange: (ColorSaver) -> Un
                 }
             }
             addRenderable(Rectangle(0x7FAAAAAA)(getX() + 5, getY() + getHeight() - 26, getWidth() - 11, 1))
-            ColorSaver.getFactory(state.get())?.getSettingsRenderable({ state.get() }, onChange)(getX() + 5, getY() + 6, getWidth() - 11, getHeight() - 37)?.let { addRenderable(it); it.resize() }
+            ColorSaver.Companion.getFactory(state.get())?.getSettingsRenderable({ state.get() }, onChange)(getX() + 5, getY() + 6, getWidth() - 11, getHeight() - 37)?.let { addRenderable(it); it.resize() }
         }
     }
 }

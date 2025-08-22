@@ -4,14 +4,8 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import net.bewis09.bewisclient.settings.Settings
 
-open class ObjectSetting : Setting<JsonObject> {
-    /**
-     * A map of all settings in this object setting.
-     * Changing this map will not result in a change of the json object, and therefore it will not be saved.
-     */
+open class ObjectSetting() : Setting<JsonObject>(JsonObject()) {
     val map: HashMap<String, Setting<*>> = hashMapOf()
-
-    constructor() : super(JsonObject())
 
     override fun convertToElement(): JsonElement {
         val jsonObject = JsonObject()

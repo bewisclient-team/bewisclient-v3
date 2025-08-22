@@ -7,8 +7,8 @@ import net.bewis09.bewisclient.drawable.combineInt
 import net.bewis09.bewisclient.game.Translation
 import net.minecraft.client.MinecraftClient
 
-open class TooltipHoverable(val tooltip: String?): Hoverable() {
-    constructor(tooltip: Translation?): this(tooltip?.getTranslatedString())
+open class TooltipHoverable(val tooltip: () -> Translation?): Hoverable() {
+    constructor(tooltip: Translation? = null): this({ tooltip })
 
     val tooltipAnimation = animate(200, Animator.EASE_IN_OUT, "tooltip" to 0f)
     var wasActuallyDrawn: Boolean? = null
@@ -19,6 +19,8 @@ open class TooltipHoverable(val tooltip: String?): Hoverable() {
 
         wasActuallyDrawn = isActuallyDrawn
         isActuallyDrawn = null
+
+        val tooltip = tooltip()
 
         if (tooltip != null && hoverAnimation["hovering"] > 0f) {
             if (hoverAnimation["hovering"] == 1f && wasActuallyDrawn != false)
@@ -39,7 +41,7 @@ open class TooltipHoverable(val tooltip: String?): Hoverable() {
                 screenDrawing.setBewisclientFont()
 
                 val textHeight = screenDrawing.getTextHeight()
-                val wrappedText = screenDrawing.wrapText(tooltip, 200)
+                val wrappedText = screenDrawing.wrapText(tooltip.getTranslatedString(), 200)
                 val tooltipHeight = wrappedText.size * textHeight + 10
 
                 val width = wrappedText.maxOfOrNull { screenDrawing.getTextWidth(it) }?.plus(10) ?: 210

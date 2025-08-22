@@ -3,11 +3,17 @@
   "package": "net.bewis09.bewisclient.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "ClientPlayNetworkHandlerMixin",
+    "EquippableComponentMixin",
     "GameOptionsMixin",
     "GameRendererMixin",
+    "InGameHudMixin",
+    "ItemStackMixin",
     "LightmapTextureManagerMixin",
     "LivingEntityMixin",
     "MinecraftClientMixin",
+    "MouseMixin",
+    "TooltipDisplayComponentMixin",
     "WorldRendererMixin"
   ],
   "injectors": {

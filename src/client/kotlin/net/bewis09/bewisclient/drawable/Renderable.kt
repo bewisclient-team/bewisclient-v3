@@ -26,8 +26,8 @@ abstract class Renderable : BewisclientInterface {
      * Renders all the renderables in this Renderable.
      * Should be called at some point in the rendering process.
      */
-    fun renderRenderables(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        renderables.forEach { it.render(screenDrawing, mouseX, mouseY) }
+    open fun renderRenderables(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+        ArrayList(renderables).forEach { it.render(screenDrawing, mouseX, mouseY) }
     }
 
     fun addRenderable(renderable: Renderable) {
@@ -37,7 +37,7 @@ abstract class Renderable : BewisclientInterface {
     fun resize() {
         renderables.clear()
         init()
-        renderables.forEach { it.resize() }
+        ArrayList(renderables).forEach { it.resize() }
     }
 
     fun setX(x: Int): Renderable {

@@ -36,6 +36,6 @@ class BooleanSettingRenderable(val title: Translation, val description: Translat
     override fun init() {
         super.init()
         addRenderable(resetButton.setPosition(getX() + getWidth() - resetButton.getWidth() - 4, getY() + 4))
-        addRenderable(switch.setPosition(getX() + getWidth() - switch.getWidth() - 8 - resetButton.getWidth(), getY() + 4))
+        addRenderable(switch.setPosition(getX() + getWidth() - switch.getWidth() - 8 - resetButton.getWidth(), getY() + 5))
     }
 }

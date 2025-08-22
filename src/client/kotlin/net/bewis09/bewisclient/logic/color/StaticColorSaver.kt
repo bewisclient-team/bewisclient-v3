@@ -135,7 +135,7 @@ open class StaticColorSaver: ColorSaver {
             ))
         }
 
-        class ColorButton(x: Int, y: Int, width: Int, height: Int, val color: () -> Int, tooltip: String? = null, val onClick: ((Int) -> Unit)? = null): TooltipHoverable(tooltip) {
+        class ColorButton(x: Int, y: Int, width: Int, height: Int, val color: () -> Int, tooltip: String? = null, val onClick: ((Int) -> Unit)? = null): TooltipHoverable(tooltip?.let { Translation.literal(it) }) {
             init {
                 this.x = x.toUInt()
                 this.y = y.toUInt()

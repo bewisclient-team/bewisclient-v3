@@ -2,7 +2,7 @@ package net.bewis09.bewisclient.drawable.renderables
 
 import net.bewis09.bewisclient.drawable.ScreenDrawing
 import net.bewis09.bewisclient.drawable.interpolateColor
-import net.bewis09.bewisclient.logic.Gettable
+import net.bewis09.bewisclient.interfaces.Gettable
 import net.bewis09.bewisclient.logic.number.Precision
 
 class Fader(val value: Gettable<Float>, val precision: Precision, val onChange: (new: Float) -> Unit) : Hoverable() {

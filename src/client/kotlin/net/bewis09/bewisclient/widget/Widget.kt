@@ -2,8 +2,11 @@ package net.bewis09.bewisclient.widget
 
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.ScreenDrawing
+import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.logic.catch
+import net.bewis09.bewisclient.screen.RenderableScreen
+import net.bewis09.bewisclient.settings.types.BooleanSetting
 import net.bewis09.bewisclient.settings.types.ObjectSetting
 import net.bewis09.bewisclient.settings.types.WidgetPositionSetting
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
@@ -12,9 +15,27 @@ import net.minecraft.util.Identifier
 
 abstract class Widget: ObjectSetting() {
     var position: WidgetPositionSetting = WidgetPositionSetting(defaultPosition())
+    var enabled = BooleanSetting(isEnabledByDefault())
 
     init {
         create("position", position)
+        create("enabled", enabled)
+    }
+
+    open fun isEnabledByDefault(): Boolean {
+        return true
+    }
+
+    open fun isHidden(): Boolean {
+        return false
+    }
+
+    fun isShowing(): Boolean {
+        return isEnabled() && (!isHidden() || ((MinecraftClient.getInstance().currentScreen as? RenderableScreen)?.renderable is HudEditScreen))
+    }
+
+    fun isEnabled(): Boolean {
+        return enabled.get()
     }
 
     abstract fun defaultPosition(): WidgetPosition

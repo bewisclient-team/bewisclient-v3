@@ -12,6 +12,7 @@ import net.minecraft.text.Style
 import net.minecraft.text.StyleSpriteSource
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
+import net.minecraft.util.math.ColorHelper
 import org.joml.Quaternionf
 import org.joml.Vector3f
 import kotlin.math.atan
@@ -190,6 +191,14 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      */
     fun fill(x: Int, y: Int, width: Int, height: Int, color: Long) {
         fill(x, y, width, height, color.toInt())
+    }
+
+    fun drawTextBackground(text: Text, x: Int, y: Int, color: Long) {
+        val width = textRenderer.getWidth(text)
+        val i: Int = MinecraftClient.getInstance().options.getTextBackgroundColor(0.0f)
+        if (i != 0) {
+            this.fill(x - 2, y - 2, width + 4, 13, ColorHelper.mix(i, color.toInt()))
+        }
     }
 
     /**
@@ -943,7 +952,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      */
     fun drawCenteredText(text: String, centerX: Int, y: Int, color: Int) {
         val textWidth = textRenderer.getWidth(Text.literal(text).fillStyle(style))
-        drawContext.drawText(textRenderer, Text.literal(text).fillStyle(style), centerX - textWidth / 2, y, applyAlpha(color), false)
+        push()
+        translate(-textWidth / 2f, 0f)
+        drawContext.drawText(textRenderer, Text.literal(text).fillStyle(style), centerX, y, applyAlpha(color), false)
+        pop()
     }
 
     /**
@@ -1022,9 +1034,18 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      *
      * @param color The color of the text, represented as an ARGB integer.
      */
+    fun drawCenteredTextWithShadow(text: Text, centerX: Int, y: Int, color: Int) {
+        val textWidth = textRenderer.getWidth(text.copy().fillStyle(style))
+        drawContext.drawText(textRenderer, text.copy().fillStyle(style), centerX - textWidth / 2, y, applyAlpha(color), true)
+    }
+
+    /**
+     * Draws text centered at the specified x position with a shadow.
+     *
+     * @param color The color of the text, represented as an ARGB integer.
+     */
     fun drawCenteredTextWithShadow(text: String, centerX: Int, y: Int, color: Int) {
-        val textWidth = textRenderer.getWidth(Text.literal(text).fillStyle(style))
-        drawContext.drawText(textRenderer, Text.literal(text).fillStyle(style), centerX - textWidth / 2, y, applyAlpha(color), true)
+        drawCenteredTextWithShadow(Text.literal(text), centerX, y, color)
     }
 
     /**
@@ -1036,6 +1057,18 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * (fully opaque).
      */
     fun drawCenteredTextWithShadow(text: String, centerX: Int, y: Int, color: Int, alpha: Float) {
+        drawCenteredTextWithShadow(text, centerX, y, combineInt(color, alpha))
+    }
+
+    /**
+     * Draws text centered at the specified x position with a shadow.
+     *
+     * @param color The color of the text, represented as an RGB integer. The alpha value is applied
+     * separately.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
+     */
+    fun drawCenteredTextWithShadow(text: Text, centerX: Int, y: Int, color: Int, alpha: Float) {
         drawCenteredTextWithShadow(text, centerX, y, combineInt(color, alpha))
     }
 

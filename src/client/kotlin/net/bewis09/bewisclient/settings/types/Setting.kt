@@ -2,7 +2,8 @@ package net.bewis09.bewisclient.settings.types
 
 import com.google.gson.JsonElement
 import net.bewis09.bewisclient.logic.BewisclientInterface
-import net.bewis09.bewisclient.logic.Gettable
+import net.bewis09.bewisclient.interfaces.Gettable
+import net.bewis09.bewisclient.interfaces.Settable
 import net.bewis09.bewisclient.settings.SettingsLoader
 
 /**
@@ -13,7 +14,7 @@ import net.bewis09.bewisclient.settings.SettingsLoader
  * @param default The default value of the setting.
  * @param onChangeListener An optional listener that is called when the setting value changes.
  */
-abstract class Setting<T>(val default: () -> T, val onChangeListener: ((oldValue: T?, newValue: T?) -> Unit)?) : BewisclientInterface, Gettable<T> {
+abstract class Setting<T>(val default: () -> T, val onChangeListener: ((oldValue: T?, newValue: T?) -> Unit)?) : BewisclientInterface, Gettable<T>, Settable<T?> {
     constructor(default: () -> T) : this(default, null)
 
     constructor(default: T, onChangeListener: ((oldValue: T?, newValue: T?) -> Unit)? = null) : this({ default }, onChangeListener)
@@ -46,7 +47,7 @@ abstract class Setting<T>(val default: () -> T, val onChangeListener: ((oldValue
      *
      * @param value The new value to set for the setting.
      */
-    fun set(value: T?) {
+    override fun set(value: T?) {
         val oldValue = this.value
         if (value == this.value) {
             return // No change, do nothing

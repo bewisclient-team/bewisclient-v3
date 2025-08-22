@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.impl.functionalities.fullbright
 
 import net.bewis09.bewisclient.drawable.interpolateColor
-import net.bewis09.bewisclient.drawable.renderables.option_screen.ImageSettingCategory
+import net.bewis09.bewisclient.drawable.renderables.options_structure.ImageSettingCategory
 import net.bewis09.bewisclient.game.Keybind
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.functionalities.FullbrightSettings
@@ -13,13 +13,12 @@ import org.lwjgl.glfw.GLFW
 
 object Fullbright: ImageSettingCategory(
     "fullbright", Translation("menu.category.fullbright", "Fullbright"), arrayOf(
-    FullbrightSettings.enabled.createRenderable("fullbright.enabled", "Fullbright", "Enable or disable fullbright functionality"),
     FullbrightSettings.brightness.createRenderable(
         "fullbright.brightness",
         "Brightness",
         "Adjust the brightness level. 0.0 to 1.0 are the normal levels, while 1.0 to 15.0 is lighting up the world according to the brightness level"
     ), FullbrightSettings.nightVision.createRenderable("fullbright.night_vision", "Night Vision", "Allows you to have the visual effect of night vision without actually having it"),
-)) {
+), FullbrightSettings.enabled) {
     val nightVisionEnabledTranslation = Translation("fullbright.night_vision.enabled", TextColors.YELLOW + "Night Vision Enabled")
     val nightVisionDisabledTranslation = Translation("fullbright.night_vision.disabled", TextColors.RED + "Night Vision Disabled")
 

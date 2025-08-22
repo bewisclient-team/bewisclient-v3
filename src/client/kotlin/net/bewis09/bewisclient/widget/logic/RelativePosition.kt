@@ -12,6 +12,12 @@ class RelativePosition(val parent: String, val side: String): WidgetPosition {
     override fun getX(widget: Widget): Float {
         parentWidget ?: return 0f
 
+        if (isInDependencyStack(widget)) return 0f
+
+        if (!parentWidget.isShowing()) {
+            return parentWidget.position.get().getX(widget)
+        }
+
         val gap = DefaultWidgetSettings.gap.get()
 
         return when (side) {
@@ -25,6 +31,12 @@ class RelativePosition(val parent: String, val side: String): WidgetPosition {
 
     override fun getY(widget: Widget): Float {
         parentWidget ?: return 0f
+
+        if (isInDependencyStack(widget)) return 0f
+
+        if (!parentWidget.isShowing()) {
+            return parentWidget.position.get().getY(widget)
+        }
 
         val gap = DefaultWidgetSettings.gap.get()
 

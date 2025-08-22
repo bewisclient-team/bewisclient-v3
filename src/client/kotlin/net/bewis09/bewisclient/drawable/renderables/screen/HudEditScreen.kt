@@ -1,25 +1,43 @@
-package net.bewis09.bewisclient.drawable.renderables.hud_edit_screen
+package net.bewis09.bewisclient.drawable.renderables.screen
 
-import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.ScreenDrawing
+import net.bewis09.bewisclient.drawable.SettingStructure
+import net.bewis09.bewisclient.drawable.renderables.ImageButton
+import net.bewis09.bewisclient.drawable.renderables.popup.AddWidgetPopup
+import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.bewis09.bewisclient.interfaces.BackgroundEffectProvider
+import net.bewis09.bewisclient.screen.RenderableScreen
 import net.bewis09.bewisclient.widget.Widget
 import net.bewis09.bewisclient.widget.WidgetLoader
+import net.bewis09.bewisclient.widget.WidgetLoader.widgets
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.SidedPosition
+import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.screen.Screen
+import net.minecraft.util.Identifier
+import org.lwjgl.glfw.GLFW
 import kotlin.math.abs
 
-class HudEditScreen: Renderable(), BackgroundEffectProvider {
+class HudEditScreen: PopupScreen(), BackgroundEffectProvider {
     var selectedWidget: Widget? = null
     var startOffsetX: Float? = null
     var startOffsetY: Float? = null
 
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
-        if (button != 0) return false
 
-        WidgetLoader.widgets.forEach {
+        WidgetLoader.getEnabledWidgets().forEach {
             if (it.isInBox(mouseX, mouseY)) {
+                if (button == 1) {
+                    getClient().setScreen(RenderableScreen(OptionScreen().also { a ->
+                        val widgetsCategory = SettingStructure(a).widgets.first { b -> b.enableSetting == it.enabled }
+                        a.optionsHeader = widgetsCategory.getHeader()
+                        a.optionsPane = widgetsCategory.getPane()
+                        a.optionsHeaderBooleanSetting = it.enabled
+                    }))
+
+                    return true
+                }
+
                 selectedWidget = it
                 startOffsetX = (mouseX - it.getX()).toFloat()
                 startOffsetY = (mouseY - it.getY()).toFloat()
@@ -30,8 +48,25 @@ class HudEditScreen: Renderable(), BackgroundEffectProvider {
         return false
     }
 
-    override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+    override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int, popupShown: Boolean) {
+        widgets.forEach {
+            if (it.isShowing())
+                it.renderScaled(ScreenDrawing(screenDrawing.drawContext, MinecraftClient.getInstance().textRenderer))
+        }
         renderRenderables(screenDrawing, mouseX, mouseY)
+    }
+
+    override fun init() {
+        addRenderable(ImageButton(Identifier.of("bewisclient", "textures/gui/sprites/add.png")){
+            openPopup(AddWidgetPopup(this), 0xA0000000.toInt())
+        }.setImagePadding(0)(getWidth() - 16, getHeight() - 16, 14, 14))
+        addRenderable(ImageButton(Identifier.of("bewisclient", "textures/gui/sprites/settings.png")){
+            getClient().setScreen(RenderableScreen(OptionScreen().also {
+                val widgetsCategory = SettingStructure(it).widgetsCategory
+                it.optionsHeader = widgetsCategory.getHeader()
+                it.optionsPane = widgetsCategory.renderable
+            }))
+        }.setImagePadding(2)(getWidth() - 32, getHeight() - 16, 14, 14))
     }
 
     override fun onMouseDrag(mouseX: Double, mouseY: Double, startX: Double, startY: Double, button: Int): Boolean {
@@ -40,7 +75,7 @@ class HudEditScreen: Renderable(), BackgroundEffectProvider {
         val widget = selectedWidget
 
         if (widget != null && startOffsetX != null && startOffsetY != null) {
-            WidgetLoader.widgets.forEach {
+            WidgetLoader.getEnabledWidgets().forEach {
                 possibleAppendArea(it, widget, mouseX.toInt(), mouseY.toInt())?.let { a ->
                     widget.position.set(a)
                     return true
@@ -78,7 +113,7 @@ class HudEditScreen: Renderable(), BackgroundEffectProvider {
                 if (y1 < 0) return@forEach
                 if (y2 > getWidth()) return@forEach
 
-                val overlaps = WidgetLoader.widgets.any { other ->
+                val overlaps = WidgetLoader.getEnabledWidgets().any { other ->
                     if (other == appendWidget || other == widget) return@any false
                     val ox1 = other.getX().toInt()
                     val oy1 = other.getY().toInt()
@@ -107,8 +142,13 @@ class HudEditScreen: Renderable(), BackgroundEffectProvider {
         val yTransform = if (end) SidedPosition.TransformerType.END else SidedPosition.TransformerType.START
 
         if (!Screen.hasShiftDown()) {
-            x = x.coerceAtLeast(5.0)
-            y = y.coerceAtLeast(5.0)
+            if (abs(x - DefaultWidgetSettings.screenEdgeDistance.get()) < 10) {
+                x = DefaultWidgetSettings.screenEdgeDistance.get().toDouble()
+            }
+
+            if (abs(y - DefaultWidgetSettings.screenEdgeDistance.get()) < 10) {
+                y = DefaultWidgetSettings.screenEdgeDistance.get().toDouble()
+            }
 
             if (abs(wX + widget.getScaledWidth() / 2 - getWidth() / 2) < 10) {
                 xTransform = SidedPosition.TransformerType.CENTER
@@ -130,5 +170,13 @@ class HudEditScreen: Renderable(), BackgroundEffectProvider {
         startOffsetY = null
 
         return super.onMouseRelease(mouseX, mouseY, button)
+    }
+
+    override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {
+        if (key == GLFW.GLFW_KEY_ESCAPE) {
+            getClient().setScreen(RenderableScreen(OptionScreen()))
+            return true
+        }
+        return super.onKeyPress(key, scanCode, modifiers)
     }
 }
