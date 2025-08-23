@@ -50,9 +50,9 @@ class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint {
         CoordinatesWidget,
         DaytimeWidget,
         PingWidget,
-        CPSWidget
+        CPSWidget,
+        KeyWidget,
     )
-
 
     override fun getUtilities(): List<Renderable> = listOf(
         Fullbright,

@@ -20,18 +20,23 @@ open class ImageSettingCategory(val image: Identifier, text: Translation, settin
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
 
-        val s = (state["state"].coerceAtLeast(hoverAnimation["hovering"])) * 0.5f + 0.5f
-        screenDrawing.pushColor(s, s, s, 1f)
+        val s = (state["state"].coerceAtLeast(hoverAnimation["hovering"])) * 1f
 
         val height = (screenDrawing.wrapText(text.getTranslatedString(), getWidth() - 10).size - 1) * screenDrawing.getTextHeight()
 
-        screenDrawing.drawTexture(image, getX() + getWidth() / 2 - 20, getY() + 14, 40, 40, 0xFFFFFF, 1f)
-
+        screenDrawing.pushColor(s, s, s, 1f)
         screenDrawing.fillRounded(getX(), getY(), getWidth(), getHeight(), 5, 0xFFFFFF, hoverAnimation["hovering"] * 0.15f + 0.15f )
+
+        screenDrawing.popColor()
+
+        val t = 1 - (1 - s) / 2.5f
+
+        screenDrawing.pushColor(t, t, t, 1f)
         screenDrawing.drawCenteredWrappedText(text.getTranslatedString(), getX() + getWidth() / 2, getY() + getHeight() - 27 - height / 3, getWidth() - 10, -1)
 
-        renderRenderables(screenDrawing, mouseX, mouseY)
+        screenDrawing.drawTexture(image, getX() + getWidth() / 2 - 20, getY() + 14, 40, 40, 0xFFFFFF, 1f)
 
+        renderRenderables(screenDrawing, mouseX, mouseY)
         screenDrawing.popColor()
     }
 }
@@ -40,18 +45,23 @@ open class DescriptionSettingCategory(text: Translation, val description: Transl
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
 
-        val s = (state["state"].coerceAtLeast(hoverAnimation["hovering"])) * 0.5f + 0.5f
-        screenDrawing.pushColor(s, s, s, 1f)
+        val s = (state["state"].coerceAtLeast(hoverAnimation["hovering"])) * 1f
 
         val height = (screenDrawing.wrapText(text.getTranslatedString(), getWidth() - 10).size - 1) * screenDrawing.getTextHeight()
         val descriptionHeight = (screenDrawing.wrapText(description.getTranslatedString(), getWidth() - 10).size - 1) * screenDrawing.getTextHeight()
 
+        screenDrawing.pushColor(s, s, s, 1f)
         screenDrawing.fillRounded(getX(), getY(), getWidth(), getHeight(), 5, 0xFFFFFF, hoverAnimation["hovering"] * 0.15f + 0.15f)
+        screenDrawing.popColor()
+
+        val t = 1 - (1 - s) / 2.5f
+
+        screenDrawing.pushColor(t, t, t, 1f)
+
         screenDrawing.drawCenteredWrappedText(text.getTranslatedString(), getX() + getWidth() / 2, getY() + 14 - height / 2, getWidth() - 10, -1)
         screenDrawing.drawCenteredWrappedText(description.getTranslatedString(), getX() + getWidth() / 2, getY() + getHeight() - 42 - descriptionHeight / 2, getWidth() - 10, 0xFFAAAAAA)
 
         renderRenderables(screenDrawing, mouseX, mouseY)
-
         screenDrawing.popColor()
     }
 }

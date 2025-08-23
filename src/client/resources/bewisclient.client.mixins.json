@@ -9,6 +9,7 @@
     "GameRendererMixin",
     "InGameHudMixin",
     "ItemStackMixin",
+    "KeyBindingMixin",
     "LightmapTextureManagerMixin",
     "LivingEntityMixin",
     "MinecraftClientMixin",

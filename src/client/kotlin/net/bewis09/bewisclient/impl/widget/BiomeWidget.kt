@@ -23,7 +23,7 @@ object BiomeWidget: LineWidget(), EventEntrypoint {
     val unknownBiome = Translation("widget.biome_widget.unknown_biome", "Unknown Biome")
 
     val biomeCodes = hashMapOf<Identifier, String>()
-    var colorCodeBiome = BooleanSetting(false)
+    var colorCodeBiome = BooleanSetting(true)
 
     init {
         create("color_code_biome", colorCodeBiome)
@@ -92,4 +92,6 @@ object BiomeWidget: LineWidget(), EventEntrypoint {
         list.add(colorCodeBiome.createRenderable("widget.color_code_biome", "Color Code Biome"))
         super.appendSettingsRenderables(list)
     }
+
+    override fun isEnabledByDefault(): Boolean = false
 }

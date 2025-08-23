@@ -10,8 +10,8 @@ import net.minecraft.client.MinecraftClient
 import net.minecraft.util.Identifier
 
 object CoordinatesWidget: LineWidget() {
-    var colorCodeBiome = BooleanSetting(false)
-    var showBiome = BooleanSetting(false)
+    var colorCodeBiome = BooleanSetting(true)
+    var showBiome = BooleanSetting(true)
 
     init {
         create("color_code_biome", colorCodeBiome)

@@ -7,44 +7,44 @@ import net.bewis09.bewisclient.widget.Widget
 import net.bewis09.bewisclient.widget.WidgetLoader
 
 class RelativePosition(val parent: String, val side: String): WidgetPosition {
-    val parentWidget = WidgetLoader.widgets.find { it.getId().toString() == parent }
+    val parentWidget by lazy { WidgetLoader.widgets.find { it.getId().toString() == parent } }
 
     override fun getX(widget: Widget): Float {
-        parentWidget ?: return 0f
+        val parent = parentWidget ?: return 0f
 
         if (isInDependencyStack(widget)) return 0f
 
-        if (!parentWidget.isShowing()) {
-            return parentWidget.position.get().getX(widget)
+        if (!parent.isShowing()) {
+            return parent.position.get().getX(widget)
         }
 
         val gap = DefaultWidgetSettings.gap.get()
 
         return when (side) {
-            "left" -> parentWidget.getX() - widget.getScaledWidth() - gap
-            "right" -> parentWidget.getX() + parentWidget.getScaledWidth() + gap
-            "top" -> parentWidget.position.get().getX(widget)
-            "bottom" -> parentWidget.position.get().getX(widget)
+            "left" -> parent.getX() - widget.getScaledWidth() - gap
+            "right" -> parent.getX() + parent.getScaledWidth() + gap
+            "top" -> parent.position.get().getX(widget)
+            "bottom" -> parent.position.get().getX(widget)
             else -> 0f
         }
     }
 
     override fun getY(widget: Widget): Float {
-        parentWidget ?: return 0f
+        val parent = parentWidget ?: return 0f
 
         if (isInDependencyStack(widget)) return 0f
 
-        if (!parentWidget.isShowing()) {
-            return parentWidget.position.get().getY(widget)
+        if (!parent.isShowing()) {
+            return parent.position.get().getY(widget)
         }
 
         val gap = DefaultWidgetSettings.gap.get()
 
         return when (side) {
-            "left" -> parentWidget.position.get().getY(widget)
-            "right" -> parentWidget.position.get().getY(widget)
-            "top" -> parentWidget.getY() - widget.getScaledHeight() - gap
-            "bottom" -> parentWidget.getY() + parentWidget.getScaledHeight() + gap
+            "left" -> parent.position.get().getY(widget)
+            "right" -> parent.position.get().getY(widget)
+            "top" -> parent.getY() - widget.getScaledHeight() - gap
+            "bottom" -> parent.getY() + parent.getScaledHeight() + gap
             else -> 0f
         }
     }
