@@ -17,8 +17,8 @@ import net.bewis09.bewisclient.settings.types.Setting
 import net.minecraft.util.Identifier
 import org.lwjgl.glfw.GLFW
 
-class OptionScreen : PopupScreen(), BackgroundEffectProvider {
-    val alphaMainAnimation = Animator(OptionsMenuSettings.animationTime.get().toLong(), Animator.Companion.EASE_IN_OUT, "alpha" to 0f, "inside" to 1f)
+class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvider {
+    val alphaMainAnimation = Animator(OptionsMenuSettings.animationTime.get().toLong(), Animator.Companion.EASE_IN_OUT, "alpha" to 0f, "inside" to 1f, "blur" to startBlur)
 
     val homeButton = Button("Home") {
         info("Home button clicked")
@@ -63,6 +63,7 @@ class OptionScreen : PopupScreen(), BackgroundEffectProvider {
     init {
         currentInstance = this
         alphaMainAnimation["alpha"] = 1f
+        alphaMainAnimation["blur"] = 1f
     }
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int, popupShown: Boolean) {
@@ -111,6 +112,7 @@ class OptionScreen : PopupScreen(), BackgroundEffectProvider {
 
     override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {
         if (key == GLFW.GLFW_KEY_ESCAPE) {
+            alphaMainAnimation["blur"] = 0f
             alphaMainAnimation.set("alpha", 0f) {
                 getClient().setScreen(null)
             }
@@ -120,6 +122,6 @@ class OptionScreen : PopupScreen(), BackgroundEffectProvider {
     }
 
     override fun getBackgroundEffectFactor(): Float {
-        return alphaMainAnimation["alpha"]
+        return alphaMainAnimation["blur"]
     }
 }

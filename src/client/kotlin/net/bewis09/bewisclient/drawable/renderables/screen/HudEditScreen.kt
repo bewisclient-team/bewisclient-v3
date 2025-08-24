@@ -29,6 +29,8 @@ class HudEditScreen: PopupScreen(), BackgroundEffectProvider {
         val shiftForNoSnapping = Translation("hud_edit_screen.shift_for_no_snapping", "Shift to disable Snapping")
     }
 
+    val mouseMap: HashMap<Int, Boolean> = hashMapOf()
+
     var selectedWidget: Widget? = null
     var startOffsetX: Float? = null
     var startOffsetY: Float? = null
@@ -36,6 +38,8 @@ class HudEditScreen: PopupScreen(), BackgroundEffectProvider {
     val removeTexture: Identifier = Identifier.of("bewisclient", "textures/gui/sprites/remove.png")
 
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
+        mouseMap[button] = true
+
         WidgetLoader.getEnabledWidgets().forEach {
             if (it.isInBox(mouseX, mouseY)) {
                 hoverSeparate(mouseX.toFloat(), mouseY.toFloat(), (it.getX() + it.getScaledWidth() - 8).toInt(), (it.getY()).toInt(), 8, 8, {}) {
@@ -230,6 +234,8 @@ class HudEditScreen: PopupScreen(), BackgroundEffectProvider {
     }
 
     override fun onMouseRelease(mouseX: Double, mouseY: Double, button: Int): Boolean {
+        mouseMap[button] = false
+
         if (button != 0) return false
 
         selectedWidget = null

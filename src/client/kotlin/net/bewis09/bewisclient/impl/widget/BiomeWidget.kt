@@ -18,6 +18,7 @@ import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.biome.Biome
+import java.util.Calendar
 
 object BiomeWidget: LineWidget(), EventEntrypoint {
     val unknownBiome = Translation("widget.biome_widget.unknown_biome", "Unknown Biome")
@@ -81,9 +82,9 @@ object BiomeWidget: LineWidget(), EventEntrypoint {
     }
 
     fun getText(colorCoded: Boolean): String {
-        val biome = Identifier.of(MinecraftClient.getInstance().world?.getBiome(MinecraftClient.getInstance().cameraEntity?.blockPos
+        val biome = Identifier.of((MinecraftClient.getInstance().world?.getBiome(MinecraftClient.getInstance().cameraEntity?.blockPos
             ?: BlockPos(0, 0, 0)
-        )?.let { getBiomeString(it) })
+        ))?.let { getBiomeString(it) })
 
         return (if (colorCoded) biomeCodes[biome] else "") + Text.translatable(biome.toTranslationKey("biome")).string
     }
@@ -94,4 +95,30 @@ object BiomeWidget: LineWidget(), EventEntrypoint {
     }
 
     override fun isEnabledByDefault(): Boolean = false
+
+    fun getBiomeByMonth(): Identifier {
+        return when (Calendar.getInstance().get(Calendar.MONTH)) {
+            0 -> Identifier.of("minecraft:snowy_tundra")
+            1 -> Identifier.of("minecraft:ice_spikes")
+            2 -> Identifier.of("minecraft:swamp")
+            3 -> Identifier.of("minecraft:flower_forest")
+            4 -> Identifier.of("minecraft:forest")
+            5 -> Identifier.of("minecraft:plains")
+            6 -> Identifier.of("minecraft:sunflower_plains")
+            7 -> Identifier.of("minecraft:beach")
+            8 -> Identifier.of("minecraft:wooded_hills")
+            9 -> Identifier.of("minecraft:dark_forest")
+            10 -> Identifier.of("minecraft:giant_tree_taiga")
+            11 -> Identifier.of("minecraft:taiga")
+            else -> Identifier.of("minecraft:plains")
+        }
+    }
+
+    override fun getOutOfWorldLines(): List<String> {
+        val biome = getBiomeByMonth()
+
+        return listOf(
+            (if (colorCodeBiome.get()) biomeCodes[biome] else "") + Text.translatable(biome.toTranslationKey("biome")).string
+        )
+    }
 }

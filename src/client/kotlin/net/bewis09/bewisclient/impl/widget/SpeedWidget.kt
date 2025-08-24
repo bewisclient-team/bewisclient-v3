@@ -29,6 +29,10 @@ object SpeedWidget: LineWidget(), EventEntrypoint {
         String.format("%.2f m/s", speed)
     )
 
+    override fun getOutOfWorldLines(): List<String> = listOf(
+        if(verticalSpeed.get()) "6.90 m/s" else "4.20 m/s"
+    )
+
     override fun defaultPosition(): WidgetPosition = RelativePosition("bewisclient:ping_widget", "bottom")
 
     override fun getId(): Identifier = Identifier.of("bewisclient", "speed_widget")

@@ -6,6 +6,7 @@
     "ClientPlayNetworkHandlerMixin",
     "EquippableComponentMixin",
     "FogRendererMixin",
+    "GameMenuScreenMixin",
     "GameOptionsMixin",
     "GameRendererMixin",
     "InGameHudMixin",
@@ -15,6 +16,7 @@
     "LivingEntityMixin",
     "MinecraftClientMixin",
     "MouseMixin",
+    "TitleScreenMixin",
     "TooltipDisplayComponentMixin",
     "WorldRendererMixin"
   ],

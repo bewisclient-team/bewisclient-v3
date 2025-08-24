@@ -16,7 +16,7 @@ object DayWidget: LineWidget() {
     override fun getDescription(): Translation = dayWidgetDescription
 
     override fun getLines(): List<String> = listOf(dayText(
-        net.minecraft.client.MinecraftClient.getInstance().world?.time?.div(24000L)?.toInt() ?: 0
+        net.minecraft.client.MinecraftClient.getInstance().world?.time?.div(24000L)?.toInt() ?: ((System.currentTimeMillis() - 1679875200000L) / 86400000L)
     ).string)
 
     override fun defaultPosition(): WidgetPosition {

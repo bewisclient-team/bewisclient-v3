@@ -3,13 +3,13 @@ package net.bewis09.bewisclient.logic
 import net.bewis09.bewisclient.game.Translation
 import java.awt.Color
 
-fun <T> catch(block: () -> T, or: T) = try {
+inline fun <T> catch(block: () -> T, or: T) = try {
     block()
 } catch (_: Throwable) {
     or
 }
 
-fun <T> catch(block: () -> T) = try {
+inline fun <T> catch(block: () -> T) = try {
     block()
 } catch (_: Throwable) {
     null

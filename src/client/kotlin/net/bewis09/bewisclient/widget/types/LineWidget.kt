@@ -3,6 +3,7 @@ package net.bewis09.bewisclient.widget.types
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.ScreenDrawing
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
+import net.minecraft.client.MinecraftClient
 
 abstract class LineWidget(): ScalableWidget() {
     val backgroundColor = DefaultWidgetSettings.backgroundColor.cloneWithDefault()
@@ -32,6 +33,8 @@ abstract class LineWidget(): ScalableWidget() {
     abstract fun getLines(): List<String>
     open fun isCentered(): Boolean = true
 
+    open fun getOutOfWorldLines(): List<String> = getLines()
+
     override fun render(screenDrawing: ScreenDrawing) {
         val textColor = textColor.get().getColor()
         val backgroundColor = backgroundColor.get().getColor()
@@ -43,7 +46,7 @@ abstract class LineWidget(): ScalableWidget() {
         val paddingSize = paddingSize.get()
         val lineSpacing = lineSpacing.get()
 
-        val lines = getLines()
+        val lines = if (MinecraftClient.getInstance().world == null) getOutOfWorldLines() else getLines()
         if (lines.isEmpty()) return
 
         screenDrawing.fillWithBorderRounded(0, 0, getWidth(), getHeight(), borderRadius, backgroundColor, backgroundOpacity, borderColor, borderOpacity)
@@ -70,7 +73,7 @@ abstract class LineWidget(): ScalableWidget() {
         val paddingSize = paddingSize.get()
         val lineSpacing = lineSpacing.get()
 
-        val lines = getLines()
+        val lines = if (MinecraftClient.getInstance().world == null) getOutOfWorldLines() else getLines()
         if (lines.isEmpty()) return 0
 
         return lines.size * (9 + lineSpacing) + 2 * paddingSize - lineSpacing - 2

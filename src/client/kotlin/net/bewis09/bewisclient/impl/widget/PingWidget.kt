@@ -23,7 +23,7 @@ object PingWidget: LineWidget() {
     override fun getDescription(): Translation = pingWidgetDescription
 
     override fun getLines(): List<String> {
-        if(MinecraftClient.getInstance().isInSingleplayer && (MinecraftClient.getInstance().currentScreen is RenderableScreen))
+        if((MinecraftClient.getInstance().isInSingleplayer || MinecraftClient.getInstance().world == null) && (MinecraftClient.getInstance().currentScreen is RenderableScreen))
             return arrayListOf(pingText(99.toString()).string)
         if(getLatency()<0)
             return arrayListOf(loadingText.getTranslatedString())

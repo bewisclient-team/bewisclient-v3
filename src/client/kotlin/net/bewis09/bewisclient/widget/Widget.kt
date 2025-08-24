@@ -46,7 +46,7 @@ abstract class Widget: ObjectSetting() {
         screenDrawing.push()
         screenDrawing.translate(getX(), getY())
         screenDrawing.scale(getScale(), getScale())
-        render(screenDrawing)
+        catch { render(screenDrawing) }
         screenDrawing.pop()
     }
 

@@ -2,10 +2,12 @@ package net.bewis09.bewisclient.impl.widget
 
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.ScreenDrawing
+import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.bewis09.bewisclient.interfaces.KeyBindingAccessor
 import net.bewis09.bewisclient.logic.color.StaticColorSaver
+import net.bewis09.bewisclient.screen.RenderableScreen
 import net.bewis09.bewisclient.settings.types.ColorSetting
 import net.bewis09.bewisclient.settings.types.IntegerSetting
 import net.bewis09.bewisclient.widget.logic.RelativePosition
@@ -13,6 +15,7 @@ import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.ScalableWidget
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.option.KeyBinding
+import net.minecraft.client.util.InputUtil
 import net.minecraft.util.Identifier
 import org.lwjgl.glfw.GLFW
 
@@ -69,19 +72,32 @@ object KeyWidget: ScalableWidget() {
         val totalWidth = topElementWidth * 3 + gap.get() * 2
         val middleElementWidth = (totalWidth - gap.get()) / 2
 
-        renderKey(screenDrawing, topElementWidth + gap.get(), 0, topElementWidth, topElementHeight, MinecraftClient.getInstance().options.forwardKey)
+        renderKey(screenDrawing, topElementWidth + gap.get(), 0, topElementWidth, topElementHeight, MinecraftClient.getInstance().options.forwardKey,true)
         renderKey(screenDrawing, 0, topElementHeight + gap.get(), topElementWidth, topElementHeight, MinecraftClient.getInstance().options.leftKey)
         renderKey(screenDrawing, topElementWidth + gap.get(), topElementHeight + gap.get(), topElementWidth, topElementHeight, MinecraftClient.getInstance().options.backKey)
-        renderKey(screenDrawing, (topElementWidth + gap.get()) * 2, topElementHeight + gap.get(), topElementWidth, topElementHeight, MinecraftClient.getInstance().options.rightKey)
+        renderKey(screenDrawing, (topElementWidth + gap.get()) * 2, topElementHeight + gap.get(), topElementWidth, topElementHeight, MinecraftClient.getInstance().options.rightKey,true)
 
-        renderKey(screenDrawing, 0, (topElementHeight + gap.get()) * 2, middleElementWidth, bottomElementHeight, MinecraftClient.getInstance().options.attackKey)
+        renderKey(screenDrawing, 0, (topElementHeight + gap.get()) * 2, middleElementWidth, bottomElementHeight, MinecraftClient.getInstance().options.attackKey,true)
         renderKey(screenDrawing, totalWidth - middleElementWidth, (topElementHeight + gap.get()) * 2, middleElementWidth, bottomElementHeight, MinecraftClient.getInstance().options.useKey)
 
-        renderKey(screenDrawing, 0, topElementHeight * 2 + gap.get() * 3 + bottomElementHeight, totalWidth, bottomElementHeight, MinecraftClient.getInstance().options.jumpKey)
+        renderKey(screenDrawing, 0, topElementHeight * 2 + gap.get() * 3 + bottomElementHeight, totalWidth, bottomElementHeight, MinecraftClient.getInstance().options.jumpKey,true)
     }
 
-    fun renderKey(screenDrawing: ScreenDrawing, x: Int, y: Int, width: Int, height: Int, keyBinding: KeyBinding) {
-        renderKey(screenDrawing, x, y, width, height, keyBinding.getKeyText(), keyBinding.isPressed)
+    fun renderKey(screenDrawing: ScreenDrawing, x: Int, y: Int, width: Int, height: Int, keyBinding: KeyBinding, outOfWorldEnabled: Boolean = false) {
+        renderKey(screenDrawing, x, y, width, height, keyBinding.getKeyText(), isPressed(keyBinding))
+    }
+
+    fun isPressed(keyBinding: KeyBinding): Boolean {
+        val c = MinecraftClient.getInstance().currentScreen as? RenderableScreen ?: return keyBinding.isPressed
+        val d = c.renderable as? HudEditScreen ?: return keyBinding.isPressed
+
+        val key = (keyBinding as KeyBindingAccessor).getBoundKey()
+
+        if (key.category == InputUtil.Type.KEYSYM)
+            return InputUtil.isKeyPressed(MinecraftClient.getInstance().window.handle, key.code)
+        if (key.category == InputUtil.Type.MOUSE)
+            return d.mouseMap[key.code] == true
+        return keyBinding.isPressed
     }
 
     fun KeyBinding.getKeyText(): String {

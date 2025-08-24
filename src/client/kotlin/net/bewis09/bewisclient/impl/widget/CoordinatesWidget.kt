@@ -3,11 +3,14 @@ package net.bewis09.bewisclient.impl.widget
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
+import net.bewis09.bewisclient.impl.widget.BiomeWidget.biomeCodes
+import net.bewis09.bewisclient.impl.widget.BiomeWidget.getBiomeByMonth
 import net.bewis09.bewisclient.settings.types.BooleanSetting
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
 import net.minecraft.client.MinecraftClient
+import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 
 object CoordinatesWidget: LineWidget() {
@@ -36,6 +39,17 @@ object CoordinatesWidget: LineWidget() {
         "Y: ${MinecraftClient.getInstance().cameraEntity?.blockPos?.y ?: 0}",
         "Z: ${MinecraftClient.getInstance().cameraEntity?.blockPos?.z ?: 0} ${getAdditionString(2)}",
         if (showBiome.get()) BiomeWidget.getText(colorCodeBiome.get()) else null,
+    ).filter { it != null }.map { it!! }
+
+    override fun getOutOfWorldLines(): List<String> = listOf(
+        "X: 137 ${if(showCoordinateChange.get()) "(-)" else ""}",
+        "Y: 69",
+        "Z: 420 ${if(showCoordinateChange.get()) "(+)" else ""}",
+        if (showBiome.get()) let {
+            val biome = getBiomeByMonth()
+
+            return@let (if (colorCodeBiome.get()) biomeCodes[biome] else "") + Text.translatable(biome.toTranslationKey("biome")).string
+        } else null,
     ).filter { it != null }.map { it!! }
 
     fun getAdditionString(correct: Int): String {
@@ -77,7 +91,7 @@ object CoordinatesWidget: LineWidget() {
     override fun render(screenDrawing: ScreenDrawing) {
         super.render(screenDrawing)
         if(showDirection.get()) {
-            val direction = when (getYawPart()) {
+            val direction = if(MinecraftClient.getInstance().player == null) "SW" else when (getYawPart()) {
                 0 -> "S"
                 1 -> "SW"
                 2 -> "W"
