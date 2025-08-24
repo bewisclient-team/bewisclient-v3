@@ -5,6 +5,7 @@
   "client": [
     "ClientPlayNetworkHandlerMixin",
     "EquippableComponentMixin",
+    "FogRendererMixin",
     "GameOptionsMixin",
     "GameRendererMixin",
     "InGameHudMixin",

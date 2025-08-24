@@ -3163,48 +3163,48 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
         pop()
     }
 
-    /** Checks if the mouse is hovering over a specific area and executes the appropriate action. */
-    fun hoverSeparate(
-        mouseX: Float,
-        mouseY: Float,
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        normal: () -> Unit,
-        hovered: () -> Unit
-    ) {
-        if (isMouseOver(mouseX, mouseY, x, y, width, height)) {
-            hovered()
-        } else {
-            normal()
-        }
-    }
-
-    /** Checks if the mouse is hovering over a specific area and executes the appropriate action. */
-    fun hoverSeparate(
-        mouseX: Float,
-        mouseY: Float,
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        normal: (x: Int, y: Int, width: Int, height: Int) -> Unit,
-        hovered: (x: Int, y: Int, width: Int, height: Int) -> Unit
-    ) {
-        if (isMouseOver(mouseX, mouseY, x, y, width, height)) {
-            hovered(x, y, width, height)
-        } else {
-            normal(x, y, width, height)
-        }
-    }
-
     fun enableScissors(x: Int, y: Int, width: Int, height: Int) {
         drawContext.enableScissor(x, y, x + width, y + height)
     }
 
     fun disableScissors() {
         drawContext.disableScissor()
+    }
+}
+
+/** Checks if the mouse is hovering over a specific area and executes the appropriate action. */
+inline fun hoverSeparate(
+    mouseX: Float,
+    mouseY: Float,
+    x: Int,
+    y: Int,
+    width: Int,
+    height: Int,
+    normal: () -> Unit,
+    hovered: () -> Unit
+) {
+    if (isMouseOver(mouseX, mouseY, x, y, width, height)) {
+        hovered()
+    } else {
+        normal()
+    }
+}
+
+/** Checks if the mouse is hovering over a specific area and executes the appropriate action. */
+inline fun hoverSeparate(
+    mouseX: Float,
+    mouseY: Float,
+    x: Int,
+    y: Int,
+    width: Int,
+    height: Int,
+    normal: (x: Int, y: Int, width: Int, height: Int) -> Unit,
+    hovered: (x: Int, y: Int, width: Int, height: Int) -> Unit
+) {
+    if (isMouseOver(mouseX, mouseY, x, y, width, height)) {
+        hovered(x, y, width, height)
+    } else {
+        normal(x, y, width, height)
     }
 }
 

@@ -1,9 +1,11 @@
 package net.bewis09.bewisclient.impl.settings
 
+import net.bewis09.bewisclient.impl.settings.functionalities.BetterVisibilitySettings
 import net.bewis09.bewisclient.impl.settings.functionalities.BlockHighlightSettings
 import net.bewis09.bewisclient.impl.settings.functionalities.FullbrightSettings
 import net.bewis09.bewisclient.impl.settings.functionalities.HeldItemTooltipSettings
 import net.bewis09.bewisclient.impl.settings.functionalities.PumpkinOverlaySettings
+import net.bewis09.bewisclient.impl.settings.functionalities.ScoreboardSettings
 import net.bewis09.bewisclient.impl.settings.functionalities.ZoomSettings
 import net.bewis09.bewisclient.settings.types.ObjectSetting
 
@@ -16,5 +18,7 @@ object BewisclientSettingsObject : ObjectSetting() {
         create("zoom", ZoomSettings)
         create("held_item_tooltip", HeldItemTooltipSettings)
         create("pumpkin_overlay", PumpkinOverlaySettings)
+        create("better_visibility", BetterVisibilitySettings)
+        create("scoreboard", ScoreboardSettings)
     }
 }

@@ -5,14 +5,15 @@ import net.bewis09.bewisclient.drawable.ScreenDrawing
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 
 abstract class LineWidget(): ScalableWidget() {
-    var backgroundColor = DefaultWidgetSettings.backgroundColor.cloneWithDefault()
-    var backgroundOpacity = DefaultWidgetSettings.backgroundOpacity.cloneWithDefault()
-    var borderColor = DefaultWidgetSettings.borderColor.cloneWithDefault()
-    var borderOpacity = DefaultWidgetSettings.borderOpacity.cloneWithDefault()
-    var paddingSize = DefaultWidgetSettings.paddingSize.cloneWithDefault()
-    var lineSpacing = DefaultWidgetSettings.lineSpacing.cloneWithDefault()
-    var textColor = DefaultWidgetSettings.textColor.cloneWithDefault()
-    var borderRadius = DefaultWidgetSettings.borderRadius.cloneWithDefault()
+    val backgroundColor = DefaultWidgetSettings.backgroundColor.cloneWithDefault()
+    val backgroundOpacity = DefaultWidgetSettings.backgroundOpacity.cloneWithDefault()
+    val borderColor = DefaultWidgetSettings.borderColor.cloneWithDefault()
+    val borderOpacity = DefaultWidgetSettings.borderOpacity.cloneWithDefault()
+    val paddingSize = DefaultWidgetSettings.paddingSize.cloneWithDefault()
+    val shadow = DefaultWidgetSettings.shadow.cloneWithDefault()
+    val lineSpacing = DefaultWidgetSettings.lineSpacing.cloneWithDefault()
+    val textColor = DefaultWidgetSettings.textColor.cloneWithDefault()
+    val borderRadius = DefaultWidgetSettings.borderRadius.cloneWithDefault()
 
     init {
         create("text_color", textColor)
@@ -21,6 +22,7 @@ abstract class LineWidget(): ScalableWidget() {
         create("border_color", borderColor)
         create("border_opacity", borderOpacity)
         create("border_radius", borderRadius)
+        create("shadow", shadow)
         create("padding_size", paddingSize)
         create("line_spacing", lineSpacing)
     }
@@ -37,6 +39,7 @@ abstract class LineWidget(): ScalableWidget() {
         val borderColor = borderColor.get().getColor()
         val borderOpacity = borderOpacity.get()
         val borderRadius = borderRadius.get()
+        val shadow = shadow.get()
         val paddingSize = paddingSize.get()
         val lineSpacing = lineSpacing.get()
 
@@ -47,10 +50,18 @@ abstract class LineWidget(): ScalableWidget() {
 
         lines.forEach { line ->
             val y = (lines.indexOf(line) * (9 + lineSpacing)) + paddingSize
-            if (isCentered()) {
-                screenDrawing.drawCenteredText(line, getWidth() / 2, y, textColor, 1f)
+            if (!shadow) {
+                if (isCentered()) {
+                    screenDrawing.drawCenteredText(line, getWidth() / 2, y, textColor, 1f)
+                } else {
+                    screenDrawing.drawText(line, paddingSize, y, textColor, 1f)
+                }
             } else {
-                screenDrawing.drawText(line, paddingSize, y, textColor, 1f)
+                if (isCentered()) {
+                    screenDrawing.drawCenteredTextWithShadow(line, getWidth() / 2, y, textColor, 1f)
+                } else {
+                    screenDrawing.drawTextWithShadow(line, paddingSize, y, textColor, 1f)
+                }
             }
         }
     }
@@ -73,6 +84,7 @@ abstract class LineWidget(): ScalableWidget() {
             list.add(lineSpacing.createRenderable("widget.line_spacing", "Line Spacing", "Set the spacing between lines of text in the widget"))
         list.add(textColor.createRenderable("widget.text_color", "Text Color", "Set the color of the text in the widget"))
         list.add(borderRadius.createRenderable("widget.border_radius", "Border Radius", "Set the radius of the widget's border corners"))
+        list.add(shadow.createRenderable("widget.text_shadow", "Text Shadow", "Set whether text in the widget has a shadow"))
         super.appendSettingsRenderables(list)
     }
 }

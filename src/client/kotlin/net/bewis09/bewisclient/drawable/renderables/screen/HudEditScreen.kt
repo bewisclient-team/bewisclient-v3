@@ -2,16 +2,20 @@ package net.bewis09.bewisclient.drawable.renderables.screen
 
 import net.bewis09.bewisclient.drawable.ScreenDrawing
 import net.bewis09.bewisclient.drawable.SettingStructure
+import net.bewis09.bewisclient.drawable.hoverSeparate
 import net.bewis09.bewisclient.drawable.renderables.ImageButton
 import net.bewis09.bewisclient.drawable.renderables.popup.AddWidgetPopup
+import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.bewis09.bewisclient.interfaces.BackgroundEffectProvider
+import net.bewis09.bewisclient.logic.number.Precision
 import net.bewis09.bewisclient.screen.RenderableScreen
 import net.bewis09.bewisclient.widget.Widget
 import net.bewis09.bewisclient.widget.WidgetLoader
 import net.bewis09.bewisclient.widget.WidgetLoader.widgets
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.SidedPosition
+import net.bewis09.bewisclient.widget.types.ScalableWidget
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.util.Identifier
@@ -19,14 +23,29 @@ import org.lwjgl.glfw.GLFW
 import kotlin.math.abs
 
 class HudEditScreen: PopupScreen(), BackgroundEffectProvider {
+    companion object {
+        val scrollToZoom = Translation("hud_edit_screen.scroll_to_zoom", "Scroll to Zoom (%.2fx)")
+        val rightClickForOptions = Translation("hud_edit_screen.right_click_for_options", "Right Click for Options")
+        val shiftForNoSnapping = Translation("hud_edit_screen.shift_for_no_snapping", "Shift to disable Snapping")
+    }
+
     var selectedWidget: Widget? = null
     var startOffsetX: Float? = null
     var startOffsetY: Float? = null
 
-    override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
+    val removeTexture: Identifier = Identifier.of("bewisclient", "textures/gui/sprites/remove.png")
 
+    override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
         WidgetLoader.getEnabledWidgets().forEach {
             if (it.isInBox(mouseX, mouseY)) {
+                hoverSeparate(mouseX.toFloat(), mouseY.toFloat(), (it.getX() + it.getScaledWidth() - 8).toInt(), (it.getY()).toInt(), 8, 8, {}) {
+                    if (button == 0) {
+                        it.enabled.set(false)
+
+                        return true
+                    }
+                }
+
                 if (button == 1) {
                     getClient().setScreen(RenderableScreen(OptionScreen().also { a ->
                         val widgetsCategory = SettingStructure(a).widgets.first { b -> b.enableSetting == it.enabled }
@@ -50,10 +69,58 @@ class HudEditScreen: PopupScreen(), BackgroundEffectProvider {
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int, popupShown: Boolean) {
         widgets.forEach {
-            if (it.isShowing())
+            if (it.isEnabled()) {
                 it.renderScaled(ScreenDrawing(screenDrawing.drawContext, MinecraftClient.getInstance().textRenderer))
+
+                hoverSeparate(mouseX.toFloat(), mouseY.toFloat(), (it.getX() + it.getScaledWidth() - 8).toInt(), (it.getY()).toInt(), 8, 8, {
+                    screenDrawing.pushColor(1f, 1f, 1f, 1f)
+                }) {
+                    screenDrawing.pushColor(1f, 0f, 0f, 1f)
+                }
+
+                screenDrawing.drawTexture(removeTexture, (it.getX() + it.getScaledWidth() - 8).toInt(), (it.getY()).toInt(), 8, 8)
+
+                screenDrawing.popColor()
+            }
         }
         renderRenderables(screenDrawing, mouseX, mouseY)
+        renderTooltip(screenDrawing, mouseX, mouseY)
+    }
+
+    fun renderTooltip(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+        WidgetLoader.getEnabledWidgets().asReversed().forEach {
+            if (it.isInBox(mouseX.toDouble(), mouseY.toDouble())) {
+                screenDrawing.setBewisclientFont()
+
+                val lines = mutableListOf<String>()
+                lines.add(it.getTranslation().getTranslatedString())
+                lines.add("")
+                if (it is ScalableWidget) {
+                    lines.add(scrollToZoom(Precision(0.5f,2f,0.01f,2).roundToString(it.scale.get())).string)
+                }
+                lines.add(rightClickForOptions().string)
+                lines.add(shiftForNoSnapping().string)
+
+                val textHeight = screenDrawing.getTextHeight()
+                val tooltipHeight = lines.size * textHeight + 10
+                val width = lines.maxOfOrNull { line -> screenDrawing.getTextWidth(line) }?.plus(10) ?: 210
+
+                var drawX = mouseX
+                var drawY = mouseY - tooltipHeight
+
+                if (drawX + width > MinecraftClient.getInstance().window.scaledWidth) {
+                    drawX -= width
+                }
+                if (drawY < 0) {
+                    drawY = mouseY
+                }
+
+                screenDrawing.afterDraw("tooltip",{
+                    screenDrawing.fillRounded(drawX, drawY, width, tooltipHeight, 5, 0x000000, 0.8f)
+                    screenDrawing.drawWrappedText(lines, drawX + 5, drawY + 5, -1)
+                })
+            }
+        }
     }
 
     override fun init() {
@@ -170,6 +237,18 @@ class HudEditScreen: PopupScreen(), BackgroundEffectProvider {
         startOffsetY = null
 
         return super.onMouseRelease(mouseX, mouseY, button)
+    }
+
+    override fun onMouseScroll(mouseX: Double, mouseY: Double, horizontalAmount: Double, verticalAmount: Double): Boolean {
+        WidgetLoader.getEnabledWidgets().forEach {
+            if (it.isInBox(mouseX, mouseY) && it is ScalableWidget) {
+                val newScale = it.scale.get() + (if (verticalAmount > 0) 0.1f else -0.1f)
+                it.scale.set(newScale.coerceIn(0.5f, 2f))
+                return true
+            }
+        }
+
+        return super.onMouseScroll(mouseX, mouseY, horizontalAmount, verticalAmount)
     }
 
     override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {

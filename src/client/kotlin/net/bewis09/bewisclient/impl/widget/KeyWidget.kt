@@ -17,21 +17,21 @@ import net.minecraft.util.Identifier
 import org.lwjgl.glfw.GLFW
 
 object KeyWidget: ScalableWidget() {
-    var backgroundColor = DefaultWidgetSettings.backgroundColor.cloneWithDefault()
-    var backgroundOpacity = DefaultWidgetSettings.backgroundOpacity.cloneWithDefault()
-    var borderColor = DefaultWidgetSettings.borderColor.cloneWithDefault()
-    var borderOpacity = DefaultWidgetSettings.borderOpacity.cloneWithDefault()
-    var textColor = DefaultWidgetSettings.textColor.cloneWithDefault()
+    val backgroundColor = DefaultWidgetSettings.backgroundColor.cloneWithDefault()
+    val backgroundOpacity = DefaultWidgetSettings.backgroundOpacity.cloneWithDefault()
+    val borderColor = DefaultWidgetSettings.borderColor.cloneWithDefault()
+    val borderOpacity = DefaultWidgetSettings.borderOpacity.cloneWithDefault()
+    val textColor = DefaultWidgetSettings.textColor.cloneWithDefault()
 
-    var pressedBackgroundColor = ColorSetting(StaticColorSaver(0xAAAAAA), ColorSetting.CHANGING, ColorSetting.STATIC)
-    var pressedBackgroundOpacity = DefaultWidgetSettings.backgroundOpacity.cloneWithDefault()
-    var pressedBorderColor = ColorSetting(StaticColorSaver(0xAAAAAA), ColorSetting.CHANGING, ColorSetting.STATIC)
-    var pressedBorderOpacity = DefaultWidgetSettings.borderOpacity.cloneWithDefault()
-    var pressedTextColor = ColorSetting(StaticColorSaver(0), ColorSetting.CHANGING, ColorSetting.STATIC)
+    val pressedBackgroundColor = ColorSetting(StaticColorSaver(0xAAAAAA), ColorSetting.CHANGING, ColorSetting.STATIC)
+    val pressedBackgroundOpacity = DefaultWidgetSettings.backgroundOpacity.cloneWithDefault()
+    val pressedBorderColor = ColorSetting(StaticColorSaver(0xAAAAAA), ColorSetting.CHANGING, ColorSetting.STATIC)
+    val pressedBorderOpacity = DefaultWidgetSettings.borderOpacity.cloneWithDefault()
+    val pressedTextColor = ColorSetting(StaticColorSaver(0), ColorSetting.CHANGING, ColorSetting.STATIC)
 
-    var paddingSize = IntegerSetting(5, 0, 10)
-    var borderRadius = DefaultWidgetSettings.borderRadius.cloneWithDefault()
-    var gap = IntegerSetting(2, 0, 20)
+    val paddingSize = IntegerSetting(5, 0, 10)
+    val borderRadius = DefaultWidgetSettings.borderRadius.cloneWithDefault()
+    val gap = IntegerSetting(2, 0, 20)
 
     init {
         create("background_color", backgroundColor)
