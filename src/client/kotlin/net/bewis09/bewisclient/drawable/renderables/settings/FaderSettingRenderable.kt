@@ -12,11 +12,9 @@ import net.minecraft.util.Identifier
 
 open class FaderSettingRenderable<T : Number>(val title: Translation, val description: Translation?, val setting: Setting<T>, val precision: Precision, val parser: (original: Float) -> T) : TooltipHoverable(description) {
     val fader = Fader(
-        value = { setting.get().toFloat() },
-        onChange = { value ->
+        value = { setting.get().toFloat() }, onChange = { value ->
             setting.set(parser(value))
-        },
-        precision = precision
+        }, precision = precision
     )
 
     val resetButton = ImageButton(Identifier.of("bewisclient", "textures/gui/sprites/reset.png"), {

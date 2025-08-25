@@ -34,22 +34,7 @@ object TextColors {
     const val WHITE = "§f"
 
     val COLORS = mapOf(
-        "black" to BLACK,
-        "dark_blue" to DARK_BLUE,
-        "dark_green" to DARK_GREEN,
-        "dark_aqua" to DARK_AQUA,
-        "dark_red" to DARK_RED,
-        "dark_purple" to DARK_PURPLE,
-        "gold" to GOLD,
-        "gray" to GRAY,
-        "dark_gray" to DARK_GRAY,
-        "blue" to BLUE,
-        "green" to GREEN,
-        "aqua" to AQUA,
-        "red" to RED,
-        "light_purple" to LIGHT_PURPLE,
-        "yellow" to YELLOW,
-        "white" to WHITE
+        "black" to BLACK, "dark_blue" to DARK_BLUE, "dark_green" to DARK_GREEN, "dark_aqua" to DARK_AQUA, "dark_red" to DARK_RED, "dark_purple" to DARK_PURPLE, "gold" to GOLD, "gray" to GRAY, "dark_gray" to DARK_GRAY, "blue" to BLUE, "green" to GREEN, "aqua" to AQUA, "red" to RED, "light_purple" to LIGHT_PURPLE, "yellow" to YELLOW, "white" to WHITE
     )
 }
 

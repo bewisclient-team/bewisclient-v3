@@ -9,14 +9,10 @@ import net.bewis09.bewisclient.settings.types.ObjectSetting
 
 object BlockHighlightSettings : ObjectSetting() {
     val enabled = create("enabled", BooleanSetting(false))
-    val color =
-        create(
-            "color",
-            ColorSetting(
-                StaticColorSaver(0f, 0f, 0f),
-                ColorSetting.STATIC,
-                ColorSetting.CHANGING
-            )
+    val color = create(
+        "color", ColorSetting(
+            StaticColorSaver(0f, 0f, 0f), ColorSetting.STATIC, ColorSetting.CHANGING
         )
+    )
     val thickness = create("thickness", FloatSetting(0.4f, Precision(0f, 1f, 0.01f, 2)))
 }

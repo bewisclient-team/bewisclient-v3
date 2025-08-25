@@ -21,8 +21,7 @@ interface TextureLogic {
         val fis: InputStream = ByteArrayInputStream(os.toByteArray())
 
         MinecraftClient.getInstance().textureManager.registerTexture(
-            identifier,
-            NativeImageBackedTexture({ identifier.toString() }, NativeImage.read(fis))
+            identifier, NativeImageBackedTexture({ identifier.toString() }, NativeImage.read(fis))
         )
 
         return identifier

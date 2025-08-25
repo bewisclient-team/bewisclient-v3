@@ -14,9 +14,7 @@ import org.lwjgl.glfw.GLFW
 object Fullbright : ImageSettingCategory(
     "fullbright", Translation("menu.category.fullbright", "Fullbright"), arrayOf(
         FullbrightSettings.brightness.createRenderable(
-            "fullbright.brightness",
-            "Brightness",
-            "Adjust the brightness level. 0.0 to 1.0 are the normal levels, while 1.0 to 15.0 is lighting up the world according to the brightness level"
+            "fullbright.brightness", "Brightness", "Adjust the brightness level. 0.0 to 1.0 are the normal levels, while 1.0 to 15.0 is lighting up the world according to the brightness level"
         ),
         FullbrightSettings.nightVision.createRenderable("fullbright.night_vision", "Night Vision", "Allows you to have the visual effect of night vision without actually having it"),
     ), FullbrightSettings.enabled

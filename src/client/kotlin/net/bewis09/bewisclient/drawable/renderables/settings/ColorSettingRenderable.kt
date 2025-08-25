@@ -12,9 +12,7 @@ import net.minecraft.util.Identifier
 
 class ColorSettingRenderable(val title: Translation, val description: Translation?, val setting: Setting<ColorSaver>, val types: Array<String>) : TooltipHoverable(description) {
     val colorInfoButton = ColorInfoButton(
-        state = setting::get,
-        onChange = setting::set,
-        types = types
+        state = setting::get, onChange = setting::set, types = types
     )
 
     val resetButton = ImageButton(Identifier.of("bewisclient", "textures/gui/sprites/reset.png"), {

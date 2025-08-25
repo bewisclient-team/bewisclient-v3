@@ -9,14 +9,10 @@ import net.bewis09.bewisclient.settings.types.ObjectSetting
 
 object EntityHighlightSettings : ObjectSetting() {
     val enabled = create("enabled", BooleanSetting(false))
-    val color =
-        create(
-            "color",
-            ColorSetting(
-                StaticColorSaver(0xFF0000),
-                ColorSetting.STATIC,
-                ColorSetting.CHANGING
-            )
+    val color = create(
+        "color", ColorSetting(
+            StaticColorSaver(0xFF0000), ColorSetting.STATIC, ColorSetting.CHANGING
         )
+    )
     val alpha = create("alpha", FloatSetting(0.19f, Precision(0f, 1f, 0.01f, 2)))
 }

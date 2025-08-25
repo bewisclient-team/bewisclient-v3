@@ -27,20 +27,17 @@ object BiomeWidget : LineWidget(), EventEntrypoint {
     var colorCodeBiome = create("color_code_biome", BooleanSetting(true))
 
     val biomeWidgetTranslation = Translation("widget.biome_widget.name", "Biome Widget")
-    val biomeWidgetDescription =
-        Translation(
-            "widget.biome_widget.description",
-            "Displays the current biome at your position."
-        )
+    val biomeWidgetDescription = Translation(
+        "widget.biome_widget.description", "Displays the current biome at your position."
+    )
 
     override fun getTranslation(): Translation = biomeWidgetTranslation
     override fun getDescription(): Translation = biomeWidgetDescription
 
     override fun onMinecraftClientInitFinished() {
-        val resources =
-            MinecraftClient.getInstance().resourceManager.findAllResources(
-                "bewisclient/biome_codes"
-            ) { it.path.endsWith(".json") }
+        val resources = MinecraftClient.getInstance().resourceManager.findAllResources(
+            "bewisclient/biome_codes"
+        ) { it.path.endsWith(".json") }
 
         resources.entries.forEach {
             it.value.forEach { resource ->
@@ -54,12 +51,11 @@ object BiomeWidget : LineWidget(), EventEntrypoint {
                         if (biomeCode.isJsonPrimitive) {
                             TextColors.COLORS[biomeCode.asString]?.let { s ->
                                 biomeCodes[Identifier.of(key)] = s
+                            } ?: run {
+                                warn(
+                                    "Unknown biome color code: ${biomeCode.asString} in ${it.key}"
+                                )
                             }
-                                ?: run {
-                                    warn(
-                                        "Unknown biome color code: ${biomeCode.asString} in ${it.key}"
-                                    )
-                                }
                         } else {
                             warn("Invalid biome code format for $key in ${it.key}")
                         }
@@ -71,43 +67,27 @@ object BiomeWidget : LineWidget(), EventEntrypoint {
         }
     }
 
-    override fun getLines(): List<String> =
-        listOf(catch { getText(colorCodeBiome.get()) } ?: unknownBiome.getTranslatedString())
+    override fun getLines(): List<String> = listOf(catch { getText(colorCodeBiome.get()) } ?: unknownBiome.getTranslatedString())
 
-    override fun defaultPosition(): WidgetPosition =
-        SidedPosition(
-            5,
-            5,
-            SidedPosition.TransformerType.START,
-            SidedPosition.TransformerType.END
-        )
+    override fun defaultPosition(): WidgetPosition = SidedPosition(
+        5, 5, SidedPosition.TransformerType.START, SidedPosition.TransformerType.END
+    )
 
     override fun getId(): Identifier = Identifier.of("bewisclient", "biome_widget")
 
     override fun getWidth(): Int = 140
 
     private fun getBiomeString(biome: RegistryEntry<Biome>?): String {
-        return biome?.keyOrValue?.map(
-            { biomeKey: RegistryKey<Biome> -> biomeKey.value.toString() },
-            { b: Biome -> "[unregistered $b]" }
-        )
-            ?: unknownBiome.getTranslatedString()
+        return biome?.keyOrValue?.map({ biomeKey: RegistryKey<Biome> -> biomeKey.value.toString() }, { b: Biome -> "[unregistered $b]" }) ?: unknownBiome.getTranslatedString()
     }
 
     fun getText(colorCoded: Boolean): String {
-        val biome =
-            Identifier.of(
-                (MinecraftClient.getInstance()
-                    .world
-                    ?.getBiome(
-                        MinecraftClient.getInstance().cameraEntity?.blockPos
-                            ?: BlockPos(0, 0, 0)
-                    ))
-                    ?.let { getBiomeString(it) }
-            )
+        val biome = Identifier.of(
+            (MinecraftClient.getInstance().world?.getBiome(
+                MinecraftClient.getInstance().cameraEntity?.blockPos ?: BlockPos(0, 0, 0)
+            ))?.let { getBiomeString(it) })
 
-        return (if (colorCoded) biomeCodes[biome] else "") +
-                Text.translatable(biome.toTranslationKey("biome")).string
+        return (if (colorCoded) biomeCodes[biome] else "") + Text.translatable(biome.toTranslationKey("biome")).string
     }
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
@@ -139,8 +119,7 @@ object BiomeWidget : LineWidget(), EventEntrypoint {
         val biome = getBiomeByMonth()
 
         return listOf(
-            (if (colorCodeBiome.get()) biomeCodes[biome] else "") +
-                    Text.translatable(biome.toTranslationKey("biome")).string
+            (if (colorCodeBiome.get()) biomeCodes[biome] else "") + Text.translatable(biome.toTranslationKey("biome")).string
         )
     }
 }

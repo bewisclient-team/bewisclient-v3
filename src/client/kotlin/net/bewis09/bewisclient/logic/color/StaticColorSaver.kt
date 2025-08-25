@@ -84,8 +84,7 @@ open class StaticColorSaver : ColorSaver {
         val colorPicker = ColorPicker({ get().getColor() }) { hue, sat -> set(StaticColorSaver(Color.HSBtoRGB(hue, sat, getBrightness(get().getColor())))) }
         val fader = Fader({ getBrightness(get().getColor()) }, Precision(0f, 1f, 0.01f, 2)) { bri ->
             set(
-                Color(get().getColor()).let { Color.RGBtoHSB(it.red, it.green, it.blue, null).let { a -> StaticColorSaver(Color.HSBtoRGB(a[0], a[1], bri)) } }
-            )
+                Color(get().getColor()).let { Color.RGBtoHSB(it.red, it.green, it.blue, null).let { a -> StaticColorSaver(Color.HSBtoRGB(a[0], a[1], bri)) } })
         }
         val text = Text(Translations.CHANGE_BRIGHTNESS.getTranslatedString(), centered = true)
 
@@ -96,10 +95,7 @@ open class StaticColorSaver : ColorSaver {
         override fun init() {
             addRenderable(
                 colorPicker(
-                    getX(),
-                    getY(),
-                    getHeight(),
-                    getHeight()
+                    getX(), getY(), getHeight(), getHeight()
                 )
             )
             addRenderable(
@@ -112,10 +108,7 @@ open class StaticColorSaver : ColorSaver {
             )
             addRenderable(
                 fader(
-                    getX() + getHeight() + 6,
-                    getY() + 11,
-                    getWidth() - getHeight() - 6,
-                    14
+                    getX() + getHeight() + 6, getY() + 11, getWidth() - getHeight() - 6, 14
                 )
             )
             addRenderable(Rectangle(0x7FAAAAAA)(getX() + getHeight() + 5, getY() + 30, getWidth() - getHeight() - 5, 1))
@@ -125,22 +118,12 @@ open class StaticColorSaver : ColorSaver {
             addRenderable(
                 HorizontalScrollGrid({
                                          return@HorizontalScrollGrid colors.map { color ->
-                                             ColorButton(
-                                                 0,
-                                                 0,
-                                                 12, 12,
-                                                 { color.color },
-                                                 color.translation.getTranslatedString(),
-                                                 { newColor ->
-                                                     set(StaticColorSaver(newColor))
-                                                 }
-                                             )
+                                             ColorButton(0, 0, 12, 12, { color.color }, color.translation.getTranslatedString(), { newColor ->
+                                                 set(StaticColorSaver(newColor))
+                                             })
                                          }
                                      }, 3, 12)(
-                    getX() + getHeight() + 43,
-                    getY() + 36,
-                    getWidth() - getHeight() - 43,
-                    27
+                    getX() + getHeight() + 43, getY() + 36, getWidth() - getHeight() - 43, 27
                 )
             )
         }

@@ -14,8 +14,7 @@ import net.minecraft.client.MinecraftClient
 import net.minecraft.util.Identifier
 
 abstract class Widget : ObjectSetting() {
-    var position: WidgetPositionSetting =
-        create("position", WidgetPositionSetting(defaultPosition()))
+    var position: WidgetPositionSetting = create("position", WidgetPositionSetting(defaultPosition()))
     var enabled = create("enabled", BooleanSetting(isEnabledByDefault()))
 
     open fun isEnabledByDefault(): Boolean {
@@ -27,11 +26,7 @@ abstract class Widget : ObjectSetting() {
     }
 
     fun isShowing(): Boolean {
-        return isEnabled() &&
-                (!isHidden() ||
-                        ((MinecraftClient.getInstance().currentScreen as? RenderableScreen)
-                            ?.renderable is
-                                HudEditScreen))
+        return isEnabled() && (!isHidden() || ((MinecraftClient.getInstance().currentScreen as? RenderableScreen)?.renderable is HudEditScreen))
     }
 
     fun isEnabled(): Boolean {
@@ -87,9 +82,5 @@ abstract class Widget : ObjectSetting() {
 
     open fun appendSettingsRenderables(list: ArrayList<Renderable>) {}
 
-    fun isInBox(mouseX: Double, mouseY: Double) =
-        getX() < mouseX &&
-                getX() + getScaledWidth() > mouseX &&
-                getY() < mouseY &&
-                getY() + getScaledHeight() > mouseY
+    fun isInBox(mouseX: Double, mouseY: Double) = getX() < mouseX && getX() + getScaledWidth() > mouseX && getY() < mouseY && getY() + getScaledHeight() > mouseY
 }

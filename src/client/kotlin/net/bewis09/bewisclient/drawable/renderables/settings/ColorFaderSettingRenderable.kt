@@ -14,17 +14,13 @@ import net.minecraft.util.Identifier
 
 class ColorFaderSettingRenderable(val title: Translation, val description: Translation?, val setting: Setting<ColorSaver>, val types: Array<String>, val setting2: FloatSetting, val title2: Translation) : TooltipHoverable(description) {
     val colorInfoButton = ColorInfoButton(
-        state = setting::get,
-        onChange = setting::set,
-        types = types
+        state = setting::get, onChange = setting::set, types = types
     )
 
     val fader = Fader(
-        value = { setting2.get() },
-        onChange = { value ->
+        value = { setting2.get() }, onChange = { value ->
             setting2.set(value)
-        },
-        precision = setting2.precision
+        }, precision = setting2.precision
     )
 
     val resetButton = ImageButton(Identifier.of("bewisclient", "textures/gui/sprites/reset.png"), {

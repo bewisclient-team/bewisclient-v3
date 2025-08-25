@@ -109,42 +109,27 @@ class ChangingColorSaver : ColorSaver {
             )
             addRenderable(
                 fader(
-                    getX(),
-                    getY() + 11,
-                    getWidth(),
-                    14
+                    getX(), getY() + 11, getWidth(), 14
                 )
             )
             addRenderable(
                 Rectangle(0x7FAAAAAA)(
-                    getX(),
-                    getY() + 29,
-                    getWidth(),
-                    1
+                    getX(), getY() + 29, getWidth(), 1
                 )
             )
             addRenderable(
                 spectrumButton(
-                    getX(),
-                    getY() + 36,
-                    getWidth(),
-                    8
+                    getX(), getY() + 36, getWidth(), 8
                 )
             )
             addRenderable(
                 Rectangle(0x7FAAAAAA)(
-                    getX(),
-                    getY() + 49,
-                    getWidth(),
-                    1
+                    getX(), getY() + 49, getWidth(), 1
                 )
             )
             addRenderable(
                 actionButton(
-                    getX(),
-                    getY() + 55,
-                    getWidth(),
-                    8
+                    getX(), getY() + 55, getWidth(), 8
                 )
             )
         }

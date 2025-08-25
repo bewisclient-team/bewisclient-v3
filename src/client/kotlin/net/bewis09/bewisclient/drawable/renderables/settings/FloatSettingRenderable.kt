@@ -5,14 +5,6 @@ import net.bewis09.bewisclient.logic.number.Precision
 import net.bewis09.bewisclient.settings.types.Setting
 
 class FloatSettingRenderable(
-    title: Translation,
-    description: Translation? = null,
-    setting: Setting<Float>,
-    precision: Precision
+    title: Translation, description: Translation? = null, setting: Setting<Float>, precision: Precision
 ) : FaderSettingRenderable<Float>(
-    title,
-    description,
-    setting,
-    precision,
-    { it }
-)
+    title, description, setting, precision, { it })

@@ -15,11 +15,9 @@ object DaytimeWidget : LineWidget() {
     var format12Hours = create("format_12_hours", BooleanSetting(isSystem12HourFormat()))
 
     val daytimeWidgetTranslation = Translation("widget.daytime_widget.name", "Daytime Widget")
-    val daytimeWidgetDescription =
-        Translation(
-            "widget.daytime_widget.description",
-            "Displays the current in-game time in hours and minutes."
-        )
+    val daytimeWidgetDescription = Translation(
+        "widget.daytime_widget.description", "Displays the current in-game time in hours and minutes."
+    )
 
     override fun getTranslation(): Translation = daytimeWidgetTranslation
     override fun getDescription(): Translation = daytimeWidgetDescription
@@ -38,8 +36,7 @@ object DaytimeWidget : LineWidget() {
         return listOf(String.format("%02d:%02d", hours, minutes))
     }
 
-    override fun defaultPosition(): WidgetPosition =
-        RelativePosition("bewisclient:cps_widget", "bottom")
+    override fun defaultPosition(): WidgetPosition = RelativePosition("bewisclient:cps_widget", "bottom")
 
     override fun getId(): Identifier = Identifier.of("bewisclient", "daytime_widget")
 
@@ -54,8 +51,7 @@ object DaytimeWidget : LineWidget() {
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
         list.add(
             format12Hours.createRenderable(
-                "widget.daytime_widget.format_12_hours",
-                "Use 12-Hour Format"
+                "widget.daytime_widget.format_12_hours", "Use 12-Hour Format"
             )
         )
         super.appendSettingsRenderables(list)

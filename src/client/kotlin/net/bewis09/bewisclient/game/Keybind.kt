@@ -11,9 +11,6 @@ open class Keybind(default: Int, id: String, name: String, val action: (() -> Un
     constructor(default: Int, id: String, name: String, action: (() -> Unit)) : this(default, id, name, action = action, tick = null)
 
     val keyBinding = KeyBinding(
-        registerTranslation("key.$id", name),
-        InputUtil.Type.KEYSYM,
-        default,
-        CATEGORY.getKey()
+        registerTranslation("key.$id", name), InputUtil.Type.KEYSYM, default, CATEGORY.getKey()
     )
 }

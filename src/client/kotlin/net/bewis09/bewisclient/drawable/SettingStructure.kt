@@ -24,10 +24,7 @@ class SettingStructure(val screen: OptionScreen) : BewisclientInterface {
 
     val settings = VerticalAlignScrollPlane({
                                                 listOf(
-                                                    OptionsMenuSettings.animationTime.createRenderable("menu.settings.animation_time", "Animation Time", "The time (in milliseconds) it takes for animations to complete"),
-                                                    OptionsMenuSettings.blurBackground.createRenderable("menu.settings.blur_background", "Blur Background", "Whether to blur the background when opening menus"),
-                                                    OptionsMenuSettings.buttonInTitleScreen.createRenderable("menu.settings.button_in_title_screen", "Button in Title Screen", "Whether to show the Bewisclient button in the title screen"),
-                                                    OptionsMenuSettings.buttonInGameScreen.createRenderable("menu.settings.button_in_game_screen", "Button in Game Screen", "Whether to show the Bewisclient button in the in-game pause menu")
+                                                    OptionsMenuSettings.animationTime.createRenderable("menu.settings.animation_time", "Animation Time", "The time (in milliseconds) it takes for animations to complete"), OptionsMenuSettings.blurBackground.createRenderable("menu.settings.blur_background", "Blur Background", "Whether to blur the background when opening menus"), OptionsMenuSettings.buttonInTitleScreen.createRenderable("menu.settings.button_in_title_screen", "Button in Title Screen", "Whether to show the Bewisclient button in the title screen"), OptionsMenuSettings.buttonInGameScreen.createRenderable("menu.settings.button_in_game_screen", "Button in Game Screen", "Whether to show the Bewisclient button in the in-game pause menu")
                                                 )
                                             }, 1)
 
@@ -41,11 +38,9 @@ class SettingStructure(val screen: OptionScreen) : BewisclientInterface {
         listOf(
             Button(Translation("menu.widgets.general_setting", "General Widget Settings").getTranslatedString()) {
                 screen.transformInside(
-                    Text(Translation("menu.widgets.general_setting", "General Widget Settings").getTranslatedString(), centered = true).setHeight(12),
-                    VerticalAlignScrollPlane({ generalWidgetSettings }, 5)
+                    Text(Translation("menu.widgets.general_setting", "General Widget Settings").getTranslatedString(), centered = true).setHeight(12), VerticalAlignScrollPlane({ generalWidgetSettings }, 5)
                 )
-            }(x, y, width, 14),
-            VerticalScrollGrid({ widgets.map { a -> a.setHeight(90) } }, 5, 80).invoke(x, y + 19, width, height - 19)
+            }(x, y, width, 14), VerticalScrollGrid({ widgets.map { a -> a.setHeight(90) } }, 5, 80).invoke(x, y + 19, width, height - 19)
         )
     }
 

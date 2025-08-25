@@ -13,8 +13,7 @@ interface ColorSaver {
 
     companion object {
         val types = listOf<ColorSaverFactory<*>>(
-            StaticColorSaver.Factory,
-            ChangingColorSaver.Factory
+            StaticColorSaver.Factory, ChangingColorSaver.Factory
         ).also { it.forEach { a -> a.getDefault() } }
 
         @Suppress("UNCHECKED_CAST")

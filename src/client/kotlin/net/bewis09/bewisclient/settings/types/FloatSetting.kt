@@ -39,14 +39,9 @@ class FloatSetting : Setting<Float> {
     }
 
     fun createRenderable(
-        id: String,
-        title: String,
-        description: String? = null
+        id: String, title: String, description: String? = null
     ) = FloatSettingRenderable(
-        Translation("menu.$id", title),
-        description?.let { Translation("menu.$id.description", it) },
-        this,
-        precision
+        Translation("menu.$id", title), description?.let { Translation("menu.$id.description", it) }, this, precision
     )
 
     override fun processChange(value: Float?): Float? = value?.let {

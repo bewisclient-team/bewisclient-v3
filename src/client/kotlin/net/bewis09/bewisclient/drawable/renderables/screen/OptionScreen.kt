@@ -51,10 +51,7 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
     var optionsPane: Renderable? = null
     var optionsHeaderBooleanSetting: Setting<Boolean>? = null
 
-    var switch = Switch(
-        state = { optionsHeaderBooleanSetting?.get() ?: false },
-        onChange = { optionsHeaderBooleanSetting?.set(it) }
-    )
+    var switch = Switch(state = { optionsHeaderBooleanSetting?.get() ?: false }, onChange = { optionsHeaderBooleanSetting?.set(it) })
 
     val settings = SettingStructure(this)
 
@@ -101,8 +98,7 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
             return
         }
 
-        if (optionsHeader == null && optionsPane == null && optionsHeaderBooleanSetting == null)
-            alphaMainAnimation.pauseForOnce()
+        if (optionsHeader == null && optionsPane == null && optionsHeaderBooleanSetting == null) alphaMainAnimation.pauseForOnce()
 
         alphaMainAnimation.set("inside", 0f) {
             optionsPane = afterPane

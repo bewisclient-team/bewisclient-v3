@@ -44,8 +44,7 @@ class ColorPicker(val get: () -> Int, val set: (hue: Float, sat: Float) -> Unit)
 
     override fun onMouseDrag(mouseX: Double, mouseY: Double, startX: Double, startY: Double, button: Int): Boolean {
         set(
-            (MathHelper.clamp((mouseX - getX() - 1f).toFloat(), 0f, getWidth() - 2f) / (getWidth() - 2f)),
-            (MathHelper.clamp((mouseY - getY() - 1f).toFloat(), 0f, (getHeight() - 2f)) / (getHeight() - 2f))
+            (MathHelper.clamp((mouseX - getX() - 1f).toFloat(), 0f, getWidth() - 2f) / (getWidth() - 2f)), (MathHelper.clamp((mouseY - getY() - 1f).toFloat(), 0f, (getHeight() - 2f)) / (getHeight() - 2f))
         )
 
         return true

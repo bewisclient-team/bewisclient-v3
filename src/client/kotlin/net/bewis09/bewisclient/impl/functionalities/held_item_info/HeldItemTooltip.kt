@@ -27,11 +27,9 @@ import net.minecraft.util.profiler.Profilers
 
 object HeldItemTooltip : ImageSettingCategory(
     "held_item_tooltip", Translation("menu.category.held_item_tooltip", "Held Item Info"), arrayOf(
-        HeldItemTooltipSettings.maxShownLines.createRenderable("held_item_tooltip.max_shown_lines", "Max Shown Lines", "Maximum number of lines to show in the held item tooltip"),
-        MultipleBooleanSettingsRenderable.create(
+        HeldItemTooltipSettings.maxShownLines.createRenderable("held_item_tooltip.max_shown_lines", "Max Shown Lines", "Maximum number of lines to show in the held item tooltip"), MultipleBooleanSettingsRenderable.create(
             "held_item_tooltip.multiple_boolean_settings", "Data Component Tooltips:", "Select which information to show in the held item tooltip"
-        ) { HeldItemTooltip.componentRenderableParts }
-    ), HeldItemTooltipSettings.enabled
+        ) { HeldItemTooltip.componentRenderableParts }), HeldItemTooltipSettings.enabled
 ) {
     fun lookup() {
         isLookup = true
@@ -45,12 +43,7 @@ object HeldItemTooltip : ImageSettingCategory(
     var isRendering = false
 
     val componentSet = mutableSetOf<ComponentType<*>>(
-        DataComponentTypes.ATTRIBUTE_MODIFIERS,
-        DataComponentTypes.UNBREAKABLE,
-        DataComponentTypes.BLOCK_ENTITY_DATA,
-        DataComponentTypes.CAN_BREAK,
-        DataComponentTypes.CAN_PLACE_ON,
-        DataComponentTypes.DAMAGE
+        DataComponentTypes.ATTRIBUTE_MODIFIERS, DataComponentTypes.UNBREAKABLE, DataComponentTypes.BLOCK_ENTITY_DATA, DataComponentTypes.CAN_BREAK, DataComponentTypes.CAN_PLACE_ON, DataComponentTypes.DAMAGE
     )
 
     val componentRenderableParts by lazy {
@@ -73,18 +66,16 @@ object HeldItemTooltip : ImageSettingCategory(
             val id = toReadableString(Registries.DATA_COMPONENT_TYPE.getEntry(componentType).idAsString)
             parts.add(
                 MultipleBooleanSettingsRenderable.Part(
-                Translation.literal(id),
-                null,
-                object : Settable<Boolean?>, Gettable<Boolean> {
-                    override fun get(): Boolean {
-                        return HeldItemTooltipSettings.showMap[id, !defaultOff.contains(componentType)]
-                    }
+                    Translation.literal(id), null, object : Settable<Boolean?>, Gettable<Boolean> {
+                        override fun get(): Boolean {
+                            return HeldItemTooltipSettings.showMap[id, !defaultOff.contains(componentType)]
+                        }
 
-                    override fun set(value: Boolean?) {
-                        HeldItemTooltipSettings.showMap[id] = value
-                    }
-                }
-            ))
+                        override fun set(value: Boolean?) {
+                            HeldItemTooltipSettings.showMap[id] = value
+                        }
+                    })
+            )
         }
         parts
     }
@@ -115,8 +106,7 @@ object HeldItemTooltip : ImageSettingCategory(
 
             if (texts.size > 1) {
                 for (it in texts.subList(1, texts.size)) {
-                    if (it.style.color?.rgb == -1 || it.style == Style.EMPTY)
-                        it.formatted(Formatting.GRAY)
+                    if (it.style.color?.rgb == -1 || it.style == Style.EMPTY) it.formatted(Formatting.GRAY)
                 }
             }
 

@@ -22,4 +22,3 @@ object DefaultWidgetSettings : ObjectSetting() {
     val gap = create("gap", IntegerSetting(1, 0, 20))
     val screenEdgeDistance = create("screen_edge_distance", IntegerSetting(5, 0, 10))
 }
-}

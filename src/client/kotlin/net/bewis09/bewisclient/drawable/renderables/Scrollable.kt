@@ -14,7 +14,6 @@ abstract class Scrollable(val direction: Direction) : Renderable() {
     }
 
     enum class Direction {
-        VERTICAL,
-        HORIZONTAL
+        VERTICAL, HORIZONTAL
     }
 }

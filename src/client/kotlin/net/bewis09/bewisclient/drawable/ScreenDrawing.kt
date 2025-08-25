@@ -114,18 +114,12 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
     data class Color(val r: Float, val g: Float, val b: Float, val a: Float) {
         operator fun times(other: Color): Color {
             return Color(
-                r * other.r,
-                g * other.g,
-                b * other.b,
-                a * other.a
+                r * other.r, g * other.g, b * other.b, a * other.a
             )
         }
 
         fun toInt(): Int {
-            return ((r * 255).roundToInt() shl 16) or
-                    ((g * 255).roundToInt() shl 8) or
-                    (b * 255).roundToInt() or
-                    ((a * 255).roundToInt() shl 24)
+            return ((r * 255).roundToInt() shl 16) or ((g * 255).roundToInt() shl 8) or (b * 255).roundToInt() or ((a * 255).roundToInt() shl 24)
         }
     }
 
@@ -155,10 +149,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
 
     fun applyAlpha(color: Int): Int {
         return (getCurrentColorModifier() * Color(
-            (color shr 16 and 0xFF) / 255f,
-            (color shr 8 and 0xFF) / 255f,
-            (color and 0xFF) / 255f,
-            (color shr 24 and 0xFF) / 255f
+            (color shr 16 and 0xFF) / 255f, (color shr 8 and 0xFF) / 255f, (color and 0xFF) / 255f, (color shr 24 and 0xFF) / 255f
         )).toInt()
     }
 
@@ -232,14 +223,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * (fully opaque).
      */
     fun fill(
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        r: UByte,
-        g: UByte,
-        b: UByte,
-        alpha: Float = 1.0f
+        x: Int, y: Int, width: Int, height: Int, r: UByte, g: UByte, b: UByte, alpha: Float = 1.0f
     ) {
         fill(x, y, width, height, combineLong(r, g, b, alpha))
     }
@@ -254,24 +238,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * (fully opaque).
      */
     fun fill(
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        r: Float,
-        g: Float,
-        b: Float,
-        alpha: Float = 1.0f
+        x: Int, y: Int, width: Int, height: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f
     ) {
         fill(
-            x,
-            y,
-            width,
-            height,
-            (r * 255).toInt().toUByte(),
-            (g * 255).toInt().toUByte(),
-            (b * 255).toInt().toUByte(),
-            alpha
+            x, y, width, height, (r * 255).toInt().toUByte(), (g * 255).toInt().toUByte(), (b * 255).toInt().toUByte(), alpha
         )
     }
 
@@ -318,14 +288,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * (fully opaque).
      */
     fun drawBorder(
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        r: UByte,
-        g: UByte,
-        b: UByte,
-        alpha: Float = 1.0f
+        x: Int, y: Int, width: Int, height: Int, r: UByte, g: UByte, b: UByte, alpha: Float = 1.0f
     ) {
         drawBorder(x, y, width, height, combineLong(r, g, b, alpha))
     }
@@ -340,24 +303,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * (fully opaque).
      */
     fun drawBorder(
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        r: Float,
-        g: Float,
-        b: Float,
-        alpha: Float = 1.0f
+        x: Int, y: Int, width: Int, height: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f
     ) {
         drawBorder(
-            x,
-            y,
-            width,
-            height,
-            (r * 255).toInt().toUByte(),
-            (g * 255).toInt().toUByte(),
-            (b * 255).toInt().toUByte(),
-            alpha
+            x, y, width, height, (r * 255).toInt().toUByte(), (g * 255).toInt().toUByte(), (b * 255).toInt().toUByte(), alpha
         )
     }
 
@@ -392,13 +341,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * transparent) to 1.0 (fully opaque).
      */
     fun fillWithBorder(
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        color: Int,
-        borderColor: Int,
-        alpha: Float
+        x: Int, y: Int, width: Int, height: Int, color: Int, borderColor: Int, alpha: Float
     ) {
         fill(x, y, width, height, combineLong(color, alpha))
         drawBorder(x, y, width, height, combineLong(borderColor, alpha))
@@ -417,17 +360,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * transparent) to 1.0 (fully opaque).
      */
     fun fillWithBorder(
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        r: UByte,
-        g: UByte,
-        b: UByte,
-        borderR: UByte,
-        borderG: UByte,
-        borderB: UByte,
-        alpha: Float = 1.0f
+        x: Int, y: Int, width: Int, height: Int, r: UByte, g: UByte, b: UByte, borderR: UByte, borderG: UByte, borderB: UByte, alpha: Float = 1.0f
     ) {
         fill(x, y, width, height, combineLong(r, g, b, alpha))
         drawBorder(x, y, width, height, combineLong(borderR, borderG, borderB, alpha))
@@ -446,37 +379,13 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * transparent) to 1.0 (fully opaque).
      */
     fun fillWithBorder(
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        r: Float,
-        g: Float,
-        b: Float,
-        borderR: Float,
-        borderG: Float,
-        borderB: Float,
-        alpha: Float = 1.0f
+        x: Int, y: Int, width: Int, height: Int, r: Float, g: Float, b: Float, borderR: Float, borderG: Float, borderB: Float, alpha: Float = 1.0f
     ) {
         fill(
-            x,
-            y,
-            width,
-            height,
-            (r * 255).toInt().toUByte(),
-            (g * 255).toInt().toUByte(),
-            (b * 255).toInt().toUByte(),
-            alpha
+            x, y, width, height, (r * 255).toInt().toUByte(), (g * 255).toInt().toUByte(), (b * 255).toInt().toUByte(), alpha
         )
         drawBorder(
-            x,
-            y,
-            width,
-            height,
-            (borderR * 255).toInt().toUByte(),
-            (borderG * 255).toInt().toUByte(),
-            (borderB * 255).toInt().toUByte(),
-            alpha
+            x, y, width, height, (borderR * 255).toInt().toUByte(), (borderG * 255).toInt().toUByte(), (borderB * 255).toInt().toUByte(), alpha
         )
     }
 
@@ -491,14 +400,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * 1.0 (fully opaque).
      */
     fun fillWithBorder(
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        color: Int,
-        alpha: Float,
-        borderColor: Int,
-        borderAlpha: Float
+        x: Int, y: Int, width: Int, height: Int, color: Int, alpha: Float, borderColor: Int, borderAlpha: Float
     ) {
         fill(x, y, width, height, combineLong(color, alpha))
         drawBorder(x, y, width, height, combineLong(borderColor, borderAlpha))
@@ -519,18 +421,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * 1.0 (fully opaque).
      */
     fun fillWithBorder(
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        r: UByte,
-        g: UByte,
-        b: UByte,
-        alpha: Float = 1.0f,
-        borderR: UByte,
-        borderG: UByte,
-        borderB: UByte,
-        borderAlpha: Float = 1.0f
+        x: Int, y: Int, width: Int, height: Int, r: UByte, g: UByte, b: UByte, alpha: Float = 1.0f, borderR: UByte, borderG: UByte, borderB: UByte, borderAlpha: Float = 1.0f
     ) {
         fill(x, y, width, height, combineLong(r, g, b, alpha))
         drawBorder(x, y, width, height, combineLong(borderR, borderG, borderB, borderAlpha))
@@ -551,38 +442,13 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * 1.0 (fully opaque).
      */
     fun fillWithBorder(
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        r: Float,
-        g: Float,
-        b: Float,
-        alpha: Float = 1.0f,
-        borderR: Float,
-        borderG: Float,
-        borderB: Float,
-        borderAlpha: Float = 1.0f
+        x: Int, y: Int, width: Int, height: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f, borderR: Float, borderG: Float, borderB: Float, borderAlpha: Float = 1.0f
     ) {
         fill(
-            x,
-            y,
-            width,
-            height,
-            (r * 255).toInt().toUByte(),
-            (g * 255).toInt().toUByte(),
-            (b * 255).toInt().toUByte(),
-            alpha
+            x, y, width, height, (r * 255).toInt().toUByte(), (g * 255).toInt().toUByte(), (b * 255).toInt().toUByte(), alpha
         )
         drawBorder(
-            x,
-            y,
-            width,
-            height,
-            (borderR * 255).toInt().toUByte(),
-            (borderG * 255).toInt().toUByte(),
-            (borderB * 255).toInt().toUByte(),
-            borderAlpha
+            x, y, width, height, (borderR * 255).toInt().toUByte(), (borderG * 255).toInt().toUByte(), (borderB * 255).toInt().toUByte(), borderAlpha
         )
     }
 
@@ -732,13 +598,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      */
     fun drawText(text: String, x: Int, y: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f) {
         drawText(
-            text,
-            x,
-            y,
-            (r * 255).toInt().toUByte(),
-            (g * 255).toInt().toUByte(),
-            (b * 255).toInt().toUByte(),
-            alpha
+            text, x, y, (r * 255).toInt().toUByte(), (g * 255).toInt().toUByte(), (b * 255).toInt().toUByte(), alpha
         )
     }
 
@@ -766,13 +626,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      */
     fun drawText(text: Text, x: Int, y: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f) {
         drawText(
-            text,
-            x,
-            y,
-            (r * 255).toInt().toUByte(),
-            (g * 255).toInt().toUByte(),
-            (b * 255).toInt().toUByte(),
-            alpha
+            text, x, y, (r * 255).toInt().toUByte(), (g * 255).toInt().toUByte(), (b * 255).toInt().toUByte(), alpha
         )
     }
 
@@ -846,13 +700,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * (fully opaque).
      */
     fun drawTextWithShadow(
-        text: String,
-        x: Int,
-        y: Int,
-        r: UByte,
-        g: UByte,
-        b: UByte,
-        alpha: Float = 1.0f
+        text: String, x: Int, y: Int, r: UByte, g: UByte, b: UByte, alpha: Float = 1.0f
     ) {
         drawTextWithShadow(Text.literal(text), x, y, combineInt(r, g, b, alpha))
     }
@@ -867,22 +715,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * (fully opaque).
      */
     fun drawTextWithShadow(
-        text: String,
-        x: Int,
-        y: Int,
-        r: Float,
-        g: Float,
-        b: Float,
-        alpha: Float = 1.0f
+        text: String, x: Int, y: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f
     ) {
         drawTextWithShadow(
-            text,
-            x,
-            y,
-            (r * 255).toInt().toUByte(),
-            (g * 255).toInt().toUByte(),
-            (b * 255).toInt().toUByte(),
-            alpha
+            text, x, y, (r * 255).toInt().toUByte(), (g * 255).toInt().toUByte(), (b * 255).toInt().toUByte(), alpha
         )
     }
 
@@ -896,13 +732,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * (fully opaque).
      */
     fun drawTextWithShadow(
-        text: Text,
-        x: Int,
-        y: Int,
-        r: UByte,
-        g: UByte,
-        b: UByte,
-        alpha: Float = 1.0f
+        text: Text, x: Int, y: Int, r: UByte, g: UByte, b: UByte, alpha: Float = 1.0f
     ) {
         drawTextWithShadow(text, x, y, combineInt(r, g, b, alpha))
     }
@@ -917,22 +747,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * (fully opaque).
      */
     fun drawTextWithShadow(
-        text: Text,
-        x: Int,
-        y: Int,
-        r: Float,
-        g: Float,
-        b: Float,
-        alpha: Float = 1.0f
+        text: Text, x: Int, y: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f
     ) {
         drawTextWithShadow(
-            text,
-            x,
-            y,
-            (r * 255).toInt().toUByte(),
-            (g * 255).toInt().toUByte(),
-            (b * 255).toInt().toUByte(),
-            alpha
+            text, x, y, (r * 255).toInt().toUByte(), (g * 255).toInt().toUByte(), (b * 255).toInt().toUByte(), alpha
         )
     }
 
@@ -980,13 +798,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * (fully opaque).
      */
     fun drawCenteredText(
-        text: String,
-        centerX: Int,
-        y: Int,
-        r: UByte,
-        g: UByte,
-        b: UByte,
-        alpha: Float = 1.0f
+        text: String, centerX: Int, y: Int, r: UByte, g: UByte, b: UByte, alpha: Float = 1.0f
     ) {
         drawCenteredText(text, centerX, y, combineInt(r, g, b, alpha))
     }
@@ -1001,22 +813,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * (fully opaque).
      */
     fun drawCenteredText(
-        text: String,
-        centerX: Int,
-        y: Int,
-        r: Float,
-        g: Float,
-        b: Float,
-        alpha: Float = 1.0f
+        text: String, centerX: Int, y: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f
     ) {
         drawCenteredText(
-            text,
-            centerX,
-            y,
-            (r * 255).toInt().toUByte(),
-            (g * 255).toInt().toUByte(),
-            (b * 255).toInt().toUByte(),
-            alpha
+            text, centerX, y, (r * 255).toInt().toUByte(), (g * 255).toInt().toUByte(), (b * 255).toInt().toUByte(), alpha
         )
     }
 
@@ -1082,19 +882,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * (fully opaque).
      */
     fun drawCenteredTextWithShadow(
-        text: String,
-        centerX: Int,
-        y: Int,
-        r: UByte,
-        g: UByte,
-        b: UByte,
-        alpha: Float = 1.0f
+        text: String, centerX: Int, y: Int, r: UByte, g: UByte, b: UByte, alpha: Float = 1.0f
     ) {
         drawCenteredTextWithShadow(
-            text,
-            centerX,
-            y,
-            combineInt(r, g, b, alpha)
+            text, centerX, y, combineInt(r, g, b, alpha)
         )
     }
 
@@ -1108,22 +899,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * (fully opaque).
      */
     fun drawCenteredTextWithShadow(
-        text: String,
-        centerX: Int,
-        y: Int,
-        r: Float,
-        g: Float,
-        b: Float,
-        alpha: Float = 1.0f
+        text: String, centerX: Int, y: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f
     ) {
         drawCenteredTextWithShadow(
-            text,
-            centerX,
-            y,
-            (r * 255).toInt().toUByte(),
-            (g * 255).toInt().toUByte(),
-            (b * 255).toInt().toUByte(),
-            alpha
+            text, centerX, y, (r * 255).toInt().toUByte(), (g * 255).toInt().toUByte(), (b * 255).toInt().toUByte(), alpha
         )
     }
 
@@ -1172,13 +951,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * (fully opaque).
      */
     fun drawRightAlignedText(
-        text: String,
-        rightX: Int,
-        y: Int,
-        r: UByte,
-        g: UByte,
-        b: UByte,
-        alpha: Float = 1.0f
+        text: String, rightX: Int, y: Int, r: UByte, g: UByte, b: UByte, alpha: Float = 1.0f
     ) {
         drawRightAlignedText(text, rightX, y, combineInt(r, g, b, alpha))
     }
@@ -1194,22 +967,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * (fully opaque).
      */
     fun drawRightAlignedText(
-        text: String,
-        rightX: Int,
-        y: Int,
-        r: Float,
-        g: Float,
-        b: Float,
-        alpha: Float = 1.0f
+        text: String, rightX: Int, y: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f
     ) {
         drawRightAlignedText(
-            text,
-            rightX,
-            y,
-            (r * 255).toInt().toUByte(),
-            (g * 255).toInt().toUByte(),
-            (b * 255).toInt().toUByte(),
-            alpha
+            text, rightX, y, (r * 255).toInt().toUByte(), (g * 255).toInt().toUByte(), (b * 255).toInt().toUByte(), alpha
         )
     }
 
@@ -1244,11 +1005,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * (fully opaque).
      */
     fun drawRightAlignedTextWithShadow(
-        text: String,
-        rightX: Int,
-        y: Int,
-        color: Int,
-        alpha: Float
+        text: String, rightX: Int, y: Int, color: Int, alpha: Float
     ) {
         drawRightAlignedTextWithShadow(text, rightX, y, combineInt(color, alpha))
     }
@@ -1264,19 +1021,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * (fully opaque).
      */
     fun drawRightAlignedTextWithShadow(
-        text: String,
-        rightX: Int,
-        y: Int,
-        r: UByte,
-        g: UByte,
-        b: UByte,
-        alpha: Float = 1.0f
+        text: String, rightX: Int, y: Int, r: UByte, g: UByte, b: UByte, alpha: Float = 1.0f
     ) {
         drawRightAlignedTextWithShadow(
-            text,
-            rightX,
-            y,
-            combineInt(r, g, b, alpha)
+            text, rightX, y, combineInt(r, g, b, alpha)
         )
     }
 
@@ -1291,22 +1039,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * (fully opaque).
      */
     fun drawRightAlignedTextWithShadow(
-        text: String,
-        rightX: Int,
-        y: Int,
-        r: Float,
-        g: Float,
-        b: Float,
-        alpha: Float = 1.0f
+        text: String, rightX: Int, y: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f
     ) {
         drawRightAlignedTextWithShadow(
-            text,
-            rightX,
-            y,
-            (r * 255).toInt().toUByte(),
-            (g * 255).toInt().toUByte(),
-            (b * 255).toInt().toUByte(),
-            alpha
+            text, rightX, y, (r * 255).toInt().toUByte(), (g * 255).toInt().toUByte(), (b * 255).toInt().toUByte(), alpha
         )
     }
 
@@ -1333,12 +1069,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
         val lineHeight = textRenderer.fontHeight
         for (i in lines.indices) {
             drawContext.drawText(
-                textRenderer,
-                Text.literal(lines[i]).fillStyle(style),
-                x,
-                y + i * lineHeight,
-                applyAlpha(color),
-                false
+                textRenderer, Text.literal(lines[i]).fillStyle(style), x, y + i * lineHeight, applyAlpha(color), false
             )
         }
     }
@@ -1365,19 +1096,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @return A list of strings representing the drawn lines of wrapped text.
      */
     fun drawWrappedText(
-        text: String,
-        x: Int,
-        y: Int,
-        maxWidth: Int,
-        color: Int,
-        alpha: Float
+        text: String, x: Int, y: Int, maxWidth: Int, color: Int, alpha: Float
     ): List<String> {
         return drawWrappedText(
-            text,
-            x,
-            y,
-            maxWidth,
-            combineInt(color, alpha)
+            text, x, y, maxWidth, combineInt(color, alpha)
         )
     }
 
@@ -1393,21 +1115,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @return A list of strings representing the drawn lines of wrapped text.
      */
     fun drawWrappedText(
-        text: String,
-        x: Int,
-        y: Int,
-        maxWidth: Int,
-        r: UByte,
-        g: UByte,
-        b: UByte,
-        alpha: Float = 1.0f
+        text: String, x: Int, y: Int, maxWidth: Int, r: UByte, g: UByte, b: UByte, alpha: Float = 1.0f
     ): List<String> {
         return drawWrappedText(
-            text,
-            x,
-            y,
-            maxWidth,
-            combineInt(r, g, b, alpha)
+            text, x, y, maxWidth, combineInt(r, g, b, alpha)
         )
     }
 
@@ -1423,24 +1134,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @return A list of strings representing the drawn lines of wrapped text.
      */
     fun drawWrappedText(
-        text: String,
-        x: Int,
-        y: Int,
-        maxWidth: Int,
-        r: Float,
-        g: Float,
-        b: Float,
-        alpha: Float = 1.0f
+        text: String, x: Int, y: Int, maxWidth: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f
     ): List<String> {
         return drawWrappedText(
-            text,
-            x,
-            y,
-            maxWidth,
-            (r * 255).toInt().toUByte(),
-            (g * 255).toInt().toUByte(),
-            (b * 255).toInt().toUByte(),
-            alpha
+            text, x, y, maxWidth, (r * 255).toInt().toUByte(), (g * 255).toInt().toUByte(), (b * 255).toInt().toUByte(), alpha
         )
     }
 
@@ -1466,12 +1163,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @return A list of strings representing the drawn lines of wrapped text.
      */
     fun drawWrappedText(
-        text: Text,
-        x: Int,
-        y: Int,
-        maxWidth: Int,
-        color: Int,
-        alpha: Float
+        text: Text, x: Int, y: Int, maxWidth: Int, color: Int, alpha: Float
     ): List<String> {
         return drawWrappedText(text.string, x, y, maxWidth, color, alpha)
     }
@@ -1488,14 +1180,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @return A list of strings representing the drawn lines of wrapped text.
      */
     fun drawWrappedText(
-        text: Text,
-        x: Int,
-        y: Int,
-        maxWidth: Int,
-        r: UByte,
-        g: UByte,
-        b: UByte,
-        alpha: Float = 1.0f
+        text: Text, x: Int, y: Int, maxWidth: Int, r: UByte, g: UByte, b: UByte, alpha: Float = 1.0f
     ): List<String> {
         return drawWrappedText(text.string, x, y, maxWidth, r, g, b, alpha)
     }
@@ -1512,14 +1197,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @return A list of strings representing the drawn lines of wrapped text.
      */
     fun drawWrappedText(
-        text: Text,
-        x: Int,
-        y: Int,
-        maxWidth: Int,
-        r: Float,
-        g: Float,
-        b: Float,
-        alpha: Float = 1.0f
+        text: Text, x: Int, y: Int, maxWidth: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f
     ): List<String> {
         return drawWrappedText(text.string, x, y, maxWidth, r, g, b, alpha)
     }
@@ -1536,10 +1214,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
             val lineHeight = textRenderer.fontHeight
             for (i in lines.indices) {
                 drawCenteredText(
-                    lines[i],
-                    centerX,
-                    y + i * lineHeight,
-                    applyAlpha(color)
+                    lines[i], centerX, y + i * lineHeight, applyAlpha(color)
                 )
             }
             lines
@@ -1568,19 +1243,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @return A list of strings representing the drawn lines of wrapped text.
      */
     fun drawCenteredWrappedText(
-        text: String,
-        centerX: Int,
-        y: Int,
-        maxWidth: Int,
-        color: Int,
-        alpha: Float
+        text: String, centerX: Int, y: Int, maxWidth: Int, color: Int, alpha: Float
     ): List<String> {
         return drawCenteredWrappedText(
-            text,
-            centerX,
-            y,
-            maxWidth,
-            combineInt(color, alpha)
+            text, centerX, y, maxWidth, combineInt(color, alpha)
         )
     }
 
@@ -1596,21 +1262,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @return A list of strings representing the drawn lines of wrapped text.
      */
     fun drawCenteredWrappedText(
-        text: String,
-        centerX: Int,
-        y: Int,
-        maxWidth: Int,
-        r: UByte,
-        g: UByte,
-        b: UByte,
-        alpha: Float = 1.0f
+        text: String, centerX: Int, y: Int, maxWidth: Int, r: UByte, g: UByte, b: UByte, alpha: Float = 1.0f
     ): List<String> {
         return drawCenteredWrappedText(
-            text,
-            centerX,
-            y,
-            maxWidth,
-            combineInt(r, g, b, alpha)
+            text, centerX, y, maxWidth, combineInt(r, g, b, alpha)
         )
     }
 
@@ -1626,24 +1281,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @return A list of strings representing the drawn lines of wrapped text.
      */
     fun drawCenteredWrappedText(
-        text: String,
-        centerX: Int,
-        y: Int,
-        maxWidth: Int,
-        r: Float,
-        g: Float,
-        b: Float,
-        alpha: Float = 1.0f
+        text: String, centerX: Int, y: Int, maxWidth: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f
     ): List<String> {
         return drawCenteredWrappedText(
-            text,
-            centerX,
-            y,
-            maxWidth,
-            (r * 255).toInt().toUByte(),
-            (g * 255).toInt().toUByte(),
-            (b * 255).toInt().toUByte(),
-            alpha
+            text, centerX, y, maxWidth, (r * 255).toInt().toUByte(), (g * 255).toInt().toUByte(), (b * 255).toInt().toUByte(), alpha
         )
     }
 
@@ -1669,12 +1310,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @return A list of strings representing the drawn lines of wrapped text.
      */
     fun drawCenteredWrappedText(
-        text: Text,
-        centerX: Int,
-        y: Int,
-        maxWidth: Int,
-        color: Int,
-        alpha: Float
+        text: Text, centerX: Int, y: Int, maxWidth: Int, color: Int, alpha: Float
     ): List<String> {
         return drawCenteredWrappedText(text.string, centerX, y, maxWidth, color, alpha)
     }
@@ -1691,14 +1327,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @return A list of strings representing the drawn lines of wrapped text.
      */
     fun drawCenteredWrappedText(
-        text: Text,
-        centerX: Int,
-        y: Int,
-        maxWidth: Int,
-        r: UByte,
-        g: UByte,
-        b: UByte,
-        alpha: Float = 1.0f
+        text: Text, centerX: Int, y: Int, maxWidth: Int, r: UByte, g: UByte, b: UByte, alpha: Float = 1.0f
     ): List<String> {
         return drawCenteredWrappedText(text.string, centerX, y, maxWidth, r, g, b, alpha)
     }
@@ -1715,14 +1344,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @return A list of strings representing the drawn lines of wrapped text.
      */
     fun drawCenteredWrappedText(
-        text: Text,
-        centerX: Int,
-        y: Int,
-        maxWidth: Int,
-        r: Float,
-        g: Float,
-        b: Float,
-        alpha: Float = 1.0f
+        text: Text, centerX: Int, y: Int, maxWidth: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f
     ): List<String> {
         return drawCenteredWrappedText(text.string, centerX, y, maxWidth, r, g, b, alpha)
     }
@@ -1753,15 +1375,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
                         currentLine = word
                     }
 
-                    while (textRenderer.getWidth(Text.literal(currentLine).fillStyle(style)) > maxWidth &&
-                        currentLine.isNotEmpty()
-                    ) {
+                    while (textRenderer.getWidth(Text.literal(currentLine).fillStyle(style)) > maxWidth && currentLine.isNotEmpty()) {
                         var cutIndex = currentLine.length - 1
 
-                        while (cutIndex > 0 &&
-                            textRenderer.getWidth(Text.literal(currentLine.substring(0, cutIndex)).fillStyle(style)) >
-                            maxWidth
-                        ) {
+                        while (cutIndex > 0 && textRenderer.getWidth(Text.literal(currentLine.substring(0, cutIndex)).fillStyle(style)) > maxWidth) {
                             cutIndex--
                         }
 
@@ -1825,27 +1442,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param textureHeight The total height of the texture.
      */
     fun drawTexture(
-        texture: Identifier,
-        x: Int,
-        y: Int,
-        u: Float,
-        v: Float,
-        width: Int,
-        height: Int,
-        textureWidth: Int,
-        textureHeight: Int
+        texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, textureWidth: Int, textureHeight: Int
     ) {
         drawTexture(
-            texture,
-            x,
-            y,
-            u,
-            v,
-            width,
-            height,
-            textureWidth,
-            textureHeight,
-            0xFFFFFFFF.toInt()
+            texture, x, y, u, v, width, height, textureWidth, textureHeight, 0xFFFFFFFF.toInt()
         )
     }
 
@@ -1860,28 +1460,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param color The color tint to apply, represented as an ARGB integer.
      */
     fun drawTexture(
-        texture: Identifier,
-        x: Int,
-        y: Int,
-        u: Float,
-        v: Float,
-        width: Int,
-        height: Int,
-        textureWidth: Int,
-        textureHeight: Int,
-        color: Long
+        texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, textureWidth: Int, textureHeight: Int, color: Long
     ) {
         drawTexture(
-            texture,
-            x,
-            y,
-            u,
-            v,
-            width,
-            height,
-            textureWidth,
-            textureHeight,
-            color.toInt()
+            texture, x, y, u, v, width, height, textureWidth, textureHeight, color.toInt()
         )
     }
 
@@ -1896,29 +1478,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param color The color tint to apply, represented as an ARGB integer.
      */
     fun drawTexture(
-        texture: Identifier,
-        x: Int,
-        y: Int,
-        u: Float,
-        v: Float,
-        width: Int,
-        height: Int,
-        textureWidth: Int,
-        textureHeight: Int,
-        color: Int
+        texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, textureWidth: Int, textureHeight: Int, color: Int
     ) {
         drawContext.drawTexture(
-            RenderPipelines.GUI_TEXTURED,
-            texture,
-            x,
-            y,
-            u,
-            v,
-            width,
-            height,
-            textureWidth,
-            textureHeight,
-            applyAlpha(color)
+            RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, textureWidth, textureHeight, applyAlpha(color)
         )
     }
 
@@ -1931,25 +1494,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * opaque).
      */
     fun drawTexture(
-        texture: Identifier,
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        color: Int,
-        alpha: Float
+        texture: Identifier, x: Int, y: Int, width: Int, height: Int, color: Int, alpha: Float
     ) {
         drawTexture(
-            texture,
-            x,
-            y,
-            0f,
-            0f,
-            width,
-            height,
-            width,
-            height,
-            combineInt(color, alpha)
+            texture, x, y, 0f, 0f, width, height, width, height, combineInt(color, alpha)
         )
     }
 
@@ -1964,27 +1512,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * opaque).
      */
     fun drawTexture(
-        texture: Identifier,
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        r: UByte,
-        g: UByte,
-        b: UByte,
-        alpha: Float = 1.0f
+        texture: Identifier, x: Int, y: Int, width: Int, height: Int, r: UByte, g: UByte, b: UByte, alpha: Float = 1.0f
     ) {
         drawTexture(
-            texture,
-            x,
-            y,
-            0.0f,
-            0.0f,
-            width,
-            height,
-            width,
-            height,
-            combineInt(r, g, b, alpha)
+            texture, x, y, 0.0f, 0.0f, width, height, width, height, combineInt(r, g, b, alpha)
         )
     }
 
@@ -1999,26 +1530,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * opaque).
      */
     fun drawTexture(
-        texture: Identifier,
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        r: Float,
-        g: Float,
-        b: Float,
-        alpha: Float = 1.0f
+        texture: Identifier, x: Int, y: Int, width: Int, height: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f
     ) {
         drawTexture(
-            texture,
-            x,
-            y,
-            width,
-            height,
-            (r * 255).toInt().toUByte(),
-            (g * 255).toInt().toUByte(),
-            (b * 255).toInt().toUByte(),
-            alpha
+            texture, x, y, width, height, (r * 255).toInt().toUByte(), (g * 255).toInt().toUByte(), (b * 255).toInt().toUByte(), alpha
         )
     }
 
@@ -2035,29 +1550,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * opaque).
      */
     fun drawTexture(
-        texture: Identifier,
-        x: Int,
-        y: Int,
-        u: Float,
-        v: Float,
-        width: Int,
-        height: Int,
-        textureWidth: Int,
-        textureHeight: Int,
-        color: Int,
-        alpha: Float
+        texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, textureWidth: Int, textureHeight: Int, color: Int, alpha: Float
     ) {
         drawTexture(
-            texture,
-            x,
-            y,
-            u,
-            v,
-            width,
-            height,
-            textureWidth,
-            textureHeight,
-            combineInt(color, alpha)
+            texture, x, y, u, v, width, height, textureWidth, textureHeight, combineInt(color, alpha)
         )
     }
 
@@ -2076,31 +1572,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * opaque).
      */
     fun drawTexture(
-        texture: Identifier,
-        x: Int,
-        y: Int,
-        u: Float,
-        v: Float,
-        width: Int,
-        height: Int,
-        textureWidth: Int,
-        textureHeight: Int,
-        r: UByte,
-        g: UByte,
-        b: UByte,
-        alpha: Float = 1.0f
+        texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, textureWidth: Int, textureHeight: Int, r: UByte, g: UByte, b: UByte, alpha: Float = 1.0f
     ) {
         drawTexture(
-            texture,
-            x,
-            y,
-            u,
-            v,
-            width,
-            height,
-            textureWidth,
-            textureHeight,
-            combineInt(r, g, b, alpha)
+            texture, x, y, u, v, width, height, textureWidth, textureHeight, combineInt(r, g, b, alpha)
         )
     }
 
@@ -2119,34 +1594,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * opaque).
      */
     fun drawTexture(
-        texture: Identifier,
-        x: Int,
-        y: Int,
-        u: Float,
-        v: Float,
-        width: Int,
-        height: Int,
-        textureWidth: Int,
-        textureHeight: Int,
-        r: Float,
-        g: Float,
-        b: Float,
-        alpha: Float = 1.0f
+        texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, textureWidth: Int, textureHeight: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f
     ) {
         drawTexture(
-            texture,
-            x,
-            y,
-            u,
-            v,
-            width,
-            height,
-            textureWidth,
-            textureHeight,
-            (r * 255).toInt().toUByte(),
-            (g * 255).toInt().toUByte(),
-            (b * 255).toInt().toUByte(),
-            alpha
+            texture, x, y, u, v, width, height, textureWidth, textureHeight, (r * 255).toInt().toUByte(), (g * 255).toInt().toUByte(), (b * 255).toInt().toUByte(), alpha
         )
     }
 
@@ -2162,31 +1613,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param textureHeight The total height of the texture.
      */
     fun drawTextureRegion(
-        texture: Identifier,
-        x: Int,
-        y: Int,
-        u: Float,
-        v: Float,
-        width: Int,
-        height: Int,
-        regionWidth: Int,
-        regionHeight: Int,
-        textureWidth: Int,
-        textureHeight: Int
+        texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, regionWidth: Int, regionHeight: Int, textureWidth: Int, textureHeight: Int
     ) {
         drawTextureRegion(
-            texture,
-            x,
-            y,
-            u,
-            v,
-            width,
-            height,
-            regionWidth,
-            regionHeight,
-            textureWidth,
-            textureHeight,
-            0xFFFFFFFF.toInt()
+            texture, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, 0xFFFFFFFF.toInt()
         )
     }
 
@@ -2203,32 +1633,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param color The color tint to apply, represented as an ARGB integer.
      */
     fun drawTextureRegion(
-        texture: Identifier,
-        x: Int,
-        y: Int,
-        u: Float,
-        v: Float,
-        width: Int,
-        height: Int,
-        regionWidth: Int,
-        regionHeight: Int,
-        textureWidth: Int,
-        textureHeight: Int,
-        color: Long
+        texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, regionWidth: Int, regionHeight: Int, textureWidth: Int, textureHeight: Int, color: Long
     ) {
         drawTextureRegion(
-            texture,
-            x,
-            y,
-            u,
-            v,
-            width,
-            height,
-            regionWidth,
-            regionHeight,
-            textureWidth,
-            textureHeight,
-            color.toInt()
+            texture, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, color.toInt()
         )
     }
 
@@ -2245,33 +1653,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param color The color tint to apply, represented as an ARGB integer.
      */
     fun drawTextureRegion(
-        texture: Identifier,
-        x: Int,
-        y: Int,
-        u: Float,
-        v: Float,
-        width: Int,
-        height: Int,
-        regionWidth: Int,
-        regionHeight: Int,
-        textureWidth: Int,
-        textureHeight: Int,
-        color: Int
+        texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, regionWidth: Int, regionHeight: Int, textureWidth: Int, textureHeight: Int, color: Int
     ) {
         drawContext.drawTexture(
-            RenderPipelines.GUI_TEXTURED,
-            texture,
-            x,
-            y,
-            u,
-            v,
-            width,
-            height,
-            regionWidth,
-            regionHeight,
-            textureWidth,
-            textureHeight,
-            applyAlpha(color)
+            RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, applyAlpha(color)
         )
     }
 
@@ -2290,33 +1675,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * opaque).
      */
     fun drawTextureRegion(
-        texture: Identifier,
-        x: Int,
-        y: Int,
-        u: Float,
-        v: Float,
-        width: Int,
-        height: Int,
-        regionWidth: Int,
-        regionHeight: Int,
-        textureWidth: Int,
-        textureHeight: Int,
-        color: Int,
-        alpha: Float
+        texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, regionWidth: Int, regionHeight: Int, textureWidth: Int, textureHeight: Int, color: Int, alpha: Float
     ) {
         drawTextureRegion(
-            texture,
-            x,
-            y,
-            u,
-            v,
-            width,
-            height,
-            regionWidth,
-            regionHeight,
-            textureWidth,
-            textureHeight,
-            combineInt(color, alpha)
+            texture, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, combineInt(color, alpha)
         )
     }
 
@@ -2337,35 +1699,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * opaque).
      */
     fun drawTextureRegion(
-        texture: Identifier,
-        x: Int,
-        y: Int,
-        u: Float,
-        v: Float,
-        width: Int,
-        height: Int,
-        regionWidth: Int,
-        regionHeight: Int,
-        textureWidth: Int,
-        textureHeight: Int,
-        r: UByte,
-        g: UByte,
-        b: UByte,
-        alpha: Float = 1.0f
+        texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, regionWidth: Int, regionHeight: Int, textureWidth: Int, textureHeight: Int, r: UByte, g: UByte, b: UByte, alpha: Float = 1.0f
     ) {
         drawTextureRegion(
-            texture,
-            x,
-            y,
-            u,
-            v,
-            width,
-            height,
-            regionWidth,
-            regionHeight,
-            textureWidth,
-            textureHeight,
-            combineInt(r, g, b, alpha)
+            texture, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, combineInt(r, g, b, alpha)
         )
     }
 
@@ -2386,38 +1723,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * opaque).
      */
     fun drawTextureRegion(
-        texture: Identifier,
-        x: Int,
-        y: Int,
-        u: Float,
-        v: Float,
-        width: Int,
-        height: Int,
-        regionWidth: Int,
-        regionHeight: Int,
-        textureWidth: Int,
-        textureHeight: Int,
-        r: Float,
-        g: Float,
-        b: Float,
-        alpha: Float = 1.0f
+        texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, regionWidth: Int, regionHeight: Int, textureWidth: Int, textureHeight: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f
     ) {
         drawTextureRegion(
-            texture,
-            x,
-            y,
-            u,
-            v,
-            width,
-            height,
-            regionWidth,
-            regionHeight,
-            textureWidth,
-            textureHeight,
-            (r * 255).toInt().toUByte(),
-            (g * 255).toInt().toUByte(),
-            (b * 255).toInt().toUByte(),
-            alpha
+            texture, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, (r * 255).toInt().toUByte(), (g * 255).toInt().toUByte(), (b * 255).toInt().toUByte(), alpha
         )
     }
 
@@ -2458,13 +1767,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param alpha The alpha value for the line, ranging from 0.0 to 1.0.
      */
     fun drawHorizontalLine(
-        startX: Int,
-        y: Int,
-        width: Int,
-        r: UByte,
-        g: UByte,
-        b: UByte,
-        alpha: Float = 1.0f
+        startX: Int, y: Int, width: Int, r: UByte, g: UByte, b: UByte, alpha: Float = 1.0f
     ) {
         fill(startX, y, width, 1, r, g, b, alpha)
     }
@@ -2506,13 +1809,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param alpha The alpha value for the line, ranging from 0.0 to 1.0.
      */
     fun drawVerticalLine(
-        x: Int,
-        startY: Int,
-        height: Int,
-        r: UByte,
-        g: UByte,
-        b: UByte,
-        alpha: Float = 1.0f
+        x: Int, startY: Int, height: Int, r: UByte, g: UByte, b: UByte, alpha: Float = 1.0f
     ) {
         fill(x, startY, 1, height, r, g, b, alpha)
     }
@@ -2526,20 +1823,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param endColor The ending color on the right, represented as an ARGB integer.
      */
     fun drawHorizontalGradient(
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        startColor: Long,
-        endColor: Long
+        x: Int, y: Int, width: Int, height: Int, startColor: Long, endColor: Long
     ) {
         drawHorizontalGradient(
-            x,
-            y,
-            width,
-            height,
-            startColor.toInt(),
-            endColor.toInt()
+            x, y, width, height, startColor.toInt(), endColor.toInt()
         )
     }
 
@@ -2550,12 +1837,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param endColor The ending color on the right, represented as an ARGB integer.
      */
     fun drawHorizontalGradient(
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        startColor: Int,
-        endColor: Int
+        x: Int, y: Int, width: Int, height: Int, startColor: Int, endColor: Int
     ) {
         drawContext.fillGradient(x, y, x + width, y + height, applyAlpha(startColor), applyAlpha(endColor))
     }
@@ -2568,21 +1850,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param alpha The alpha value for both colors, ranging from 0.0 to 1.0.
      */
     fun drawHorizontalGradient(
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        startColor: Int,
-        endColor: Int,
-        alpha: Float
+        x: Int, y: Int, width: Int, height: Int, startColor: Int, endColor: Int, alpha: Float
     ) {
         drawHorizontalGradient(
-            x,
-            y,
-            width,
-            height,
-            combineInt(startColor, alpha),
-            combineInt(endColor, alpha)
+            x, y, width, height, combineInt(startColor, alpha), combineInt(endColor, alpha)
         )
     }
 
@@ -2593,20 +1864,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param endColor The ending color at the bottom, represented as an ARGB integer.
      */
     fun drawVerticalGradient(
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        startColor: Long,
-        endColor: Long
+        x: Int, y: Int, width: Int, height: Int, startColor: Long, endColor: Long
     ) {
         drawVerticalGradient(
-            x,
-            y,
-            width,
-            height,
-            startColor.toInt(),
-            endColor.toInt()
+            x, y, width, height, startColor.toInt(), endColor.toInt()
         )
     }
 
@@ -2617,12 +1878,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param endColor The ending color at the bottom, represented as an ARGB integer.
      */
     fun drawVerticalGradient(
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        startColor: Int,
-        endColor: Int
+        x: Int, y: Int, width: Int, height: Int, startColor: Int, endColor: Int
     ) {
         push()
         translate((x - width).toFloat(), -y.toFloat())
@@ -2641,21 +1897,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param alpha The alpha value for both colors, ranging from 0.0 to 1.0.
      */
     fun drawVerticalGradient(
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        startColor: Int,
-        endColor: Int,
-        alpha: Float
+        x: Int, y: Int, width: Int, height: Int, startColor: Int, endColor: Int, alpha: Float
     ) {
         drawVerticalGradient(
-            x,
-            y,
-            width,
-            height,
-            combineInt(startColor, alpha),
-            combineInt(endColor, alpha)
+            x, y, width, height, combineInt(startColor, alpha), combineInt(endColor, alpha)
         )
     }
 
@@ -2713,15 +1958,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param alpha The alpha value for the color, ranging from 0.0 to 1.0.
      */
     fun fillRounded(
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        radius: Int,
-        r: UByte,
-        g: UByte,
-        b: UByte,
-        alpha: Float = 1.0f
+        x: Int, y: Int, width: Int, height: Int, radius: Int, r: UByte, g: UByte, b: UByte, alpha: Float = 1.0f
     ) {
         fillRounded(x, y, width, height, radius, combineInt(r, g, b, alpha))
     }
@@ -2736,26 +1973,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param alpha The alpha value for the color, ranging from 0.0 to 1.0.
      */
     fun fillRounded(
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        radius: Int,
-        r: Float,
-        g: Float,
-        b: Float,
-        alpha: Float = 1.0f
+        x: Int, y: Int, width: Int, height: Int, radius: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f
     ) {
         fillRounded(
-            x,
-            y,
-            width,
-            height,
-            radius,
-            (r * 255).toInt().toUByte(),
-            (g * 255).toInt().toUByte(),
-            (b * 255).toInt().toUByte(),
-            alpha
+            x, y, width, height, radius, (r * 255).toInt().toUByte(), (g * 255).toInt().toUByte(), (b * 255).toInt().toUByte(), alpha
         )
     }
 
@@ -2814,15 +2035,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param alpha The alpha value for the color, ranging from 0.0 to 1.0.
      */
     fun drawBorderRounded(
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        radius: Int,
-        r: UByte,
-        g: UByte,
-        b: UByte,
-        alpha: Float = 1.0f
+        x: Int, y: Int, width: Int, height: Int, radius: Int, r: UByte, g: UByte, b: UByte, alpha: Float = 1.0f
     ) {
         drawBorderRounded(x, y, width, height, radius, combineInt(r, g, b, alpha))
     }
@@ -2837,26 +2050,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param alpha The alpha value for the color, ranging from 0.0 to 1.0.
      */
     fun drawBorderRounded(
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        radius: Int,
-        r: Float,
-        g: Float,
-        b: Float,
-        alpha: Float = 1.0f
+        x: Int, y: Int, width: Int, height: Int, radius: Int, r: Float, g: Float, b: Float, alpha: Float = 1.0f
     ) {
         drawBorderRounded(
-            x,
-            y,
-            width,
-            height,
-            radius,
-            (r * 255).toInt().toUByte(),
-            (g * 255).toInt().toUByte(),
-            (b * 255).toInt().toUByte(),
-            alpha
+            x, y, width, height, radius, (r * 255).toInt().toUByte(), (g * 255).toInt().toUByte(), (b * 255).toInt().toUByte(), alpha
         )
     }
 
@@ -2868,13 +2065,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param borderColor The color of the border, represented as an ARGB integer.
      */
     fun fillWithBorderRounded(
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        radius: Int,
-        fillColor: Long,
-        borderColor: Long
+        x: Int, y: Int, width: Int, height: Int, radius: Int, fillColor: Long, borderColor: Long
     ) {
         fillRounded(x, y, width, height, radius, fillColor)
         drawBorderRounded(x, y, width, height, radius, borderColor)
@@ -2888,13 +2079,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param borderColor The color of the border, represented as an ARGB integer.
      */
     fun fillWithBorderRounded(
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        radius: Int,
-        fillColor: Int,
-        borderColor: Int
+        x: Int, y: Int, width: Int, height: Int, radius: Int, fillColor: Int, borderColor: Int
     ) {
         fillRounded(x, y, width, height, radius, fillColor)
         drawBorderRounded(x, y, width, height, radius, borderColor)
@@ -2909,14 +2094,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param alpha The alpha value for both colors, ranging from 0.0 to 1.0.
      */
     fun fillWithBorderRounded(
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        radius: Int,
-        fillColor: Int,
-        borderColor: Int,
-        alpha: Float
+        x: Int, y: Int, width: Int, height: Int, radius: Int, fillColor: Int, borderColor: Int, alpha: Float
     ) {
         fillRounded(x, y, width, height, radius, fillColor, alpha)
         drawBorderRounded(x, y, width, height, radius, borderColor, alpha)
@@ -2932,15 +2110,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param borderAlpha The alpha value for the border color, ranging from 0.0 to 1.0.
      */
     fun fillWithBorderRounded(
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        radius: Int,
-        fillColor: Int,
-        fillAlpha: Float,
-        borderColor: Int,
-        borderAlpha: Float
+        x: Int, y: Int, width: Int, height: Int, radius: Int, fillColor: Int, fillAlpha: Float, borderColor: Int, borderAlpha: Float
     ) {
         fillRounded(x, y, width, height, radius, fillColor, fillAlpha)
         drawBorderRounded(x, y, width, height, radius, borderColor, borderAlpha)
@@ -2959,18 +2129,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param alpha The alpha value for both colors, ranging from 0.0 to 1.0.
      */
     fun fillWithBorderRounded(
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        radius: Int,
-        fillR: UByte,
-        fillG: UByte,
-        fillB: UByte,
-        borderR: UByte,
-        borderG: UByte,
-        borderB: UByte,
-        alpha: Float = 1.0f
+        x: Int, y: Int, width: Int, height: Int, radius: Int, fillR: UByte, fillG: UByte, fillB: UByte, borderR: UByte, borderG: UByte, borderB: UByte, alpha: Float = 1.0f
     ) {
         fillRounded(x, y, width, height, radius, fillR, fillG, fillB, alpha)
         drawBorderRounded(x, y, width, height, radius, borderR, borderG, borderB, alpha)
@@ -2989,18 +2148,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param alpha The alpha value for both colors, ranging from 0.0 to 1.0.
      */
     fun fillWithBorderRounded(
-        x: Int,
-        y: Int,
-        width: Int,
-        height: Int,
-        radius: Int,
-        fillR: Float,
-        fillG: Float,
-        fillB: Float,
-        borderR: Float,
-        borderG: Float,
-        borderB: Float,
-        alpha: Float = 1.0f
+        x: Int, y: Int, width: Int, height: Int, radius: Int, fillR: Float, fillG: Float, fillB: Float, borderR: Float, borderG: Float, borderB: Float, alpha: Float = 1.0f
     ) {
         fillRounded(x, y, width, height, radius, fillR, fillG, fillB, alpha)
         drawBorderRounded(x, y, width, height, radius, borderR, borderG, borderB, alpha)
@@ -3016,18 +2164,13 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param startAngle The starting angle in degrees.
      */
     private fun drawRoundedCorner(
-        centerX: Int,
-        centerY: Int,
-        radius: Int,
-        color: Int,
-        startAngle: Float
+        centerX: Int, centerY: Int, radius: Int, color: Int, startAngle: Float
     ) {
         push()
         translate(centerX.toFloat(), centerY.toFloat())
         rotateDegrees(startAngle)
         scale(
-            1 / MinecraftClient.getInstance().window.scaleFactor.toFloat(),
-            1 / MinecraftClient.getInstance().window.scaleFactor.toFloat()
+            1 / MinecraftClient.getInstance().window.scaleFactor.toFloat(), 1 / MinecraftClient.getInstance().window.scaleFactor.toFloat()
         )
 
         val r = radius * (MinecraftClient.getInstance().window.scaleFactor)
@@ -3046,18 +2189,13 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param startAngle The starting angle in degrees.
      */
     private fun drawRoundedCornerBorder(
-        centerX: Int,
-        centerY: Int,
-        radius: Int,
-        color: Int,
-        startAngle: Float
+        centerX: Int, centerY: Int, radius: Int, color: Int, startAngle: Float
     ) {
         push()
         translate(centerX.toFloat(), centerY.toFloat())
         rotateDegrees(startAngle)
         scale(
-            1 / MinecraftClient.getInstance().window.scaleFactor.toFloat(),
-            1 / MinecraftClient.getInstance().window.scaleFactor.toFloat()
+            1 / MinecraftClient.getInstance().window.scaleFactor.toFloat(), 1 / MinecraftClient.getInstance().window.scaleFactor.toFloat()
         )
 
         val r = radius * (MinecraftClient.getInstance().window.scaleFactor)
@@ -3067,15 +2205,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
     }
 
     fun drawEntity(
-        x1: Int,
-        y1: Int,
-        x2: Int,
-        y2: Int,
-        size: Int,
-        scale: Float,
-        mouseX: Float,
-        mouseY: Float,
-        entity: LivingEntity
+        x1: Int, y1: Int, x2: Int, y2: Int, size: Int, scale: Float, mouseX: Float, mouseY: Float, entity: LivingEntity
     ) {
         val f = (x1 + x2).toFloat() / 2.0f
         val g = (y1 + y2).toFloat() / 2.0f
@@ -3099,16 +2229,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
         val vector3f = Vector3f(0.0f, entity.height / 2.0f + scale * o, 0.0f)
         val p = size.toFloat() / o
         InventoryScreen.drawEntity(
-            drawContext,
-            x1,
-            y1,
-            x2,
-            y2,
-            p,
-            vector3f,
-            quaternion,
-            quaternion2,
-            entity
+            drawContext, x1, y1, x2, y2, p, vector3f, quaternion, quaternion2, entity
         )
         entity.bodyYaw = j
         entity.yaw = k
@@ -3178,14 +2299,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
 
 /** Checks if the mouse is hovering over a specific area and executes the appropriate action. */
 inline fun hoverSeparate(
-    mouseX: Float,
-    mouseY: Float,
-    x: Int,
-    y: Int,
-    width: Int,
-    height: Int,
-    normal: () -> Unit,
-    hovered: () -> Unit
+    mouseX: Float, mouseY: Float, x: Int, y: Int, width: Int, height: Int, normal: () -> Unit, hovered: () -> Unit
 ) {
     if (isMouseOver(mouseX, mouseY, x, y, width, height)) {
         hovered()
@@ -3196,14 +2310,7 @@ inline fun hoverSeparate(
 
 /** Checks if the mouse is hovering over a specific area and executes the appropriate action. */
 inline fun hoverSeparate(
-    mouseX: Float,
-    mouseY: Float,
-    x: Int,
-    y: Int,
-    width: Int,
-    height: Int,
-    normal: (x: Int, y: Int, width: Int, height: Int) -> Unit,
-    hovered: (x: Int, y: Int, width: Int, height: Int) -> Unit
+    mouseX: Float, mouseY: Float, x: Int, y: Int, width: Int, height: Int, normal: (x: Int, y: Int, width: Int, height: Int) -> Unit, hovered: (x: Int, y: Int, width: Int, height: Int) -> Unit
 ) {
     if (isMouseOver(mouseX, mouseY, x, y, width, height)) {
         hovered(x, y, width, height)
@@ -3213,12 +2320,7 @@ inline fun hoverSeparate(
 }
 
 fun isMouseOver(
-    mouseX: Float,
-    mouseY: Float,
-    x: Int,
-    y: Int,
-    width: Int,
-    height: Int
+    mouseX: Float, mouseY: Float, x: Int, y: Int, width: Int, height: Int
 ): Boolean {
     return mouseX >= x && mouseX <= x + width && mouseY >= y && mouseY <= y + height
 }
@@ -3236,10 +2338,7 @@ fun combineInt(r: UByte, g: UByte, b: UByte, alpha: Float): Int {
 }
 
 fun combineLong(r: UByte, g: UByte, b: UByte, alpha: Float): Long {
-    return ((alpha * 255).toLong() shl 24) or
-            (r.toLong() shl 16) or
-            (g.toLong() shl 8) or
-            b.toLong()
+    return ((alpha * 255).toLong() shl 24) or (r.toLong() shl 16) or (g.toLong() shl 8) or b.toLong()
 }
 
 fun combineInt(r: Float, g: Float, b: Float, alpha: Float): Int {
@@ -3248,10 +2347,7 @@ fun combineInt(r: Float, g: Float, b: Float, alpha: Float): Int {
 
 fun combineLong(r: Float, g: Float, b: Float, alpha: Float): Long {
     return combineLong(
-        (r * 255).toInt().toUByte(),
-        (g * 255).toInt().toUByte(),
-        (b * 255).toInt().toUByte(),
-        alpha
+        (r * 255).toInt().toUByte(), (g * 255).toInt().toUByte(), (b * 255).toInt().toUByte(), alpha
     )
 }
 

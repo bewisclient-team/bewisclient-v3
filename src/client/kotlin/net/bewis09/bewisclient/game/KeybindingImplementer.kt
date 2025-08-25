@@ -8,8 +8,7 @@ import net.minecraft.client.MinecraftClient
 
 object KeybindingImplementer : EventEntrypoint {
     val CATEGORY = Translation(
-        "key.category",
-        "Bewisclient"
+        "key.category", "Bewisclient"
     )
 
     override fun onInitializeClient() {

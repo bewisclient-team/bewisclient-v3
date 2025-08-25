@@ -5,12 +5,7 @@ import net.minecraft.util.Identifier
 
 class RainbowImage(val image: Identifier, val color: Int, val alpha: Float) : Hoverable() {
     val colors = listOf(
-        0xCC3333,
-        0xCC8833,
-        0xCCCC33,
-        0x33CC66,
-        0x3366CC,
-        0x7F33A6
+        0xCC3333, 0xCC8833, 0xCCCC33, 0x33CC66, 0x3366CC, 0x7F33A6
     )
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {

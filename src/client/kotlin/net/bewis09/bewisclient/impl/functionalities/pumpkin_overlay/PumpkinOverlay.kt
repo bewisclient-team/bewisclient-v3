@@ -5,8 +5,5 @@ import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.functionalities.PumpkinOverlaySettings
 
 object PumpkinOverlay : ImageSettingCategory(
-    "pumpkin_overlay",
-    Translation("menu.category.pumpkin_overlay", "Pumpkin Overlay"),
-    arrayOf(),
-    PumpkinOverlaySettings.enabled
+    "pumpkin_overlay", Translation("menu.category.pumpkin_overlay", "Pumpkin Overlay"), arrayOf(), PumpkinOverlaySettings.enabled
 )

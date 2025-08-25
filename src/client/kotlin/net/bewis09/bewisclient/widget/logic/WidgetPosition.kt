@@ -13,8 +13,7 @@ interface WidgetPosition {
 
     companion object {
         val types = listOf<WidgetPositionFactory<*>>(
-            SidedPosition.Factory,
-            RelativePosition.Factory
+            SidedPosition.Factory, RelativePosition.Factory
         )
     }
 }

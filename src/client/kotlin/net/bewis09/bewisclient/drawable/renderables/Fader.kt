@@ -15,8 +15,7 @@ class Fader(val value: Gettable<Float>, val precision: Precision, val onChange: 
         super.render(screenDrawing, mouseX, mouseY)
         val normalizedValue = precision.normalize(value.get())
         screenDrawing.fillRounded(
-            getX(), getY() + 5, getWidth(), 4,
-            2, 0xAAAAAA, hoverAnimation["hovering"] * 0.15f + 0.15f
+            getX(), getY() + 5, getWidth(), 4, 2, 0xAAAAAA, hoverAnimation["hovering"] * 0.15f + 0.15f
         )
         screenDrawing.push()
         screenDrawing.translate(getX() + normalizedValue * (getWidth() - 8) + 4, getY() + 2f)

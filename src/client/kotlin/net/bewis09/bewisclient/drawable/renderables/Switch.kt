@@ -30,13 +30,7 @@ class Switch(var state: Gettable<Boolean>, val onChange: (new: Boolean) -> Unit)
         val scaleFactor = 0.5f
         screenDrawing.scale(1 - scaleFactor + abs(stateAnimation["state"] - 0.5f) * 2 * scaleFactor, 1f)
         screenDrawing.fillRounded(
-            -4,
-            -4,
-            8,
-            8,
-            4,
-            interpolateColor(0x888888, 0xAAAAAA, stateAnimation["state"]),
-            hoverAnimation["hovering"] * 0.5f + 0.5f
+            -4, -4, 8, 8, 4, interpolateColor(0x888888, 0xAAAAAA, stateAnimation["state"]), hoverAnimation["hovering"] * 0.5f + 0.5f
         )
         screenDrawing.pop()
     }

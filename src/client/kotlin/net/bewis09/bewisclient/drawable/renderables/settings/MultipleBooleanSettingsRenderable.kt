@@ -11,9 +11,7 @@ import net.bewis09.bewisclient.interfaces.Settable
 import net.minecraft.util.Identifier
 
 class MultipleBooleanSettingsRenderable(
-    val title: Translation,
-    tooltip: Translation? = null,
-    val settings: () -> List<Part<*>>
+    val title: Translation, tooltip: Translation? = null, val settings: () -> List<Part<*>>
 ) : TooltipHoverable(tooltip) {
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
@@ -36,9 +34,7 @@ class MultipleBooleanSettingsRenderable(
     }
 
     class Part<T>(
-        val name: Translation,
-        tooltip: Translation? = null,
-        val setting: T
+        val name: Translation, tooltip: Translation? = null, val setting: T
     ) : TooltipHoverable(tooltip) where T : Settable<Boolean?>, T : Gettable<Boolean> {
         val switch = Switch(
             state = setting::get,

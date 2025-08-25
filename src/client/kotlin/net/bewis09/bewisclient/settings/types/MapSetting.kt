@@ -44,22 +44,10 @@ open class MapSetting<T>(val from: (JsonElement) -> T, val to: (T) -> JsonElemen
     }
 }
 
-class BooleanMapSetting : MapSetting<Boolean>(
-    from = { it.asBoolean },
-    to = { JsonPrimitive(it) }
-)
+class BooleanMapSetting : MapSetting<Boolean>(from = { it.asBoolean }, to = { JsonPrimitive(it) })
 
-class IntegerMapSetting : MapSetting<Int>(
-    from = { it.asInt },
-    to = { JsonPrimitive(it) }
-)
+class IntegerMapSetting : MapSetting<Int>(from = { it.asInt }, to = { JsonPrimitive(it) })
 
-class StringMapSetting : MapSetting<String>(
-    from = { it.asString },
-    to = { JsonPrimitive(it) }
-)
+class StringMapSetting : MapSetting<String>(from = { it.asString }, to = { JsonPrimitive(it) })
 
-class FloatMapSetting : MapSetting<Float>(
-    from = { it.asFloat },
-    to = { JsonPrimitive(it) }
-)
+class FloatMapSetting : MapSetting<Float>(from = { it.asFloat }, to = { JsonPrimitive(it) })

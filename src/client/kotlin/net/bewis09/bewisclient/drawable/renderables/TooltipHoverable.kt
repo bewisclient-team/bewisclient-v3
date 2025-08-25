@@ -23,8 +23,7 @@ open class TooltipHoverable(val tooltip: () -> Translation?) : Hoverable() {
         val tooltip = tooltip()
 
         if (tooltip != null && hoverAnimation["hovering"] > 0f) {
-            if (hoverAnimation["hovering"] == 1f && wasActuallyDrawn != false)
-                tooltipAnimation["tooltip"] = 1f
+            if (hoverAnimation["hovering"] == 1f && wasActuallyDrawn != false) tooltipAnimation["tooltip"] = 1f
 
             if (wasActuallyDrawn == false) {
                 tooltipAnimation.pauseForOnce()
@@ -54,8 +53,7 @@ open class TooltipHoverable(val tooltip: () -> Translation?) : Hoverable() {
                 screenDrawing.drawWrappedText(wrappedText, mouseX + 5, mouseY - tooltipHeight + 5, combineInt(0xFFFFFF, tooltipAnimation["tooltip"]))
             })
         } else {
-            if (tooltipAnimation["tooltip"] != 0f)
-                tooltipAnimation.pauseForOnce()
+            if (tooltipAnimation["tooltip"] != 0f) tooltipAnimation.pauseForOnce()
             tooltipAnimation["tooltip"] = 0f
         }
     }

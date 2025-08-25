@@ -24,12 +24,7 @@ import net.bewis09.bewisclient.widget.WidgetLoader
 
 class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint {
     override fun getEventEntrypoints(): List<EventEntrypoint> = listOf(
-        WidgetLoader,
-        SettingsLoader,
-        KeybindingImplementer,
-        TranslationLoader,
-        BiomeWidget,
-        SpeedWidget
+        WidgetLoader, SettingsLoader, KeybindingImplementer, TranslationLoader, BiomeWidget, SpeedWidget
     )
 
     override fun getSettingsObjects(): List<Settings> = listOf(
@@ -37,38 +32,18 @@ class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint {
     )
 
     override fun getKeybinds(): List<Keybind> = listOf(
-        OpenOptionScreen,
-        Fullbright.ToggleNightVision,
-        Fullbright.ToggleFullbright,
-        Fullbright.IncreaseBrightness,
-        Fullbright.DecreaseBrightness,
-        Zoom.ZoomKeybind
+        OpenOptionScreen, Fullbright.ToggleNightVision, Fullbright.ToggleFullbright, Fullbright.IncreaseBrightness, Fullbright.DecreaseBrightness, Zoom.ZoomKeybind
     )
 
 
     override fun getWidgets(): List<Widget> = listOf(
-        FPSWidget,
-        BiomeWidget,
-        DayWidget,
-        CoordinatesWidget,
-        DaytimeWidget,
-        PingWidget,
-        CPSWidget,
-        KeyWidget,
-        InventoryWidget,
-        SpeedWidget
+        FPSWidget, BiomeWidget, DayWidget, CoordinatesWidget, DaytimeWidget, PingWidget, CPSWidget, KeyWidget, InventoryWidget, SpeedWidget
     )
 
     override fun getUtilities(): List<Renderable> = listOf(
-        Fullbright,
-        BlockHighlight,
-        EntityHighlight,
-        HeldItemTooltip,
-        Zoom,
-        PumpkinOverlay,
+        Fullbright, BlockHighlight, EntityHighlight, HeldItemTooltip, Zoom, PumpkinOverlay,
         // Crosshair,
-        BetterVisibility,
-        Scoreboard
+        BetterVisibility, Scoreboard
         // Cleaner Debug Menu,
         // Chat Enhancements,
     )

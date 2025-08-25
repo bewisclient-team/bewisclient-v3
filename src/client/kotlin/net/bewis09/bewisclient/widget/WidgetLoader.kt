@@ -24,8 +24,7 @@ object WidgetLoader : EventEntrypoint {
             HudElementRegistry.addLast(
                 it.getId()
             ) { context, tickCounter ->
-                if (it.isShowing() && (MinecraftClient.getInstance().currentScreen as? RenderableScreen)?.renderable !is HudEditScreen)
-                    it.renderScaled(ScreenDrawing(context, MinecraftClient.getInstance().textRenderer))
+                if (it.isShowing() && (MinecraftClient.getInstance().currentScreen as? RenderableScreen)?.renderable !is HudEditScreen) it.renderScaled(ScreenDrawing(context, MinecraftClient.getInstance().textRenderer))
             }
         }
     }

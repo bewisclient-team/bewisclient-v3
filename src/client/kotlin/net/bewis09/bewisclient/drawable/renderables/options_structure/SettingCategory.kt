@@ -71,9 +71,7 @@ abstract class SettingCategory(val text: Translation, val setting: Array<Rendera
 
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
         OptionScreen.currentInstance?.transformInside(
-            getHeader(),
-            getPane(),
-            enableSetting
+            getHeader(), getPane(), enableSetting
         )
 
         return true
@@ -97,16 +95,9 @@ abstract class SettingCategory(val text: Translation, val setting: Array<Rendera
         if (enableSetting == null) return
         addRenderable(
             TooltipHoverableText(
-                if (enableSetting.get()) Translations.ENABLED else Translations.DISABLED,
-                0xAAAAAA,
-                0xFFFFFF,
-                if (enableSetting.get()) Translations.CLICK_TO_DISABLE else Translations.CLICK_TO_ENABLE,
-                true
+                if (enableSetting.get()) Translations.ENABLED else Translations.DISABLED, 0xAAAAAA, 0xFFFFFF, if (enableSetting.get()) Translations.CLICK_TO_DISABLE else Translations.CLICK_TO_ENABLE, true
             ) { enableSetting.toggle(); resize() }(
-                getX(),
-                getY() + getHeight() - 14,
-                getWidth(),
-                14
+                getX(), getY() + getHeight() - 14, getWidth(), 14
             )
         )
     }

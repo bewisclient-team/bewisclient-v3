@@ -12,9 +12,7 @@ import net.bewis09.bewisclient.exception.ProgramCodeException
  */
 class Animator(val duration: () -> Long, val interpolationType: (delta: Float) -> Float = LINEAR, vararg initial: Pair<String, Float>) {
     constructor(
-        duration: Long,
-        interpolationType: (delta: Float) -> Float = LINEAR,
-        vararg initial: Pair<String, Float>
+        duration: Long, interpolationType: (delta: Float) -> Float = LINEAR, vararg initial: Pair<String, Float>
     ) : this({ duration }, interpolationType, *initial)
 
     private val map: HashMap<String, Float> = hashMapOf()
@@ -120,9 +118,7 @@ class Animator(val duration: () -> Long, val interpolationType: (delta: Float) -
  * @return A new Animator instance.
  */
 fun animate(
-    duration: Long,
-    interpolationType: (delta: Float) -> Float = Animator.LINEAR,
-    vararg initial: Pair<String, Float>
+    duration: Long, interpolationType: (delta: Float) -> Float = Animator.LINEAR, vararg initial: Pair<String, Float>
 ): Animator {
     return Animator(duration, interpolationType, *initial)
 }

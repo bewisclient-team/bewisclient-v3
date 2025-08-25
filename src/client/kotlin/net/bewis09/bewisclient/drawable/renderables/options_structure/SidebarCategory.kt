@@ -14,8 +14,7 @@ open class SidebarCategory(val name: Translation, val renderable: Renderable) {
     operator fun invoke(screen: OptionScreen): Button {
         return Button(name.getTranslatedString()) {
             screen.transformInside(
-                getHeader(),
-                renderable
+                getHeader(), renderable
             )
         }.setHeight(14) as Button
     }

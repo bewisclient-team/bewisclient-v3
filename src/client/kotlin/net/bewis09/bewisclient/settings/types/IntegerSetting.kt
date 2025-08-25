@@ -21,14 +21,9 @@ class IntegerSetting(default: () -> Int, val min: Int, val max: Int, onChangeLis
         }
     }
 
-    fun createRenderable(id: String, title: String, description: String? = null) =
-        IntegerSettingRenderable(
-            Translation("menu.$id", title),
-            description?.let { Translation("menu.$id.description", it) },
-            this,
-            min,
-            max
-        )
+    fun createRenderable(id: String, title: String, description: String? = null) = IntegerSettingRenderable(
+        Translation("menu.$id", title), description?.let { Translation("menu.$id.description", it) }, this, min, max
+    )
 
     fun cloneWithDefault(): IntegerSetting {
         return IntegerSetting({ get() }, min, max)
