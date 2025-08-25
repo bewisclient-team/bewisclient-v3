@@ -8,7 +8,7 @@ object APIEntrypointLoader {
      */
     private val entrypoints: List<BewisclientAPIEntrypoint> by lazy {
         FabricLoader.getInstance().getEntrypointContainers("bewisclient", BewisclientAPIEntrypoint::class.java)
-            .sortedBy { it.provider.metadata.id?.let { id -> if(id == "bewisclient") "" else id } }
+            .sortedBy { it.provider.metadata.id?.let { id -> if (id == "bewisclient") "" else id } }
             .map { it.entrypoint }
     }
 

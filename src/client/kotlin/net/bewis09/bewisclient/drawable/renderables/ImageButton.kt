@@ -4,8 +4,8 @@ import net.bewis09.bewisclient.drawable.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.minecraft.util.Identifier
 
-class ImageButton(val image: Identifier, val onClick: (ImageButton) -> Unit, tooltip: Translation?): TooltipHoverable(tooltip) {
-    constructor(image: Identifier, onClick: (ImageButton) -> Unit): this(image, onClick, null)
+class ImageButton(val image: Identifier, val onClick: (ImageButton) -> Unit, tooltip: Translation?) : TooltipHoverable(tooltip) {
+    constructor(image: Identifier, onClick: (ImageButton) -> Unit) : this(image, onClick, null)
 
     var imageColor: Int = 0xFFFFFF
     var imageAlpha: Float = 1.0f

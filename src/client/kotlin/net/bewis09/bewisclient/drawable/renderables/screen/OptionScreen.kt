@@ -18,7 +18,7 @@ import net.minecraft.util.Identifier
 import org.lwjgl.glfw.GLFW
 
 class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvider {
-    val alphaMainAnimation = Animator(OptionsMenuSettings.animationTime.get().toLong(), Animator.Companion.EASE_IN_OUT, "alpha" to 0f, "inside" to 1f, "blur" to startBlur)
+    val alphaMainAnimation = Animator({ OptionsMenuSettings.animationTime.get().toLong() }, Animator.Companion.EASE_IN_OUT, "alpha" to 0f, "inside" to 1f, "blur" to startBlur)
 
     val homeButton = Button("Home") {
         info("Home button clicked")
@@ -86,7 +86,7 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
 
     override fun init() {
         super.init()
-        addRenderable(sectionVerticalLine(163,37,1, getHeight() - 74))
+        addRenderable(sectionVerticalLine(163, 37, 1, getHeight() - 74))
         addRenderable(sidebarPlane(37, 37, 120, getHeight() - 101))
         addRenderable(image(37, getHeight() - 59, 120, 22))
         if (optionsHeaderBooleanSetting != null) {
@@ -100,6 +100,9 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
         if (alphaMainAnimation["inside"] != 1f) {
             return
         }
+
+        if (optionsHeader == null && optionsPane == null && optionsHeaderBooleanSetting == null)
+            alphaMainAnimation.pauseForOnce()
 
         alphaMainAnimation.set("inside", 0f) {
             optionsPane = afterPane

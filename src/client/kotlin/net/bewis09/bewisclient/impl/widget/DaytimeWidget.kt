@@ -9,17 +9,17 @@ import net.bewis09.bewisclient.widget.types.LineWidget
 import net.minecraft.client.MinecraftClient
 import net.minecraft.util.Identifier
 import java.text.DateFormat
-import java.util.Locale
+import java.util.*
 
-object DaytimeWidget: LineWidget() {
-    var format12Hours = BooleanSetting(isSystem12HourFormat())
-
-    init {
-        create("format_12_hours", format12Hours)
-    }
+object DaytimeWidget : LineWidget() {
+    var format12Hours = create("format_12_hours", BooleanSetting(isSystem12HourFormat()))
 
     val daytimeWidgetTranslation = Translation("widget.daytime_widget.name", "Daytime Widget")
-    val daytimeWidgetDescription = Translation("widget.daytime_widget.description", "Displays the current in-game time in hours and minutes.")
+    val daytimeWidgetDescription =
+        Translation(
+            "widget.daytime_widget.description",
+            "Displays the current in-game time in hours and minutes."
+        )
 
     override fun getTranslation(): Translation = daytimeWidgetTranslation
     override fun getDescription(): Translation = daytimeWidgetDescription
@@ -38,23 +38,26 @@ object DaytimeWidget: LineWidget() {
         return listOf(String.format("%02d:%02d", hours, minutes))
     }
 
-    override fun defaultPosition(): WidgetPosition = RelativePosition("bewisclient:cps_widget", "bottom")
+    override fun defaultPosition(): WidgetPosition =
+        RelativePosition("bewisclient:cps_widget", "bottom")
 
     override fun getId(): Identifier = Identifier.of("bewisclient", "daytime_widget")
 
     override fun getWidth(): Int = 80
 
     private fun isSystem12HourFormat(): Boolean {
-        val df = DateFormat.getTimeInstance(
-            DateFormat.SHORT,
-            Locale.getDefault()
-        )
+        val df = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.getDefault())
         val pattern = (df as? java.text.SimpleDateFormat)?.toPattern() ?: return false
         return pattern.indexOf('h') >= 0 || pattern.indexOf('K') >= 0 || pattern.indexOf('a') >= 0
     }
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
-        list.add(format12Hours.createRenderable("widget.daytime_widget.format_12_hours", "Use 12-Hour Format"))
+        list.add(
+            format12Hours.createRenderable(
+                "widget.daytime_widget.format_12_hours",
+                "Use 12-Hour Format"
+            )
+        )
         super.appendSettingsRenderables(list)
     }
 }

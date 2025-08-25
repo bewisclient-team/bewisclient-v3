@@ -7,7 +7,7 @@ import net.minecraft.util.Identifier
 import net.minecraft.util.math.MathHelper
 import java.awt.Color
 
-class ColorPicker(val get: () -> Int, val set: (hue: Float, sat: Float) -> Unit): Renderable() {
+class ColorPicker(val get: () -> Int, val set: (hue: Float, sat: Float) -> Unit) : Renderable() {
     companion object {
         val colorPickerCache = mutableMapOf<Int, Identifier>()
     }
@@ -37,13 +37,14 @@ class ColorPicker(val get: () -> Int, val set: (hue: Float, sat: Float) -> Unit)
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         screenDrawing.drawBorder(getX(), getY(), getWidth(), getHeight(), 0xAAAAAA, 0.5f)
-        getBrightness(get()).let { screenDrawing.pushColor(it,it,it, 1f) }
+        getBrightness(get()).let { screenDrawing.pushColor(it, it, it, 1f) }
         screenDrawing.drawTexture(getColorPickerImage((getWidth() - 2).coerceAtMost((getHeight() - 2))), getX() + 1, getY() + 1, getWidth() - 2, getHeight() - 2)
         screenDrawing.popColor()
     }
 
     override fun onMouseDrag(mouseX: Double, mouseY: Double, startX: Double, startY: Double, button: Int): Boolean {
-        set((MathHelper.clamp((mouseX - getX() - 1f).toFloat(), 0f, getWidth() - 2f) / (getWidth() - 2f)),
+        set(
+            (MathHelper.clamp((mouseX - getX() - 1f).toFloat(), 0f, getWidth() - 2f) / (getWidth() - 2f)),
             (MathHelper.clamp((mouseY - getY() - 1f).toFloat(), 0f, (getHeight() - 2f)) / (getHeight() - 2f))
         )
 

@@ -10,7 +10,7 @@ import kotlin.math.abs
 /**
 
  */
-class Switch(var state: Gettable<Boolean>, val onChange: (new: Boolean) -> Unit): Hoverable() {
+class Switch(var state: Gettable<Boolean>, val onChange: (new: Boolean) -> Unit) : Hoverable() {
     val stateAnimation = animate(200, Animator.EASE_IN_OUT, "state" to if (state.get()) 1f else 0f)
 
     init {
@@ -28,7 +28,7 @@ class Switch(var state: Gettable<Boolean>, val onChange: (new: Boolean) -> Unit)
         screenDrawing.translate(getX() + ((getWidth() - 12) * stateAnimation["state"]) + 6f, getY() + 6f)
 
         val scaleFactor = 0.5f
-        screenDrawing.scale(1 - scaleFactor + abs(stateAnimation["state"] - 0.5f) * 2 * scaleFactor,1f)
+        screenDrawing.scale(1 - scaleFactor + abs(stateAnimation["state"] - 0.5f) * 2 * scaleFactor, 1f)
         screenDrawing.fillRounded(
             -4,
             -4,

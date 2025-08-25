@@ -13,14 +13,10 @@ import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.minecraft.client.MinecraftClient
 import net.minecraft.util.Identifier
 
-abstract class Widget: ObjectSetting() {
-    var position: WidgetPositionSetting = WidgetPositionSetting(defaultPosition())
-    var enabled = BooleanSetting(isEnabledByDefault())
-
-    init {
-        create("position", position)
-        create("enabled", enabled)
-    }
+abstract class Widget : ObjectSetting() {
+    var position: WidgetPositionSetting =
+        create("position", WidgetPositionSetting(defaultPosition()))
+    var enabled = create("enabled", BooleanSetting(isEnabledByDefault()))
 
     open fun isEnabledByDefault(): Boolean {
         return true
@@ -31,7 +27,11 @@ abstract class Widget: ObjectSetting() {
     }
 
     fun isShowing(): Boolean {
-        return isEnabled() && (!isHidden() || ((MinecraftClient.getInstance().currentScreen as? RenderableScreen)?.renderable is HudEditScreen))
+        return isEnabled() &&
+                (!isHidden() ||
+                        ((MinecraftClient.getInstance().currentScreen as? RenderableScreen)
+                            ?.renderable is
+                                HudEditScreen))
     }
 
     fun isEnabled(): Boolean {
@@ -72,15 +72,23 @@ abstract class Widget: ObjectSetting() {
     abstract fun getHeight(): Int
     open fun getScale() = 1.0f
 
-    fun getX() = catch { position.get().getX(this) } ?: 0f
-    fun getY() = catch { position.get().getY(this) } ?: 0f
+    fun getX(): Float {
+        val x = catch { position.get().getX(this) } ?: 0f
+        return x.coerceAtLeast(0f).coerceAtMost(getScreenWidth() - getScaledWidth())
+    }
+
+    fun getY(): Float {
+        val y = catch { position.get().getY(this) } ?: 0f
+        return y.coerceAtLeast(0f).coerceAtMost(getScreenHeight() - getScaledHeight())
+    }
 
     abstract fun getTranslation(): Translation
     abstract fun getDescription(): Translation
 
     open fun appendSettingsRenderables(list: ArrayList<Renderable>) {}
 
-    fun isInBox(mouseX: Double, mouseY: Double) = getX() < mouseX &&
+    fun isInBox(mouseX: Double, mouseY: Double) =
+        getX() < mouseX &&
                 getX() + getScaledWidth() > mouseX &&
                 getY() < mouseY &&
                 getY() + getScaledHeight() > mouseY

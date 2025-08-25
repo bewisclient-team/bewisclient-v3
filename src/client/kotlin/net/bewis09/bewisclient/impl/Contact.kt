@@ -5,6 +5,8 @@ import net.bewis09.bewisclient.drawable.ScreenDrawing
 import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCategory
 import net.bewis09.bewisclient.game.Translation
 
-object Contact: SidebarCategory(Translation("menu.category.contact", "Contact"), contact)
+object Contact : SidebarCategory(Translation("menu.category.contact", "Contact"), contact)
 
-val contact = object: Renderable() { override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {} }
+val contact = object : Renderable() {
+    override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {}
+}

@@ -37,7 +37,7 @@ open class MapSetting<T>(val from: (JsonElement) -> T, val to: (T) -> JsonElemen
 
     override fun setFromElement(data: JsonElement?) {
         try {
-            setWithoutSave(data?.asJsonObject?.asMap()?.mapValues { catch { from(it.value) } }?.filter { it.value != null }?.map { it.key to it.value!! }?.toTypedArray()?.let { hashMapOf(*it) } )
+            setWithoutSave(data?.asJsonObject?.asMap()?.mapValues { catch { from(it.value) } }?.filter { it.value != null }?.map { it.key to it.value!! }?.toTypedArray()?.let { hashMapOf(*it) })
         } catch (e: Exception) {
             error("Failed to deserialize ObjectSetting: ${Settings.gson.toJson(data)} (${e.message})")
         }

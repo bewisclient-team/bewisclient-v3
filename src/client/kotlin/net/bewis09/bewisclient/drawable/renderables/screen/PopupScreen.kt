@@ -5,7 +5,7 @@ import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.ScreenDrawing
 import org.lwjgl.glfw.GLFW
 
-abstract class PopupScreen: Renderable() {
+abstract class PopupScreen : Renderable() {
     var popup: Popup? = null
     var backgroundColor: Int = 0x7F000000
 
@@ -19,7 +19,7 @@ abstract class PopupScreen: Renderable() {
 
     abstract fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int, popupShown: Boolean)
 
-    class Popup(val child: Renderable, val screen: PopupScreen): Renderable() {
+    class Popup(val child: Renderable, val screen: PopupScreen) : Renderable() {
         val alphaAnimation = Animator(200, Animator.Companion.EASE_IN_OUT, "alpha" to 0f)
 
         init {
@@ -41,7 +41,7 @@ abstract class PopupScreen: Renderable() {
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             screenDrawing.pushAlpha(alphaAnimation["alpha"])
-            screenDrawing.fill(0,0,getWidth(),getHeight(), screen.backgroundColor)
+            screenDrawing.fill(0, 0, getWidth(), getHeight(), screen.backgroundColor)
             screenDrawing.setBewisclientFont()
             child.render(screenDrawing, mouseX, mouseY)
             screenDrawing.defaultFont()
@@ -66,13 +66,13 @@ abstract class PopupScreen: Renderable() {
     }
 
     override fun init() {
-        popup?.invoke(0,0,getWidth(), getHeight())?.let { addRenderable(it) }
+        popup?.invoke(0, 0, getWidth(), getHeight())?.let { addRenderable(it) }
     }
 
     fun closePopup() {
         if (popup != null) {
             popup?.alphaAnimation?.set("alpha", 0f) {
-                popup?.let ( renderables::remove )
+                popup?.let(renderables::remove)
                 popup = null
             }
         }
@@ -85,7 +85,7 @@ abstract class PopupScreen: Renderable() {
         }
         popup = Popup(popupRenderable, this)
         renderables.addFirst(popup!!)
-        popup?.invoke(0,0,getWidth(),getHeight())?.resize()
+        popup?.invoke(0, 0, getWidth(), getHeight())?.resize()
     }
 
     override fun renderRenderables(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {

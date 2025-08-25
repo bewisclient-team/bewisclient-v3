@@ -29,7 +29,7 @@ import kotlin.math.sqrt
  * discouraged.
  */
 @Suppress("Unused")
-class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer): BewisclientInterface {
+class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer) : BewisclientInterface {
     private var style: Style = Style.EMPTY
 
     val afterDrawStack = hashMapOf<String, AfterDraw>()
@@ -123,16 +123,16 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
 
         fun toInt(): Int {
             return ((r * 255).roundToInt() shl 16) or
-                   ((g * 255).roundToInt() shl 8) or
-                   (b * 255).roundToInt() or
-                   ((a * 255).roundToInt() shl 24)
+                    ((g * 255).roundToInt() shl 8) or
+                    (b * 255).roundToInt() or
+                    ((a * 255).roundToInt() shl 24)
         }
     }
 
     val colorStack = mutableListOf<Color>()
 
     fun pushAlpha(alpha: Float) {
-        colorStack.add(Color(1f,1f,1f, alpha))
+        colorStack.add(Color(1f, 1f, 1f, alpha))
     }
 
     fun pushColor(r: Float, g: Float, b: Float, a: Float) {
@@ -150,7 +150,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
     fun getCurrentColorModifier(): Color {
         return colorStack.reduceOrNull { acc, alpha ->
             acc * alpha
-        } ?: Color(1f,1f,1f,1f)
+        } ?: Color(1f, 1f, 1f, 1f)
     }
 
     fun applyAlpha(color: Int): Int {
@@ -2627,7 +2627,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
         push()
         translate((x - width).toFloat(), -y.toFloat())
         rotate(-90f)
-        drawHorizontalGradient(0,0, height, width, startColor, endColor)
+        drawHorizontalGradient(0, 0, height, width, startColor, endColor)
         pop()
     }
 
@@ -2783,7 +2783,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
         drawHorizontalLine(x + adjustedRadius, y + height - 1, width - 2 * adjustedRadius, color) // Bottom
         drawVerticalLine(x, y + adjustedRadius, height - 2 * adjustedRadius, color) // Left
         drawVerticalLine(x + width - 1, y + adjustedRadius, height - 2 * adjustedRadius, color) // Right
-        
+
         if (adjustedRadius <= 0) return
 
         // Draw rounded corner borders
@@ -3025,8 +3025,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
         push()
         translate(centerX.toFloat(), centerY.toFloat())
         rotateDegrees(startAngle)
-        scale(1/MinecraftClient.getInstance().window.scaleFactor.toFloat(),
-              1/MinecraftClient.getInstance().window.scaleFactor.toFloat())
+        scale(
+            1 / MinecraftClient.getInstance().window.scaleFactor.toFloat(),
+            1 / MinecraftClient.getInstance().window.scaleFactor.toFloat()
+        )
 
         val r = radius * (MinecraftClient.getInstance().window.scaleFactor)
 
@@ -3053,8 +3055,10 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
         push()
         translate(centerX.toFloat(), centerY.toFloat())
         rotateDegrees(startAngle)
-        scale(1/MinecraftClient.getInstance().window.scaleFactor.toFloat(),
-            1/MinecraftClient.getInstance().window.scaleFactor.toFloat())
+        scale(
+            1 / MinecraftClient.getInstance().window.scaleFactor.toFloat(),
+            1 / MinecraftClient.getInstance().window.scaleFactor.toFloat()
+        )
 
         val r = radius * (MinecraftClient.getInstance().window.scaleFactor)
 

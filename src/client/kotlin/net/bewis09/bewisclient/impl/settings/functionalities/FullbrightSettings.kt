@@ -5,14 +5,8 @@ import net.bewis09.bewisclient.settings.types.BooleanSetting
 import net.bewis09.bewisclient.settings.types.FloatSetting
 import net.bewis09.bewisclient.settings.types.ObjectSetting
 
-object FullbrightSettings: ObjectSetting() {
-    val enabled = BooleanSetting(false)
-    val nightVision = BooleanSetting(false)
-    val brightness = FloatSetting(1f, Precision(0f, 15f, 0.01f, 2))
-
-    init {
-        create("enabled", enabled)
-        create("night_vision", nightVision)
-        create("brightness", brightness)
-    }
+object FullbrightSettings : ObjectSetting() {
+    val enabled = create("enabled", BooleanSetting(false))
+    val nightVision = create("night_vision", BooleanSetting(false))
+    val brightness = create("brightness", FloatSetting(1f, Precision(0f, 15f, 0.01f, 2)))
 }

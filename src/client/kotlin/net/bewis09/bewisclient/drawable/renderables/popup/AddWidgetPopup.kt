@@ -10,7 +10,7 @@ import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.widget.Widget
 import net.bewis09.bewisclient.widget.WidgetLoader
 
-class AddWidgetPopup(val screen: HudEditScreen): Renderable() {
+class AddWidgetPopup(val screen: HudEditScreen) : Renderable() {
     companion object {
         val addText = Translation("popup.add_widget.title", "Add Widget")
     }
@@ -33,11 +33,11 @@ class AddWidgetPopup(val screen: HudEditScreen): Renderable() {
         return super.onMouseClick(mouseX, mouseY, button)
     }
 
-    class Inner(val screen: HudEditScreen): Renderable() {
+    class Inner(val screen: HudEditScreen) : Renderable() {
         val text = Text({ addText.getTranslatedString() }, centered = true)
         var grid = VerticalScrollGrid({
-            WidgetLoader.widgets.filter { !it.isEnabled() }.map { widget -> WidgetElement(widget, screen, this).setHeight(90) }
-        },5,80)
+                                          WidgetLoader.widgets.filter { !it.isEnabled() }.map { widget -> WidgetElement(widget, screen, this).setHeight(90) }
+                                      }, 5, 80)
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             screenDrawing.fillWithBorderRounded(getX(), getY(), getWidth(), getHeight(), 10, 0x000000, 0.5f, 0xFFFFFF, 0.15f)
@@ -50,12 +50,12 @@ class AddWidgetPopup(val screen: HudEditScreen): Renderable() {
         }
     }
 
-    class WidgetElement(val widget: Widget, val screen: HudEditScreen, val inner: Inner): Hoverable() {
+    class WidgetElement(val widget: Widget, val screen: HudEditScreen, val inner: Inner) : Hoverable() {
         override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
             widget.enabled.set(true)
             inner.grid = VerticalScrollGrid({
-                WidgetLoader.widgets.filter { !it.isEnabled() }.map { widget -> WidgetElement(widget, screen, inner).setHeight(90) }
-            },5,80)
+                                                WidgetLoader.widgets.filter { !it.isEnabled() }.map { widget -> WidgetElement(widget, screen, inner).setHeight(90) }
+                                            }, 5, 80)
             inner.resize()
 
             return true

@@ -15,7 +15,7 @@ import net.bewis09.bewisclient.logic.number.Precision
 import net.minecraft.util.Identifier
 import java.awt.Color
 
-class ChangingColorSaver: ColorSaver {
+class ChangingColorSaver : ColorSaver {
     val changingSpeed: Int
     val startHue: Float
     val startTime: Long
@@ -69,10 +69,12 @@ class ChangingColorSaver: ColorSaver {
 
     override fun toInfoString(): String = infoTranslation(changingSpeed.toString()).string
 
-    class SettingRenderable(val get: () -> ChangingColorSaver, val set: (ColorSaver) -> Unit): Renderable() {
-        val fader = Fader({ get().changingSpeed.toFloat() }, Precision(1000f,20000f,100f, -2)) { speed -> set(
-            ChangingColorSaver(speed.toInt(), System.currentTimeMillis(), get().getHue())
-        ) }
+    class SettingRenderable(val get: () -> ChangingColorSaver, val set: (ColorSaver) -> Unit) : Renderable() {
+        val fader = Fader({ get().changingSpeed.toFloat() }, Precision(1000f, 20000f, 100f, -2)) { speed ->
+            set(
+                ChangingColorSaver(speed.toInt(), System.currentTimeMillis(), get().getHue())
+            )
+        }
         val text = Text({ Translations.CHANGE_DURATION(get().changingSpeed / 1000f).string }, centered = true)
         val spectrumButton = ImageButton(texture) {}.setImagePadding(0)
         val actionButton = Rectangle { get().getColor() }
@@ -91,48 +93,60 @@ class ChangingColorSaver: ColorSaver {
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             renderRenderables(screenDrawing, mouseX, mouseY)
             screenDrawing.push()
-            screenDrawing.translate(get().getHue() * (getWidth() - 1),0f)
+            screenDrawing.translate(get().getHue() * (getWidth() - 1), 0f)
             screenDrawing.drawVerticalLine(getX(), getY() + 36, 8, 0, 1f)
             screenDrawing.pop()
         }
 
         override fun init() {
-            addRenderable(text(
-                getX(),
-                getY() + 2,
-                getWidth(),
-                9,
-            ))
-            addRenderable(fader(
-                getX(),
-                getY() + 11,
-                getWidth(),
-                14
-            ))
-            addRenderable(Rectangle(0x7FAAAAAA)(
-                getX(),
-                getY() + 29,
-                getWidth(),
-                1
-            ))
-            addRenderable(spectrumButton(
-                getX(),
-                getY() + 36,
-                getWidth(),
-                8
-            ))
-            addRenderable(Rectangle(0x7FAAAAAA)(
-                getX(),
-                getY() + 49,
-                getWidth(),
-                1
-            ))
-            addRenderable(actionButton(
-                getX(),
-                getY() + 55,
-                getWidth(),
-                8
-            ))
+            addRenderable(
+                text(
+                    getX(),
+                    getY() + 2,
+                    getWidth(),
+                    9,
+                )
+            )
+            addRenderable(
+                fader(
+                    getX(),
+                    getY() + 11,
+                    getWidth(),
+                    14
+                )
+            )
+            addRenderable(
+                Rectangle(0x7FAAAAAA)(
+                    getX(),
+                    getY() + 29,
+                    getWidth(),
+                    1
+                )
+            )
+            addRenderable(
+                spectrumButton(
+                    getX(),
+                    getY() + 36,
+                    getWidth(),
+                    8
+                )
+            )
+            addRenderable(
+                Rectangle(0x7FAAAAAA)(
+                    getX(),
+                    getY() + 49,
+                    getWidth(),
+                    1
+                )
+            )
+            addRenderable(
+                actionButton(
+                    getX(),
+                    getY() + 55,
+                    getWidth(),
+                    8
+                )
+            )
         }
     }
 }

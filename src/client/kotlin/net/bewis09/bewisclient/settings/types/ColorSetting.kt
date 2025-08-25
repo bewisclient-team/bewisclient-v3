@@ -13,9 +13,9 @@ import net.bewis09.bewisclient.logic.color.ColorSaver
  *
  * @param types the types of colors that can be selected. If not specified, all types are allowed.
  */
-class ColorSetting(default: () -> ColorSaver, vararg val types: String = ALL): Setting<ColorSaver>(default) {
-    constructor(default: ColorSaver): this({ default }, *ALL)
-    constructor(default: ColorSaver, vararg types: String): this({ default }, *types)
+class ColorSetting(default: () -> ColorSaver, vararg val types: String = ALL) : Setting<ColorSaver>(default) {
+    constructor(default: ColorSaver) : this({ default }, *ALL)
+    constructor(default: ColorSaver, vararg types: String) : this({ default }, *types)
 
     companion object {
         val ALL = ColorSaver.types.map { it.getType() }.toTypedArray()
@@ -53,7 +53,7 @@ class ColorSetting(default: () -> ColorSaver, vararg val types: String = ALL): S
     }
 
     override fun processChange(value: ColorSaver?): ColorSaver? {
-        return if(value?.getType() in types) value else null
+        return if (value?.getType() in types) value else null
     }
 
     fun cloneWithDefault(): ColorSetting {

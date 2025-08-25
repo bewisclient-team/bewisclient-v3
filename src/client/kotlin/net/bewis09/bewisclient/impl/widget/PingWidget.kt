@@ -9,7 +9,7 @@ import net.bewis09.bewisclient.widget.types.LineWidget
 import net.minecraft.client.MinecraftClient
 import net.minecraft.util.Identifier
 
-object PingWidget: LineWidget() {
+object PingWidget : LineWidget() {
     var lastLatency = 0
     var lastRequest = System.currentTimeMillis()
 
@@ -23,9 +23,9 @@ object PingWidget: LineWidget() {
     override fun getDescription(): Translation = pingWidgetDescription
 
     override fun getLines(): List<String> {
-        if((MinecraftClient.getInstance().isInSingleplayer || MinecraftClient.getInstance().world == null) && (MinecraftClient.getInstance().currentScreen is RenderableScreen))
+        if ((MinecraftClient.getInstance().isInSingleplayer || MinecraftClient.getInstance().world == null) && (MinecraftClient.getInstance().currentScreen is RenderableScreen))
             return arrayListOf(pingText(99.toString()).string)
-        if(getLatency()<0)
+        if (getLatency() < 0)
             return arrayListOf(loadingText.getTranslatedString())
         return arrayListOf(pingText(getLatency().toString()).string)
     }
@@ -40,8 +40,8 @@ object PingWidget: LineWidget() {
 
     private fun getLatency(): Int {
         try {
-            if(lastRequest +100<System.currentTimeMillis()) {
-                if(!MinecraftClient.getInstance().debugHud.shouldShowPacketSizeAndPingCharts()) {
+            if (lastRequest + 100 < System.currentTimeMillis()) {
+                if (!MinecraftClient.getInstance().debugHud.shouldShowPacketSizeAndPingCharts()) {
                     (MinecraftClient.getInstance().networkHandler as ClientPlayNetworkHandlerMixin).pingMeasurer.ping()
                 }
 

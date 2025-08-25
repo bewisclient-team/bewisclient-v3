@@ -6,7 +6,7 @@ import net.minecraft.text.Text
 
 class Translation(private val key: String, @Suppress("PropertyName") val en_us: String) {
     init {
-        if(!key.isEmpty())
+        if (!key.isEmpty())
             addTranslation(key, en_us)
     }
 

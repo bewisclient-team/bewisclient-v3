@@ -6,7 +6,7 @@ import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.bewis09.bewisclient.widget.Widget
 import net.bewis09.bewisclient.widget.WidgetLoader
 
-class RelativePosition(val parent: String, val side: String): WidgetPosition {
+class RelativePosition(val parent: String, val side: String) : WidgetPosition {
     val parentWidget by lazy { WidgetLoader.widgets.find { it.getId().toString() == parent } }
 
     override fun getX(widget: Widget): Float {
@@ -66,7 +66,7 @@ class RelativePosition(val parent: String, val side: String): WidgetPosition {
 
     override fun getType(): String = "relative"
 
-    object Factory: WidgetPositionFactory<RelativePosition> {
+    object Factory : WidgetPositionFactory<RelativePosition> {
         override fun createFromJson(jsonElement: JsonElement): RelativePosition? {
             if (!jsonElement.isJsonObject) return null
 

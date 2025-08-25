@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(GameOptions.class)
 public class GameOptionsMixin {
-    @Inject(method = "getMenuBackgroundBlurrinessValue", at=@At("RETURN"), cancellable = true)
+    @Inject(method = "getMenuBackgroundBlurrinessValue", at = @At("RETURN"), cancellable = true)
     private void bewisclient$getMenuBackgroundBlurrinessValue(CallbackInfoReturnable<Integer> cir) {
         if (MinecraftClient.getInstance().currentScreen instanceof RenderableScreen renderableScreen) {
             if (!OptionsMenuSettings.INSTANCE.getBlurBackground().get())

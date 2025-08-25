@@ -8,7 +8,7 @@ import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.interfaces.Gettable
 import net.bewis09.bewisclient.logic.color.ColorSaver
 
-class ColorChangePopup(state: Gettable<ColorSaver>, onChange: (ColorSaver) -> Unit, types: Array<String>): Renderable() {
+class ColorChangePopup(state: Gettable<ColorSaver>, onChange: (ColorSaver) -> Unit, types: Array<String>) : Renderable() {
     val inner = Inner(state, onChange, types)
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
@@ -27,7 +27,7 @@ class ColorChangePopup(state: Gettable<ColorSaver>, onChange: (ColorSaver) -> Un
         return super.onMouseClick(mouseX, mouseY, button)
     }
 
-    class Inner(val state: Gettable<ColorSaver>, val onChange: (ColorSaver) -> Unit, val types: Array<String>): Renderable() {
+    class Inner(val state: Gettable<ColorSaver>, val onChange: (ColorSaver) -> Unit, val types: Array<String>) : Renderable() {
         val buttons = types.map { type ->
             ColorSaver.Companion.getType(type)?.let {
                 Button(it.getTranslation().getTranslatedString(), { newColor ->
@@ -38,8 +38,8 @@ class ColorChangePopup(state: Gettable<ColorSaver>, onChange: (ColorSaver) -> Un
 
                     }
                 }, it.getDescription(), {
-                    state.get().getType() == type
-                })
+                           state.get().getType() == type
+                       })
             }
         }
 
@@ -58,7 +58,7 @@ class ColorChangePopup(state: Gettable<ColorSaver>, onChange: (ColorSaver) -> Un
             buttons.forEachIndexed { index, button ->
                 button?.let {
                     it.setWidth((getWidth() - ((buttons.size - 1) * 5) - 10) / buttons.size)
-                    it.setPosition(getX() + 5 + index * (it.getWidth() + 5), getY() + getHeight() - 20 )
+                    it.setPosition(getX() + 5 + index * (it.getWidth() + 5), getY() + getHeight() - 20)
                     it.setHeight(14)
                     addRenderable(it)
                 }

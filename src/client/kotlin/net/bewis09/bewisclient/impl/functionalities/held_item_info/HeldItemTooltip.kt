@@ -69,9 +69,10 @@ object HeldItemTooltip : ImageSettingCategory(
             }
 
             id1.compareTo(id2)
-        } ) {
+        }) {
             val id = toReadableString(Registries.DATA_COMPONENT_TYPE.getEntry(componentType).idAsString)
-            parts.add(MultipleBooleanSettingsRenderable.Part(
+            parts.add(
+                MultipleBooleanSettingsRenderable.Part(
                 Translation.literal(id),
                 null,
                 object : Settable<Boolean?>, Gettable<Boolean> {

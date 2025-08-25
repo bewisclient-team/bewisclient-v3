@@ -9,7 +9,7 @@ class FloatSettingRenderable(
     description: Translation? = null,
     setting: Setting<Float>,
     precision: Precision
-): FaderSettingRenderable<Float>(
+) : FaderSettingRenderable<Float>(
     title,
     description,
     setting,

@@ -4,7 +4,7 @@ import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.ScreenDrawing
 import kotlin.math.floor
 
-class VerticalScrollGrid(val init: (Int) -> List<Renderable>, val gap: Int, val minWidth: Int): Scrollable(Direction.VERTICAL) {
+class VerticalScrollGrid(val init: (Int) -> List<Renderable>, val gap: Int, val minWidth: Int) : Scrollable(Direction.VERTICAL) {
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         if (renderables.isEmpty()) return
 

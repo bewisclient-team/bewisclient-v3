@@ -7,6 +7,7 @@ import net.bewis09.bewisclient.game.Keybind
 import net.bewis09.bewisclient.game.KeybindingImplementer
 import net.bewis09.bewisclient.impl.functionalities.better_visibility.BetterVisibility
 import net.bewis09.bewisclient.impl.functionalities.block_highlight.BlockHighlight
+import net.bewis09.bewisclient.impl.functionalities.entity_highlight.EntityHighlight
 import net.bewis09.bewisclient.impl.functionalities.fullbright.Fullbright
 import net.bewis09.bewisclient.impl.functionalities.held_item_info.HeldItemTooltip
 import net.bewis09.bewisclient.impl.functionalities.pumpkin_overlay.PumpkinOverlay
@@ -61,7 +62,7 @@ class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint {
     override fun getUtilities(): List<Renderable> = listOf(
         Fullbright,
         BlockHighlight,
-        // Entity Highlight,
+        EntityHighlight,
         HeldItemTooltip,
         Zoom,
         PumpkinOverlay,

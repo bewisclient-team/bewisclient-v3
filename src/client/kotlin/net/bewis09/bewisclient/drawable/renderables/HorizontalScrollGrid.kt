@@ -4,7 +4,7 @@ import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.ScreenDrawing
 import kotlin.math.floor
 
-class HorizontalScrollGrid(val init: (Int) -> List<Renderable>, val gap: Int, val minHeight: Int): Scrollable(Direction.HORIZONTAL) {
+class HorizontalScrollGrid(val init: (Int) -> List<Renderable>, val gap: Int, val minHeight: Int) : Scrollable(Direction.HORIZONTAL) {
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         val elementsInColumn = floor(((getHeight() + gap) / (minHeight + gap)).toDouble())
         val elementHeight = (getHeight() + gap) / elementsInColumn - gap

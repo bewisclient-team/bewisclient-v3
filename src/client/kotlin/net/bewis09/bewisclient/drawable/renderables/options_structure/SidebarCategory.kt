@@ -9,7 +9,7 @@ import net.bewis09.bewisclient.drawable.renderables.Text
 import net.bewis09.bewisclient.game.Translation
 
 open class SidebarCategory(val name: Translation, val renderable: Renderable) {
-    constructor(name: Translation, settings: List<Renderable>): this(name, VerticalScrollGrid({ settings.map { it.setHeight(90) } }, 5, 80))
+    constructor(name: Translation, settings: List<Renderable>) : this(name, VerticalScrollGrid({ settings.map { it.setHeight(90) } }, 5, 80))
 
     operator fun invoke(screen: OptionScreen): Button {
         return Button(name.getTranslatedString()) {

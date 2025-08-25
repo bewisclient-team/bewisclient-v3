@@ -14,7 +14,7 @@ class MultipleBooleanSettingsRenderable(
     val title: Translation,
     tooltip: Translation? = null,
     val settings: () -> List<Part<*>>
-): TooltipHoverable(tooltip) {
+) : TooltipHoverable(tooltip) {
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
         screenDrawing.fillRounded(getX(), getY(), getWidth(), getHeight(), 5, 0xFFFFFF, hoverAnimation["hovering"] * 0.1f + 0.05f)
@@ -39,7 +39,7 @@ class MultipleBooleanSettingsRenderable(
         val name: Translation,
         tooltip: Translation? = null,
         val setting: T
-    ): TooltipHoverable(tooltip) where T: Settable<Boolean?>, T: Gettable<Boolean> {
+    ) : TooltipHoverable(tooltip) where T : Settable<Boolean?>, T : Gettable<Boolean> {
         val switch = Switch(
             state = setting::get,
             onChange = setting::set,

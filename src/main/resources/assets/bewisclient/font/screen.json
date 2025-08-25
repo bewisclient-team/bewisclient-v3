@@ -3,7 +3,10 @@
     {
       "type": "ttf",
       "file": "bewisclient:screen.ttf",
-      "shift": [0, 0],
+      "shift": [
+        0,
+        0
+      ],
       "size": 8.0,
       "oversample": 10.0
     }

@@ -5,7 +5,7 @@ import com.google.gson.JsonObject
 import net.bewis09.bewisclient.settings.types.Setting
 import net.bewis09.bewisclient.widget.WidgetLoader
 
-object WidgetSingleSettings: Setting<JsonObject>(JsonObject()) {
+object WidgetSingleSettings : Setting<JsonObject>(JsonObject()) {
     override fun convertToElement(): JsonElement? {
         val jsonObject = JsonObject()
 

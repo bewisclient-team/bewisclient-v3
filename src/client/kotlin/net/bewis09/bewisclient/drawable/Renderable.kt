@@ -110,7 +110,7 @@ abstract class Renderable : BewisclientInterface {
 
         this.width = width.toUInt()
         this.height = height.toUInt()
-        
+
         resize()
 
         return this

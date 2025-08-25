@@ -18,7 +18,7 @@ interface ColorSaver {
         ).also { it.forEach { a -> a.getDefault() } }
 
         @Suppress("UNCHECKED_CAST")
-        fun <T: ColorSaver> getFactory(color: T): ColorSaverFactory<T>? {
+        fun <T : ColorSaver> getFactory(color: T): ColorSaverFactory<T>? {
             return catch { types.firstOrNull { it.getType() == color.getType() } as? ColorSaverFactory<T> }
         }
 
@@ -51,7 +51,7 @@ interface ColorSaver {
     fun toInfoString(): String
 }
 
-interface ColorSaverFactory<T: ColorSaver> {
+interface ColorSaverFactory<T : ColorSaver> {
     fun createFromJson(jsonElement: JsonElement): T?
     fun getType(): String
     fun getTranslation(): Translation

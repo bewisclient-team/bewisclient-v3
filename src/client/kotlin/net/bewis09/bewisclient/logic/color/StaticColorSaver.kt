@@ -17,7 +17,7 @@ import net.bewis09.bewisclient.logic.getBrightness
 import net.bewis09.bewisclient.logic.number.Precision
 import java.awt.Color
 
-open class StaticColorSaver: ColorSaver {
+open class StaticColorSaver : ColorSaver {
     private val color: Int
 
     companion object {
@@ -35,9 +35,9 @@ open class StaticColorSaver: ColorSaver {
         this.color = color and 0xFFFFFF
     }
 
-    constructor(r: Float, g: Float, b: Float): this((r * 255).toInt() shl 16 or ((g * 255).toInt() shl 8) or (b * 255).toInt())
+    constructor(r: Float, g: Float, b: Float) : this((r * 255).toInt() shl 16 or ((g * 255).toInt() shl 8) or (b * 255).toInt())
 
-    constructor(r: Int, g: Int, b: Int): this((r shl 16) or (g shl 8) or b)
+    constructor(r: Int, g: Int, b: Int) : this((r shl 16) or (g shl 8) or b)
 
     override fun getColor(): Int {
         return color
@@ -80,11 +80,13 @@ open class StaticColorSaver: ColorSaver {
         return infoTranslation(getColorString()).string
     }
 
-    class SettingRenderable(val get: () -> StaticColorSaver, val set: (ColorSaver) -> Unit): Renderable() {
+    class SettingRenderable(val get: () -> StaticColorSaver, val set: (ColorSaver) -> Unit) : Renderable() {
         val colorPicker = ColorPicker({ get().getColor() }) { hue, sat -> set(StaticColorSaver(Color.HSBtoRGB(hue, sat, getBrightness(get().getColor())))) }
-        val fader = Fader({ getBrightness(get().getColor()) }, Precision(0f,1f,0.01f,2)) { bri -> set(
-            Color(get().getColor()).let { Color.RGBtoHSB(it.red, it.green, it.blue, null).let { a -> StaticColorSaver(Color.HSBtoRGB(a[0], a[1], bri)) } }
-        ) }
+        val fader = Fader({ getBrightness(get().getColor()) }, Precision(0f, 1f, 0.01f, 2)) { bri ->
+            set(
+                Color(get().getColor()).let { Color.RGBtoHSB(it.red, it.green, it.blue, null).let { a -> StaticColorSaver(Color.HSBtoRGB(a[0], a[1], bri)) } }
+            )
+        }
         val text = Text(Translations.CHANGE_BRIGHTNESS.getTranslatedString(), centered = true)
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
@@ -92,50 +94,58 @@ open class StaticColorSaver: ColorSaver {
         }
 
         override fun init() {
-            addRenderable(colorPicker(
-                getX(),
-                getY(),
-                getHeight(),
-                getHeight()
-            ))
-            addRenderable(text(
-                getX() + getHeight() + 6,
-                getY() + 2,
-                getWidth() - getHeight() - 5,
-                9,
-            ))
-            addRenderable(fader(
-                getX() + getHeight() + 6,
-                getY() + 11,
-                getWidth() - getHeight() - 6,
-                14
-            ))
+            addRenderable(
+                colorPicker(
+                    getX(),
+                    getY(),
+                    getHeight(),
+                    getHeight()
+                )
+            )
+            addRenderable(
+                text(
+                    getX() + getHeight() + 6,
+                    getY() + 2,
+                    getWidth() - getHeight() - 5,
+                    9,
+                )
+            )
+            addRenderable(
+                fader(
+                    getX() + getHeight() + 6,
+                    getY() + 11,
+                    getWidth() - getHeight() - 6,
+                    14
+                )
+            )
             addRenderable(Rectangle(0x7FAAAAAA)(getX() + getHeight() + 5, getY() + 30, getWidth() - getHeight() - 5, 1))
             addRenderable(ColorButton(getX() + getHeight() + 5, getY() + 36, 27, 27, { get().getColor() }, String.format("#%06X", get().getColor())))
             addRenderable(Rectangle(0x7FAAAAAA)(getX() + getHeight() + 37, getY() + 36, 1, 27))
 
-            addRenderable(HorizontalScrollGrid({
-                return@HorizontalScrollGrid colors.map { color ->
-                    ColorButton(
-                        0,
-                        0,
-                        12, 12,
-                        { color.color },
-                        color.translation.getTranslatedString(),
-                        { newColor ->
-                            set(StaticColorSaver(newColor))
-                        }
-                    )
-                }
-            }, 3, 12)(
-                getX() + getHeight() + 43,
-                getY() + 36,
-                getWidth() - getHeight() - 43,
-                27
-            ))
+            addRenderable(
+                HorizontalScrollGrid({
+                                         return@HorizontalScrollGrid colors.map { color ->
+                                             ColorButton(
+                                                 0,
+                                                 0,
+                                                 12, 12,
+                                                 { color.color },
+                                                 color.translation.getTranslatedString(),
+                                                 { newColor ->
+                                                     set(StaticColorSaver(newColor))
+                                                 }
+                                             )
+                                         }
+                                     }, 3, 12)(
+                    getX() + getHeight() + 43,
+                    getY() + 36,
+                    getWidth() - getHeight() - 43,
+                    27
+                )
+            )
         }
 
-        class ColorButton(x: Int, y: Int, width: Int, height: Int, val color: () -> Int, tooltip: String? = null, val onClick: ((Int) -> Unit)? = null): TooltipHoverable(tooltip?.let { Translation.literal(it) }) {
+        class ColorButton(x: Int, y: Int, width: Int, height: Int, val color: () -> Int, tooltip: String? = null, val onClick: ((Int) -> Unit)? = null) : TooltipHoverable(tooltip?.let { Translation.literal(it) }) {
             init {
                 this.x = x.toUInt()
                 this.y = y.toUInt()

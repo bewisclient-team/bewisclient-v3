@@ -19,7 +19,7 @@ interface WidgetPosition {
     }
 }
 
-interface WidgetPositionFactory<T: WidgetPosition> {
+interface WidgetPositionFactory<T : WidgetPosition> {
     fun createFromJson(jsonElement: JsonElement): T?
     fun getType(): String
 }

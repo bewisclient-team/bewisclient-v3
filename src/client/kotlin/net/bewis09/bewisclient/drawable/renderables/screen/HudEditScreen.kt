@@ -22,7 +22,7 @@ import net.minecraft.util.Identifier
 import org.lwjgl.glfw.GLFW
 import kotlin.math.abs
 
-class HudEditScreen: PopupScreen(), BackgroundEffectProvider {
+class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
     companion object {
         val scrollToZoom = Translation("hud_edit_screen.scroll_to_zoom", "Scroll to Zoom (%.2fx)")
         val rightClickForOptions = Translation("hud_edit_screen.right_click_for_options", "Right Click for Options")
@@ -100,7 +100,7 @@ class HudEditScreen: PopupScreen(), BackgroundEffectProvider {
                 lines.add(it.getTranslation().getTranslatedString())
                 lines.add("")
                 if (it is ScalableWidget) {
-                    lines.add(scrollToZoom(Precision(0.5f,2f,0.01f,2).roundToString(it.scale.get())).string)
+                    lines.add(scrollToZoom(Precision(0.5f, 2f, 0.01f, 2).roundToString(it.scale.get())).string)
                 }
                 lines.add(rightClickForOptions().string)
                 lines.add(shiftForNoSnapping().string)
@@ -119,7 +119,7 @@ class HudEditScreen: PopupScreen(), BackgroundEffectProvider {
                     drawY = mouseY
                 }
 
-                screenDrawing.afterDraw("tooltip",{
+                screenDrawing.afterDraw("tooltip", {
                     screenDrawing.fillRounded(drawX, drawY, width, tooltipHeight, 5, 0x000000, 0.8f)
                     screenDrawing.drawWrappedText(lines, drawX + 5, drawY + 5, -1)
                 })
@@ -128,10 +128,10 @@ class HudEditScreen: PopupScreen(), BackgroundEffectProvider {
     }
 
     override fun init() {
-        addRenderable(ImageButton(Identifier.of("bewisclient", "textures/gui/sprites/add.png")){
+        addRenderable(ImageButton(Identifier.of("bewisclient", "textures/gui/sprites/add.png")) {
             openPopup(AddWidgetPopup(this), 0xA0000000.toInt())
         }.setImagePadding(0)(getWidth() - 16, getHeight() - 16, 14, 14))
-        addRenderable(ImageButton(Identifier.of("bewisclient", "textures/gui/sprites/settings.png")){
+        addRenderable(ImageButton(Identifier.of("bewisclient", "textures/gui/sprites/settings.png")) {
             getClient().setScreen(RenderableScreen(OptionScreen().also {
                 val widgetsCategory = SettingStructure(it).widgetsCategory
                 it.optionsHeader = widgetsCategory.getHeader()
@@ -226,7 +226,7 @@ class HudEditScreen: PopupScreen(), BackgroundEffectProvider {
             }
         }
 
-        return SidedPosition(x.toInt(),y.toInt(),xTransform,yTransform)
+        return SidedPosition(x.toInt(), y.toInt(), xTransform, yTransform)
     }
 
     override fun getBackgroundEffectFactor(): Float {

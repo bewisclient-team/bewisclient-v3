@@ -10,7 +10,7 @@ import net.bewis09.bewisclient.logic.color.ColorSaver
 import net.bewis09.bewisclient.settings.types.Setting
 import net.minecraft.util.Identifier
 
-class ColorSettingRenderable(val title: Translation, val description: Translation?, val setting: Setting<ColorSaver>, val types: Array<String>): TooltipHoverable(description) {
+class ColorSettingRenderable(val title: Translation, val description: Translation?, val setting: Setting<ColorSaver>, val types: Array<String>) : TooltipHoverable(description) {
     val colorInfoButton = ColorInfoButton(
         state = setting::get,
         onChange = setting::set,
@@ -29,7 +29,7 @@ class ColorSettingRenderable(val title: Translation, val description: Translatio
         super.render(screenDrawing, mouseX, mouseY)
         screenDrawing.fillRounded(getX(), getY(), getWidth(), getHeight(), 5, 0xFFFFFF, hoverAnimation["hovering"] * 0.1f + 0.05f)
         screenDrawing.push()
-        screenDrawing.translate(0f,getHeight() / 2f - screenDrawing.getTextHeight() / 2f + 0.5f)
+        screenDrawing.translate(0f, getHeight() / 2f - screenDrawing.getTextHeight() / 2f + 0.5f)
         screenDrawing.drawText(title.getTranslatedString(), getX() + 8, getY(), 0xFFFFFF, 1.0F)
         screenDrawing.pop()
         renderRenderables(screenDrawing, mouseX, mouseY)

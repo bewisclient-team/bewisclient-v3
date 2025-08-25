@@ -14,8 +14,8 @@ import net.bewis09.bewisclient.drawable.renderables.VerticalAlignScrollPlane
 import net.bewis09.bewisclient.settings.types.BooleanSetting
 import net.minecraft.util.Identifier
 
-open class ImageSettingCategory(val image: Identifier, text: Translation, setting: Array<Renderable>, enableSetting: BooleanSetting? = null): SettingCategory(text, setting, enableSetting) {
-    constructor(image: String, text: Translation, setting: Array<Renderable>, enableSetting: BooleanSetting? = null): this(Identifier.of("bewisclient", "textures/gui/functionalities/$image.png"), text, setting, enableSetting)
+open class ImageSettingCategory(val image: Identifier, text: Translation, setting: Array<Renderable>, enableSetting: BooleanSetting? = null) : SettingCategory(text, setting, enableSetting) {
+    constructor(image: String, text: Translation, setting: Array<Renderable>, enableSetting: BooleanSetting? = null) : this(Identifier.of("bewisclient", "textures/gui/functionalities/$image.png"), text, setting, enableSetting)
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
@@ -25,7 +25,7 @@ open class ImageSettingCategory(val image: Identifier, text: Translation, settin
         val height = (screenDrawing.wrapText(text.getTranslatedString(), getWidth() - 10).size - 1) * screenDrawing.getTextHeight()
 
         screenDrawing.pushColor(s, s, s, 1f)
-        screenDrawing.fillRounded(getX(), getY(), getWidth(), getHeight(), 5, 0xFFFFFF, hoverAnimation["hovering"] * 0.15f + 0.15f )
+        screenDrawing.fillRounded(getX(), getY(), getWidth(), getHeight(), 5, 0xFFFFFF, hoverAnimation["hovering"] * 0.15f + 0.15f)
 
         screenDrawing.popColor()
 
@@ -41,7 +41,7 @@ open class ImageSettingCategory(val image: Identifier, text: Translation, settin
     }
 }
 
-open class DescriptionSettingCategory(text: Translation, val description: Translation, setting: Array<Renderable>, enableSetting: BooleanSetting? = null): SettingCategory(text, setting, enableSetting) {
+open class DescriptionSettingCategory(text: Translation, val description: Translation, setting: Array<Renderable>, enableSetting: BooleanSetting? = null) : SettingCategory(text, setting, enableSetting) {
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
 
@@ -66,7 +66,7 @@ open class DescriptionSettingCategory(text: Translation, val description: Transl
     }
 }
 
-abstract class SettingCategory(val text: Translation, val setting: Array<Renderable>, val enableSetting: BooleanSetting?): Hoverable() {
+abstract class SettingCategory(val text: Translation, val setting: Array<Renderable>, val enableSetting: BooleanSetting?) : Hoverable() {
     val state = Animator(200, Animator.EASE_IN_OUT, "state" to if (enableSetting?.get() != false) 1f else 0f)
 
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
@@ -95,17 +95,19 @@ abstract class SettingCategory(val text: Translation, val setting: Array<Rendera
     override fun init() {
         super.init()
         if (enableSetting == null) return
-        addRenderable(TooltipHoverableText(
-            if (enableSetting.get()) Translations.ENABLED else Translations.DISABLED,
-            0xAAAAAA,
-            0xFFFFFF,
-            if (enableSetting.get()) Translations.CLICK_TO_DISABLE else Translations.CLICK_TO_ENABLE,
-            true
-        ) { enableSetting.toggle(); resize() }(
-            getX(),
-            getY() + getHeight() - 14,
-            getWidth(),
-            14
-        ))
+        addRenderable(
+            TooltipHoverableText(
+                if (enableSetting.get()) Translations.ENABLED else Translations.DISABLED,
+                0xAAAAAA,
+                0xFFFFFF,
+                if (enableSetting.get()) Translations.CLICK_TO_DISABLE else Translations.CLICK_TO_ENABLE,
+                true
+            ) { enableSetting.toggle(); resize() }(
+                getX(),
+                getY() + getHeight() - 14,
+                getWidth(),
+                14
+            )
+        )
     }
 }

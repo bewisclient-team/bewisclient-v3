@@ -23,7 +23,8 @@ import java.util.function.Consumer;
 
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin {
-    @Shadow public abstract @Nullable Text getCustomName();
+    @Shadow
+    public abstract @Nullable Text getCustomName();
 
     @Inject(method = "appendComponentTooltip", at = @At("HEAD"))
     private <T extends TooltipAppender> void bewisclient$appendComponentTooltip(ComponentType<T> componentType, Item.TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> textConsumer, TooltipType type, CallbackInfo ci) {
@@ -32,9 +33,9 @@ public abstract class ItemStackMixin {
         }
     }
 
-    @Redirect(method = "appendAttributeModifiersTooltip", at = @At(value = "NEW", target = "Lorg/apache/commons/lang3/mutable/MutableBoolean;"))
-    private MutableBoolean bewisclient$appendAttributeModifiersTooltip(boolean value) {
-        return HeldItemTooltip.INSTANCE.isRendering() ? new MutableBoolean(false) : new MutableBoolean(value);
+    @Redirect(method = "method_57370", at = @At(value = "INVOKE", target = "Ljava/util/function/Consumer;accept(Ljava/lang/Object;)V"))
+    private static <T> void bewisclient$appendAttributeModifiersTooltip(Consumer<T> instance, T o) {
+        if (!HeldItemTooltip.INSTANCE.isRendering()) instance.accept(o);
     }
 
     @Inject(method = "hasEnchantments", at = @At("HEAD"), cancellable = true)

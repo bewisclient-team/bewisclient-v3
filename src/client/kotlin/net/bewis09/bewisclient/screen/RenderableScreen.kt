@@ -23,7 +23,7 @@ class RenderableScreen(val renderable: Renderable) : Screen(Text.empty()) {
 
     override fun renderDarkening(context: DrawContext, x: Int, y: Int, width: Int, height: Int) {
         if (renderable is BackgroundEffectProvider) {
-            context.fill(x,y, x + width, y + height, 0x000000 or (renderable.getBackgroundEffectFactor() * 64).toInt() shl 24)
+            context.fill(x, y, x + width, y + height, 0x000000 or (renderable.getBackgroundEffectFactor() * 64).toInt() shl 24)
         } else {
             super.renderDarkening(context, x, y, width, height)
         }

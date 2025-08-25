@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Mouse.class)
 public class MouseMixin {
-    @Inject(method = "onMouseButton", at=@At("HEAD"))
+    @Inject(method = "onMouseButton", at = @At("HEAD"))
     private void bewisclient$onMouseButton(long window, int button, int action, int mods, CallbackInfo ci) {
         if (action != 1) return;
 
@@ -19,7 +19,7 @@ public class MouseMixin {
         if (button == 1) CPSWidget.INSTANCE.getRightMouseList().add(System.currentTimeMillis());
     }
 
-    @Inject(method = "onMouseScroll", at=@At("HEAD"), cancellable = true)
+    @Inject(method = "onMouseScroll", at = @At("HEAD"), cancellable = true)
     private void bewisclient$onMouseScroll(long window, double horizontal, double vertical, CallbackInfo ci) {
         if (Zoom.INSTANCE.isUsed()) {
             Zoom.INSTANCE.getFactorAnimation().set("factor", MathHelper.clamp(Zoom.INSTANCE.getFactorAnimation().getWithoutInterpolation("factor") - (float) vertical * 0.02f, .009f, .4f));

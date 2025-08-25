@@ -11,17 +11,25 @@ import net.bewis09.bewisclient.drawable.renderables.options_structure.SettingCat
 import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCategory
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.game.Translation
+import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.logic.BewisclientInterface
 import net.bewis09.bewisclient.widget.WidgetLoader
 
-class SettingStructure(val screen: OptionScreen): BewisclientInterface {
+class SettingStructure(val screen: OptionScreen) : BewisclientInterface {
     val widgets = WidgetLoader.widgets.map {
         DescriptionSettingCategory(it.getTranslation(), it.getDescription(), arrayListOf<Renderable>().also { list -> it.appendSettingsRenderables(list) }.toTypedArray(), it.enabled)
     }
 
     val utilities = APIEntrypointLoader.mapEntrypoint { it.getUtilities() }.flatten()
 
-    val settings = emptyList<SettingCategory>()
+    val settings = VerticalAlignScrollPlane({
+                                                listOf(
+                                                    OptionsMenuSettings.animationTime.createRenderable("menu.settings.animation_time", "Animation Time", "The time (in milliseconds) it takes for animations to complete"),
+                                                    OptionsMenuSettings.blurBackground.createRenderable("menu.settings.blur_background", "Blur Background", "Whether to blur the background when opening menus"),
+                                                    OptionsMenuSettings.buttonInTitleScreen.createRenderable("menu.settings.button_in_title_screen", "Button in Title Screen", "Whether to show the Bewisclient button in the title screen"),
+                                                    OptionsMenuSettings.buttonInGameScreen.createRenderable("menu.settings.button_in_game_screen", "Button in Game Screen", "Whether to show the Bewisclient button in the in-game pause menu")
+                                                )
+                                            }, 1)
 
     val cosmetics = emptyList<SettingCategory>()
 

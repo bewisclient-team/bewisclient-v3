@@ -11,12 +11,14 @@ import net.minecraft.entity.Entity
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.MathHelper
 
-object BetterVisibility: ImageSettingCategory("better_visibility", Translation("menu.category.better_visibility", "Better Visibility"), arrayOf(
-    BetterVisibilitySettings.nether.createRenderable("better_visibility.nether", "Nether", "Improve visibility in the Nether dimension"),
-    BetterVisibilitySettings.water.createRenderable("better_visibility.water", "Water", "Enhance visibility underwater"),
-    BetterVisibilitySettings.lava.createRenderable("better_visibility.lava", "Lava", "Boost visibility in lava" ),
-    BetterVisibilitySettings.powder_snow.createRenderable("better_visibility.powder_snow", "Powder Snow", "Increase visibility in powder snow")
-), BetterVisibilitySettings.enabled) {
+object BetterVisibility : ImageSettingCategory(
+    "better_visibility", Translation("menu.category.better_visibility", "Better Visibility"), arrayOf(
+        BetterVisibilitySettings.nether.createRenderable("better_visibility.nether", "Nether", "Improve visibility in the Nether dimension"),
+        BetterVisibilitySettings.water.createRenderable("better_visibility.water", "Water", "Enhance visibility underwater"),
+        BetterVisibilitySettings.lava.createRenderable("better_visibility.lava", "Lava", "Boost visibility in lava"),
+        BetterVisibilitySettings.powder_snow.createRenderable("better_visibility.powder_snow", "Powder Snow", "Increase visibility in powder snow")
+    ), BetterVisibilitySettings.enabled
+) {
     class FogModifierConfig(val setting: BooleanSetting, val clazz: Class<out FogModifier>, val start: (Float) -> Float, val end: (Float) -> Float)
 
     val fogModifiers = listOf(

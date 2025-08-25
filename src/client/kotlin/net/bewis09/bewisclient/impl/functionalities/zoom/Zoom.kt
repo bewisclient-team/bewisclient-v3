@@ -8,7 +8,7 @@ import net.bewis09.bewisclient.impl.settings.functionalities.ZoomSettings
 import net.minecraft.client.MinecraftClient
 import org.lwjgl.glfw.GLFW
 
-object Zoom: ImageSettingCategory(
+object Zoom : ImageSettingCategory(
     "zoom", Translation("menu.category.zoom", "Zoom"), arrayOf(
         ZoomSettings.smooth.createRenderable("zoom.smooth", "Smooth Zoom", "Enable or disable smooth zoom (Works as if smooth camera is enabled)"),
         ZoomSettings.instant.createRenderable("zoom.instant", "Instant Zoom", "Disables the transition animation when zooming in or out")
@@ -20,10 +20,10 @@ object Zoom: ImageSettingCategory(
         setUsed(it)
     }
 
-    var factorAnimation = Animator({ if(ZoomSettings.instant.get()) 1 else 100 }, Animator.EASE_OUT, "factor" to 1f)
+    var factorAnimation = Animator({ if (ZoomSettings.instant.get()) 1 else 100 }, Animator.EASE_OUT, "factor" to 1f)
 
     fun getFactor(): Float {
-        return if(ZoomSettings.enabled.get()) factorAnimation["factor"] else 1f
+        return if (ZoomSettings.enabled.get()) factorAnimation["factor"] else 1f
     }
 
     fun isUsed(): Boolean {

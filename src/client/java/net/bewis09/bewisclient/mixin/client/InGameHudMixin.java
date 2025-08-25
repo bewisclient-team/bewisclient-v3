@@ -19,13 +19,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(InGameHud.class)
 abstract
 class InGameHudMixin {
-    @Shadow public abstract TextRenderer getTextRenderer();
+    @Shadow
+    public abstract TextRenderer getTextRenderer();
 
-    @Shadow private int heldItemTooltipFade;
+    @Shadow
+    private int heldItemTooltipFade;
 
-    @Shadow private ItemStack currentStack;
+    @Shadow
+    private ItemStack currentStack;
 
-    @Shadow @Final private MinecraftClient client;
+    @Shadow
+    @Final
+    private MinecraftClient client;
 
     @Inject(method = "renderHeldItemTooltip", at = @At("HEAD"), cancellable = true)
     private void bewisclient$renderHeldItemTooltip(DrawContext drawContext, CallbackInfo ci) {
@@ -41,7 +46,7 @@ class InGameHudMixin {
 
         context.getMatrices().pushMatrix();
         context.getMatrices().scale(scale, scale);
-        context.getMatrices().translate((float)(-client.getWindow().getScaledWidth()) * (1.0f - 1 / scale), (float)(-client.getWindow().getScaledHeight()) * (1.0f - 1 / scale) / 2.0f);
+        context.getMatrices().translate((float) (-client.getWindow().getScaledWidth()) * (1.0f - 1 / scale), (float) (-client.getWindow().getScaledHeight()) * (1.0f - 1 / scale) / 2.0f);
     }
 
     @Inject(method = "renderScoreboardSidebar(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/scoreboard/ScoreboardObjective;)V", at = @At("RETURN"))

@@ -8,16 +8,24 @@ import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
 import net.minecraft.util.Identifier
 
-object CPSWidget: LineWidget() {
-    val leftEnabled: BooleanSetting = BooleanSetting(true) { _, new ->
-        if (new == false) rightEnabled.set(true)
-    }
-    val rightEnabled: BooleanSetting = BooleanSetting(true) { _, new ->
-        if (new == false) leftEnabled.set(true)
-    }
+object CPSWidget : LineWidget() {
+    val leftEnabled: BooleanSetting =
+        create(
+            "left_enabled",
+            BooleanSetting(true) { _, new -> if (new == false) rightEnabled.set(true) }
+        )
+    val rightEnabled: BooleanSetting =
+        create(
+            "right_enabled",
+            BooleanSetting(true) { _, new -> if (new == false) leftEnabled.set(true) }
+        )
 
     val cpsWidgetTranslation = Translation("widget.cps_widget.name", "CPS Widget")
-    val cpsWidgetDescription = Translation("widget.cps_widget.description", "Displays your current clicks per second (CPS).")
+    val cpsWidgetDescription =
+        Translation(
+            "widget.cps_widget.description",
+            "Displays your current clicks per second (CPS)."
+        )
 
     val leftMouseList = mutableListOf<Long>()
     val rightMouseList = mutableListOf<Long>()
@@ -32,16 +40,12 @@ object CPSWidget: LineWidget() {
         return listOf("${getCPSCount(leftMouseList)} | ${getCPSCount(rightMouseList)} CPS")
     }
 
-    override fun defaultPosition(): WidgetPosition = RelativePosition("bewisclient:day_widget", "bottom")
+    override fun defaultPosition(): WidgetPosition =
+        RelativePosition("bewisclient:day_widget", "bottom")
 
     override fun getId(): Identifier = Identifier.of("bewisclient", "cps_widget")
 
     override fun getWidth(): Int = 80
-
-    init {
-        create("left_enabled", leftEnabled)
-        create("right_enabled", rightEnabled)
-    }
 
     fun getCPSCount(list: MutableList<Long>): Int {
         val currentTime = System.currentTimeMillis()
@@ -50,8 +54,18 @@ object CPSWidget: LineWidget() {
     }
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
-        list.add(leftEnabled.createRenderable("widget.cps_widget.left_enabled", "Left Mouse Button CPS Shown"))
-        list.add(rightEnabled.createRenderable("widget.cps_widget.right_enabled", "Right Mouse Button CPS Shown"))
+        list.add(
+            leftEnabled.createRenderable(
+                "widget.cps_widget.left_enabled",
+                "Left Mouse Button CPS Shown"
+            )
+        )
+        list.add(
+            rightEnabled.createRenderable(
+                "widget.cps_widget.right_enabled",
+                "Right Mouse Button CPS Shown"
+            )
+        )
         super.appendSettingsRenderables(list)
     }
 }

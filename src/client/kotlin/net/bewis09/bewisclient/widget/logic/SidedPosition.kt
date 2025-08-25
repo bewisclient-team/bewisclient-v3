@@ -32,7 +32,7 @@ class SidedPosition(val x: Int, val y: Int, val xTransformer: TransformerType, v
         END("end", { pos: Int, size: Int, widgetSize: Float -> size - pos - widgetSize })
     }
 
-    object Factory: WidgetPositionFactory<SidedPosition> {
+    object Factory : WidgetPositionFactory<SidedPosition> {
         override fun createFromJson(jsonElement: JsonElement): SidedPosition? {
             if (!jsonElement.isJsonObject) return null
 

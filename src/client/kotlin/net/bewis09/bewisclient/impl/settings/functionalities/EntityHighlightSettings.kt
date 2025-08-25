@@ -7,16 +7,16 @@ import net.bewis09.bewisclient.settings.types.ColorSetting
 import net.bewis09.bewisclient.settings.types.FloatSetting
 import net.bewis09.bewisclient.settings.types.ObjectSetting
 
-object BlockHighlightSettings : ObjectSetting() {
+object EntityHighlightSettings : ObjectSetting() {
     val enabled = create("enabled", BooleanSetting(false))
     val color =
         create(
             "color",
             ColorSetting(
-                StaticColorSaver(0f, 0f, 0f),
+                StaticColorSaver(0xFF0000),
                 ColorSetting.STATIC,
                 ColorSetting.CHANGING
             )
         )
-    val thickness = create("thickness", FloatSetting(0.4f, Precision(0f, 1f, 0.01f, 2)))
+    val alpha = create("alpha", FloatSetting(0.19f, Precision(0f, 1f, 0.01f, 2)))
 }

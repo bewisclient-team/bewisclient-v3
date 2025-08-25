@@ -4,7 +4,7 @@ import net.bewis09.bewisclient.drawable.renderables.options_structure.ImageSetti
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.functionalities.PumpkinOverlaySettings
 
-object PumpkinOverlay: ImageSettingCategory(
+object PumpkinOverlay : ImageSettingCategory(
     "pumpkin_overlay",
     Translation("menu.category.pumpkin_overlay", "Pumpkin Overlay"),
     arrayOf(),

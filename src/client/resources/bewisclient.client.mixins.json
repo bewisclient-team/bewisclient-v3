@@ -10,17 +10,20 @@
     "GameOptionsMixin",
     "GameRendererMixin",
     "InGameHudMixin",
-    "ItemStackMixin",
     "KeyBindingMixin",
     "LightmapTextureManagerMixin",
     "LivingEntityMixin",
     "MinecraftClientMixin",
     "MouseMixin",
+    "OverlayTextureMixin",
     "TitleScreenMixin",
     "TooltipDisplayComponentMixin",
     "WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "ItemStackMixin"
+  ]
 }

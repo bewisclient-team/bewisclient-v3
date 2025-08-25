@@ -4,7 +4,7 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 
-class WidgetPositionSetting(defaultPos: WidgetPosition): Setting<WidgetPosition>(defaultPos) {
+class WidgetPositionSetting(defaultPos: WidgetPosition) : Setting<WidgetPosition>(defaultPos) {
     override fun convertToElement(): JsonElement? {
         if (getWithoutDefault() == null) return null
 

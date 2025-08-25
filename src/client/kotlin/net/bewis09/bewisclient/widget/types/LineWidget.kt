@@ -5,28 +5,16 @@ import net.bewis09.bewisclient.drawable.ScreenDrawing
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.minecraft.client.MinecraftClient
 
-abstract class LineWidget(): ScalableWidget() {
-    val backgroundColor = DefaultWidgetSettings.backgroundColor.cloneWithDefault()
-    val backgroundOpacity = DefaultWidgetSettings.backgroundOpacity.cloneWithDefault()
-    val borderColor = DefaultWidgetSettings.borderColor.cloneWithDefault()
-    val borderOpacity = DefaultWidgetSettings.borderOpacity.cloneWithDefault()
-    val paddingSize = DefaultWidgetSettings.paddingSize.cloneWithDefault()
-    val shadow = DefaultWidgetSettings.shadow.cloneWithDefault()
-    val lineSpacing = DefaultWidgetSettings.lineSpacing.cloneWithDefault()
-    val textColor = DefaultWidgetSettings.textColor.cloneWithDefault()
-    val borderRadius = DefaultWidgetSettings.borderRadius.cloneWithDefault()
-
-    init {
-        create("text_color", textColor)
-        create("background_color", backgroundColor)
-        create("background_opacity", backgroundOpacity)
-        create("border_color", borderColor)
-        create("border_opacity", borderOpacity)
-        create("border_radius", borderRadius)
-        create("shadow", shadow)
-        create("padding_size", paddingSize)
-        create("line_spacing", lineSpacing)
-    }
+abstract class LineWidget() : ScalableWidget() {
+    val backgroundColor = create("background_color", DefaultWidgetSettings.backgroundColor.cloneWithDefault())
+    val backgroundOpacity = create("background_opacity", DefaultWidgetSettings.backgroundOpacity.cloneWithDefault())
+    val borderColor = create("border_color", DefaultWidgetSettings.borderColor.cloneWithDefault())
+    val borderOpacity = create("border_opacity", DefaultWidgetSettings.borderOpacity.cloneWithDefault())
+    val paddingSize = create("padding_size", DefaultWidgetSettings.paddingSize.cloneWithDefault())
+    val shadow = create("shadow", DefaultWidgetSettings.shadow.cloneWithDefault())
+    val lineSpacing = create("line_spacing", DefaultWidgetSettings.lineSpacing.cloneWithDefault())
+    val textColor = create("text_color", DefaultWidgetSettings.textColor.cloneWithDefault())
+    val borderRadius = create("border_radius", DefaultWidgetSettings.borderRadius.cloneWithDefault())
 
     open fun hasMultipleLines(): Boolean = false
 
@@ -46,10 +34,13 @@ abstract class LineWidget(): ScalableWidget() {
         val paddingSize = paddingSize.get()
         val lineSpacing = lineSpacing.get()
 
-        val lines = if (MinecraftClient.getInstance().world == null) getOutOfWorldLines() else getLines()
+        val lines = if (MinecraftClient.getInstance().world == null) getOutOfWorldLines()
+        else getLines()
         if (lines.isEmpty()) return
 
-        screenDrawing.fillWithBorderRounded(0, 0, getWidth(), getHeight(), borderRadius, backgroundColor, backgroundOpacity, borderColor, borderOpacity)
+        screenDrawing.fillWithBorderRounded(
+            0, 0, getWidth(), getHeight(), borderRadius, backgroundColor, backgroundOpacity, borderColor, borderOpacity
+        )
 
         lines.forEach { line ->
             val y = (lines.indexOf(line) * (9 + lineSpacing)) + paddingSize
@@ -73,21 +64,45 @@ abstract class LineWidget(): ScalableWidget() {
         val paddingSize = paddingSize.get()
         val lineSpacing = lineSpacing.get()
 
-        val lines = if (MinecraftClient.getInstance().world == null) getOutOfWorldLines() else getLines()
+        val lines = if (MinecraftClient.getInstance().world == null) getOutOfWorldLines()
+        else getLines()
         if (lines.isEmpty()) return 0
 
         return lines.size * (9 + lineSpacing) + 2 * paddingSize - lineSpacing - 2
     }
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
-        list.add(backgroundColor.createRenderableWithFader("widget.background", "Background", "Set the color and opacity of the widget", backgroundOpacity))
+        list.add(
+            backgroundColor.createRenderableWithFader(
+                "widget.background", "Background", "Set the color and opacity of the widget", backgroundOpacity
+            )
+        )
         list.add(borderColor.createRenderableWithFader("widget.border", "Border", "Set the color and opacity of the widget's border", borderOpacity))
-        list.add(paddingSize.createRenderable("widget.padding_size", "Padding Size", "Set the padding at the edge of the widget to the text"))
-        if (hasMultipleLines())
-            list.add(lineSpacing.createRenderable("widget.line_spacing", "Line Spacing", "Set the spacing between lines of text in the widget"))
-        list.add(textColor.createRenderable("widget.text_color", "Text Color", "Set the color of the text in the widget"))
-        list.add(borderRadius.createRenderable("widget.border_radius", "Border Radius", "Set the radius of the widget's border corners"))
-        list.add(shadow.createRenderable("widget.text_shadow", "Text Shadow", "Set whether text in the widget has a shadow"))
+        list.add(
+            paddingSize.createRenderable(
+                "widget.padding_size", "Padding Size", "Set the padding at the edge of the widget to the text"
+            )
+        )
+        if (hasMultipleLines()) list.add(
+            lineSpacing.createRenderable(
+                "widget.line_spacing", "Line Spacing", "Set the spacing between lines of text in the widget"
+            )
+        )
+        list.add(
+            textColor.createRenderable(
+                "widget.text_color", "Text Color", "Set the color of the text in the widget"
+            )
+        )
+        list.add(
+            borderRadius.createRenderable(
+                "widget.border_radius", "Border Radius", "Set the radius of the widget's border corners"
+            )
+        )
+        list.add(
+            shadow.createRenderable(
+                "widget.text_shadow", "Text Shadow", "Set whether text in the widget has a shadow"
+            )
+        )
         super.appendSettingsRenderables(list)
     }
 }
