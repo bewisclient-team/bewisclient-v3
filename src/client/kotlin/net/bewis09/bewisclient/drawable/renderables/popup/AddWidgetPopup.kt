@@ -15,7 +15,7 @@ class AddWidgetPopup(val screen: HudEditScreen) : Renderable() {
         val addText = Translation("popup.add_widget.title", "Add Widget")
     }
 
-    val inner = Inner(screen)
+    val inner = Inner()
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         renderRenderables(screenDrawing, mouseX, mouseY)
@@ -33,11 +33,11 @@ class AddWidgetPopup(val screen: HudEditScreen) : Renderable() {
         return super.onMouseClick(mouseX, mouseY, button)
     }
 
-    class Inner(val screen: HudEditScreen) : Renderable() {
+    inner class Inner : Renderable() {
         val text = Text({ addText.getTranslatedString() }, centered = true)
         var grid = VerticalScrollGrid({
-                                          WidgetLoader.widgets.filter { !it.isEnabled() }.map { widget -> WidgetElement(widget, screen, this).setHeight(90) }
-                                      }, 5, 80)
+            WidgetLoader.widgets.filter { !it.isEnabled() }.map { widget -> WidgetElement(widget, screen, this).setHeight(90) }
+        }, 5, 80)
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             screenDrawing.fillWithBorderRounded(getX(), getY(), getWidth(), getHeight(), 10, 0x000000, 0.5f, 0xFFFFFF, 0.15f)
@@ -54,8 +54,8 @@ class AddWidgetPopup(val screen: HudEditScreen) : Renderable() {
         override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
             widget.enabled.set(true)
             inner.grid = VerticalScrollGrid({
-                                                WidgetLoader.widgets.filter { !it.isEnabled() }.map { widget -> WidgetElement(widget, screen, inner).setHeight(90) }
-                                            }, 5, 80)
+                WidgetLoader.widgets.filter { !it.isEnabled() }.map { widget -> WidgetElement(widget, screen, inner).setHeight(90) }
+            }, 5, 80)
             inner.resize()
 
             return true

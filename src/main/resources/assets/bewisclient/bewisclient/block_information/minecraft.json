@@ -1,0 +1,10 @@
+{
+  "minecraft:redstone_wire": "power",
+  "minecraft:sculk_sensor": "power",
+  "minecraft:note_block": "note",
+  "minecraft:hopper": "enabled",
+  "minecraft:tnt": "unstable",
+  "minecraft:tripwire_hook": "attached",
+  "minecraft:tripwire": "attached",
+  "minecraft:sculk_shrieker": "can_summon"
+}

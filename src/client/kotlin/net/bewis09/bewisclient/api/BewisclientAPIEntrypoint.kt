@@ -1,13 +1,14 @@
 package net.bewis09.bewisclient.api
 
 import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.drawable.renderables.options_structure.SettingCategory
+import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCategory
 import net.bewis09.bewisclient.game.Keybind
+import net.bewis09.bewisclient.impl.widget.TiwylaWidget
 import net.bewis09.bewisclient.logic.BewisclientInterface
 import net.bewis09.bewisclient.logic.EventEntrypoint
 import net.bewis09.bewisclient.settings.Settings
 import net.bewis09.bewisclient.widget.Widget
-import net.bewis09.bewisclient.drawable.renderables.options_structure.SettingCategory
-import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCategory
 
 /**
  * The Bewisclient API entrypoint interface.
@@ -77,6 +78,10 @@ interface BewisclientAPIEntrypoint : BewisclientInterface {
      * Should return a list of [Renderable]s that are settings for multiple widgets so you can change the default/general settings for all widgets at once.
      */
     fun getGeneralWidgetSettings(): List<Renderable> {
+        return emptyList()
+    }
+
+    fun getTiwylaEntityExtraInfoProviders(): List<TiwylaWidget.EntityInfoProvider<*>> {
         return emptyList()
     }
 }

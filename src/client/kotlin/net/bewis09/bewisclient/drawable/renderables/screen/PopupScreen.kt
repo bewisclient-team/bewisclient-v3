@@ -20,7 +20,7 @@ abstract class PopupScreen : Renderable() {
     abstract fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int, popupShown: Boolean)
 
     class Popup(val child: Renderable, val screen: PopupScreen) : Renderable() {
-        val alphaAnimation = Animator(200, Animator.Companion.EASE_IN_OUT, "alpha" to 0f)
+        val alphaAnimation = Animator(200, Animator.EASE_IN_OUT, "alpha" to 0f)
 
         init {
             alphaAnimation["alpha"] = 1f

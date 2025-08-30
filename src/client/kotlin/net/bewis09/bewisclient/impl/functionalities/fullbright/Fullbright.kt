@@ -2,10 +2,11 @@ package net.bewis09.bewisclient.impl.functionalities.fullbright
 
 import net.bewis09.bewisclient.drawable.interpolateColor
 import net.bewis09.bewisclient.drawable.renderables.options_structure.ImageSettingCategory
+import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.game.Keybind
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.functionalities.FullbrightSettings
-import net.bewis09.bewisclient.logic.TextColors
+import net.bewis09.bewisclient.logic.TextColor
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.effect.StatusEffects
 import net.minecraft.text.Style
@@ -17,10 +18,11 @@ object Fullbright : ImageSettingCategory(
             "fullbright.brightness", "Brightness", "Adjust the brightness level. 0.0 to 1.0 are the normal levels, while 1.0 to 15.0 is lighting up the world according to the brightness level"
         ),
         FullbrightSettings.nightVision.createRenderable("fullbright.night_vision", "Night Vision", "Allows you to have the visual effect of night vision without actually having it"),
+        InfoTextRenderable(Translation("fullbright.night_vision.error_text", "Since the snapshot 25w35a (1.21.9) night vision makes the world always render as if the brightness is set to moody").getTranslatedString(), 0xFFAAAAAA.toInt(), true),
     ), FullbrightSettings.enabled
 ) {
-    val nightVisionEnabledTranslation = Translation("fullbright.night_vision.enabled", TextColors.YELLOW + "Night Vision Enabled")
-    val nightVisionDisabledTranslation = Translation("fullbright.night_vision.disabled", TextColors.RED + "Night Vision Disabled")
+    val nightVisionEnabledTranslation = Translation("fullbright.night_vision.enabled", TextColor.YELLOW + "Night Vision Enabled")
+    val nightVisionDisabledTranslation = Translation("fullbright.night_vision.disabled", TextColor.RED + "Night Vision Disabled")
 
     val brightnessTranslation = Translation("fullbright.brightness", "Brightness: %s")
 
@@ -64,7 +66,7 @@ object Fullbright : ImageSettingCategory(
         showTitle(brightnessTranslation((value * 100).toString() + "%").setStyle(Style.EMPTY.withColor(interpolateColor(0xFF0000, 0xFFFF00, value / 15))))
     }
 
-    private val nightVisionInstance = StatusEffectInstance(StatusEffects.NIGHT_VISION, 1000000, 0, false, false, false)
+    private val nightVisionInstance = StatusEffectInstance(StatusEffects.NIGHT_VISION, -1, 255, false, false, false)
 
     fun getNightVisionInstance(): StatusEffectInstance? {
         return if (hasNightVision()) nightVisionInstance else null

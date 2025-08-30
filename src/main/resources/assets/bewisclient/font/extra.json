@@ -1,0 +1,13 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "file": "bewisclient:font/extra.png",
+      "ascent": 7,
+      "chars": [
+        "\uE0aa",
+        "\uE0ab"
+      ]
+    }
+  ]
+}

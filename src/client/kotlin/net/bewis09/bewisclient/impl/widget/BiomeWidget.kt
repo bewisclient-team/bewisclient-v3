@@ -5,7 +5,7 @@ import com.google.gson.JsonElement
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.logic.EventEntrypoint
-import net.bewis09.bewisclient.logic.TextColors
+import net.bewis09.bewisclient.logic.TextColor
 import net.bewis09.bewisclient.logic.catch
 import net.bewis09.bewisclient.settings.types.BooleanSetting
 import net.bewis09.bewisclient.widget.logic.SidedPosition
@@ -43,14 +43,14 @@ object BiomeWidget : LineWidget(), EventEntrypoint {
             it.value.forEach { resource ->
                 val jsonElement = Gson().fromJson(resource.reader, JsonElement::class.java)
 
-                if (jsonElement.isJsonObject) {
+                if (jsonElement?.isJsonObject == true) {
                     val jsonObject = jsonElement.asJsonObject
 
                     jsonObject.keySet().forEach { key ->
                         val biomeCode = jsonObject.get(key)
                         if (biomeCode.isJsonPrimitive) {
-                            TextColors.COLORS[biomeCode.asString]?.let { s ->
-                                biomeCodes[Identifier.of(key)] = s
+                            TextColor.entries.firstOrNull { a -> a.name.lowercase() == biomeCode.asString }?.let { s ->
+                                biomeCodes[Identifier.of(key)] = s.code
                             } ?: run {
                                 warn(
                                     "Unknown biome color code: ${biomeCode.asString} in ${it.key}"

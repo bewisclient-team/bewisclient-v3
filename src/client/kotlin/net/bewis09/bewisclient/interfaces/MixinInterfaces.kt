@@ -5,3 +5,7 @@ import net.minecraft.client.util.InputUtil
 interface KeyBindingAccessor {
     fun getBoundKey(): InputUtil.Key
 }
+
+interface BreakingProgressAccessor {
+    fun getCurrentBreakingProgress(): Float
+}

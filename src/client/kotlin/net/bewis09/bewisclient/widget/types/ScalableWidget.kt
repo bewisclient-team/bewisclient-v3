@@ -2,10 +2,13 @@ package net.bewis09.bewisclient.widget.types
 
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
+import net.bewis09.bewisclient.settings.types.FloatSetting
 import net.bewis09.bewisclient.widget.Widget
 
 abstract class ScalableWidget() : Widget() {
-    var scale = create("scale", DefaultWidgetSettings.scale.cloneWithDefault())
+    var scale = create("scale", FloatSetting({ getDefaultScale() }, DefaultWidgetSettings.scale.precision))
+
+    open fun getDefaultScale(): Float = DefaultWidgetSettings.scale.get()
 
     override fun getScale(): Float {
         return scale.get()

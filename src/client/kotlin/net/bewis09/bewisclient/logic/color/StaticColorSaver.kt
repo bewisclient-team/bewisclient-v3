@@ -117,12 +117,12 @@ open class StaticColorSaver : ColorSaver {
 
             addRenderable(
                 HorizontalScrollGrid({
-                                         return@HorizontalScrollGrid colors.map { color ->
-                                             ColorButton(0, 0, 12, 12, { color.color }, color.translation.getTranslatedString(), { newColor ->
-                                                 set(StaticColorSaver(newColor))
-                                             })
-                                         }
-                                     }, 3, 12)(
+                    return@HorizontalScrollGrid colors.map { color ->
+                        ColorButton(0, 0, 12, 12, { color.color }, color.translation.getTranslatedString(), { newColor ->
+                            set(StaticColorSaver(newColor))
+                        })
+                    }
+                }, 3, 12)(
                     getX() + getHeight() + 43, getY() + 36, getWidth() - getHeight() - 43, 27
                 )
             )

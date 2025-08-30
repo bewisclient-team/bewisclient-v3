@@ -5,9 +5,11 @@ import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.SettingStructure
 import net.bewis09.bewisclient.drawable.renderables.popup.AddWidgetPopup
 import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
+import net.bewis09.bewisclient.impl.renderable.TiwylaLinesSettingsPopup
 import net.bewis09.bewisclient.logic.EventEntrypoint
 import net.bewis09.bewisclient.logic.colors
 
+@Suppress("unusedExpression")
 object TranslationLoader : EventEntrypoint {
     override fun onDatagen() {
         SettingStructure(OptionScreen()).let {
@@ -18,5 +20,6 @@ object TranslationLoader : EventEntrypoint {
         colors
         AddWidgetPopup
         HudEditScreen
+        TiwylaLinesSettingsPopup
     }
 }

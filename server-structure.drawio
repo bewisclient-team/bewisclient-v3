@@ -1,0 +1,181 @@
+<mxfile host="drawio-plugin" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" modified="2025-08-25T13:17:52.334Z" version="22.1.22" etag="bj_3hnB_w7LopYH8Xo_K" type="embed">
+  <diagram name="Server Structure" id="f-MTnLlNgEiC5Mz2pBzF">
+    <mxGraphModel dx="411" dy="340" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="1400" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-1" value="Player starts the game" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="360" y="200" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-4" value="/joinServer&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;** Magic **&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="120" y="320" width="120" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-5" value="Database" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="600" y="1160" width="240" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-6" value="Player starts the game or refreshes the loaded cosmetics" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="960" y="920" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-10" value="Generate 16-byte shared secret&lt;div&gt;&lt;br&gt;&lt;div&gt;Compute server hash&lt;/div&gt;&lt;div&gt;with SHA-1&lt;/div&gt;&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="360" y="320" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-12" value="Handshake to get serverId and public key" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="495" y="235" width="85" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-14" value="" style="endArrow=classic;html=1;rounded=0;exitX=-0.015;exitY=0.808;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="mqtrTNL5T-PsRIXVkn4O-3" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="640" y="394.1199999999999" as="sourcePoint" />
+            <mxPoint x="480" y="393" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-15" value="serverId and public key" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="495" y="361" width="85" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-17" value="Stores sharedSecret" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="360" y="440" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-18" value="" style="endArrow=classic;html=1;rounded=0;exitX=1.017;exitY=0.608;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.008;entryY=0.308;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="mqtrTNL5T-PsRIXVkn4O-1" target="mqtrTNL5T-PsRIXVkn4O-3" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="860" y="280" as="sourcePoint" />
+            <mxPoint x="510" y="380" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-19" value="returns sharedSecret" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="245" y="487" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-21" value="Server" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="606" y="170" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-22" value="Sender-Client" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="365" y="170" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-23" value="" style="endArrow=classic;html=1;rounded=0;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=0.983;entryY=0.379;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" source="mqtrTNL5T-PsRIXVkn4O-10" target="mqtrTNL5T-PsRIXVkn4O-4" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="820" y="420" as="sourcePoint" />
+            <mxPoint x="870" y="370" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-25" value="Mojang-API" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="125" y="290" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-27" value="Call &quot;joinServer&quot; with accessToken, selectedProfile and hash" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="245" y="364" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-29" value="" style="endArrow=classic;html=1;rounded=0;exitX=0;exitY=0.838;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" target="mqtrTNL5T-PsRIXVkn4O-3" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="640" y="394.1199999999999" as="sourcePoint" />
+            <mxPoint x="480" y="393" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-3" value="Generates (if not preset) and returns publicKey&amp;nbsp;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="600" y="200" width="120" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-30" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="240" y="520" as="sourcePoint" />
+            <mxPoint x="360" y="520" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-31" value="Tries to verify the sharedSecret" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="601" y="440" width="120" height="360" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-32" value="/hasJoined&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;** Magic **&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="120" y="680" width="120" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-33" value="" style="endArrow=classic;html=1;rounded=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;" parent="1" target="mqtrTNL5T-PsRIXVkn4O-32" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="600" y="740" as="sourcePoint" />
+            <mxPoint x="580" y="560" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-34" value="Sends success message" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="495" y="947" width="89" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-35" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="480" y="520" as="sourcePoint" />
+            <mxPoint x="600" y="520" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-36" value="forwards sharedSecret and selected cosmetic" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="484" y="601" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-37" value="Stores selected cosmetic in database" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="600" y="800" width="120" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-39" value="Player changes their cosmetic/Refreshes data" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="360" y="560" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-40" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="481" y="640" as="sourcePoint" />
+            <mxPoint x="601" y="640" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-41" value="forwards sharedSecret and selected cosmetic" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="484" y="481" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-42" value="" style="endArrow=classic;html=1;rounded=0;entryX=-0.001;entryY=0.332;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" target="mqtrTNL5T-PsRIXVkn4O-37" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="240" y="880" as="sourcePoint" />
+            <mxPoint x="480" y="990" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-43" value="Sends sharedSecret to verify" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="350" y="716" width="160" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-45" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" parent="1" source="mqtrTNL5T-PsRIXVkn4O-37" target="mqtrTNL5T-PsRIXVkn4O-5" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="530" y="800" as="sourcePoint" />
+            <mxPoint x="580" y="750" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-47" value="Loads the data of all player that sent data in a specific amount of time" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="721" y="800" width="120" height="240" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-48" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" parent="1" source="mqtrTNL5T-PsRIXVkn4O-5" target="mqtrTNL5T-PsRIXVkn4O-47" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="690" y="970" as="sourcePoint" />
+            <mxPoint x="740" y="920" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-49" value="Receiver-Client" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="965" y="770" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-50" value="" style="endArrow=classic;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.75;entryDx=0;entryDy=0;" parent="1" source="mqtrTNL5T-PsRIXVkn4O-6" target="mqtrTNL5T-PsRIXVkn4O-47" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1025" y="910" as="sourcePoint" />
+            <mxPoint x="1075" y="860" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-51" value="Shows cosmetics" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="960" y="800" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-52" value="" style="endArrow=classic;html=1;rounded=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=1;exitY=0.25;exitDx=0;exitDy=0;" parent="1" source="mqtrTNL5T-PsRIXVkn4O-47" target="mqtrTNL5T-PsRIXVkn4O-51" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="690" y="980" as="sourcePoint" />
+            <mxPoint x="740" y="930" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-55" value="Requests data" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="857" y="980" width="90" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-56" value="Sends data with hashed player uuids" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="852" y="870" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-57" value="Shows success message (if it was triggered by a player)" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="360" y="920" width="120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-58" value="" style="endArrow=classic;html=1;rounded=0;exitX=0;exitY=0.75;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" parent="1" source="mqtrTNL5T-PsRIXVkn4O-37" target="mqtrTNL5T-PsRIXVkn4O-57" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="450" y="990" as="sourcePoint" />
+            <mxPoint x="500" y="940" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mqtrTNL5T-PsRIXVkn4O-59" value="Returns verification" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+          <mxGeometry x="350" y="855" width="160" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

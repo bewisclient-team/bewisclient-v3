@@ -16,6 +16,7 @@ import net.minecraft.util.math.ColorHelper
 import org.joml.Quaternionf
 import org.joml.Vector3f
 import kotlin.math.atan
+import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
@@ -769,11 +770,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param color The color of the text, represented as an ARGB integer.
      */
     fun drawCenteredText(text: String, centerX: Int, y: Int, color: Int) {
-        val textWidth = textRenderer.getWidth(Text.literal(text).fillStyle(style))
-        push()
-        translate(-textWidth / 2f, 0f)
-        drawContext.drawText(textRenderer, Text.literal(text).fillStyle(style), centerX, y, applyAlpha(color), false)
-        pop()
+        drawCenteredText(Text.literal(text), centerX, y, color)
     }
 
     /**
@@ -785,6 +782,31 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * (fully opaque).
      */
     fun drawCenteredText(text: String, centerX: Int, y: Int, color: Int, alpha: Float) {
+        drawCenteredText(text, centerX, y, combineInt(color, alpha))
+    }
+
+    /**
+     * Draws text centered at the specified x position.
+     *
+     * @param color The color of the text, represented as an ARGB integer.
+     */
+    fun drawCenteredText(text: Text, centerX: Int, y: Int, color: Int) {
+        val textWidth = textRenderer.getWidth(text.copy().fillStyle(style))
+        push()
+        translate(-textWidth / 2f, 0f)
+        drawContext.drawText(textRenderer, text.copy().fillStyle(style), centerX, y, applyAlpha(color), false)
+        pop()
+    }
+
+    /**
+     * Draws text centered at the specified x position.
+     *
+     * @param color The color of the text, represented as an RGB integer. The alpha value is applied
+     * separately.
+     * @param alpha The alpha value for the color, ranging from 0.0 (fully transparent) to 1.0
+     * (fully opaque).
+     */
+    fun drawCenteredText(text: Text, centerX: Int, y: Int, color: Int, alpha: Float) {
         drawCenteredText(text, centerX, y, combineInt(color, alpha))
     }
 
@@ -1921,12 +1943,12 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param color The color to fill the rectangle with, represented as an ARGB integer.
      */
     fun fillRounded(x: Int, y: Int, width: Int, height: Int, radius: Int, color: Int) {
-        val adjustedRadius = kotlin.math.min(radius, kotlin.math.min(width / 2, height / 2))
+        val adjustedRadius = min(radius, min(width / 2, height / 2))
 
         // Fill the main rectangle (without corners)
-        fill(x + adjustedRadius, y, width - 2 * adjustedRadius, radius, color)
+        fill(x + adjustedRadius, y, width - 2 * adjustedRadius, adjustedRadius, color)
         fill(x, y + adjustedRadius, width, height - 2 * adjustedRadius, color)
-        fill(x + adjustedRadius, y + height - radius, width - 2 * adjustedRadius, radius, color)
+        fill(x + adjustedRadius, y + height - adjustedRadius, width - 2 * adjustedRadius, adjustedRadius, color)
 
         if (adjustedRadius <= 0) return
 
@@ -1997,7 +2019,7 @@ class ScreenDrawing(val drawContext: DrawContext, val textRenderer: TextRenderer
      * @param color The color of the border, represented as an ARGB integer.
      */
     fun drawBorderRounded(x: Int, y: Int, width: Int, height: Int, radius: Int, color: Int) {
-        val adjustedRadius = kotlin.math.min(radius, kotlin.math.min(width / 2, height / 2))
+        val adjustedRadius = min(radius, min(width / 2, height / 2))
 
         // Draw the border lines (without corners)
         drawHorizontalLine(x + adjustedRadius, y, width - 2 * adjustedRadius, color) // Top

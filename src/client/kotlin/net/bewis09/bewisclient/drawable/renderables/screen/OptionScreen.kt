@@ -18,7 +18,7 @@ import net.minecraft.util.Identifier
 import org.lwjgl.glfw.GLFW
 
 class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvider {
-    val alphaMainAnimation = Animator({ OptionsMenuSettings.animationTime.get().toLong() }, Animator.Companion.EASE_IN_OUT, "alpha" to 0f, "inside" to 1f, "blur" to startBlur)
+    val alphaMainAnimation = Animator({ OptionsMenuSettings.animationTime.get().toLong() }, Animator.EASE_IN_OUT, "alpha" to 0f, "inside" to 1f, "blur" to startBlur)
 
     val homeButton = Button("Home") {
         info("Home button clicked")

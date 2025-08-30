@@ -6,7 +6,7 @@ import net.bewis09.bewisclient.settings.types.Setting
 import net.bewis09.bewisclient.widget.WidgetLoader
 
 object WidgetSingleSettings : Setting<JsonObject>(JsonObject()) {
-    override fun convertToElement(): JsonElement? {
+    override fun convertToElement(): JsonElement {
         val jsonObject = JsonObject()
 
         WidgetLoader.widgets.forEach {

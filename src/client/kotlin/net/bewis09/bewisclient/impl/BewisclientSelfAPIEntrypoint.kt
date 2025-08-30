@@ -21,10 +21,17 @@ import net.bewis09.bewisclient.settings.Settings
 import net.bewis09.bewisclient.settings.SettingsLoader
 import net.bewis09.bewisclient.widget.Widget
 import net.bewis09.bewisclient.widget.WidgetLoader
+import net.minecraft.entity.passive.AxolotlEntity
+import net.minecraft.entity.passive.CatEntity
+import net.minecraft.entity.passive.FrogEntity
+import net.minecraft.entity.passive.HorseEntity
+import net.minecraft.entity.passive.LlamaEntity
+import net.minecraft.entity.passive.RabbitEntity
+import kotlin.jvm.optionals.getOrNull
 
 class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint {
     override fun getEventEntrypoints(): List<EventEntrypoint> = listOf(
-        WidgetLoader, SettingsLoader, KeybindingImplementer, TranslationLoader, BiomeWidget, SpeedWidget
+        WidgetLoader, SettingsLoader, KeybindingImplementer, TranslationLoader, BiomeWidget, SpeedWidget, TiwylaWidget
     )
 
     override fun getSettingsObjects(): List<Settings> = listOf(
@@ -37,7 +44,7 @@ class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint {
 
 
     override fun getWidgets(): List<Widget> = listOf(
-        FPSWidget, BiomeWidget, DayWidget, CoordinatesWidget, DaytimeWidget, PingWidget, CPSWidget, KeyWidget, InventoryWidget, SpeedWidget
+        FPSWidget, BiomeWidget, DayWidget, CoordinatesWidget, DaytimeWidget, PingWidget, CPSWidget, KeyWidget, InventoryWidget, SpeedWidget, TiwylaWidget
     )
 
     override fun getUtilities(): List<Renderable> = listOf(
@@ -63,5 +70,14 @@ class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint {
 
     override fun getSidebarCategories(): List<SidebarCategory> = listOf(
         Contact
+    )
+
+    override fun getTiwylaEntityExtraInfoProviders(): List<TiwylaWidget.EntityInfoProvider<*>> = listOf(
+        TiwylaWidget.EntityInfoProvider(CatEntity::class.java) { it.variant?.key?.getOrNull()?.value?.toString() },
+        TiwylaWidget.EntityInfoProvider(FrogEntity::class.java) { it.variant?.key?.getOrNull()?.value?.toString() },
+        TiwylaWidget.EntityInfoProvider(AxolotlEntity::class.java) { it.variant?.name },
+        TiwylaWidget.EntityInfoProvider(HorseEntity::class.java) { it.horseColor.asString().lowercase() + ", " + it.marking.name.lowercase() },
+        TiwylaWidget.EntityInfoProvider(RabbitEntity::class.java) { it.variant.name.lowercase() },
+        TiwylaWidget.EntityInfoProvider(LlamaEntity::class.java) { it.variant.name.lowercase() },
     )
 }

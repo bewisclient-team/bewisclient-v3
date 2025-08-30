@@ -16,8 +16,8 @@ object PingWidget : LineWidget() {
     val pingWidgetTranslation = Translation("widget.ping_widget.name", "Ping Widget")
     val pingWidgetDescription = Translation("widget.ping_widget.description", "Displays your current ping in milliseconds (ms).")
 
-    val pingText = Translation("widgets.ping_widget.ping", "Ping: %s")
-    val loadingText = Translation("widgets.ping_widget.loading", "Loading...")
+    val pingText = Translation("widget.ping_widget.ping", "Ping: %s")
+    val loadingText = Translation("widget.ping_widget.loading", "Loading...")
 
     override fun getTranslation(): Translation = pingWidgetTranslation
     override fun getDescription(): Translation = pingWidgetDescription
