@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.drawable
 
+import net.bewis09.bewisclient.impl.functionalities.block_highlight.BlockHighlight.withAlpha
 import net.minecraft.client.gl.RenderPipelines
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.ButtonTextures
@@ -12,7 +13,7 @@ import net.minecraft.client.gui.widget.TexturedButtonWidget
 class WorkingTexturedButtonWidget(x: Int, y: Int, width: Int, height: Int, buttonTextures: ButtonTextures, pressAction: PressAction) : TexturedButtonWidget(x, y, width, height, buttonTextures, pressAction) {
     override fun renderWidget(context: DrawContext?, mouseX: Int, mouseY: Int, deltaTicks: Float) {
         val identifier = this.textures.get(this.isInteractable, this.isSelected)
-        context!!.drawTexture(RenderPipelines.GUI_TEXTURED, identifier, this.x, this.y, 0f, 0f, this.width, this.height, this.width, this.height, combineInt(0xFFFFFF, this.alpha))
+        context!!.drawTexture(RenderPipelines.GUI_TEXTURED, identifier, this.x, this.y, 0f, 0f, this.width, this.height, this.width, this.height, withAlpha(0xFFFFFF, this.alpha))
     }
 }
 

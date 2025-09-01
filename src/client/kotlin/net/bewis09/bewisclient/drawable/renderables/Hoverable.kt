@@ -3,7 +3,7 @@ package net.bewis09.bewisclient.drawable.renderables
 import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.Animator.Companion.LINEAR
 import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.bewisclient.drawable.ScreenDrawing
+import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 
 open class Hoverable : Renderable() {
     val hoverAnimation = Animator(200, LINEAR, "hovering" to 0f)

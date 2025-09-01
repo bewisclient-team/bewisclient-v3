@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.drawable.renderables
 
 import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.bewisclient.drawable.ScreenDrawing
+import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import kotlin.math.floor
 
 class VerticalScrollGrid(val init: (Int) -> List<Renderable>, val gap: Int, val minWidth: Int) : Scrollable(Direction.VERTICAL) {

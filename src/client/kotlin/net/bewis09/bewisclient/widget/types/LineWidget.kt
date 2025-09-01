@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.widget.types
 
 import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.bewisclient.drawable.ScreenDrawing
+import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.minecraft.client.MinecraftClient
 

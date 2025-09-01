@@ -2,9 +2,8 @@ package net.bewis09.bewisclient.drawable.renderables.screen
 
 import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.bewisclient.drawable.ScreenDrawing
+import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.SettingStructure
-import net.bewis09.bewisclient.drawable.combineInt
 import net.bewis09.bewisclient.drawable.renderables.Button
 import net.bewis09.bewisclient.drawable.renderables.RainbowImage
 import net.bewis09.bewisclient.drawable.renderables.Rectangle
@@ -22,7 +21,7 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
 
     val settings = SettingStructure(this)
 
-    val sectionVerticalLine = Rectangle(combineInt(0xFFFFFF, 0.15f))
+    val sectionVerticalLine = Rectangle(withAlpha(0xFFFFFF, 0.15f))
     val sidebarPlane = VerticalAlignScrollPlane(
         arrayListOf<Renderable>().also {
 //            it.add(Button("Home") {
@@ -30,7 +29,7 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
 //            }.setHeight(14))
 //            it.add(Rectangle(combineInt(0xFFFFFF, 0.15f)).setHeight(1))
             it.addAll(settings.sidebarCategories)
-            it.add(Rectangle(combineInt(0xFFFFFF, 0.15f)).setHeight(1))
+            it.add(Rectangle(withAlpha(0xFFFFFF, 0.15f)).setHeight(1))
             it.add(Button("Edit HUD") {
                 alphaMainAnimation.set("alpha", 0f) {
                     getClient().setScreen(RenderableScreen(HudEditScreen()))

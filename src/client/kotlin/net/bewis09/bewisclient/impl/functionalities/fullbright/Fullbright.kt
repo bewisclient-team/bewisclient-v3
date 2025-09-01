@@ -1,6 +1,5 @@
 package net.bewis09.bewisclient.impl.functionalities.fullbright
 
-import net.bewis09.bewisclient.drawable.interpolateColor
 import net.bewis09.bewisclient.drawable.renderables.options_structure.ImageSettingCategory
 import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.game.Keybind

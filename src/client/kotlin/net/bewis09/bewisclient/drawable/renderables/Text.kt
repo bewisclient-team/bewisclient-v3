@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.drawable.renderables
 
 import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.bewisclient.drawable.ScreenDrawing
+import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 
 class Text(val text: () -> String, val color: Int = -1, val centered: Boolean = false) : Renderable() {
     constructor(text: String, color: Int = -1, centered: Boolean = false) : this({ text }, color, centered)

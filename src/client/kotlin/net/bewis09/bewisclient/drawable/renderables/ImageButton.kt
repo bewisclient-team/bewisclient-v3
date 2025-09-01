@@ -1,6 +1,7 @@
 package net.bewis09.bewisclient.drawable.renderables
 
-import net.bewis09.bewisclient.drawable.ScreenDrawing
+import net.bewis09.bewisclient.drawable.screen_drawing.RgbColor
+import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.minecraft.util.Identifier
 
@@ -24,7 +25,7 @@ class ImageButton(val image: Identifier, val onClick: (ImageButton) -> Unit, too
         return true
     }
 
-    fun setImageColor(color: Int): ImageButton {
+    fun setImageColor(@RgbColor color: Int): ImageButton {
         this.imageColor = color
         return this
     }

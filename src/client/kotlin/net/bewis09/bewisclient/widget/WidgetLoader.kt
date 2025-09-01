@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.widget
 
 import net.bewis09.bewisclient.api.APIEntrypointLoader
-import net.bewis09.bewisclient.drawable.ScreenDrawing
+import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
 import net.bewis09.bewisclient.logic.EventEntrypoint
 import net.bewis09.bewisclient.screen.RenderableScreen

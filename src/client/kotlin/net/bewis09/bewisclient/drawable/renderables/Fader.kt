@@ -1,7 +1,6 @@
 package net.bewis09.bewisclient.drawable.renderables
 
-import net.bewis09.bewisclient.drawable.ScreenDrawing
-import net.bewis09.bewisclient.drawable.interpolateColor
+import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.interfaces.Gettable
 import net.bewis09.bewisclient.logic.number.Precision
 

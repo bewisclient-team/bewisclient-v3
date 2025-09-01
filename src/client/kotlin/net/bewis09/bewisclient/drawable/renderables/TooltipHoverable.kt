@@ -1,9 +1,8 @@
 package net.bewis09.bewisclient.drawable.renderables
 
 import net.bewis09.bewisclient.drawable.Animator
-import net.bewis09.bewisclient.drawable.ScreenDrawing
+import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.animate
-import net.bewis09.bewisclient.drawable.combineInt
 import net.bewis09.bewisclient.game.Translation
 import net.minecraft.client.MinecraftClient
 
@@ -50,7 +49,7 @@ open class TooltipHoverable(val tooltip: () -> Translation?) : Hoverable() {
                 }
 
                 screenDrawing.fillRounded(mouseX, mouseY - tooltipHeight, width, tooltipHeight, 5, 0x000000, tooltipAnimation["tooltip"] * 0.8f)
-                screenDrawing.drawWrappedText(wrappedText, mouseX + 5, mouseY - tooltipHeight + 5, combineInt(0xFFFFFF, tooltipAnimation["tooltip"]))
+                screenDrawing.drawWrappedText(wrappedText, mouseX + 5, mouseY - tooltipHeight + 5, withAlpha(0xFFFFFF, tooltipAnimation["tooltip"]))
             })
         } else {
             if (tooltipAnimation["tooltip"] != 0f) tooltipAnimation.pauseForOnce()

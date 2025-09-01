@@ -17,7 +17,7 @@
   "entrypoints": {
     "client": [
       {
-        "value": "net.bewis09.bewisclient.BewisclientClient",
+        "value": "net.bewis09.bewisclient.BewisclientInitializer",
         "adapter": "kotlin"
       }
     ],

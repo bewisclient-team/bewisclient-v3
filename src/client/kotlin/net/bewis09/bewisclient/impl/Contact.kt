@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.impl
 
 import net.bewis09.bewisclient.drawable.Animator
-import net.bewis09.bewisclient.drawable.ScreenDrawing
+import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.animate
 import net.bewis09.bewisclient.drawable.renderables.Button
 import net.bewis09.bewisclient.drawable.renderables.Hoverable
