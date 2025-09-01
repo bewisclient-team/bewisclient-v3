@@ -11,10 +11,10 @@ import net.bewis09.bewisclient.logic.colors
 
 @Suppress("unusedExpression")
 object TranslationLoader : EventEntrypoint {
+    @Suppress("SimpleRedundantLet")
     override fun onDatagen() {
         SettingStructure(OptionScreen()).let {
             it.widgetsPlane.init(0, 0, 1000, 1000)
-            it.settings.init()
         }
         Fullbright
         colors

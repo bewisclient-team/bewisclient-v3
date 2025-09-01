@@ -23,14 +23,14 @@ class SettingStructure(val screen: OptionScreen) : BewisclientInterface {
 
     val utilities = APIEntrypointLoader.mapEntrypoint { it.getUtilities() }.flatten()
 
-    val settings = VerticalAlignScrollPlane({
+    val settings = VerticalAlignScrollPlane(
         listOf(
             OptionsMenuSettings.animationTime.createRenderable("menu.settings.animation_time", "Animation Time", "The time (in milliseconds) it takes for animations to complete"),
             OptionsMenuSettings.blurBackground.createRenderable("menu.settings.blur_background", "Blur Background", "Whether to blur the background when opening menus"),
             OptionsMenuSettings.buttonInTitleScreen.createRenderable("menu.settings.button_in_title_screen", "Button in Title Screen", "Whether to show the Bewisclient button in the title screen"),
             OptionsMenuSettings.buttonInGameScreen.createRenderable("menu.settings.button_in_game_screen", "Button in Game Screen", "Whether to show the Bewisclient button in the in-game pause menu")
-        )
-    }, 1)
+        ), 1
+    )
 
     val cosmetics = InfoTextRenderable(Translation("menu.category.cosmetics.info", "Cosmetics are not yet available in this version of Bewisclient. We are working on making them available again with new features and online support in the new future.").getTranslatedString(), 0xFFAAAAAA.toInt(), centered = true, selfResize = false)
 
@@ -55,7 +55,7 @@ class SettingStructure(val screen: OptionScreen) : BewisclientInterface {
     val extensionsCategory = SidebarCategory(Translation("menu.category.extensions", "Extensions"), this.extensions)
 
     val sidebarCategories = arrayListOf<Renderable>(
-        widgetsCategory(screen), utilitiesCategory(screen), settingsCategory(screen), cosmeticsCategory(screen), extensionsCategory(screen)
+        widgetsCategory(screen), utilitiesCategory(screen), settingsCategory(screen), cosmeticsCategory(screen), //extensionsCategory(screen)
     ).also {
         APIEntrypointLoader.mapEntrypoint { a -> a.getSidebarCategories().forEach { b -> it.add(b(screen)) } }
     }

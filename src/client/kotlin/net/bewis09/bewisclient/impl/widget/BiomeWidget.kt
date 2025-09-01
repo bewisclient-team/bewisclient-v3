@@ -99,7 +99,7 @@ object BiomeWidget : LineWidget(), EventEntrypoint {
 
     fun getBiomeByMonth(): Identifier {
         return when (Calendar.getInstance().get(Calendar.MONTH)) {
-            0 -> Identifier.of("minecraft:snowy_tundra")
+            0 -> Identifier.of("minecraft:snowy_plains")
             1 -> Identifier.of("minecraft:ice_spikes")
             2 -> Identifier.of("minecraft:swamp")
             3 -> Identifier.of("minecraft:flower_forest")
@@ -107,9 +107,9 @@ object BiomeWidget : LineWidget(), EventEntrypoint {
             5 -> Identifier.of("minecraft:plains")
             6 -> Identifier.of("minecraft:sunflower_plains")
             7 -> Identifier.of("minecraft:beach")
-            8 -> Identifier.of("minecraft:wooded_hills")
+            8 -> Identifier.of("minecraft:wooded_badlands")
             9 -> Identifier.of("minecraft:dark_forest")
-            10 -> Identifier.of("minecraft:giant_tree_taiga")
+            10 -> Identifier.of("minecraft:old_growth_spruce_taiga")
             11 -> Identifier.of("minecraft:taiga")
             else -> Identifier.of("minecraft:plains")
         }
@@ -119,7 +119,7 @@ object BiomeWidget : LineWidget(), EventEntrypoint {
         val biome = getBiomeByMonth()
 
         return listOf(
-            (if (colorCodeBiome.get()) biomeCodes[biome] else "") + Text.translatable(biome.toTranslationKey("biome")).string
+            (if (colorCodeBiome.get()) biomeCodes[biome] ?: "" else "") + Text.translatable(biome.toTranslationKey("biome")).string
         )
     }
 }

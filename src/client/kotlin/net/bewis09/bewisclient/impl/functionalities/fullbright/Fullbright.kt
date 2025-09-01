@@ -73,6 +73,6 @@ object Fullbright : ImageSettingCategory(
     }
 
     fun hasNightVision(): Boolean {
-        return FullbrightSettings.nightVision.get()
+        return FullbrightSettings.nightVision.get() && FullbrightSettings.enabled.get()
     }
 }

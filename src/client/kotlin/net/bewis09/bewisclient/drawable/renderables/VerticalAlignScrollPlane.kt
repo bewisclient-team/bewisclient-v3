@@ -4,6 +4,8 @@ import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.ScreenDrawing
 
 class VerticalAlignScrollPlane(val init: (Int) -> List<Renderable>, val gap: Int) : Scrollable(Direction.VERTICAL) {
+    constructor(list: List<Renderable>, gap: Int) : this({ list }, gap)
+
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         screenDrawing.enableScissors(getX(), getY(), getWidth(), getHeight())
         var y = scrollAnimation["scrollY"].toInt()

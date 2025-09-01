@@ -16,4 +16,12 @@ class LightmapTextureManagerMixin {
         }
         return FullbrightSettings.INSTANCE.getBrightness().get();
     }
+
+    @Redirect(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/dimension/DimensionType;ambientLight()F"))
+    private float redirectAmbientLight(net.minecraft.world.dimension.DimensionType instance) {
+        if (!FullbrightSettings.INSTANCE.getNightVision().get() || !FullbrightSettings.INSTANCE.getEnabled().get()) {
+            return instance.ambientLight();
+        }
+        return 1.0f;
+    }
 }

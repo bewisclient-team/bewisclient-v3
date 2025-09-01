@@ -20,26 +20,22 @@ import org.lwjgl.glfw.GLFW
 class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvider {
     val alphaMainAnimation = Animator({ OptionsMenuSettings.animationTime.get().toLong() }, Animator.EASE_IN_OUT, "alpha" to 0f, "inside" to 1f, "blur" to startBlur)
 
-    val homeButton = Button("Home") {
-        info("Home button clicked")
-    }
-    val editHUDButton = Button("Edit HUD") {
-        alphaMainAnimation.set("alpha", 0f) {
-            getClient().setScreen(RenderableScreen(HudEditScreen()))
-        }
-    }
+    val settings = SettingStructure(this)
+
     val sectionVerticalLine = Rectangle(combineInt(0xFFFFFF, 0.15f))
-    val sectionHorizontalLine = Rectangle(combineInt(0xFFFFFF, 0.15f))
-    val sectionHorizontalLine2 = Rectangle(combineInt(0xFFFFFF, 0.15f))
     val sidebarPlane = VerticalAlignScrollPlane(
-        { width ->
-            arrayListOf<Renderable>().also {
-                it.add(homeButton.setHeight(14))
-                it.add(sectionHorizontalLine.setHeight(1))
-                it.addAll(settings.sidebarCategories)
-                it.add(sectionHorizontalLine2.setHeight(1))
-                it.add(editHUDButton.setHeight(14))
-            }
+        arrayListOf<Renderable>().also {
+//            it.add(Button("Home") {
+//                info("Home button clicked")
+//            }.setHeight(14))
+//            it.add(Rectangle(combineInt(0xFFFFFF, 0.15f)).setHeight(1))
+            it.addAll(settings.sidebarCategories)
+            it.add(Rectangle(combineInt(0xFFFFFF, 0.15f)).setHeight(1))
+            it.add(Button("Edit HUD") {
+                alphaMainAnimation.set("alpha", 0f) {
+                    getClient().setScreen(RenderableScreen(HudEditScreen()))
+                }
+            }.setHeight(14))
         }, 5
     )
 
@@ -52,8 +48,6 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
     var optionsHeaderBooleanSetting: Setting<Boolean>? = null
 
     var switch = Switch(state = { optionsHeaderBooleanSetting?.get() ?: false }, onChange = { optionsHeaderBooleanSetting?.set(it) })
-
-    val settings = SettingStructure(this)
 
     val image = RainbowImage(Identifier.of("bewisclient", "icon_long.png"), 0xFFFFFF, 0.5f)
 

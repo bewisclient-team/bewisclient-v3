@@ -82,7 +82,7 @@ abstract class SettingCategory(val text: Translation, val setting: Array<Rendera
     }
 
     fun getPane(): Renderable {
-        return VerticalAlignScrollPlane({ setting.toList() }, 1)
+        return VerticalAlignScrollPlane(setting.toList(), 1)
     }
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {

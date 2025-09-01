@@ -4,6 +4,7 @@ import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.ScreenDrawing
 import net.bewis09.bewisclient.drawable.animate
 import net.bewis09.bewisclient.drawable.interpolateColor
+import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.interfaces.Gettable
 import kotlin.math.abs
 
@@ -11,7 +12,7 @@ import kotlin.math.abs
 
  */
 class Switch(var state: Gettable<Boolean>, val onChange: (new: Boolean) -> Unit) : Hoverable() {
-    val stateAnimation = animate(200, Animator.EASE_IN_OUT, "state" to if (state.get()) 1f else 0f)
+    val stateAnimation = animate(OptionsMenuSettings.animationTime.get().toLong(), Animator.EASE_IN_OUT, "state" to if (state.get()) 1f else 0f)
 
     init {
         width = 24u
