@@ -1,26 +1,9 @@
 package net.bewis09.bewisclient.drawable.screen_drawing
 
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawingInterface.Color
-import net.bewis09.bewisclient.logic.BewisclientInterface
-import net.minecraft.client.MinecraftClient
 import net.minecraft.client.font.TextRenderer
-import net.minecraft.client.gl.RenderPipelines
 import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.gui.screen.ingame.InventoryScreen
-import net.minecraft.entity.LivingEntity
-import net.minecraft.item.ItemStack
 import net.minecraft.text.Style
-import net.minecraft.text.StyleSpriteSource
-import net.minecraft.text.Text
-import net.minecraft.util.Identifier
-import net.minecraft.util.math.ColorHelper
-import org.joml.Quaternionf
-import org.joml.Vector3f
-import kotlin.math.atan
-import kotlin.math.min
-import kotlin.math.pow
-import kotlin.math.roundToInt
-import kotlin.math.sqrt
 
 
 /**
