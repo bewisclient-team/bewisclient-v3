@@ -81,6 +81,9 @@ interface BewisclientAPIEntrypoint : BewisclientInterface {
         return emptyList()
     }
 
+    /**
+     * Should return a list of extra [TiwylaWidget.EntityInfoProvider]s that provide extra information to be displayed in the Tiwyla widget for specific entities.
+     */
     fun getTiwylaEntityExtraInfoProviders(): List<TiwylaWidget.EntityInfoProvider<*>> {
         return emptyList()
     }
