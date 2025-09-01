@@ -18,7 +18,12 @@ object Fullbright : ImageSettingCategory(
             "fullbright.brightness", "Brightness", "Adjust the brightness level. 0.0 to 1.0 are the normal levels, while 1.0 to 15.0 is lighting up the world according to the brightness level"
         ),
         FullbrightSettings.nightVision.createRenderable("fullbright.night_vision", "Night Vision", "Allows you to have the visual effect of night vision without actually having it"),
-        InfoTextRenderable(Translation("fullbright.night_vision.error_text", "Since the snapshot 25w35a (1.21.9) night vision makes the world always render as if the brightness is set to moody").getTranslatedString(), 0xFFAAAAAA.toInt(), true),
+        InfoTextRenderable(
+            Translation(
+                "fullbright.night_vision.error_text",
+                "When night vision is applied via Bewisclient, the effect will not be the same as if you got it via a potion, because Bewisclient preserves the old way in which night vision works, which illuminates the world completely, whilst with the status effect it is always rendered as if the brightness is set all the way down to moody."
+            ).getTranslatedString(), 0xFFAAAAAA.toInt(), true
+        ),
     ), FullbrightSettings.enabled
 ) {
     val nightVisionEnabledTranslation = Translation("fullbright.night_vision.enabled", TextColor.YELLOW + "Night Vision Enabled")

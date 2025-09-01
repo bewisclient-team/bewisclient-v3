@@ -6,7 +6,7 @@ import net.bewis09.bewisclient.settings.types.IntegerSetting
 import net.bewis09.bewisclient.settings.types.ObjectSetting
 
 object HeldItemTooltipSettings : ObjectSetting() {
-    val enabled = create("enabled", BooleanSetting(true))
+    val enabled = create("enabled", BooleanSetting(false))
     val maxShownLines = create("max_shown_lines", IntegerSetting(5, 1, 10))
     val showMap = create("show_map", BooleanMapSetting())
 }
