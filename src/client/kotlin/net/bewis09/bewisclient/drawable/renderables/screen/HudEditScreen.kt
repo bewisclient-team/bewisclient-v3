@@ -1,9 +1,9 @@
 package net.bewis09.bewisclient.drawable.renderables.screen
 
-import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.SettingStructure
 import net.bewis09.bewisclient.drawable.renderables.ImageButton
 import net.bewis09.bewisclient.drawable.renderables.popup.AddWidgetPopup
+import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.bewis09.bewisclient.interfaces.BackgroundEffectProvider
@@ -16,9 +16,7 @@ import net.bewis09.bewisclient.widget.WidgetLoader.widgets
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.types.ScalableWidget
-import net.minecraft.client.Keyboard
 import net.minecraft.client.MinecraftClient
-import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.util.InputUtil
 import net.minecraft.util.Identifier
 import org.lwjgl.glfw.GLFW
