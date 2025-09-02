@@ -3,6 +3,9 @@ package net.bewis09.bewisclient.screen
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.interfaces.BackgroundEffectProvider
+import net.minecraft.class_11905
+import net.minecraft.class_11908
+import net.minecraft.class_11909
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.text.Text
@@ -29,34 +32,34 @@ class RenderableScreen(val renderable: Renderable) : Screen(Text.empty()) {
         }
     }
 
-    override fun mouseClicked(mouseX: Double, mouseY: Double, button: Int, bl: Boolean): Boolean {
-        startX = mouseX
-        startY = mouseY
-        return renderable.mouseClick(mouseX, mouseY, button) || super.mouseClicked(mouseX, mouseY, button, bl)
+    override fun mouseClicked(arg: class_11909, bl: Boolean): Boolean {
+        startX = arg.x
+        startY = arg.y
+        return renderable.mouseClick(arg.x, arg.y, arg.method_74245()) || super.mouseClicked(arg, bl)
     }
 
-    override fun mouseReleased(mouseX: Double, mouseY: Double, button: Int): Boolean {
-        return renderable.mouseRelease(mouseX, mouseY, button) || super.mouseReleased(mouseX, mouseY, button)
+    override fun mouseReleased(arg: class_11909): Boolean {
+        return renderable.mouseRelease(arg.x, arg.y, arg.method_74245()) || super.mouseReleased(arg)
     }
 
-    override fun mouseDragged(mouseX: Double, mouseY: Double, button: Int, deltaX: Double, deltaY: Double): Boolean {
-        return renderable.mouseDrag(mouseX, mouseY, startX, startY, button) || super.mouseDragged(mouseX, mouseY, button, deltaX, deltaY)
+    override fun mouseDragged(arg: class_11909, d: Double, e: Double): Boolean {
+        return renderable.mouseDrag(arg.x, arg.y, startX, startY, arg.method_74245()) || super.mouseDragged(arg, d, e)
     }
 
     override fun mouseScrolled(mouseX: Double, mouseY: Double, horizontalAmount: Double, verticalAmount: Double): Boolean {
         return renderable.mouseScroll(mouseX, mouseY, horizontalAmount, verticalAmount) || super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount)
     }
 
-    override fun keyPressed(keyCode: Int, scanCode: Int, modifiers: Int): Boolean {
-        return renderable.keyPress(keyCode, scanCode, modifiers) || super.keyPressed(keyCode, scanCode, modifiers)
+    override fun keyPressed(arg: class_11908): Boolean {
+        return renderable.keyPress(arg.key, arg.scancode, arg.modifiers) || super.keyPressed(arg)
     }
 
-    override fun keyReleased(keyCode: Int, scanCode: Int, modifiers: Int): Boolean {
-        return renderable.keyRelease(keyCode, scanCode, modifiers) || super.keyReleased(keyCode, scanCode, modifiers)
+    override fun keyReleased(arg: class_11908): Boolean {
+        return renderable.keyRelease(arg.key, arg.scancode, arg.modifiers) || super.keyReleased(arg)
     }
 
-    override fun charTyped(chr: Char, modifiers: Int): Boolean {
-        return renderable.charTyped(chr, modifiers) || super.charTyped(chr, modifiers)
+    override fun charTyped(arg: class_11905): Boolean {
+        return renderable.charTyped(arg.codepoint.toChar(), arg.modifiers) || super.charTyped(arg)
     }
 }
 

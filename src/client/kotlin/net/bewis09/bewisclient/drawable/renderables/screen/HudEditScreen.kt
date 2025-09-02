@@ -16,8 +16,10 @@ import net.bewis09.bewisclient.widget.WidgetLoader.widgets
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.types.ScalableWidget
+import net.minecraft.client.Keyboard
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.screen.Screen
+import net.minecraft.client.util.InputUtil
 import net.minecraft.util.Identifier
 import org.lwjgl.glfw.GLFW
 import kotlin.math.abs
@@ -212,7 +214,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
         var xTransform = if (right) SidedPosition.TransformerType.END else SidedPosition.TransformerType.START
         val yTransform = if (end) SidedPosition.TransformerType.END else SidedPosition.TransformerType.START
 
-        if (!Screen.hasShiftDown()) {
+        if (!InputUtil.isKeyPressed(MinecraftClient.getInstance().window, GLFW.GLFW_MOD_SHIFT)) {
             if (abs(x - DefaultWidgetSettings.screenEdgeDistance.get()) < 10) {
                 x = DefaultWidgetSettings.screenEdgeDistance.get().toDouble()
             }

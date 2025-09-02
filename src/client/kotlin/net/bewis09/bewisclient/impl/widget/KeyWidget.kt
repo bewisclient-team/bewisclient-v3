@@ -114,7 +114,7 @@ object KeyWidget : ScalableWidget() {
         val key = (keyBinding as KeyBindingAccessor).getBoundKey()
 
         if (key.category == InputUtil.Type.KEYSYM) return InputUtil.isKeyPressed(
-            MinecraftClient.getInstance().window.handle, key.code
+            MinecraftClient.getInstance().window, key.code
         )
         if (key.category == InputUtil.Type.MOUSE) return d.mouseMap[key.code] == true
         return keyBinding.isPressed
