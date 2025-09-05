@@ -9,6 +9,9 @@ import net.bewis09.bewisclient.logic.BewisclientInterface
 import net.bewis09.bewisclient.logic.EventEntrypoint
 import net.bewis09.bewisclient.settings.Settings
 import net.bewis09.bewisclient.widget.Widget
+import net.fabricmc.loader.api.ModContainer
+import net.minecraft.util.Identifier
+import kotlin.jvm.optionals.getOrNull
 
 /**
  * The Bewisclient API entrypoint interface.
@@ -17,14 +20,28 @@ import net.bewis09.bewisclient.widget.Widget
  * To add your own Bewisclient API entrypoint, implement this interface in your mod.
  * Then register your entrypoint in your `fabric.mod.json` file under `custom`, `bewisclient`
  */
-interface BewisclientAPIEntrypoint : BewisclientInterface {
+open class BewisclientAPIEntrypoint : BewisclientInterface {
+    val iconIdentifier: Identifier? = null
+
+    open fun getExtensionTitle(modContainer: ModContainer): String = modContainer.metadata.name
+
+    open fun getExtensionDescription(modContainer: ModContainer): String = modContainer.metadata.description
+
+    open fun getIcon(modContainer: ModContainer): Identifier? {
+        return iconIdentifier ?: modContainer.metadata.getIconPath(64).getOrNull()?.let {
+            modContainer.findPath(it).getOrNull()?.let { path ->
+                createTexture(Identifier.of(modContainer.metadata.id, "extension_icon_${(1..99999).random()}"), path.toUri().toURL())
+            }
+        }
+    }
+
     /**
      * Returns a list of [EventEntrypoint]s that are registered in the mod.
      * This is used to register event handlers for the Bewisclient API.
      *
      * @return A list of [EventEntrypoint]s that are registered in the mod.
      */
-    fun getEventEntrypoints(): List<EventEntrypoint> {
+    open fun getEventEntrypoints(): List<EventEntrypoint> {
         return emptyList()
     }
 
@@ -35,7 +52,7 @@ interface BewisclientAPIEntrypoint : BewisclientInterface {
      *
      * @return A list of [Settings] objects that are registered in the mod.
      */
-    fun getSettingsObjects(): List<Settings> {
+    open fun getSettingsObjects(): List<Settings> {
         return emptyList()
     }
 
@@ -45,7 +62,7 @@ interface BewisclientAPIEntrypoint : BewisclientInterface {
      *
      * @return A list of [Keybind]s that are registered in the mod.
      */
-    fun getKeybinds(): List<Keybind> {
+    open fun getKeybinds(): List<Keybind> {
         return emptyList()
     }
 
@@ -55,7 +72,7 @@ interface BewisclientAPIEntrypoint : BewisclientInterface {
      *
      * @return A list of [Widget]s that are registered in the mod.
      */
-    fun getWidgets(): List<Widget> {
+    open fun getWidgets(): List<Widget> {
         return emptyList()
     }
 
@@ -63,28 +80,28 @@ interface BewisclientAPIEntrypoint : BewisclientInterface {
      * Should return a list of [Renderable]s that are displayed in the Bewisclient utilities tab.
      * Those should preferably be a subclass of [SettingCategory]
      */
-    fun getUtilities(): List<Renderable> {
+    open fun getUtilities(): List<Renderable> {
         return emptyList()
     }
 
     /**
      * Should return a list of the sidebar categories that are displayed in the Bewisclient options screen.
      */
-    fun getSidebarCategories(): List<SidebarCategory> {
+    open fun getSidebarCategories(): List<SidebarCategory> {
         return emptyList()
     }
 
     /**
      * Should return a list of [Renderable]s that are settings for multiple widgets so you can change the default/general settings for all widgets at once.
      */
-    fun getGeneralWidgetSettings(): List<Renderable> {
+    open fun getGeneralWidgetSettings(): List<Renderable> {
         return emptyList()
     }
 
     /**
      * Should return a list of extra [TiwylaWidget.EntityInfoProvider]s that provide extra information to be displayed in the Tiwyla widget for specific entities.
      */
-    fun getTiwylaEntityExtraInfoProviders(): List<TiwylaWidget.EntityInfoProvider<*>> {
+    open fun getTiwylaEntityExtraInfoProviders(): List<TiwylaWidget.EntityInfoProvider<*>> {
         return emptyList()
     }
 }

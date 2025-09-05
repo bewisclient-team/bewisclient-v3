@@ -20,7 +20,7 @@ interface EventEntrypoint : BewisclientInterface {
         fun registerEntrypoints() {
             if (isRegistered) throw ProgramCodeException("EventEntrypoints already registered.")
 
-            APIEntrypointLoader.forEachEntrypoint { eventEntrypointReceivers.addAll(it.getEventEntrypoints()) }
+            APIEntrypointLoader.mapEntrypoint { eventEntrypointReceivers.addAll(it.getEventEntrypoints()) }
         }
 
         /**

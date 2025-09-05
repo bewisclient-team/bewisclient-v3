@@ -1,13 +1,9 @@
 package net.bewis09.bewisclient.drawable
 
 import net.bewis09.bewisclient.api.APIEntrypointLoader
-import net.bewis09.bewisclient.drawable.renderables.Button
+import net.bewis09.bewisclient.drawable.renderables.*
+import net.bewis09.bewisclient.drawable.renderables.elements.ExtensionListRenderable
 import net.bewis09.bewisclient.drawable.renderables.options_structure.DescriptionSettingCategory
-import net.bewis09.bewisclient.drawable.renderables.Plane
-import net.bewis09.bewisclient.drawable.renderables.VerticalScrollGrid
-import net.bewis09.bewisclient.drawable.renderables.Text
-import net.bewis09.bewisclient.drawable.renderables.VerticalAlignScrollPlane
-import net.bewis09.bewisclient.drawable.renderables.options_structure.SettingCategory
 import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCategory
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
@@ -34,7 +30,7 @@ class SettingStructure(val screen: OptionScreen) : BewisclientInterface {
 
     val cosmetics = InfoTextRenderable(Translation("menu.category.cosmetics.info", "Cosmetics are not yet available in this version of Bewisclient. We are working on making them available again with new features and online support in the new future.").getTranslatedString(), 0xFFAAAAAA.toInt(), centered = true, selfResize = false)
 
-    val extensions = emptyList<SettingCategory>()
+    val extensions = VerticalAlignScrollPlane(APIEntrypointLoader.mapContainer { ExtensionListRenderable(it.provider, it.entrypoint) }, 1)
 
     val generalWidgetSettings = APIEntrypointLoader.mapEntrypoint { it.getGeneralWidgetSettings() }.flatten()
 
@@ -55,7 +51,7 @@ class SettingStructure(val screen: OptionScreen) : BewisclientInterface {
     val extensionsCategory = SidebarCategory(Translation("menu.category.extensions", "Extensions"), this.extensions)
 
     val sidebarCategories = arrayListOf<Renderable>(
-        widgetsCategory(screen), utilitiesCategory(screen), settingsCategory(screen), cosmeticsCategory(screen), //extensionsCategory(screen)
+        widgetsCategory(screen), utilitiesCategory(screen), settingsCategory(screen), cosmeticsCategory(screen), extensionsCategory(screen)
     ).also {
         APIEntrypointLoader.mapEntrypoint { a -> a.getSidebarCategories().forEach { b -> it.add(b(screen)) } }
     }

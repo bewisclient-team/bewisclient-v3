@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.drawable.screen_drawing
 
-interface RectDrawing: ScreenDrawingInterface {
+interface RectDrawing : ScreenDrawingInterface {
     fun fill(x: Int, y: Int, width: Int, height: Int, @ArgbColor color: Number) {
         drawContext.fill(x, y, x + width, y + height, applyAlpha(color))
     }

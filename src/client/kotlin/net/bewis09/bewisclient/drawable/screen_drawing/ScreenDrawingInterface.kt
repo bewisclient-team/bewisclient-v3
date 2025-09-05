@@ -6,10 +6,9 @@ import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Style
 import net.minecraft.text.StyleSpriteSource
 import net.minecraft.util.Identifier
-import kotlin.collections.isNotEmpty
 import kotlin.math.roundToInt
 
-interface ScreenDrawingInterface: BewisclientInterface {
+interface ScreenDrawingInterface : BewisclientInterface {
     val drawContext: DrawContext
     val textRenderer: TextRenderer
 

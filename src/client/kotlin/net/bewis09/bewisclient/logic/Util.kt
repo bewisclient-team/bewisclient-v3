@@ -104,3 +104,5 @@ val colors = listOf(
 )
 
 class Color(val color: Int, val translation: Translation)
+
+fun <T> T.staticFun(): () -> T = { this }

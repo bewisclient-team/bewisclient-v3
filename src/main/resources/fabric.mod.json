@@ -3,7 +3,7 @@
   "id": "bewisclient",
   "version": "${version}",
   "name": "Bewisclient",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "description": "Bewisclient adds many quality of life features to Minecraft.",
   "authors": [
     "Me!"
   ],

@@ -2,6 +2,8 @@ package net.bewis09.bewisclient.settings.types
 
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
+import net.bewis09.bewisclient.logic.color.ColorSaver
+import net.bewis09.bewisclient.logic.number.Precision
 import net.bewis09.bewisclient.settings.Settings
 
 open class ObjectSetting() : Setting<JsonObject>(JsonObject()) {
@@ -42,7 +44,7 @@ open class ObjectSetting() : Setting<JsonObject>(JsonObject()) {
      * @param setting The setting to add.
      */
     fun <T : Setting<*>> create(key: String, setting: T): T {
-        map.put(key, setting)
+        map[key] = setting
         get().get(key)?.let {
             setting.setFromElement(it)
         }
@@ -56,5 +58,21 @@ open class ObjectSetting() : Setting<JsonObject>(JsonObject()) {
         } catch (e: Exception) {
             error("Failed to deserialize ObjectSetting: ${Settings.gson.toJson(data)} (${e.message})")
         }
+    }
+
+    fun boolean(key: String, default: Boolean, onChangeListener: ((oldValue: Boolean?, newValue: Boolean?) -> Unit)? = null): BooleanSetting {
+        return create(key, BooleanSetting(default, onChangeListener))
+    }
+
+    fun float(key: String, default: Float, min: Float, max: Float, step: Float, precision: Int): FloatSetting {
+        return create(key, FloatSetting(default, Precision(min, max, step, precision)))
+    }
+
+    fun int(key: String, default: Int, min: Int, max: Int): IntegerSetting {
+        return create(key, IntegerSetting(default, min, max))
+    }
+
+    fun color(key: String, default: ColorSaver, vararg types: String): ColorSetting {
+        return create(key, ColorSetting(default, *types))
     }
 }

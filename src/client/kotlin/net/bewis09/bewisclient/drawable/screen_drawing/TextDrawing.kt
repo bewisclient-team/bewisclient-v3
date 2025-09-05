@@ -5,7 +5,7 @@ import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 import net.minecraft.util.math.ColorHelper
 
-interface TextDrawing: RectDrawing {
+interface TextDrawing : RectDrawing {
     fun drawTextBackground(text: Text, x: Int, y: Int, @ArgbColor color: Number) {
         val width = textRenderer.getWidth(text)
         val i: Int = MinecraftClient.getInstance().options.getTextBackgroundColor(0.0f)

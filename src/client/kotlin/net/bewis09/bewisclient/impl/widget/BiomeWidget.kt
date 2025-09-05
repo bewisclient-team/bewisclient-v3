@@ -7,7 +7,6 @@ import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.logic.EventEntrypoint
 import net.bewis09.bewisclient.logic.TextColor
 import net.bewis09.bewisclient.logic.catch
-import net.bewis09.bewisclient.settings.types.BooleanSetting
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
@@ -24,7 +23,7 @@ object BiomeWidget : LineWidget(), EventEntrypoint {
     val unknownBiome = Translation("widget.biome_widget.unknown_biome", "Unknown Biome")
 
     val biomeCodes = hashMapOf<Identifier, String>()
-    var colorCodeBiome = create("color_code_biome", BooleanSetting(true))
+    var colorCodeBiome = boolean("color_code_biome", true)
 
     val biomeWidgetTranslation = Translation("widget.biome_widget.name", "Biome Widget")
     val biomeWidgetDescription = Translation(

@@ -2,7 +2,7 @@ package net.bewis09.bewisclient.drawable.screen_drawing
 
 import net.minecraft.item.ItemStack
 
-interface ItemDrawing: ScreenDrawingInterface {
+interface ItemDrawing : ScreenDrawingInterface {
     fun drawItemStack(itemStack: ItemStack, x: Int, y: Int) {
         drawContext.drawItem(itemStack, x, y)
     }

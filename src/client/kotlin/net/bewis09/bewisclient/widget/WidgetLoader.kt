@@ -1,8 +1,8 @@
 package net.bewis09.bewisclient.widget
 
 import net.bewis09.bewisclient.api.APIEntrypointLoader
-import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
+import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.logic.EventEntrypoint
 import net.bewis09.bewisclient.screen.RenderableScreen
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry
@@ -16,7 +16,7 @@ object WidgetLoader : EventEntrypoint {
     val widgets: MutableList<Widget> = mutableListOf()
 
     override fun onInitializeClient() {
-        APIEntrypointLoader.forEachEntrypoint {
+        APIEntrypointLoader.mapEntrypoint {
             widgets.addAll(it.getWidgets())
         }
 

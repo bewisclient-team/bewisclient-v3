@@ -5,7 +5,6 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.widget.BiomeWidget.biomeCodes
 import net.bewis09.bewisclient.impl.widget.BiomeWidget.getBiomeByMonth
-import net.bewis09.bewisclient.settings.types.BooleanSetting
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
@@ -14,10 +13,10 @@ import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 
 object CoordinatesWidget : LineWidget() {
-    val colorCodeBiome = create("color_code_biome", BooleanSetting(true))
-    val showBiome = create("show_biome", BooleanSetting(true))
-    val showDirection = create("show_direction", BooleanSetting(false))
-    val showCoordinateChange = create("show_coordinate_change", BooleanSetting(false))
+    val colorCodeBiome = boolean("color_code_biome", true)
+    val showBiome = boolean("show_biome", true)
+    val showDirection = boolean("show_direction", false)
+    val showCoordinateChange = boolean("show_coordinate_change", false)
 
     override fun hasMultipleLines(): Boolean = true
 

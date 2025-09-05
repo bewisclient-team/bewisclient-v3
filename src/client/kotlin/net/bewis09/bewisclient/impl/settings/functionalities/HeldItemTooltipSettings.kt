@@ -1,12 +1,9 @@
 package net.bewis09.bewisclient.impl.settings.functionalities
 
 import net.bewis09.bewisclient.settings.types.BooleanMapSetting
-import net.bewis09.bewisclient.settings.types.BooleanSetting
-import net.bewis09.bewisclient.settings.types.IntegerSetting
-import net.bewis09.bewisclient.settings.types.ObjectSetting
+import net.bewis09.bewisclient.settings.types.FeatureSetting
 
-object HeldItemTooltipSettings : ObjectSetting() {
-    val enabled = create("enabled", BooleanSetting(false))
-    val maxShownLines = create("max_shown_lines", IntegerSetting(5, 1, 10))
+object HeldItemTooltipSettings : FeatureSetting() {
+    val maxShownLines = int("max_shown_lines", 5, 1, 10)
     val showMap = create("show_map", BooleanMapSetting())
 }

@@ -1,8 +1,5 @@
 package net.bewis09.bewisclient.impl.settings.functionalities
 
-import net.bewis09.bewisclient.settings.types.BooleanSetting
-import net.bewis09.bewisclient.settings.types.ObjectSetting
+import net.bewis09.bewisclient.settings.types.FeatureSetting
 
-object PumpkinOverlaySettings : ObjectSetting() {
-    val enabled = create("enabled", BooleanSetting(false))
-}
+object PumpkinOverlaySettings : FeatureSetting()

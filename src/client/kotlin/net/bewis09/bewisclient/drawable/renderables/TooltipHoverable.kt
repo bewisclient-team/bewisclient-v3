@@ -1,8 +1,8 @@
 package net.bewis09.bewisclient.drawable.renderables
 
 import net.bewis09.bewisclient.drawable.Animator
-import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.animate
+import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.minecraft.client.MinecraftClient
 

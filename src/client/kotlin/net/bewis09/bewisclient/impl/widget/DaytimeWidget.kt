@@ -2,7 +2,6 @@ package net.bewis09.bewisclient.impl.widget
 
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.game.Translation
-import net.bewis09.bewisclient.settings.types.BooleanSetting
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
@@ -12,7 +11,7 @@ import java.text.DateFormat
 import java.util.*
 
 object DaytimeWidget : LineWidget() {
-    var format12Hours = create("format_12_hours", BooleanSetting(isSystem12HourFormat()))
+    var format12Hours = boolean("format_12_hours", isSystem12HourFormat())
 
     val daytimeWidgetTranslation = Translation("widget.daytime_widget.name", "Daytime Widget")
     val daytimeWidgetDescription = Translation(

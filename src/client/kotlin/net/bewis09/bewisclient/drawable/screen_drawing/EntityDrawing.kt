@@ -6,7 +6,7 @@ import org.joml.Quaternionf
 import org.joml.Vector3f
 import kotlin.math.atan
 
-interface EntityDrawing: ScreenDrawingInterface {
+interface EntityDrawing : ScreenDrawingInterface {
     fun drawEntity(
         x1: Int, y1: Int, x2: Int, y2: Int, size: Int, scale: Float, mouseX: Float, mouseY: Float, entity: LivingEntity
     ) {

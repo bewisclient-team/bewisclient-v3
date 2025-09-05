@@ -1,12 +1,11 @@
 package net.bewis09.bewisclient.widget
 
 import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
+import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.logic.catch
 import net.bewis09.bewisclient.screen.RenderableScreen
-import net.bewis09.bewisclient.settings.types.BooleanSetting
 import net.bewis09.bewisclient.settings.types.ObjectSetting
 import net.bewis09.bewisclient.settings.types.WidgetPositionSetting
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
@@ -15,7 +14,7 @@ import net.minecraft.util.Identifier
 
 abstract class Widget : ObjectSetting() {
     var position: WidgetPositionSetting = create("position", WidgetPositionSetting(defaultPosition()))
-    var enabled = create("enabled", BooleanSetting(isEnabledByDefault()))
+    var enabled = boolean("enabled", isEnabledByDefault())
 
     open fun isEnabledByDefault(): Boolean {
         return true
@@ -41,7 +40,10 @@ abstract class Widget : ObjectSetting() {
         screenDrawing.push()
         screenDrawing.translate(getX(), getY())
         screenDrawing.scale(getScale(), getScale())
-        catch { render(screenDrawing) }
+        catch { render(screenDrawing) } ?: run {
+            error("Error rendering widget ${getId()} - disabling it to prevent further errors")
+            enabled.set(false)
+        }
         screenDrawing.pop()
     }
 

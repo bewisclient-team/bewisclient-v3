@@ -1,12 +1,10 @@
 package net.bewis09.bewisclient.impl.settings
 
-import net.bewis09.bewisclient.settings.types.BooleanSetting
-import net.bewis09.bewisclient.settings.types.IntegerSetting
 import net.bewis09.bewisclient.settings.types.ObjectSetting
 
 object OptionsMenuSettings : ObjectSetting() {
-    val animationTime = create("animation_time", IntegerSetting(200, 0, 500))
-    val blurBackground = create("blur_background", BooleanSetting(true))
-    val buttonInTitleScreen = create("button_in_title_screen", BooleanSetting(true))
-    val buttonInGameScreen = create("button_in_game_screen", BooleanSetting(true))
+    val animationTime = int("animation_time", 200, 0, 500)
+    val blurBackground = boolean("blur_background", true)
+    val buttonInTitleScreen = boolean("button_in_title_screen", true)
+    val buttonInGameScreen = boolean("button_in_game_screen", true)
 }

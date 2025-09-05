@@ -2,13 +2,9 @@ package net.bewis09.bewisclient.drawable.renderables.screen
 
 import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.SettingStructure
-import net.bewis09.bewisclient.drawable.renderables.Button
-import net.bewis09.bewisclient.drawable.renderables.RainbowImage
-import net.bewis09.bewisclient.drawable.renderables.Rectangle
-import net.bewis09.bewisclient.drawable.renderables.Switch
-import net.bewis09.bewisclient.drawable.renderables.VerticalAlignScrollPlane
+import net.bewis09.bewisclient.drawable.renderables.*
+import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.interfaces.BackgroundEffectProvider
 import net.bewis09.bewisclient.screen.RenderableScreen

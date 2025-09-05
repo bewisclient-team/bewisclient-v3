@@ -9,10 +9,8 @@ import net.bewis09.bewisclient.widget.types.LineWidget
 import net.minecraft.util.Identifier
 
 object CPSWidget : LineWidget() {
-    val leftEnabled: BooleanSetting = create(
-        "left_enabled", BooleanSetting(true) { _, new -> if (new == false) rightEnabled.set(true) })
-    val rightEnabled: BooleanSetting = create(
-        "right_enabled", BooleanSetting(true) { _, new -> if (new == false) leftEnabled.set(true) })
+    val leftEnabled: BooleanSetting = boolean("left_enabled", true) { _, new -> if (new == false) rightEnabled.set(true) }
+    val rightEnabled: BooleanSetting = boolean("right_enabled", true) { _, new -> if (new == false) leftEnabled.set(true) }
 
     val cpsWidgetTranslation = Translation("widget.cps_widget.name", "CPS Widget")
     val cpsWidgetDescription = Translation(

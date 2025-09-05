@@ -21,15 +21,11 @@ import net.bewis09.bewisclient.settings.Settings
 import net.bewis09.bewisclient.settings.SettingsLoader
 import net.bewis09.bewisclient.widget.Widget
 import net.bewis09.bewisclient.widget.WidgetLoader
-import net.minecraft.entity.passive.AxolotlEntity
-import net.minecraft.entity.passive.CatEntity
-import net.minecraft.entity.passive.FrogEntity
-import net.minecraft.entity.passive.HorseEntity
-import net.minecraft.entity.passive.LlamaEntity
-import net.minecraft.entity.passive.RabbitEntity
+import net.minecraft.entity.passive.*
 import kotlin.jvm.optionals.getOrNull
 
-class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint {
+class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint() {
+
     override fun getEventEntrypoints(): List<EventEntrypoint> = listOf(
         WidgetLoader, SettingsLoader, KeybindingImplementer, TranslationLoader, BiomeWidget, SpeedWidget, TiwylaWidget
     )
@@ -42,7 +38,6 @@ class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint {
         OpenOptionScreen, Fullbright.ToggleNightVision, Fullbright.ToggleFullbright, Fullbright.IncreaseBrightness, Fullbright.DecreaseBrightness, Zoom.ZoomKeybind
     )
 
-
     override fun getWidgets(): List<Widget> = listOf(
         FPSWidget, BiomeWidget, DayWidget, CoordinatesWidget, DaytimeWidget, PingWidget, CPSWidget, KeyWidget, InventoryWidget, SpeedWidget, TiwylaWidget
     )
@@ -51,7 +46,6 @@ class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint {
         Fullbright, BlockHighlight, EntityHighlight, HeldItemTooltip, Zoom, PumpkinOverlay,
         // Crosshair,
         BetterVisibility, Scoreboard
-        // Cleaner Debug Menu,
         // Chat Enhancements,
     )
 

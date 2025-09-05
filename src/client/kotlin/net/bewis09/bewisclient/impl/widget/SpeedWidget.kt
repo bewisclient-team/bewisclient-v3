@@ -2,7 +2,6 @@ package net.bewis09.bewisclient.impl.widget
 
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.logic.EventEntrypoint
-import net.bewis09.bewisclient.settings.types.BooleanSetting
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
@@ -12,7 +11,7 @@ import net.minecraft.util.math.Vec3d
 import java.util.*
 
 object SpeedWidget : LineWidget(), EventEntrypoint {
-    val verticalSpeed = create("vertical_speed", BooleanSetting(false))
+    val verticalSpeed = boolean("vertical_speed", false)
 
     val speedWidgetTranslation = Translation("widget.speed_widget.name", "Speed Widget")
     val speedWidgetDescription = Translation(

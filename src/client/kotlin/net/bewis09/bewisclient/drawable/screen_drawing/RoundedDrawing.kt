@@ -2,13 +2,12 @@ package net.bewis09.bewisclient.drawable.screen_drawing
 
 import net.minecraft.client.MinecraftClient
 import net.minecraft.util.Identifier
-import kotlin.collections.set
 import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
-interface RoundedDrawing: RectDrawing, TextureDrawing {
+interface RoundedDrawing : RectDrawing, TextureDrawing {
     companion object {
         val roundFillCache = mutableMapOf<Pair<Int, Int>, Identifier>()
         val roundBorderCache = mutableMapOf<Pair<Int, Int>, Identifier>()

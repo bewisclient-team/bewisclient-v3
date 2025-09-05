@@ -3,7 +3,7 @@ package net.bewis09.bewisclient.drawable.screen_drawing
 import net.minecraft.client.gl.RenderPipelines
 import net.minecraft.util.Identifier
 
-interface TextureDrawing: ScreenDrawingInterface {
+interface TextureDrawing : ScreenDrawingInterface {
     fun drawTexture(texture: Identifier, x: Int, y: Int, width: Int, height: Int) {
         drawTexture(texture, x, y, 0f, 0f, width, height, width, height)
     }

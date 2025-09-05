@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
+import java.net.URL
 import javax.imageio.ImageIO
 
 interface DrawingLogic {
@@ -22,6 +23,14 @@ interface DrawingLogic {
 
         MinecraftClient.getInstance().textureManager.registerTexture(
             identifier, NativeImageBackedTexture({ identifier.toString() }, NativeImage.read(fis))
+        )
+
+        return identifier
+    }
+
+    fun createTexture(identifier: Identifier, fileURL: URL): Identifier {
+        MinecraftClient.getInstance().textureManager.registerTexture(
+            identifier, NativeImageBackedTexture({ identifier.toString() }, NativeImage.read(fileURL.openStream()))
         )
 
         return identifier

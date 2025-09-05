@@ -1,15 +1,16 @@
 package net.bewis09.bewisclient.impl.widget
 
 import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
+import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSettingsRenderable
+import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.bewis09.bewisclient.interfaces.KeyBindingAccessor
 import net.bewis09.bewisclient.logic.color.StaticColorSaver
+import net.bewis09.bewisclient.logic.staticFun
 import net.bewis09.bewisclient.screen.RenderableScreen
 import net.bewis09.bewisclient.settings.types.ColorSetting
-import net.bewis09.bewisclient.settings.types.IntegerSetting
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.ScalableWidget
@@ -28,31 +29,34 @@ object KeyWidget : ScalableWidget() {
     val borderOpacity = create("border_opacity", DefaultWidgetSettings.borderOpacity.cloneWithDefault())
     val textColor = create("text_color", DefaultWidgetSettings.textColor.cloneWithDefault())
 
-    val pressedBackgroundColor = create(
-        "pressed_background_color", ColorSetting(
-            StaticColorSaver(0xAAAAAA), ColorSetting.CHANGING, ColorSetting.STATIC
-        )
+    val pressedBackgroundColor = color(
+        "pressed_background_color",
+        StaticColorSaver(0xAAAAAA), ColorSetting.CHANGING, ColorSetting.STATIC
     )
     val pressedBackgroundOpacity = create(
         "pressed_background_opacity", DefaultWidgetSettings.backgroundOpacity.cloneWithDefault()
     )
-    val pressedBorderColor = create(
-        "pressed_border_color", ColorSetting(
-            StaticColorSaver(0xAAAAAA), ColorSetting.CHANGING, ColorSetting.STATIC
-        )
+    val pressedBorderColor = color(
+        "pressed_border_color",
+        StaticColorSaver(0xAAAAAA), ColorSetting.CHANGING, ColorSetting.STATIC
     )
     val pressedBorderOpacity = create(
         "pressed_border_opacity", DefaultWidgetSettings.borderOpacity.cloneWithDefault()
     )
-    val pressedTextColor = create(
-        "pressed_text_color", ColorSetting(
-            StaticColorSaver(0), ColorSetting.CHANGING, ColorSetting.STATIC
-        )
+    val pressedTextColor = color(
+        "pressed_text_color",
+        StaticColorSaver(0), ColorSetting.CHANGING, ColorSetting.STATIC
     )
 
-    val paddingSize = create("padding_size", IntegerSetting(5, 0, 10))
+    val paddingSize = int("padding_size", 5, 0, 10)
     val borderRadius = create("border_radius", DefaultWidgetSettings.borderRadius.cloneWithDefault())
-    val gap = create("gap", IntegerSetting(2, 0, 20))
+    val gap = int("gap", 2, 0, 20)
+
+    val showMovementKeys = boolean("show_movement_keys", true)
+    val showAttackUseKeys = boolean("show_attack_use_keys", true)
+    val showJumpKey = boolean("show_jump_key", true)
+
+    val showCPS = boolean("show_cps", false)
 
     val keyWidgetTranslation = Translation("widget.key_widget.name", "Key Widget")
     val keyWidgetDescription = Translation(
@@ -67,24 +71,23 @@ object KeyWidget : ScalableWidget() {
         val paddingSize = paddingSize.get()
 
         val topElementHeight = 9 + (paddingSize + 2) * 2
-        val topElementWidth = topElementHeight
 
         val bottomElementHeight = 9 + paddingSize * 2
 
-        val totalWidth = topElementWidth * 3 + gap.get() * 2
+        val totalWidth = topElementHeight * 3 + gap.get() * 2
         val middleElementWidth = (totalWidth - gap.get()) / 2
 
         renderKey(
-            screenDrawing, topElementWidth + gap.get(), 0, topElementWidth, topElementHeight, MinecraftClient.getInstance().options.forwardKey, true
+            screenDrawing, topElementHeight + gap.get(), 0, topElementHeight, topElementHeight, MinecraftClient.getInstance().options.forwardKey, true
         )
         renderKey(
-            screenDrawing, 0, topElementHeight + gap.get(), topElementWidth, topElementHeight, MinecraftClient.getInstance().options.leftKey
+            screenDrawing, 0, topElementHeight + gap.get(), topElementHeight, topElementHeight, MinecraftClient.getInstance().options.leftKey
         )
         renderKey(
-            screenDrawing, topElementWidth + gap.get(), topElementHeight + gap.get(), topElementWidth, topElementHeight, MinecraftClient.getInstance().options.backKey
+            screenDrawing, topElementHeight + gap.get(), topElementHeight + gap.get(), topElementHeight, topElementHeight, MinecraftClient.getInstance().options.backKey
         )
         renderKey(
-            screenDrawing, (topElementWidth + gap.get()) * 2, topElementHeight + gap.get(), topElementWidth, topElementHeight, MinecraftClient.getInstance().options.rightKey, true
+            screenDrawing, (topElementHeight + gap.get()) * 2, topElementHeight + gap.get(), topElementHeight, topElementHeight, MinecraftClient.getInstance().options.rightKey, true
         )
 
         renderKey(
@@ -174,6 +177,18 @@ object KeyWidget : ScalableWidget() {
     override fun getDescription(): Translation = keyWidgetDescription
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
+        list.add(
+            MultipleBooleanSettingsRenderable(Translation("widget.key_widget.keys", "Select which keys should be shown"), null, listOf(
+                showMovementKeys.createRenderablePart("widget.key_widget.show_movement_keys", "Movement Keys"),
+                showAttackUseKeys.createRenderablePart("widget.key_widget.show_attack_use_keys", "Attack/Use Keys"),
+                showJumpKey.createRenderablePart("widget.key_widget.show_jump_key", "Jump Key")
+            ).staticFun())
+        )
+
+        list.add(
+            showCPS.createRenderable("widget.key_widget.show_cps", "Show CPS", "Shows your clicks per second (CPS) for the attack/use keys")
+        )
+
         list.add(
             backgroundColor.createRenderableWithFader(
                 "widget.background", "Background", "Set the color and opacity of the widget", backgroundOpacity
