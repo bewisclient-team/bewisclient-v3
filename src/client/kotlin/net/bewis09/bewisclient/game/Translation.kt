@@ -17,17 +17,13 @@ class Translation(private val key: String, @Suppress("PropertyName") val en_us: 
     }
 
     fun getTranslatedText(vararg args: Any): MutableText {
-        if (key.isEmpty()) {
-            return Text.literal(en_us)
-        }
-        return Text.translatable("bewisclient.$key", *args)
+        return if (key.isEmpty()) Text.literal(en_us)
+        else Text.translatable("bewisclient.$key", *args)
     }
 
     fun getTranslatedString(): String {
-        if (key.isEmpty()) {
-            return en_us
-        }
-        return getTranslatedText().string
+        return if (key.isEmpty()) en_us
+        else getTranslatedText().string
     }
 
     fun getKey(): String {

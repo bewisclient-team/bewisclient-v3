@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.drawable.screen_drawing
 
-import net.minecraft.client.MinecraftClient
+import net.bewis09.bewisclient.drawable.screen_drawing.RoundedDrawing.Companion.roundBorderCache
 import net.minecraft.util.Identifier
 import kotlin.math.min
 import kotlin.math.pow
@@ -14,13 +14,11 @@ interface RoundedDrawing : RectDrawing, TextureDrawing {
     }
 
     fun getRoundedImage(radius: Int): Identifier {
-        val scale = MinecraftClient.getInstance().window.scaleFactor
+        val scale = client.window.scaleFactor
 
         val id = roundFillCache[radius to scale]
 
-        if (id != null) {
-            return id
-        }
+        if (id != null) return id
 
         val identifier = Identifier.of("bewisclient", "rounded_${radius}_$scale")
 
@@ -48,7 +46,7 @@ interface RoundedDrawing : RectDrawing, TextureDrawing {
     }
 
     fun getRoundedBorderImage(radius: Int): Identifier {
-        val scale = MinecraftClient.getInstance().window.scaleFactor
+        val scale = client.window.scaleFactor
 
         val id = roundBorderCache[radius to scale]
 
@@ -154,10 +152,10 @@ interface RoundedDrawing : RectDrawing, TextureDrawing {
         translate(centerX.toFloat(), centerY.toFloat())
         rotateDegrees(startAngle)
         scale(
-            1 / MinecraftClient.getInstance().window.scaleFactor.toFloat(), 1 / MinecraftClient.getInstance().window.scaleFactor.toFloat()
+            1 / client.window.scaleFactor.toFloat(), 1 / client.window.scaleFactor.toFloat()
         )
 
-        val r = radius * (MinecraftClient.getInstance().window.scaleFactor)
+        val r = radius * (client.window.scaleFactor)
 
         drawTexture(getRoundedImage(radius), 0, 0, 0f, 0f, r, r, r, r, color)
         pop()
@@ -170,10 +168,10 @@ interface RoundedDrawing : RectDrawing, TextureDrawing {
         translate(centerX.toFloat(), centerY.toFloat())
         rotateDegrees(startAngle)
         scale(
-            1 / MinecraftClient.getInstance().window.scaleFactor.toFloat(), 1 / MinecraftClient.getInstance().window.scaleFactor.toFloat()
+            1 / client.window.scaleFactor.toFloat(), 1 / client.window.scaleFactor.toFloat()
         )
 
-        val r = radius * (MinecraftClient.getInstance().window.scaleFactor)
+        val r = radius * (client.window.scaleFactor)
 
         drawTexture(getRoundedBorderImage(radius), 0, 0, 0f, 0f, r, r, r, r, color)
         pop()

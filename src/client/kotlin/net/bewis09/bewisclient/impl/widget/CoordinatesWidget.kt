@@ -8,7 +8,6 @@ import net.bewis09.bewisclient.impl.widget.BiomeWidget.getBiomeByMonth
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
-import net.minecraft.client.MinecraftClient
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 
@@ -29,9 +28,9 @@ object CoordinatesWidget : LineWidget() {
     override fun getDescription(): Translation = coordinatesWidgetDescription
 
     override fun getLines(): List<String> = listOf(
-        "X: ${MinecraftClient.getInstance().cameraEntity?.blockPos?.x ?: 0} ${getAdditionString(0)}",
-        "Y: ${MinecraftClient.getInstance().cameraEntity?.blockPos?.y ?: 0}",
-        "Z: ${MinecraftClient.getInstance().cameraEntity?.blockPos?.z ?: 0} ${getAdditionString(2)}",
+        "X: ${client.cameraEntity?.blockPos?.x ?: 0} ${getAdditionString(0)}",
+        "Y: ${client.cameraEntity?.blockPos?.y ?: 0}",
+        "Z: ${client.cameraEntity?.blockPos?.z ?: 0} ${getAdditionString(2)}",
         if (showBiome.get()) BiomeWidget.getText(colorCodeBiome.get())
         else null,
     ).filter { it != null }.map { it!! }
@@ -67,7 +66,7 @@ object CoordinatesWidget : LineWidget() {
         }
     }
 
-    fun getYawPart(): Int = (((MinecraftClient.getInstance().player!!.yaw / 45 - 112.5).toInt()) % 8).let {
+    fun getYawPart(): Int = (((client.player!!.yaw / 45 - 112.5).toInt()) % 8).let {
         if (it < 0) 8 + it else it
     }
 
@@ -104,7 +103,7 @@ object CoordinatesWidget : LineWidget() {
     override fun render(screenDrawing: ScreenDrawing) {
         super.render(screenDrawing)
         if (showDirection.get()) {
-            val direction = if (MinecraftClient.getInstance().player == null) "SW"
+            val direction = if (client.player == null) "SW"
             else when (getYawPart()) {
                 0 -> "S"
                 1 -> "SW"

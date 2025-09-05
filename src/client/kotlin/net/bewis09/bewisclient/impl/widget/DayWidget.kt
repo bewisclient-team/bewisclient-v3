@@ -17,7 +17,7 @@ object DayWidget : LineWidget() {
 
     override fun getLines(): List<String> = listOf(
         dayText(
-            net.minecraft.client.MinecraftClient.getInstance().world?.time?.div(24000L)?.toInt() ?: ((System.currentTimeMillis() - 1679875200000L) / 86400000L)
+            client.world?.time?.div(24000L)?.toInt() ?: ((System.currentTimeMillis() - 1679875200000L) / 86400000L)
         ).string
     )
 

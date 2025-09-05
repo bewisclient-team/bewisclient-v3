@@ -28,9 +28,7 @@ interface FileLogic {
     fun readRelativeFile(vararg path: String): String? {
         val file = File(FabricLoader.getInstance().gameDir.toString() + "/${path.joinToString("/")}")
 
-        if (!file.exists()) {
-            return null
-        }
+        if (!file.exists()) return null
 
         return file.readText()
     }

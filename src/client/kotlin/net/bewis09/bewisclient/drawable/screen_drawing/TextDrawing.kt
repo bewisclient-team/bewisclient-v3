@@ -1,19 +1,9 @@
 package net.bewis09.bewisclient.drawable.screen_drawing
 
-import net.minecraft.client.MinecraftClient
 import net.minecraft.text.MutableText
 import net.minecraft.text.Text
-import net.minecraft.util.math.ColorHelper
 
 interface TextDrawing : RectDrawing {
-    fun drawTextBackground(text: Text, x: Int, y: Int, @ArgbColor color: Number) {
-        val width = textRenderer.getWidth(text)
-        val i: Int = MinecraftClient.getInstance().options.getTextBackgroundColor(0.0f)
-        if (i != 0) {
-            this.fill(x - 2, y - 2, width + 4, 13, ColorHelper.mix(i, color.toInt()))
-        }
-    }
-
     fun drawText(text: String, x: Int, y: Int, @ArgbColor color: Number) {
         drawContext.drawText(textRenderer, Text.literal(text).fillStyle(style), x, y, applyAlpha(color), false)
     }

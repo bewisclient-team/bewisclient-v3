@@ -5,7 +5,6 @@ import net.bewis09.bewisclient.logic.EventEntrypoint
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
-import net.minecraft.client.MinecraftClient
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.Vec3d
 import java.util.*
@@ -41,7 +40,7 @@ object SpeedWidget : LineWidget(), EventEntrypoint {
         Timer().scheduleAtFixedRate(
             object : TimerTask() {
                 override fun run() {
-                    MinecraftClient.getInstance().player?.pos?.let {
+                    client.player?.pos?.let {
                         speed = if (verticalSpeed.get()) {
                             it.distanceTo(oldPos) * 20
                         } else {

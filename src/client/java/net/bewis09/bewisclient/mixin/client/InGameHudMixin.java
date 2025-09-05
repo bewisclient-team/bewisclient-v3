@@ -17,8 +17,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(InGameHud.class)
-abstract
-class InGameHudMixin {
+abstract class InGameHudMixin {
     @Shadow
     public abstract TextRenderer getTextRenderer();
 

@@ -4,7 +4,6 @@ import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.animate
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
-import net.minecraft.client.MinecraftClient
 
 open class TooltipHoverable(val tooltip: () -> Translation?) : Hoverable() {
     constructor(tooltip: Translation? = null) : this({ tooltip })
@@ -44,7 +43,7 @@ open class TooltipHoverable(val tooltip: () -> Translation?) : Hoverable() {
 
                 val width = wrappedText.maxOfOrNull { screenDrawing.getTextWidth(it) }?.plus(10) ?: 210
 
-                if (mouseX + width > MinecraftClient.getInstance().window.scaledWidth) {
+                if (mouseX + width > client.window.scaledWidth) {
                     screenDrawing.translate(-width.toFloat(), 0f)
                 }
 

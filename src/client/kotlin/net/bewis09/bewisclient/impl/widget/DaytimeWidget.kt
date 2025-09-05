@@ -5,7 +5,6 @@ import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
-import net.minecraft.client.MinecraftClient
 import net.minecraft.util.Identifier
 import java.text.DateFormat
 import java.util.*
@@ -22,7 +21,7 @@ object DaytimeWidget : LineWidget() {
     override fun getDescription(): Translation = daytimeWidgetDescription
 
     override fun getLines(): List<String> {
-        val daytime = MinecraftClient.getInstance().world?.timeOfDay ?: 15684L
+        val daytime = client.world?.timeOfDay ?: 15684L
         val hours = (daytime / 1000L + 6) % 24
         val minutes = ((daytime % 1000L) / 1000f * 60L).toInt()
 

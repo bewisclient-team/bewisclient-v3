@@ -16,7 +16,6 @@ import net.bewis09.bewisclient.widget.WidgetLoader.widgets
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.types.ScalableWidget
-import net.minecraft.client.MinecraftClient
 import net.minecraft.client.util.InputUtil
 import net.minecraft.util.Identifier
 import org.lwjgl.glfw.GLFW
@@ -51,7 +50,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
                 }
 
                 if (button == 1) {
-                    getClient().setScreen(RenderableScreen(OptionScreen().also { a ->
+                    client.setScreen(RenderableScreen(OptionScreen().also { a ->
                         val widgetsCategory = SettingStructure(a).widgets.first { b -> b.enableSetting == it.enabled }
                         a.optionsHeader = widgetsCategory.getHeader()
                         a.optionsPane = widgetsCategory.getPane()
@@ -74,7 +73,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int, popupShown: Boolean) {
         widgets.forEach {
             if (it.isEnabled()) {
-                it.renderScaled(ScreenDrawing(screenDrawing.drawContext, MinecraftClient.getInstance().textRenderer))
+                it.renderScaled(ScreenDrawing(screenDrawing.drawContext, client.textRenderer))
 
                 hoverSeparate(mouseX.toFloat(), mouseY.toFloat(), (it.getX() + it.getScaledWidth() - 8).toInt(), (it.getY()).toInt(), 8, 8, {
                     screenDrawing.pushColor(1f, 1f, 1f, 1f)
@@ -112,7 +111,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
                 var drawX = mouseX
                 var drawY = mouseY - tooltipHeight
 
-                if (drawX + width > MinecraftClient.getInstance().window.scaledWidth) {
+                if (drawX + width > client.window.scaledWidth) {
                     drawX -= width
                 }
                 if (drawY < 0) {
@@ -132,7 +131,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
             openPopup(AddWidgetPopup(this), 0xA0000000.toInt())
         }.setImagePadding(0)(getWidth() - 16, getHeight() - 16, 14, 14))
         addRenderable(ImageButton(Identifier.of("bewisclient", "textures/gui/sprites/settings.png")) {
-            getClient().setScreen(RenderableScreen(OptionScreen().also {
+            client.setScreen(RenderableScreen(OptionScreen().also {
                 val widgetsCategory = SettingStructure(it).widgetsCategory
                 it.optionsHeader = widgetsCategory.getHeader()
                 it.optionsPane = widgetsCategory.renderable
@@ -212,7 +211,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
         var xTransform = if (right) SidedPosition.TransformerType.END else SidedPosition.TransformerType.START
         val yTransform = if (end) SidedPosition.TransformerType.END else SidedPosition.TransformerType.START
 
-        if (!InputUtil.isKeyPressed(MinecraftClient.getInstance().window, GLFW.GLFW_MOD_SHIFT)) {
+        if (!InputUtil.isKeyPressed(client.window, GLFW.GLFW_MOD_SHIFT)) {
             if (abs(x - DefaultWidgetSettings.screenEdgeDistance.get()) < 10) {
                 x = DefaultWidgetSettings.screenEdgeDistance.get().toDouble()
             }
@@ -259,7 +258,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
 
     override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {
         if (key == GLFW.GLFW_KEY_ESCAPE) {
-            getClient().setScreen(RenderableScreen(OptionScreen()))
+            client.setScreen(RenderableScreen(OptionScreen()))
             return true
         }
         return super.onKeyPress(key, scanCode, modifiers)

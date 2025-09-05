@@ -12,10 +12,9 @@ import net.minecraft.util.Identifier
 
 class MultipleBooleanSettingsRenderable(
     val title: Translation, tooltip: Translation? = null, val settings: () -> List<Part<*>>
-) : TooltipHoverable(tooltip) {
+) : SettingRenderable(tooltip) {
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
-        screenDrawing.fillRounded(getX(), getY(), getWidth(), getHeight(), 5, 0xFFFFFF, hoverAnimation["hovering"] * 0.1f + 0.05f)
         screenDrawing.push()
         screenDrawing.drawCenteredText(title.getTranslatedString(), getX() + getWidth() / 2, getY() + 6, 0xFFFFFF, 1.0F)
         screenDrawing.pop()

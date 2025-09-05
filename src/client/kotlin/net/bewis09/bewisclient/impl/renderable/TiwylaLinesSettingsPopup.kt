@@ -11,10 +11,7 @@ import net.bewis09.bewisclient.impl.widget.TiwylaWidget
 import net.bewis09.bewisclient.settings.types.ListSetting
 
 class TiwylaLinesSettingsPopup<T>(
-    val setting: ListSetting<TiwylaWidget.Information<T>>,
-    val options: List<TiwylaWidget.Information.Line<T>>,
-    val yIndex: Int,
-    val left: Boolean
+    val setting: ListSetting<TiwylaWidget.Information<T>>, val options: List<TiwylaWidget.Information.Line<T>>, val yIndex: Int, val left: Boolean
 ) : Renderable() {
     companion object {
         val selectText = Translation("popup.tiwyla_lines_settings.title", "Select Information")
@@ -45,8 +42,7 @@ class TiwylaLinesSettingsPopup<T>(
                     if (yIndex < setting.size) {
                         val arr = arrayOf(setting[yIndex].first, setting[yIndex].second).filterNotNull().sortedBy { a -> a.priority }
                         setting[yIndex] = TiwylaWidget.Information(
-                            if (left) null else arr.getOrNull(0),
-                            if (left) arr.getOrNull(1) else null
+                            if (left) null else arr.getOrNull(0), if (left) arr.getOrNull(1) else null
                         )
                     }
 
@@ -60,8 +56,7 @@ class TiwylaLinesSettingsPopup<T>(
                             } else {
                                 val arr = arrayOf(setting[yIndex].first, setting[yIndex].second).filterNotNull().sortedBy { a -> a.priority }
                                 setting[yIndex] = TiwylaWidget.Information(
-                                    if (left) option else arr.getOrNull(0),
-                                    if (left) arr.getOrNull(1) else option
+                                    if (left) option else arr.getOrNull(0), if (left) arr.getOrNull(1) else option
                                 )
                             }
 

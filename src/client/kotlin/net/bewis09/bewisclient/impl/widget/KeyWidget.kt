@@ -14,7 +14,6 @@ import net.bewis09.bewisclient.settings.types.ColorSetting
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.ScalableWidget
-import net.minecraft.client.MinecraftClient
 import net.minecraft.client.option.KeyBinding
 import net.minecraft.client.util.InputUtil
 import net.minecraft.util.Identifier
@@ -30,22 +29,19 @@ object KeyWidget : ScalableWidget() {
     val textColor = create("text_color", DefaultWidgetSettings.textColor.cloneWithDefault())
 
     val pressedBackgroundColor = color(
-        "pressed_background_color",
-        StaticColorSaver(0xAAAAAA), ColorSetting.CHANGING, ColorSetting.STATIC
+        "pressed_background_color", StaticColorSaver(0xAAAAAA), ColorSetting.CHANGING, ColorSetting.STATIC
     )
     val pressedBackgroundOpacity = create(
         "pressed_background_opacity", DefaultWidgetSettings.backgroundOpacity.cloneWithDefault()
     )
     val pressedBorderColor = color(
-        "pressed_border_color",
-        StaticColorSaver(0xAAAAAA), ColorSetting.CHANGING, ColorSetting.STATIC
+        "pressed_border_color", StaticColorSaver(0xAAAAAA), ColorSetting.CHANGING, ColorSetting.STATIC
     )
     val pressedBorderOpacity = create(
         "pressed_border_opacity", DefaultWidgetSettings.borderOpacity.cloneWithDefault()
     )
     val pressedTextColor = color(
-        "pressed_text_color",
-        StaticColorSaver(0), ColorSetting.CHANGING, ColorSetting.STATIC
+        "pressed_text_color", StaticColorSaver(0), ColorSetting.CHANGING, ColorSetting.STATIC
     )
 
     val paddingSize = int("padding_size", 5, 0, 10)
@@ -70,40 +66,46 @@ object KeyWidget : ScalableWidget() {
     override fun render(screenDrawing: ScreenDrawing) {
         val paddingSize = paddingSize.get()
 
-        val topElementHeight = 9 + (paddingSize + 2) * 2
+        val topSize = 9 + (paddingSize + 2) * 2
 
-        val bottomElementHeight = 9 + paddingSize * 2
+        val bottomHeight = 9 + paddingSize * 2
 
-        val totalWidth = topElementHeight * 3 + gap.get() * 2
-        val middleElementWidth = (totalWidth - gap.get()) / 2
+        val totalWidth = topSize * 3 + gap.get() * 2
+        val middleWidth = (totalWidth - gap.get()) / 2
 
-        renderKey(
-            screenDrawing, topElementHeight + gap.get(), 0, topElementHeight, topElementHeight, MinecraftClient.getInstance().options.forwardKey, true
-        )
-        renderKey(
-            screenDrawing, 0, topElementHeight + gap.get(), topElementHeight, topElementHeight, MinecraftClient.getInstance().options.leftKey
-        )
-        renderKey(
-            screenDrawing, topElementHeight + gap.get(), topElementHeight + gap.get(), topElementHeight, topElementHeight, MinecraftClient.getInstance().options.backKey
-        )
-        renderKey(
-            screenDrawing, (topElementHeight + gap.get()) * 2, topElementHeight + gap.get(), topElementHeight, topElementHeight, MinecraftClient.getInstance().options.rightKey, true
-        )
+        var y = 0
 
         renderKey(
-            screenDrawing, 0, (topElementHeight + gap.get()) * 2, middleElementWidth, bottomElementHeight, MinecraftClient.getInstance().options.attackKey, true
+            screenDrawing, topSize + gap.get(), y, topSize, topSize, client.options.forwardKey
         )
         renderKey(
-            screenDrawing, totalWidth - middleElementWidth, (topElementHeight + gap.get()) * 2, middleElementWidth, bottomElementHeight, MinecraftClient.getInstance().options.useKey
+            screenDrawing, 0, y + topSize + gap.get(), topSize, topSize, client.options.leftKey
+        )
+        renderKey(
+            screenDrawing, topSize + gap.get(), y + topSize + gap.get(), topSize, topSize, client.options.backKey
+        )
+        renderKey(
+            screenDrawing, (topSize + gap.get()) * 2, y + topSize + gap.get(), topSize, topSize, client.options.rightKey
         )
 
+        y += (topSize + gap.get()) * 2
+
         renderKey(
-            screenDrawing, 0, topElementHeight * 2 + gap.get() * 3 + bottomElementHeight, totalWidth, bottomElementHeight, MinecraftClient.getInstance().options.jumpKey, true
+            screenDrawing, 0, y, middleWidth, bottomHeight, client.options.attackKey
+        )
+        renderKey(
+            screenDrawing, totalWidth - middleWidth, y, middleWidth, bottomHeight, client.options.useKey
+        )
+
+        y += bottomHeight + gap.get()
+
+        renderKey(
+            screenDrawing, 0, y, totalWidth, bottomHeight, client.options.jumpKey
         )
     }
 
     fun renderKey(
-        screenDrawing: ScreenDrawing, x: Int, y: Int, width: Int, height: Int, keyBinding: KeyBinding, outOfWorldEnabled: Boolean = false
+        screenDrawing: ScreenDrawing, x: Int, y: Int, width: Int, height: Int, keyBinding: KeyBinding
     ) {
         renderKey(
             screenDrawing, x, y, width, height, keyBinding.getKeyText(), isPressed(keyBinding)
@@ -111,13 +113,13 @@ object KeyWidget : ScalableWidget() {
     }
 
     fun isPressed(keyBinding: KeyBinding): Boolean {
-        val c = MinecraftClient.getInstance().currentScreen as? RenderableScreen ?: return keyBinding.isPressed
+        val c = client.currentScreen as? RenderableScreen ?: return keyBinding.isPressed
         val d = c.renderable as? HudEditScreen ?: return keyBinding.isPressed
 
         val key = (keyBinding as KeyBindingAccessor).getBoundKey()
 
         if (key.category == InputUtil.Type.KEYSYM) return InputUtil.isKeyPressed(
-            MinecraftClient.getInstance().window, key.code
+            client.window, key.code
         )
         if (key.category == InputUtil.Type.MOUSE) return d.mouseMap[key.code] == true
         return keyBinding.isPressed
@@ -178,11 +180,11 @@ object KeyWidget : ScalableWidget() {
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
         list.add(
-            MultipleBooleanSettingsRenderable(Translation("widget.key_widget.keys", "Select which keys should be shown"), null, listOf(
-                showMovementKeys.createRenderablePart("widget.key_widget.show_movement_keys", "Movement Keys"),
-                showAttackUseKeys.createRenderablePart("widget.key_widget.show_attack_use_keys", "Attack/Use Keys"),
-                showJumpKey.createRenderablePart("widget.key_widget.show_jump_key", "Jump Key")
-            ).staticFun())
+            MultipleBooleanSettingsRenderable(
+                Translation("widget.key_widget.keys", "Select which keys should be shown"), null, listOf(
+                    showMovementKeys.createRenderablePart("widget.key_widget.show_movement_keys", "Movement Keys"), showAttackUseKeys.createRenderablePart("widget.key_widget.show_attack_use_keys", "Attack/Use Keys"), showJumpKey.createRenderablePart("widget.key_widget.show_jump_key", "Jump Key")
+                ).staticFun()
+            )
         )
 
         list.add(

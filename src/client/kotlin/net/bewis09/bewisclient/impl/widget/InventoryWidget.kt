@@ -5,7 +5,6 @@ import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.ScalableWidget
-import net.minecraft.client.MinecraftClient
 import net.minecraft.component.ComponentMap
 import net.minecraft.component.DataComponentTypes
 import net.minecraft.item.ItemStack
@@ -62,7 +61,7 @@ object InventoryWidget : ScalableWidget() {
 
         for (y in 0 until 3) {
             for (x in 0 until 9) {
-                val itemStack: ItemStack = MinecraftClient.getInstance().player?.inventory?.getStack(x + y * 9 + 9) ?: MinecraftClient.getInstance().world?.let { ItemStack.EMPTY } ?: getSampleStack(x, y)
+                val itemStack: ItemStack = client.player?.inventory?.getStack(x + y * 9 + 9) ?: client.world?.let { ItemStack.EMPTY } ?: getSampleStack(x, y)
                 drawSlot(screenDrawing, x * 20 + 2, y * 20 + 2, itemStack)
             }
         }

@@ -6,7 +6,6 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.logic.EventEntrypoint
 import net.bewis09.bewisclient.screen.RenderableScreen
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry
-import net.minecraft.client.MinecraftClient
 
 /**
  * The entrypoint for the Bewisclient widget events.
@@ -24,7 +23,7 @@ object WidgetLoader : EventEntrypoint {
             HudElementRegistry.addLast(
                 it.getId()
             ) { context, tickCounter ->
-                if (it.isShowing() && (MinecraftClient.getInstance().currentScreen as? RenderableScreen)?.renderable !is HudEditScreen) it.renderScaled(ScreenDrawing(context, MinecraftClient.getInstance().textRenderer))
+                if (it.isShowing() && (client.currentScreen as? RenderableScreen)?.renderable !is HudEditScreen) it.renderScaled(ScreenDrawing(context, client.textRenderer))
             }
         }
     }

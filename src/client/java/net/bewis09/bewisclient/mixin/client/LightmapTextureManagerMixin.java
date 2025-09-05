@@ -7,8 +7,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(LightmapTextureManager.class)
-abstract
-class LightmapTextureManagerMixin {
+abstract class LightmapTextureManagerMixin {
     @Redirect(method = "update", at = @At(value = "INVOKE", target = "Ljava/lang/Double;floatValue()F", ordinal = 1))
     private float invokeGamma(Double instance) {
         if (!FullbrightSettings.INSTANCE.getEnabled().get()) {

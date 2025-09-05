@@ -10,7 +10,7 @@ open class MapSetting<T>(val from: (JsonElement) -> T, val to: (T) -> JsonElemen
     override fun convertToElement(): JsonElement {
         return get().let { map ->
             JsonObject().also {
-                map.forEach { key, value ->
+                map.forEach { (key, value) ->
                     it.add(key, to(value))
                 }
             }

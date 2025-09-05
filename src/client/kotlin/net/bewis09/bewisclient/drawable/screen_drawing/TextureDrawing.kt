@@ -12,7 +12,7 @@ interface TextureDrawing : ScreenDrawingInterface {
         texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, textureWidth: Int, textureHeight: Int
     ) {
         drawTexture(
-            texture, x, y, u, v, width, height, textureWidth, textureHeight, 0xFFFFFFFF.toInt()
+            texture, x, y, u, v, width, height, textureWidth, textureHeight, -1
         )
     }
 

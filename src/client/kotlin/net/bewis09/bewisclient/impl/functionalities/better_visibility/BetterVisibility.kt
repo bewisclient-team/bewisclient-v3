@@ -21,13 +21,12 @@ object BetterVisibility : ImageSettingCategory(
 ) {
     class FogModifierConfig(val setting: BooleanSetting, val clazz: Class<out FogModifier>, val start: (Float) -> Float, val end: (Float) -> Float)
 
-    val fogModifiers =
-        listOf(
-            FogModifierConfig(BetterVisibilitySettings.nether, DimensionOrBossFogModifier::class.java, { it * 2 - MathHelper.clamp(it / 10.0f, 4.0f, 64.0f) }, { it * 2 }),
-            FogModifierConfig(BetterVisibilitySettings.water, WaterFogModifier::class.java, { -8f }, { it }),
-            FogModifierConfig(BetterVisibilitySettings.lava, LavaFogModifier::class.java, { -8f }, { 16f }),
-            FogModifierConfig(BetterVisibilitySettings.powder_snow, PowderSnowFogModifier::class.java, { -8f }, { 8f })
-        )
+    val fogModifiers = listOf(
+        FogModifierConfig(BetterVisibilitySettings.nether, DimensionOrBossFogModifier::class.java, { it * 2 - MathHelper.clamp(it / 10.0f, 4.0f, 64.0f) }, { it * 2 }),
+        FogModifierConfig(BetterVisibilitySettings.water, WaterFogModifier::class.java, { -8f }, { it }),
+        FogModifierConfig(BetterVisibilitySettings.lava, LavaFogModifier::class.java, { -8f }, { 16f }),
+        FogModifierConfig(BetterVisibilitySettings.powder_snow, PowderSnowFogModifier::class.java, { -8f }, { 8f })
+    )
 
     fun applyFogModifier(instance: FogModifier, fogData: FogData, entity: Entity, blockPos: BlockPos, clientWorld: ClientWorld, viewDistance: Float, renderTickCounter: RenderTickCounter) {
         instance.applyStartEndModifier(fogData, entity, blockPos, clientWorld, viewDistance, renderTickCounter)

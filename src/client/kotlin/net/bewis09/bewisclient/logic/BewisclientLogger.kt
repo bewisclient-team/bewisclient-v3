@@ -6,9 +6,9 @@ import org.slf4j.Logger
  * Interface for logging in the Bewisclient.
  */
 interface BewisclientLogger {
-    fun getLogger(): Logger
+    val logger: Logger
 
-    fun info(vararg msg: Any?) = getLogger().info(msg.joinToString(" ") { it.toString() })
-    fun warn(vararg msg: Any?) = getLogger().warn(msg.joinToString(" ") { it.toString() })
-    fun error(vararg msg: Any?) = getLogger().error(msg.joinToString(" ") { it.toString() })
+    fun info(vararg msg: Any?) = logger.info(msg.joinToString(" ") { it.toString() })
+    fun warn(vararg msg: Any?) = logger.warn(msg.joinToString(" ") { it.toString() })
+    fun error(vararg msg: Any?) = logger.error(msg.joinToString(" ") { it.toString() })
 }

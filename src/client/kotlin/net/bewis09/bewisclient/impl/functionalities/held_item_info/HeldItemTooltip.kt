@@ -7,7 +7,6 @@ import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.functionalities.HeldItemTooltipSettings
 import net.bewis09.bewisclient.interfaces.Gettable
 import net.bewis09.bewisclient.interfaces.Settable
-import net.minecraft.client.MinecraftClient
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.component.ComponentType
@@ -100,7 +99,7 @@ object HeldItemTooltip : ImageSettingCategory(
                 }
             }
 
-            currentStack.appendTooltip(Item.TooltipContext.create(MinecraftClient.getInstance().world), TooltipDisplayComponent.DEFAULT, MinecraftClient.getInstance().player, TooltipType.BASIC) {
+            currentStack.appendTooltip(Item.TooltipContext.create(client.world), TooltipDisplayComponent.DEFAULT, client.player, TooltipType.BASIC) {
                 texts.add(it.copy())
             }
 
@@ -122,7 +121,7 @@ object HeldItemTooltip : ImageSettingCategory(
             }
 
             var y: Int = drawContext.scaledWindowHeight - 59
-            if (MinecraftClient.getInstance().interactionManager?.hasStatusBars() == false) {
+            if (client.interactionManager?.hasStatusBars() == false) {
                 y += 14
             }
 

@@ -10,7 +10,6 @@ import net.bewis09.bewisclient.logic.catch
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
-import net.minecraft.client.MinecraftClient
 import net.minecraft.registry.RegistryKey
 import net.minecraft.registry.entry.RegistryEntry
 import net.minecraft.text.Text
@@ -34,7 +33,7 @@ object BiomeWidget : LineWidget(), EventEntrypoint {
     override fun getDescription(): Translation = biomeWidgetDescription
 
     override fun onMinecraftClientInitFinished() {
-        val resources = MinecraftClient.getInstance().resourceManager.findAllResources(
+        val resources = client.resourceManager.findAllResources(
             "bewisclient/biome_codes"
         ) { it.path.endsWith(".json") }
 
@@ -82,8 +81,8 @@ object BiomeWidget : LineWidget(), EventEntrypoint {
 
     fun getText(colorCoded: Boolean): String {
         val biome = Identifier.of(
-            (MinecraftClient.getInstance().world?.getBiome(
-                MinecraftClient.getInstance().cameraEntity?.blockPos ?: BlockPos(0, 0, 0)
+            (client.world?.getBiome(
+                client.cameraEntity?.blockPos ?: BlockPos(0, 0, 0)
             ))?.let { getBiomeString(it) })
 
         return (if (colorCoded) biomeCodes[biome] else "") + Text.translatable(biome.toTranslationKey("biome")).string

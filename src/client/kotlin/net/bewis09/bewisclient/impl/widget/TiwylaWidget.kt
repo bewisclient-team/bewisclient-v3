@@ -20,7 +20,6 @@ import net.bewis09.bewisclient.widget.types.ScalableWidget
 import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.Blocks
-import net.minecraft.client.MinecraftClient
 import net.minecraft.entity.Entity
 import net.minecraft.registry.Registries
 import net.minecraft.registry.tag.BlockTags
@@ -56,22 +55,20 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
         create(
             "entity_lines", ListSetting<Information<Entity>>(
                 listOf(
-                    loadEntityInformation("health"),
-                    loadEntityInformation("entity_id", "special_entity_info")
-                ), {
-                    val arr = catch { it.asJsonArray } ?: return@ListSetting null
-                    val strings = arr.mapNotNull { a -> catch { a.asString } }
+                loadEntityInformation("health"), loadEntityInformation("entity_id", "special_entity_info")
+            ), {
+                val arr = catch { it.asJsonArray } ?: return@ListSetting null
+                val strings = arr.mapNotNull { a -> catch { a.asString } }
 
-                    if (strings.isEmpty()) return@ListSetting null
+                if (strings.isEmpty()) return@ListSetting null
 
-                    loadEntityInformation(strings[0], strings.getOrNull(1))
-                }, {
-                    JsonArray().also { list ->
-                        it.first?.let { s -> list.add(s.id) }
-                        it.second?.let { s -> list.add(s.id) }
-                    }.let { l -> if (l.isEmpty) null else l }
-                }
-            )
+                loadEntityInformation(strings[0], strings.getOrNull(1))
+            }, {
+                JsonArray().also { list ->
+                    it.first?.let { s -> list.add(s.id) }
+                    it.second?.let { s -> list.add(s.id) }
+                }.let { l -> if (l.isEmpty) null else l }
+            })
         )
     }
 
@@ -79,23 +76,20 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
         create(
             "block_lines", ListSetting(
                 listOf(
-                    loadBlockInformation("tool"),
-                    loadBlockInformation("mining_level", "block_property"),
-                    loadBlockInformation("break_time", "progress")
-                ), {
-                    val arr = catch { it.asJsonArray } ?: return@ListSetting null
-                    val strings = arr.mapNotNull { a -> catch { a.asString } }
+                loadBlockInformation("tool"), loadBlockInformation("mining_level", "block_property"), loadBlockInformation("break_time", "progress")
+            ), {
+                val arr = catch { it.asJsonArray } ?: return@ListSetting null
+                val strings = arr.mapNotNull { a -> catch { a.asString } }
 
-                    if (strings.isEmpty()) return@ListSetting null
+                if (strings.isEmpty()) return@ListSetting null
 
-                    loadBlockInformation(strings[0], strings.getOrNull(1))
-                }, {
-                    JsonArray().also { list ->
-                        it.first?.let { s -> list.add(s.id) }
-                        it.second?.let { s -> list.add(s.id) }
-                    }.let { l -> if (l.isEmpty) null else l }
-                }
-            )
+                loadBlockInformation(strings[0], strings.getOrNull(1))
+            }, {
+                JsonArray().also { list ->
+                    it.first?.let { s -> list.add(s.id) }
+                    it.second?.let { s -> list.add(s.id) }
+                }.let { l -> if (l.isEmpty) null else l }
+            })
         )
     }
 
@@ -177,7 +171,7 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
     override fun isHidden(): Boolean = getTitle() == null
 
     fun getTitle(): String? {
-        if (MinecraftClient.getInstance().world == null) return Blocks.GRASS_BLOCK.name.string
+        if (client.world == null) return Blocks.GRASS_BLOCK.name.string
 
         return onHitResult({ data ->
             data.state.block.name.string
@@ -187,9 +181,9 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
     }
 
     fun <T> onHitResult(block: (hitResult: BlockData) -> T, entity: (hitResult: Entity) -> T): T? {
-        val world = MinecraftClient.getInstance().world ?: return null
+        val world = client.world ?: return null
 
-        return when (val hitResult = MinecraftClient.getInstance().crosshairTarget) {
+        return when (val hitResult = client.crosshairTarget) {
             is BlockHitResult -> if (world.getBlockState(hitResult.blockPos).isAir) null else block(BlockData(world.getBlockState(hitResult.blockPos), hitResult.blockPos))
             is EntityHitResult -> entity(hitResult.entity)
             else -> null
@@ -197,7 +191,7 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
     }
 
     fun getSublines(): List<Text> {
-        if (MinecraftClient.getInstance().world == null) return getBlockSublines(BlockData(Blocks.GRASS_BLOCK.defaultState, BlockPos.ORIGIN))
+        if (client.world == null) return getBlockSublines(BlockData(Blocks.GRASS_BLOCK.defaultState, BlockPos.ORIGIN))
 
         return onHitResult(::getBlockSublines, ::getEntitySublines) ?: listOf()
     }
@@ -265,22 +259,15 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
     }
 
     fun loadBlockInformation(first: String, second: String? = null): Information<BlockData> {
-        return Information(
-            first = blockInformation.firstOrNull { it.id == first },
-            second = blockInformation.firstOrNull { it.id == second }
-        )
+        return Information(first = blockInformation.firstOrNull { it.id == first }, second = blockInformation.firstOrNull { it.id == second })
     }
 
     fun loadEntityInformation(first: String, second: String? = null): Information<Entity> {
-        return Information(
-            first = entityInformation.firstOrNull { it.id == first },
-            second = entityInformation.firstOrNull { it.id == second }
-        )
+        return Information(first = entityInformation.firstOrNull { it.id == first }, second = entityInformation.firstOrNull { it.id == second })
     }
 
     data class Information<T>(
-        val first: Line<T>?,
-        val second: Line<T>?
+        val first: Line<T>?, val second: Line<T>?
     ) {
         data class Line<T>(val fn: (data: T) -> Text?, val id: String, val priority: Int) {
             val translation = Translation("widget.tiwyla_widget.information.$id", `snake_toWord With Spaces`(id))
@@ -293,64 +280,56 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
 
     val blockInformation = listOf<Information.Line<BlockData>>(
         Information.Line({ data ->
-            if (data.state.isIn(BlockTags.AXE_MINEABLE)) return@Line toolText(axeToolText.getTranslatedString())
-            if (data.state.isIn(BlockTags.PICKAXE_MINEABLE)) return@Line toolText(pickaxeToolText.getTranslatedString())
-            if (data.state.isIn(BlockTags.HOE_MINEABLE)) return@Line toolText(hoeToolText.getTranslatedString())
-            if (data.state.isIn(BlockTags.SHOVEL_MINEABLE)) return@Line toolText(shovelToolText.getTranslatedString())
-            if (data.state.isIn(BlockTags.SWORD_EFFICIENT)) return@Line toolText(swordToolText.getTranslatedString())
-            return@Line toolText(noneToolText.getTranslatedString())
-        }, "tool", 0),
-        Information.Line({ data ->
-            if (data.state.isIn(BlockTags.NEEDS_DIAMOND_TOOL)) return@Line miningLevel(diamondLevelText.getTranslatedString())
-            if (data.state.isIn(BlockTags.NEEDS_IRON_TOOL)) return@Line miningLevel(ironLevelText.getTranslatedString())
-            if (data.state.isIn(BlockTags.NEEDS_STONE_TOOL)) return@Line miningLevel(stoneLevelText.getTranslatedString())
+        if (data.state.isIn(BlockTags.AXE_MINEABLE)) return@Line toolText(axeToolText.getTranslatedString())
+        if (data.state.isIn(BlockTags.PICKAXE_MINEABLE)) return@Line toolText(pickaxeToolText.getTranslatedString())
+        if (data.state.isIn(BlockTags.HOE_MINEABLE)) return@Line toolText(hoeToolText.getTranslatedString())
+        if (data.state.isIn(BlockTags.SHOVEL_MINEABLE)) return@Line toolText(shovelToolText.getTranslatedString())
+        if (data.state.isIn(BlockTags.SWORD_EFFICIENT)) return@Line toolText(swordToolText.getTranslatedString())
+        return@Line toolText(noneToolText.getTranslatedString())
+    }, "tool", 0), Information.Line({ data ->
+        if (data.state.isIn(BlockTags.NEEDS_DIAMOND_TOOL)) return@Line miningLevel(diamondLevelText.getTranslatedString())
+        if (data.state.isIn(BlockTags.NEEDS_IRON_TOOL)) return@Line miningLevel(ironLevelText.getTranslatedString())
+        if (data.state.isIn(BlockTags.NEEDS_STONE_TOOL)) return@Line miningLevel(stoneLevelText.getTranslatedString())
 
-            if (data.state.isToolRequired) return@Line miningLevel(woodLevelText.getTranslatedString())
-            return@Line miningLevel(noneLevelText.getTranslatedString())
-        }, "mining_level", 0),
-        Information.Line({ data ->
-            if (MinecraftClient.getInstance().world == null) return@Line secondsText(4.5)
+        if (data.state.isToolRequired) return@Line miningLevel(woodLevelText.getTranslatedString())
+        return@Line miningLevel(noneLevelText.getTranslatedString())
+    }, "mining_level", 0), Information.Line({ data ->
+        if (client.world == null) return@Line secondsText(4.5)
 
-            val player = MinecraftClient.getInstance().player ?: return@Line null
+        val player = client.player ?: return@Line null
 
-            if (data.state.calcBlockBreakingDelta(player, MinecraftClient.getInstance().world, data.blockPos) > 1) return@Line instantText()
+        if (data.state.calcBlockBreakingDelta(player, client.world, data.blockPos) > 1) return@Line instantText()
 
-            val secs = (1f / data.state.calcBlockBreakingDelta(player, MinecraftClient.getInstance().world, data.blockPos) * 5F).roundToInt() / 100F
+        val secs = (1f / data.state.calcBlockBreakingDelta(player, client.world, data.blockPos) * 5F).roundToInt() / 100F
 
-            if (secs > (3600 * 24)) return@Line daysText((secs / 36 / 24).roundToInt() / 100F)
-            if (secs > 3600) return@Line hoursText((secs / 36).roundToInt() / 100F)
-            if (secs > 60) return@Line minutesText((secs / 6 * 10).roundToInt() / 100F)
-            return@Line secondsText((secs * 100).roundToInt() / 100F)
-        }, "break_time", 0),
-        Information.Line({ _ ->
-            val s = (((MinecraftClient.getInstance().interactionManager as BreakingProgressAccessor?)?.getCurrentBreakingProgress() ?: 0f) * 1000)
-            if (s == 0F) {
-                return@Line null
-            }
-            return@Line progressText(round(s) / 10f)
-        }, "progress", 2),
-        Information.Line({ data ->
-            val property = blockBlockStateMap[data.state.block] ?: return@Line null
-            return@Line Text.literal("${snake_toCamelCase(property.name)}: ${data.state.get(property)}")
-        }, "block_property", 1)
+        if (secs > (3600 * 24)) return@Line daysText((secs / 36 / 24).roundToInt() / 100F)
+        if (secs > 3600) return@Line hoursText((secs / 36).roundToInt() / 100F)
+        if (secs > 60) return@Line minutesText((secs / 6 * 10).roundToInt() / 100F)
+        return@Line secondsText((secs * 100).roundToInt() / 100F)
+    }, "break_time", 0), Information.Line({ _ ->
+        val s = (((client.interactionManager as BreakingProgressAccessor?)?.getCurrentBreakingProgress() ?: 0f) * 1000)
+        if (s == 0F) {
+            return@Line null
+        }
+        return@Line progressText(round(s) / 10f)
+    }, "progress", 2), Information.Line({ data ->
+        val property = blockBlockStateMap[data.state.block] ?: return@Line null
+        return@Line Text.literal("${snake_toCamelCase(property.name)}: ${data.state.get(property)}")
+    }, "block_property", 1)
     )
 
     val entityInformation = listOf<Information.Line<Entity>>(
         Information.Line({ entity ->
-            return@Line Text.literal(Registries.ENTITY_TYPE.getEntry(entity.type).key.get().value.toString())
-        }, "entity_id", 0),
-        Information.Line({ entity ->
-            return@Line if (MinecraftClient.getInstance().isInSingleplayer) entity.entity?.let {
-                convertToHearths(
-                    it.health.toDouble(),
-                    it.maxHealth.toDouble(),
-                    it.absorptionAmount.toDouble()
-                )
-            } else null
-        }, "health", 1),
-        Information.Line({ entity ->
-            return@Line provideEntityInfo(entity)?.let { Text.literal(it) }
-        }, "special_entity_info", 2)
+        return@Line Text.literal(Registries.ENTITY_TYPE.getEntry(entity.type).key.get().value.toString())
+    }, "entity_id", 0), Information.Line({ entity ->
+        return@Line if (client.isInSingleplayer) entity.entity?.let {
+            convertToHearths(
+                it.health.toDouble(), it.maxHealth.toDouble(), it.absorptionAmount.toDouble()
+            )
+        } else null
+    }, "health", 1), Information.Line({ entity ->
+        return@Line provideEntityInfo(entity)?.let { Text.literal(it) }
+    }, "special_entity_info", 2)
     )
 
     fun convertToHearths(_health: Double, _maxHealth: Double, _absorption: Double): Text {
@@ -370,7 +349,8 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
             val isAbso = absorbtion != absorbtion.toInt().toDouble()
             val isMaxHalf = maxHealth != (((maxHealth * 2).toInt().toDouble()) / 2).toInt().toDouble()
             val maxhealthleft = (maxHealth - ((health.toInt()) + (if (isHalf) 1 else 0)) + (if (isMaxHalf) 1 else 0)).toInt()
-            return Text.literal("❤".repeat(health.toInt())).setStyle(Style.EMPTY.withColor(0xFF0000))
+            return Text.literal("❤".repeat(health.toInt()))
+                .setStyle(Style.EMPTY.withColor(0xFF0000))
                 .append(Text.literal(if (isHalf) "\uE0aa" else "").setStyle(Style.EMPTY.withFont(heartsFont).withColor(0xFFFFFF)))
                 .append(Text.literal("❤".repeat(maxhealthleft)).setStyle(Style.EMPTY.withColor(0xFFFFFF)))
                 .append(Text.literal("❤".repeat(absorbtion.toInt())).setStyle(Style.EMPTY.withColor(0xFFFF00)))
@@ -385,8 +365,7 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
     }
 
     fun <T : Entity> provideEntityInfo(entity: T): String? {
-        @Suppress("UNCHECKED_CAST")
-        val provider = entityInfoProviders.firstOrNull { it.clazz.isInstance(entity) } as? EntityInfoProvider<T> ?: return null
+        @Suppress("UNCHECKED_CAST") val provider = entityInfoProviders.firstOrNull { it.clazz.isInstance(entity) } as? EntityInfoProvider<T> ?: return null
         return provider.fn(entity)
     }
 
@@ -405,7 +384,7 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
     }
 
     override fun onMinecraftClientInitFinished() {
-        val resources = MinecraftClient.getInstance().resourceManager.findAllResources(
+        val resources = client.resourceManager.findAllResources(
             "bewisclient/block_information"
         ) { it.path.endsWith(".json") }
 

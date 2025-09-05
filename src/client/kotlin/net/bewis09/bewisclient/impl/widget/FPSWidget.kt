@@ -4,7 +4,6 @@ import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
-import net.minecraft.client.MinecraftClient
 import net.minecraft.util.Identifier
 
 object FPSWidget : LineWidget() {
@@ -14,7 +13,7 @@ object FPSWidget : LineWidget() {
     override fun getTranslation(): Translation = fpsWidgetTranslation
     override fun getDescription(): Translation = fpsWidgetDescription
 
-    override fun getLines(): List<String> = listOf(MinecraftClient.getInstance().currentFps.toString() + " FPS")
+    override fun getLines(): List<String> = listOf(client.currentFps.toString() + " FPS")
 
     override fun defaultPosition(): WidgetPosition = RelativePosition("bewisclient:coordinates_widget", "bottom")
 

@@ -9,7 +9,6 @@ import net.bewis09.bewisclient.screen.RenderableScreen
 import net.bewis09.bewisclient.settings.types.ObjectSetting
 import net.bewis09.bewisclient.settings.types.WidgetPositionSetting
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
-import net.minecraft.client.MinecraftClient
 import net.minecraft.util.Identifier
 
 abstract class Widget : ObjectSetting() {
@@ -25,7 +24,7 @@ abstract class Widget : ObjectSetting() {
     }
 
     fun isShowing(): Boolean {
-        return isEnabled() && (!isHidden() || ((MinecraftClient.getInstance().currentScreen as? RenderableScreen)?.renderable is HudEditScreen))
+        return isEnabled() && (!isHidden() || ((client.currentScreen as? RenderableScreen)?.renderable is HudEditScreen))
     }
 
     fun isEnabled(): Boolean {
@@ -50,11 +49,11 @@ abstract class Widget : ObjectSetting() {
     abstract fun render(screenDrawing: ScreenDrawing)
 
     fun getScreenWidth(): Int {
-        return (MinecraftClient.getInstance().window.scaledWidth)
+        return (client.window.scaledWidth)
     }
 
     fun getScreenHeight(): Int {
-        return (MinecraftClient.getInstance().window.scaledHeight)
+        return (client.window.scaledHeight)
     }
 
     fun getScaledWidth(): Float {

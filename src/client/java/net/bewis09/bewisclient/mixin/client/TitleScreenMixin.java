@@ -26,11 +26,10 @@ public class TitleScreenMixin extends Screen {
 
     @Redirect(method = "addNormalWidgets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/widget/ButtonWidget$Builder;dimensions(IIII)Lnet/minecraft/client/gui/widget/ButtonWidget$Builder;", ordinal = 1))
     private ButtonWidget.Builder bewisclient$init(ButtonWidget.Builder instance, int x, int y, int width, int height) {
-        if (OptionsMenuSettings.INSTANCE.getButtonInTitleScreen().get())
-            this.addDrawableChild(new WorkingTexturedButtonWidget(x + width + 4, y, 20, 20, buttonTextures, (b) -> {
-                assert this.client != null;
-                this.client.setScreen(new RenderableScreen(new OptionScreen()));
-            }));
+        if (OptionsMenuSettings.INSTANCE.getButtonInTitleScreen().get()) this.addDrawableChild(new WorkingTexturedButtonWidget(x + width + 4, y, 20, 20, buttonTextures, (b) -> {
+            assert this.client != null;
+            this.client.setScreen(new RenderableScreen(new OptionScreen()));
+        }));
         return instance.dimensions(x, y, width, height);
     }
 }

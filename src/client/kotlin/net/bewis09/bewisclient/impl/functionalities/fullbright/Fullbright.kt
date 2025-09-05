@@ -19,8 +19,7 @@ object Fullbright : ImageSettingCategory(
         FullbrightSettings.nightVision.createRenderable("fullbright.night_vision", "Night Vision", "Allows you to have the visual effect of night vision without actually having it"),
         InfoTextRenderable(
             Translation(
-                "fullbright.night_vision.error_text",
-                "When night vision is applied via Bewisclient, the effect will not be the same as if you got it via a potion, because Bewisclient preserves the old way in which night vision works, which illuminates the world completely, whilst with the status effect it is always rendered as if the brightness is set all the way down to moody."
+                "fullbright.night_vision.error_text", "When night vision is applied via Bewisclient, the effect will not be the same as if you got it via a potion, because Bewisclient preserves the old way in which night vision works, which illuminates the world completely, whilst with the status effect it is always rendered as if the brightness is set all the way down to moody."
             ).getTranslatedString(), 0xFFAAAAAA.toInt(), true
         ),
     ), FullbrightSettings.enabled

@@ -28,7 +28,7 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
             it.add(Rectangle(withAlpha(0xFFFFFF, 0.15f)).setHeight(1))
             it.add(Button("Edit HUD") {
                 alphaMainAnimation.set("alpha", 0f) {
-                    getClient().setScreen(RenderableScreen(HudEditScreen()))
+                    client.setScreen(RenderableScreen(HudEditScreen()))
                 }
             }.setHeight(14))
         }, 5
@@ -102,7 +102,7 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
         if (key == GLFW.GLFW_KEY_ESCAPE) {
             alphaMainAnimation["blur"] = 0f
             alphaMainAnimation.set("alpha", 0f) {
-                getClient().setScreen(null)
+                client.setScreen(null)
             }
             return true
         }

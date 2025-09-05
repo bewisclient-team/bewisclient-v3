@@ -25,7 +25,6 @@ import net.minecraft.entity.passive.*
 import kotlin.jvm.optionals.getOrNull
 
 class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint() {
-
     override fun getEventEntrypoints(): List<EventEntrypoint> = listOf(
         WidgetLoader, SettingsLoader, KeybindingImplementer, TranslationLoader, BiomeWidget, SpeedWidget, TiwylaWidget
     )

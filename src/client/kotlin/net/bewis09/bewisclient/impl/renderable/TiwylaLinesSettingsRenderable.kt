@@ -38,8 +38,7 @@ class TiwylaLinesSettingsRenderable : Renderable() {
 
     fun <T> addForSide(list: ListSetting<TiwylaWidget.Information<T>>, right: Boolean = false) {
         fun openPopup(index: Int, left: Boolean) {
-            @Suppress("UNCHECKED_CAST")
-            OptionScreen.currentInstance?.openPopup(TiwylaLinesSettingsPopup(list, ((if (right) TiwylaWidget.blockInformation else TiwylaWidget.entityInformation) as List<TiwylaWidget.Information.Line<T>>), index, left))
+            @Suppress("UNCHECKED_CAST") OptionScreen.currentInstance?.openPopup(TiwylaLinesSettingsPopup(list, ((if (right) TiwylaWidget.blockInformation else TiwylaWidget.entityInformation) as List<TiwylaWidget.Information.Line<T>>), index, left))
         }
 
         for (i in 0..2.coerceAtMost(list.size + 1)) {

@@ -6,7 +6,6 @@ import net.bewis09.bewisclient.screen.RenderableScreen
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
-import net.minecraft.client.MinecraftClient
 import net.minecraft.util.Identifier
 
 object PingWidget : LineWidget() {
@@ -23,7 +22,7 @@ object PingWidget : LineWidget() {
     override fun getDescription(): Translation = pingWidgetDescription
 
     override fun getLines(): List<String> {
-        if ((MinecraftClient.getInstance().isInSingleplayer || MinecraftClient.getInstance().world == null) && (MinecraftClient.getInstance().currentScreen is RenderableScreen)) return arrayListOf(pingText(99.toString()).string)
+        if ((client.isInSingleplayer || client.world == null) && (client.currentScreen is RenderableScreen)) return arrayListOf(pingText(99.toString()).string)
         if (getLatency() < 0) return arrayListOf(loadingText.getTranslatedString())
         return arrayListOf(pingText(getLatency().toString()).string)
     }
@@ -34,18 +33,18 @@ object PingWidget : LineWidget() {
 
     override fun getWidth(): Int = 80
 
-    override fun isHidden(): Boolean = MinecraftClient.getInstance().isInSingleplayer
+    override fun isHidden(): Boolean = client.isInSingleplayer
 
     private fun getLatency(): Int {
         try {
             if (lastRequest + 100 < System.currentTimeMillis()) {
-                if (!MinecraftClient.getInstance().debugHud.shouldShowPacketSizeAndPingCharts()) {
-                    (MinecraftClient.getInstance().networkHandler as ClientPlayNetworkHandlerMixin).pingMeasurer.ping()
+                if (!client.debugHud.shouldShowPacketSizeAndPingCharts()) {
+                    (client.networkHandler as ClientPlayNetworkHandlerMixin).pingMeasurer.ping()
                 }
 
                 var l = 0
                 var o = 0
-                val log = MinecraftClient.getInstance().debugHud.pingLog
+                val log = client.debugHud.pingLog
 
                 for (i in 0..19.coerceAtMost(log.length - 1)) {
                     o++

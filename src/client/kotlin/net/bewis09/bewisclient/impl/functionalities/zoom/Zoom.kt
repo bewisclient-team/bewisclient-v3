@@ -5,7 +5,6 @@ import net.bewis09.bewisclient.drawable.renderables.options_structure.ImageSetti
 import net.bewis09.bewisclient.game.Keybind
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.functionalities.ZoomSettings
-import net.minecraft.client.MinecraftClient
 import org.lwjgl.glfw.GLFW
 
 object Zoom : ImageSettingCategory(
@@ -31,14 +30,14 @@ object Zoom : ImageSettingCategory(
 
     fun setUsed(used: Boolean) {
         if (!isUsed() && used) {
-            smoothCameraEnabledBefore = MinecraftClient.getInstance().options.smoothCameraEnabled
+            smoothCameraEnabledBefore = client.options.smoothCameraEnabled
             if (ZoomSettings.smooth.get()) {
-                MinecraftClient.getInstance().options.smoothCameraEnabled = true
+                client.options.smoothCameraEnabled = true
             }
             factorAnimation["factor"] = 0.23f
         } else if (!used && isUsed()) {
             if (ZoomSettings.smooth.get()) {
-                MinecraftClient.getInstance().options.smoothCameraEnabled = smoothCameraEnabledBefore ?: false
+                client.options.smoothCameraEnabled = smoothCameraEnabledBefore ?: false
             }
             factorAnimation["factor"] = 1f
         }

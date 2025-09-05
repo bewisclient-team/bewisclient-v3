@@ -26,10 +26,9 @@ public class GameMenuScreenMixin extends Screen {
 
     @Inject(method = "init", at = @At("HEAD"))
     private void bewisclient$init(CallbackInfo ci) {
-        if (OptionsMenuSettings.INSTANCE.getButtonInGameScreen().get())
-            addDrawableChild(new WorkingTexturedButtonWidget(this.width / 2 + 106, this.height / 4 + 56, 20, 20, buttonTextures, (b) -> {
-                assert this.client != null;
-                this.client.setScreen(new RenderableScreen(new OptionScreen(1f)));
-            }));
+        if (OptionsMenuSettings.INSTANCE.getButtonInGameScreen().get()) addDrawableChild(new WorkingTexturedButtonWidget(this.width / 2 + 106, this.height / 4 + 56, 20, 20, buttonTextures, (b) -> {
+            assert this.client != null;
+            this.client.setScreen(new RenderableScreen(new OptionScreen(1f)));
+        }));
     }
 }

@@ -1,6 +1,5 @@
 package net.bewis09.bewisclient.logic
 
-import net.minecraft.client.MinecraftClient
 import net.minecraft.client.texture.NativeImage
 import net.minecraft.client.texture.NativeImageBackedTexture
 import net.minecraft.util.Identifier
@@ -11,7 +10,7 @@ import java.io.InputStream
 import java.net.URL
 import javax.imageio.ImageIO
 
-interface DrawingLogic {
+interface DrawingLogic : InGameLogic {
     fun createTexture(identifier: Identifier, width: Int, height: Int, supplier: (img: BufferedImage) -> Unit): Identifier {
         val image = BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB)
 
@@ -21,7 +20,7 @@ interface DrawingLogic {
         ImageIO.write(image, "png", os)
         val fis: InputStream = ByteArrayInputStream(os.toByteArray())
 
-        MinecraftClient.getInstance().textureManager.registerTexture(
+        client.textureManager.registerTexture(
             identifier, NativeImageBackedTexture({ identifier.toString() }, NativeImage.read(fis))
         )
 
@@ -29,7 +28,7 @@ interface DrawingLogic {
     }
 
     fun createTexture(identifier: Identifier, fileURL: URL): Identifier {
-        MinecraftClient.getInstance().textureManager.registerTexture(
+        client.textureManager.registerTexture(
             identifier, NativeImageBackedTexture({ identifier.toString() }, NativeImage.read(fileURL.openStream()))
         )
 
