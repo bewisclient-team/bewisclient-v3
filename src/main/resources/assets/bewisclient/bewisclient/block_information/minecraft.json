@@ -6,5 +6,6 @@
   "minecraft:tnt": "unstable",
   "minecraft:tripwire_hook": "attached",
   "minecraft:tripwire": "attached",
-  "minecraft:sculk_shrieker": "can_summon"
+  "minecraft:sculk_shrieker": "can_summon",
+  "minecraft:target": "power"
 }

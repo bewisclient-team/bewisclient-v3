@@ -8,11 +8,13 @@ import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
+import net.bewis09.bewisclient.impl.renderable.TiwylaInfoSettingsRenderable
 import net.bewis09.bewisclient.impl.renderable.TiwylaLinesSettingsRenderable
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.bewis09.bewisclient.interfaces.BreakingProgressAccessor
 import net.bewis09.bewisclient.logic.EventEntrypoint
 import net.bewis09.bewisclient.logic.catch
+import net.bewis09.bewisclient.settings.types.BooleanMapSetting
 import net.bewis09.bewisclient.settings.types.ListSetting
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
@@ -21,6 +23,7 @@ import net.minecraft.block.Block
 import net.minecraft.block.BlockState
 import net.minecraft.block.Blocks
 import net.minecraft.entity.Entity
+import net.minecraft.entity.EntityType
 import net.minecraft.registry.Registries
 import net.minecraft.registry.tag.BlockTags
 import net.minecraft.state.property.Property
@@ -31,6 +34,7 @@ import net.minecraft.util.Identifier
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.hit.EntityHitResult
 import net.minecraft.util.math.BlockPos
+import kotlin.jvm.optionals.getOrNull
 import kotlin.math.ceil
 import kotlin.math.round
 import kotlin.math.roundToInt
@@ -49,26 +53,29 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
     val paddingSize = create("padding_size", DefaultWidgetSettings.paddingSize.cloneWithDefault())
     val lineSpacing = create("line_spacing", DefaultWidgetSettings.lineSpacing.cloneWithDefault())
 
+    val blockSpecialInfoMap = create("block_special_info_map", BooleanMapSetting())
+    val entitySpecialInfoMap = create("entity_special_info_map", BooleanMapSetting())
+
     val healthInfoText = Translation("widget.tiwyla_widget.information.health_information", "The Information of the health of the entity that you are looking at is not available on multiplayer servers due to cheating concerns. In singleplayer worlds it is still available.")
 
     val entityLines by lazy {
         create(
             "entity_lines", ListSetting<Information<Entity>>(
                 listOf(
-                loadEntityInformation("health"), loadEntityInformation("entity_id", "special_entity_info")
-            ), {
-                val arr = catch { it.asJsonArray } ?: return@ListSetting null
-                val strings = arr.mapNotNull { a -> catch { a.asString } }
+                    loadEntityInformation("health"), loadEntityInformation("entity_id", "special_entity_info")
+                ), {
+                    val arr = catch { it.asJsonArray } ?: return@ListSetting null
+                    val strings = arr.mapNotNull { a -> catch { a.asString } }
 
-                if (strings.isEmpty()) return@ListSetting null
+                    if (strings.isEmpty()) return@ListSetting null
 
-                loadEntityInformation(strings[0], strings.getOrNull(1))
-            }, {
-                JsonArray().also { list ->
-                    it.first?.let { s -> list.add(s.id) }
-                    it.second?.let { s -> list.add(s.id) }
-                }.let { l -> if (l.isEmpty) null else l }
-            })
+                    loadEntityInformation(strings[0], strings.getOrNull(1))
+                }, {
+                    JsonArray().also { list ->
+                        it.first?.let { s -> list.add(s.id) }
+                        it.second?.let { s -> list.add(s.id) }
+                    }.let { l -> if (l.isEmpty) null else l }
+                })
         )
     }
 
@@ -76,24 +83,24 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
         create(
             "block_lines", ListSetting(
                 listOf(
-                loadBlockInformation("tool"), loadBlockInformation("mining_level", "block_property"), loadBlockInformation("break_time", "progress")
-            ), {
-                val arr = catch { it.asJsonArray } ?: return@ListSetting null
-                val strings = arr.mapNotNull { a -> catch { a.asString } }
+                    loadBlockInformation("tool"), loadBlockInformation("mining_level", "block_property"), loadBlockInformation("break_time", "progress")
+                ), {
+                    val arr = catch { it.asJsonArray } ?: return@ListSetting null
+                    val strings = arr.mapNotNull { a -> catch { a.asString } }
 
-                if (strings.isEmpty()) return@ListSetting null
+                    if (strings.isEmpty()) return@ListSetting null
 
-                loadBlockInformation(strings[0], strings.getOrNull(1))
-            }, {
-                JsonArray().also { list ->
-                    it.first?.let { s -> list.add(s.id) }
-                    it.second?.let { s -> list.add(s.id) }
-                }.let { l -> if (l.isEmpty) null else l }
-            })
+                    loadBlockInformation(strings[0], strings.getOrNull(1))
+                }, {
+                    JsonArray().also { list ->
+                        it.first?.let { s -> list.add(s.id) }
+                        it.second?.let { s -> list.add(s.id) }
+                    }.let { l -> if (l.isEmpty) null else l }
+                })
         )
     }
 
-    val entityInfoProviders = APIEntrypointLoader.mapEntrypoint { it.getTiwylaEntityExtraInfoProviders() }.flatten()
+    val entityInfoProviders = APIEntrypointLoader.mapContainer { it.entrypoint.getTiwylaEntityExtraInfoProviders().map { provider -> Identifier.of(it.provider.metadata.id, Registries.ENTITY_TYPE.getId(provider.entityType).toString().replace(":", "/")) to provider } }.flatten()
 
     val tiwylaWidgetTranslation = Translation("widget.tiwyla_widget.name", "Tiwyla Widget")
     val tiwylaWidgetDescription = Translation(
@@ -123,7 +130,7 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
     val hoursText = Translation("widget.tiwyla_widget.hours", "%s hours")
     val daysText = Translation("widget.tiwyla_widget.days", "%s days")
 
-    val blockBlockStateMap = hashMapOf<Block, Property<*>>()
+    val blockStateInfoMap = sortedMapOf<String, Property<*>>()
 
     override fun defaultPosition(): WidgetPosition = SidedPosition(0, 5, SidedPosition.TransformerType.CENTER, SidedPosition.TransformerType.START)
 
@@ -255,7 +262,12 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
                 "widget.text_shadow", "Text Shadow", "Set whether text in the widget has a shadow"
             )
         )
+
         super.appendSettingsRenderables(list)
+
+        list.add(
+            TiwylaInfoSettingsRenderable()
+        )
     }
 
     fun loadBlockInformation(first: String, second: String? = null): Information<BlockData> {
@@ -280,81 +292,84 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
 
     val blockInformation = listOf<Information.Line<BlockData>>(
         Information.Line({ data ->
-        if (data.state.isIn(BlockTags.AXE_MINEABLE)) return@Line toolText(axeToolText.getTranslatedString())
-        if (data.state.isIn(BlockTags.PICKAXE_MINEABLE)) return@Line toolText(pickaxeToolText.getTranslatedString())
-        if (data.state.isIn(BlockTags.HOE_MINEABLE)) return@Line toolText(hoeToolText.getTranslatedString())
-        if (data.state.isIn(BlockTags.SHOVEL_MINEABLE)) return@Line toolText(shovelToolText.getTranslatedString())
-        if (data.state.isIn(BlockTags.SWORD_EFFICIENT)) return@Line toolText(swordToolText.getTranslatedString())
-        return@Line toolText(noneToolText.getTranslatedString())
-    }, "tool", 0), Information.Line({ data ->
-        if (data.state.isIn(BlockTags.NEEDS_DIAMOND_TOOL)) return@Line miningLevel(diamondLevelText.getTranslatedString())
-        if (data.state.isIn(BlockTags.NEEDS_IRON_TOOL)) return@Line miningLevel(ironLevelText.getTranslatedString())
-        if (data.state.isIn(BlockTags.NEEDS_STONE_TOOL)) return@Line miningLevel(stoneLevelText.getTranslatedString())
+            if (data.state.isIn(BlockTags.AXE_MINEABLE)) return@Line toolText(axeToolText.getTranslatedString())
+            if (data.state.isIn(BlockTags.PICKAXE_MINEABLE)) return@Line toolText(pickaxeToolText.getTranslatedString())
+            if (data.state.isIn(BlockTags.HOE_MINEABLE)) return@Line toolText(hoeToolText.getTranslatedString())
+            if (data.state.isIn(BlockTags.SHOVEL_MINEABLE)) return@Line toolText(shovelToolText.getTranslatedString())
+            if (data.state.isIn(BlockTags.SWORD_EFFICIENT)) return@Line toolText(swordToolText.getTranslatedString())
+            return@Line toolText(noneToolText.getTranslatedString())
+        }, "tool", 0), Information.Line({ data ->
+            if (data.state.isIn(BlockTags.NEEDS_DIAMOND_TOOL)) return@Line miningLevel(diamondLevelText.getTranslatedString())
+            if (data.state.isIn(BlockTags.NEEDS_IRON_TOOL)) return@Line miningLevel(ironLevelText.getTranslatedString())
+            if (data.state.isIn(BlockTags.NEEDS_STONE_TOOL)) return@Line miningLevel(stoneLevelText.getTranslatedString())
 
-        if (data.state.isToolRequired) return@Line miningLevel(woodLevelText.getTranslatedString())
-        return@Line miningLevel(noneLevelText.getTranslatedString())
-    }, "mining_level", 0), Information.Line({ data ->
-        if (client.world == null) return@Line secondsText(4.5)
+            if (data.state.isToolRequired) return@Line miningLevel(woodLevelText.getTranslatedString())
+            return@Line miningLevel(noneLevelText.getTranslatedString())
+        }, "mining_level", 0), Information.Line({ data ->
+            if (client.world == null) return@Line secondsText(4.5)
 
-        val player = client.player ?: return@Line null
+            val player = client.player ?: return@Line null
 
-        if (data.state.calcBlockBreakingDelta(player, client.world, data.blockPos) > 1) return@Line instantText()
+            if (data.state.calcBlockBreakingDelta(player, client.world, data.blockPos) > 1) return@Line instantText()
 
-        val secs = (1f / data.state.calcBlockBreakingDelta(player, client.world, data.blockPos) * 5F).roundToInt() / 100F
+            val secs = (1f / data.state.calcBlockBreakingDelta(player, client.world, data.blockPos) * 5F).roundToInt() / 100F
 
-        if (secs > (3600 * 24)) return@Line daysText((secs / 36 / 24).roundToInt() / 100F)
-        if (secs > 3600) return@Line hoursText((secs / 36).roundToInt() / 100F)
-        if (secs > 60) return@Line minutesText((secs / 6 * 10).roundToInt() / 100F)
-        return@Line secondsText((secs * 100).roundToInt() / 100F)
-    }, "break_time", 0), Information.Line({ _ ->
-        val s = (((client.interactionManager as BreakingProgressAccessor?)?.getCurrentBreakingProgress() ?: 0f) * 1000)
-        if (s == 0F) {
-            return@Line null
-        }
-        return@Line progressText(round(s) / 10f)
-    }, "progress", 2), Information.Line({ data ->
-        val property = blockBlockStateMap[data.state.block] ?: return@Line null
-        return@Line Text.literal("${snake_toCamelCase(property.name)}: ${data.state.get(property)}")
-    }, "block_property", 1)
+            if (secs > (3600 * 24)) return@Line daysText((secs / 36 / 24).roundToInt() / 100F)
+            if (secs > 3600) return@Line hoursText((secs / 36).roundToInt() / 100F)
+            if (secs > 60) return@Line minutesText((secs / 6 * 10).roundToInt() / 100F)
+            return@Line secondsText((secs * 100).roundToInt() / 100F)
+        }, "break_time", 0), Information.Line({ _ ->
+            val s = (((client.interactionManager as BreakingProgressAccessor?)?.getCurrentBreakingProgress() ?: 0f) * 1000)
+            if (s == 0F) {
+                return@Line null
+            }
+            return@Line progressText(round(s) / 10f)
+        }, "progress", 2), Information.Line({ data ->
+            val id = Registries.BLOCK.getEntry(data.state.block).key.getOrNull()?.value?.toString() ?: return@Line null
+            if (blockSpecialInfoMap[id] == false) return@Line null
+            val property = blockStateInfoMap[id] ?: return@Line null
+            return@Line Text.literal("${snake_toCamelCase(property.name)}: ${data.state.get(property)}")
+        }, "block_property", 1)
     )
 
     val entityInformation = listOf<Information.Line<Entity>>(
         Information.Line({ entity ->
-        return@Line Text.literal(Registries.ENTITY_TYPE.getEntry(entity.type).key.get().value.toString())
-    }, "entity_id", 0), Information.Line({ entity ->
-        return@Line if (client.isInSingleplayer) entity.entity?.let {
-            convertToHearths(
-                it.health.toDouble(), it.maxHealth.toDouble(), it.absorptionAmount.toDouble()
-            )
-        } else null
-    }, "health", 1), Information.Line({ entity ->
-        return@Line provideEntityInfo(entity)?.let { Text.literal(it) }
-    }, "special_entity_info", 2)
+            return@Line Text.literal(Registries.ENTITY_TYPE.getEntry(entity.type).key.get().value.toString())
+        }, "entity_id", 0), Information.Line({ entity ->
+            return@Line if (client.isInSingleplayer) entity.entity?.let {
+                convertToHearths(
+                    it.health.toDouble(), it.maxHealth.toDouble(), it.absorptionAmount.toDouble()
+                )
+            } else null
+        }, "health", 1), Information.Line({ entity ->
+            if (Registries.ENTITY_TYPE.getEntry(entity.type).key.getOrNull()?.value?.let { blockSpecialInfoMap[it.toString()] } == false) return@Line null
+            return@Line provideEntityInfo(entity)?.let { Text.literal(it) }
+        }, "special_entity_info", 2)
     )
 
-    fun convertToHearths(_health: Double, _maxHealth: Double, _absorption: Double): Text {
-        var health = _health
-        var maxHealth = _maxHealth
-        var absorbtion = _absorption
+    fun convertToHearths(h: Double, mH: Double, a: Double): Text {
+        var health = h
+        var maxHealth = mH
+        var absorption = a
         try {
             maxHealth = roundUpAndHalf(maxHealth)
             health = ((health * 10).toInt().toDouble()) / 10f
-            absorbtion = ((absorbtion * 10).toInt().toDouble()) / 10f
+            absorption = ((absorption * 10).toInt().toDouble()) / 10f
             if (maxHealth > 13.0) {
                 return Text.literal((health.toString() + " / " + maxHealth * 2 + " HP"))
             }
             health = roundUpAndHalf(health)
-            absorbtion = roundUpAndHalf(absorbtion)
+            absorption = roundUpAndHalf(absorption)
             val isHalf = health != health.toInt().toDouble()
-            val isAbso = absorbtion != absorbtion.toInt().toDouble()
+            val isAbsorptionHalf = absorption != absorption.toInt().toDouble()
             val isMaxHalf = maxHealth != (((maxHealth * 2).toInt().toDouble()) / 2).toInt().toDouble()
-            val maxhealthleft = (maxHealth - ((health.toInt()) + (if (isHalf) 1 else 0)) + (if (isMaxHalf) 1 else 0)).toInt()
+            val maxHealthLeft = (maxHealth - ((health.toInt()) + (if (isHalf) 1 else 0)) + (if (isMaxHalf) 1 else 0)).toInt()
             return Text.literal("❤".repeat(health.toInt()))
                 .setStyle(Style.EMPTY.withColor(0xFF0000))
                 .append(Text.literal(if (isHalf) "\uE0aa" else "").setStyle(Style.EMPTY.withFont(heartsFont).withColor(0xFFFFFF)))
-                .append(Text.literal("❤".repeat(maxhealthleft)).setStyle(Style.EMPTY.withColor(0xFFFFFF)))
-                .append(Text.literal("❤".repeat(absorbtion.toInt())).setStyle(Style.EMPTY.withColor(0xFFFF00)))
-                .append(Text.literal(if (isAbso) "\uE0ab" else "").setStyle(Style.EMPTY.withFont(heartsFont).withColor(0xFFFFFF)))
+                .append(Text.literal("❤".repeat(maxHealthLeft)).setStyle(Style.EMPTY.withColor(0xFFFFFF)))
+                .append(Text.literal("❤".repeat(absorption.toInt())).setStyle(Style.EMPTY.withColor(0xFFFF00)))
+                .append(Text.literal(if (isAbsorptionHalf) "\uE0ab" else "").setStyle(Style.EMPTY.withFont(heartsFont).withColor(0xFFFFFF)))
         } catch (_: Exception) {
             return Text.of("")
         }
@@ -365,7 +380,7 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
     }
 
     fun <T : Entity> provideEntityInfo(entity: T): String? {
-        @Suppress("UNCHECKED_CAST") val provider = entityInfoProviders.firstOrNull { it.clazz.isInstance(entity) } as? EntityInfoProvider<T> ?: return null
+        @Suppress("UNCHECKED_CAST") val provider = entityInfoProviders.firstOrNull { entity.type == it.second.entityType }?.second as? EntityInfoProvider<T> ?: return null
         return provider.fn(entity)
     }
 
@@ -378,12 +393,14 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
 
     @Suppress("FunctionName")
     private fun snake_toCamelCase(str: String): String {
-        return str.split("_".toRegex()).filter { it.isNotEmpty() }.joinToString("") {
-            it.replaceFirstChar(Char::uppercaseChar)
-        }
+        return str.split("_".toRegex()).filter { it.isNotEmpty() }.mapIndexed { i, it ->
+            if (i == 0) it.lowercase() else it.replaceFirstChar(Char::uppercaseChar)
+        }.joinToString("")
     }
 
-    override fun onMinecraftClientInitFinished() {
+    override fun onResourcesReloaded() {
+        blockStateInfoMap.clear()
+
         val resources = client.resourceManager.findAllResources(
             "bewisclient/block_information"
         ) { it.path.endsWith(".json") }
@@ -401,7 +418,8 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
                         if (property.isJsonPrimitive) {
                             val propertyId = property.asString
                             val b: Block = Registries.BLOCK.get(Identifier.of(block))
-                            blockBlockStateMap[b] = b.stateManager.properties.firstOrNull { a -> a.name == propertyId } ?: run {
+                            if (b == Registries.BLOCK.defaultEntry.getOrNull()) return@forEach
+                            blockStateInfoMap[block] = b.stateManager.properties.firstOrNull { a -> a.name == propertyId } ?: run {
                                 warn("Unknown block property: $propertyId for block $block in pack ${resource.packId}")
                                 return@forEach
                             }
@@ -418,5 +436,5 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
 
     override fun getDefaultScale(): Float = 1f
 
-    data class EntityInfoProvider<T : Entity>(val clazz: Class<T>, val fn: (entity: T) -> String?)
+    data class EntityInfoProvider<T : Entity>(val entityType: EntityType<T>, val fn: (entity: T) -> String?)
 }

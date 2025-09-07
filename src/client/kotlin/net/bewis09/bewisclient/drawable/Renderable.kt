@@ -31,9 +31,7 @@ abstract class Renderable : BewisclientInterface {
         ArrayList(renderables).forEach { it.render(screenDrawing, mouseX, mouseY) }
     }
 
-    fun addRenderable(renderable: Renderable) {
-        renderables.add(renderable)
-    }
+    fun <T: Renderable> addRenderable(renderable: T): T = renderable.also { renderables.add(it) }
 
     fun resize() {
         renderables.clear()

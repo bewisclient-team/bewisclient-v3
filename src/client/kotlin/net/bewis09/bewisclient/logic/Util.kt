@@ -1,5 +1,7 @@
 package net.bewis09.bewisclient.logic
 
+import kotlinx.atomicfu.AtomicRef
+import net.bewis09.bewisclient.drawable.screen_drawing.ArgbColor
 import net.bewis09.bewisclient.game.Translation
 import java.awt.Color
 
@@ -106,3 +108,27 @@ val colors = listOf(
 class Color(val color: Int, val translation: Translation)
 
 fun <T> T.staticFun(): () -> T = { this }
+
+infix fun Float.within(@ArgbColor pair: Pair<Int, Int>): Int {
+    val startRed = (pair.first shr 16) and 0xFF
+    val startGreen = (pair.first shr 8) and 0xFF
+    val startBlue = pair.first and 0xFF
+
+    val endRed = (pair.second shr 16) and 0xFF
+    val endGreen = (pair.second shr 8) and 0xFF
+    val endBlue = pair.second and 0xFF
+
+    val red = ((startRed + (endRed - startRed) * this).toInt() shl 16)
+    val green = ((startGreen + (endGreen - startGreen) * this).toInt() shl 8)
+    val blue = (startBlue + (endBlue - startBlue) * this).toInt()
+
+    return red or green or blue
+}
+
+infix fun Int.multiplyColor(other: Int): Int {
+    val a = ((this shr 24) and 0xFF) * ((other shr 24) and 0xFF) / 255
+    val r = ((this shr 16) and 0xFF) * ((other shr 16) and 0xFF) / 255
+    val g = ((this shr 8) and 0xFF) * ((other shr 8) and 0xFF) / 255
+    val b = (this and 0xFF) * (other and 0xFF) / 255
+    return (a shl 24) or (r shl 16) or (g shl 8) or b
+}

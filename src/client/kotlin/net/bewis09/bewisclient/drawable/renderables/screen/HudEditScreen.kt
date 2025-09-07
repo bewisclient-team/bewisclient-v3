@@ -2,6 +2,7 @@ package net.bewis09.bewisclient.drawable.renderables.screen
 
 import net.bewis09.bewisclient.drawable.SettingStructure
 import net.bewis09.bewisclient.drawable.renderables.ImageButton
+import net.bewis09.bewisclient.drawable.renderables.ThemeButton
 import net.bewis09.bewisclient.drawable.renderables.popup.AddWidgetPopup
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
@@ -51,10 +52,11 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
 
                 if (button == 1) {
                     client.setScreen(RenderableScreen(OptionScreen().also { a ->
-                        val widgetsCategory = SettingStructure(a).widgets.first { b -> b.enableSetting == it.enabled }
+                        val widgetsCategory = a.settings.widgets.first { b -> b.enableSetting == it.enabled }
                         a.optionsHeader = widgetsCategory.getHeader()
                         a.optionsPane = widgetsCategory.getPane()
                         a.optionsHeaderBooleanSetting = it.enabled
+                        a.clickedButton.value = a.settings.sidebarCategories[0] as? ThemeButton
                     }))
 
                     return true

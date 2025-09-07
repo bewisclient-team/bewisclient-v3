@@ -1,8 +1,11 @@
 package net.bewis09.bewisclient.drawable.renderables
 
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
+import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.interfaces.Gettable
+import net.bewis09.bewisclient.logic.multiplyColor
 import net.bewis09.bewisclient.logic.number.Precision
+import net.bewis09.bewisclient.logic.within
 
 class Fader(val value: Gettable<Float>, val precision: Precision, val onChange: (new: Float) -> Unit) : Hoverable() {
     init {
@@ -20,7 +23,7 @@ class Fader(val value: Gettable<Float>, val precision: Precision, val onChange: 
         screenDrawing.translate(getX() + normalizedValue * (getWidth() - 8) + 4, getY() + 2f)
         screenDrawing.scale(0.1f, 0.1f)
         screenDrawing.fillRounded(
-            -20, 0, 40, 100, 20, interpolateColor(0xAAAAAA, 0xDDDDDD, hoverAnimation["hovering"]), 1f
+            -20, 0, 40, 100, 20, (hoverAnimation["hovering"] within (0xCCCCCC to 0xFFFFFF) multiplyColor OptionsMenuSettings.themeColor.get().getColor()), 1f
         )
         screenDrawing.pop()
     }

@@ -45,7 +45,7 @@ class ChangingColorSaver : ColorSaver {
     }
 
     object Factory : ColorSaverFactory<ChangingColorSaver> {
-        private val translation = Translation("color.changing", "Changing Color")
+        private val translation = Translation("color.changing", "Changing")
         private val description = Translation("color.changing.description", "A color that changes over time, cycling through the spectrum based on the speed set.")
 
         override fun createFromJson(jsonElement: JsonElement): ChangingColorSaver? {

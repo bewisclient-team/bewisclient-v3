@@ -49,7 +49,7 @@ open class StaticColorSaver : ColorSaver {
     }
 
     object Factory : ColorSaverFactory<StaticColorSaver> {
-        private val translation = Translation("color.static", "Static Color")
+        private val translation = Translation("color.static", "Static")
         private val description = Translation("color.static.description", "A static color that does not change.")
 
         override fun createFromJson(jsonElement: JsonElement): StaticColorSaver? {

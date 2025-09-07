@@ -10,6 +10,7 @@ import net.bewis09.bewisclient.interfaces.KeyBindingAccessor
 import net.bewis09.bewisclient.logic.color.StaticColorSaver
 import net.bewis09.bewisclient.logic.staticFun
 import net.bewis09.bewisclient.screen.RenderableScreen
+import net.bewis09.bewisclient.settings.types.BooleanSetting
 import net.bewis09.bewisclient.settings.types.ColorSetting
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
@@ -48,9 +49,15 @@ object KeyWidget : ScalableWidget() {
     val borderRadius = create("border_radius", DefaultWidgetSettings.borderRadius.cloneWithDefault())
     val gap = int("gap", 2, 0, 20)
 
-    val showMovementKeys = boolean("show_movement_keys", true)
-    val showAttackUseKeys = boolean("show_attack_use_keys", true)
-    val showJumpKey = boolean("show_jump_key", true)
+    val showMovementKeys: BooleanSetting = boolean("show_movement_keys", true) { _, new ->
+        if (!showAttackUseKeys.get() && !showJumpKey.get() && new == false) showAttackUseKeys.set(true)
+    }
+    val showAttackUseKeys: BooleanSetting = boolean("show_attack_use_keys", true) { _, new ->
+        if (!showMovementKeys.get() && !showJumpKey.get() && new == false) showMovementKeys.set(true)
+    }
+    val showJumpKey: BooleanSetting = boolean("show_jump_key", true) { _, new ->
+        if (!showAttackUseKeys.get() && !showMovementKeys.get() && new == false) showMovementKeys.set(true)
+    }
 
     val showCPS = boolean("show_cps", false)
 
@@ -75,33 +82,22 @@ object KeyWidget : ScalableWidget() {
 
         var y = 0
 
-        renderKey(
-            screenDrawing, topSize + gap.get(), y, topSize, topSize, client.options.forwardKey
-        )
-        renderKey(
-            screenDrawing, 0, y + topSize + gap.get(), topSize, topSize, client.options.leftKey
-        )
-        renderKey(
-            screenDrawing, topSize + gap.get(), y + topSize + gap.get(), topSize, topSize, client.options.backKey
-        )
-        renderKey(
-            screenDrawing, (topSize + gap.get()) * 2, y + topSize + gap.get(), topSize, topSize, client.options.rightKey
-        )
+        if (showMovementKeys.get()) {
+            renderKey(screenDrawing, topSize + gap.get(), 0, topSize, topSize, client.options.forwardKey)
+            renderKey(screenDrawing, 0, topSize + gap.get(), topSize, topSize, client.options.leftKey)
+            renderKey(screenDrawing, topSize + gap.get(), topSize + gap.get(), topSize, topSize, client.options.backKey)
+            renderKey(screenDrawing, (topSize + gap.get()) * 2, topSize + gap.get(), topSize, topSize, client.options.rightKey)
+            y += (topSize + gap.get()) * 2
+        }
 
-        y += (topSize + gap.get()) * 2
+        if (showAttackUseKeys.get()) {
+            renderKey(screenDrawing, 0, y, middleWidth, bottomHeight, client.options.attackKey)
+            renderKey(screenDrawing, totalWidth - middleWidth, y, middleWidth, bottomHeight, client.options.useKey)
+            y += bottomHeight + gap.get()
+        }
 
-        renderKey(
-            screenDrawing, 0, y, middleWidth, bottomHeight, client.options.attackKey
-        )
-        renderKey(
-            screenDrawing, totalWidth - middleWidth, y, middleWidth, bottomHeight, client.options.useKey
-        )
-
-        y += bottomHeight + gap.get()
-
-        renderKey(
-            screenDrawing, 0, y, totalWidth, bottomHeight, client.options.jumpKey
-        )
+        if (showJumpKey.get())
+            renderKey(screenDrawing, 0, y, totalWidth, bottomHeight, client.options.jumpKey)
     }
 
     fun renderKey(
@@ -167,11 +163,16 @@ object KeyWidget : ScalableWidget() {
 
     override fun getHeight(): Int {
         val paddingSize = paddingSize.get()
+        val topSize = 9 + (paddingSize + 2) * 2
+        val bottomHeight = 9 + paddingSize * 2
 
-        val elementHeight = 9 + (paddingSize + 2) * 2
-        val bottomElementHeight = 9 + paddingSize * 2
+        var y = 0
 
-        return elementHeight * 2 + gap.get() * 3 + bottomElementHeight * 2
+        if (showMovementKeys.get()) y += (topSize + gap.get()) * 2
+        if (showAttackUseKeys.get()) y += bottomHeight + gap.get()
+        if (showJumpKey.get()) y += bottomHeight
+
+        return y
     }
 
     override fun getTranslation(): Translation = keyWidgetTranslation

@@ -60,7 +60,7 @@ open class ObjectSetting() : Setting<JsonObject>(JsonObject()) {
         }
     }
 
-    fun boolean(key: String, default: Boolean, onChangeListener: ((oldValue: Boolean?, newValue: Boolean?) -> Unit)? = null): BooleanSetting {
+    fun boolean(key: String, default: Boolean, onChangeListener: (Setting<Boolean>.(oldValue: Boolean?, newValue: Boolean?) -> Unit)? = null): BooleanSetting {
         return create(key, BooleanSetting(default, onChangeListener))
     }
 

@@ -65,11 +65,7 @@ class Animator(val duration: () -> Long, val interpolationType: (delta: Float) -
             return value
         }
 
-        val beforeValue = beforeAnimationMap[key]
-
-        if (beforeValue == null) {
-            return value
-        }
+        val beforeValue = beforeAnimationMap[key] ?: return value
 
         if (delta <= 0) {
             return beforeValue
@@ -103,6 +99,12 @@ class Animator(val duration: () -> Long, val interpolationType: (delta: Float) -
         finishAction?.invoke()
     }
 
+    operator fun set(key: String, value: Pair<Float, () -> Unit>) {
+        set(key, value.first)
+
+        finishMap[key] = value.second
+    }
+
     fun set(key: String, value: Float, onFinish: () -> Unit) {
         set(key, value)
 
@@ -122,3 +124,5 @@ fun animate(
 ): Animator {
     return Animator(duration, interpolationType, *initial)
 }
+
+infix fun Float.then(f: () -> Unit): Pair<Float, () -> Unit> = this to f

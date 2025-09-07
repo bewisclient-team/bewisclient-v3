@@ -14,10 +14,10 @@ import net.bewis09.bewisclient.settings.SettingsLoader
  * @param default The default value of the setting.
  * @param onChangeListener An optional listener that is called when the setting value changes.
  */
-abstract class Setting<T>(val default: () -> T, val onChangeListener: ((oldValue: T?, newValue: T?) -> Unit)?) : BewisclientInterface, Gettable<T>, Settable<T?> {
+abstract class Setting<T>(val default: () -> T, val onChangeListener: (Setting<T>.(oldValue: T?, newValue: T?) -> Unit)?) : BewisclientInterface, Gettable<T>, Settable<T?> {
     constructor(default: () -> T) : this(default, null)
 
-    constructor(default: T, onChangeListener: ((oldValue: T?, newValue: T?) -> Unit)? = null) : this({ default }, onChangeListener)
+    constructor(default: T, onChangeListener: (Setting<T>.(oldValue: T?, newValue: T?) -> Unit)? = null) : this({ default }, onChangeListener)
 
     constructor(default: T) : this({ default }, null)
 
@@ -54,7 +54,7 @@ abstract class Setting<T>(val default: () -> T, val onChangeListener: ((oldValue
         }
         this.value = value
         onChange(oldValue, value)
-        onChangeListener?.invoke(oldValue, value)
+        onChangeListener?.invoke(this, oldValue, value)
         save()
     }
 
@@ -87,7 +87,7 @@ abstract class Setting<T>(val default: () -> T, val onChangeListener: ((oldValue
         }
         this.value = processChange(value)
         onChange(oldValue, this.value)
-        onChangeListener?.invoke(oldValue, this.value)
+        onChangeListener?.invoke(this, oldValue, this.value)
     }
 
     /**

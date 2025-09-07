@@ -3,6 +3,7 @@ package net.bewis09.bewisclient.drawable.renderables.screen
 import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
+import net.bewis09.bewisclient.drawable.then
 import org.lwjgl.glfw.GLFW
 
 abstract class PopupScreen : Renderable() {
@@ -28,7 +29,7 @@ abstract class PopupScreen : Renderable() {
 
         override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {
             if (key == GLFW.GLFW_KEY_ESCAPE) {
-                alphaAnimation.set("alpha", 0f) {
+                alphaAnimation["alpha"] = 0f then {
                     screen.popup?.let { a ->
                         screen.renderables.remove(a)
                     }
@@ -71,9 +72,11 @@ abstract class PopupScreen : Renderable() {
 
     fun closePopup() {
         if (popup != null) {
-            popup?.alphaAnimation?.set("alpha", 0f) {
-                popup?.let(renderables::remove)
-                popup = null
+            popup?.alphaAnimation?.let {
+                it["alpha"] = 0f then {
+                    popup?.let(renderables::remove)
+                    popup = null
+                }
             }
         }
     }

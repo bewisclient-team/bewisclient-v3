@@ -1,6 +1,5 @@
 package net.bewis09.bewisclient.drawable.screen_drawing
 
-import net.bewis09.bewisclient.drawable.screen_drawing.RoundedDrawing.Companion.roundBorderCache
 import net.minecraft.util.Identifier
 import kotlin.math.min
 import kotlin.math.pow

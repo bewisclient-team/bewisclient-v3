@@ -6,6 +6,7 @@ import net.bewis09.bewisclient.game.Keybind
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.functionalities.FullbrightSettings
 import net.bewis09.bewisclient.logic.TextColor
+import net.bewis09.bewisclient.logic.within
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.effect.StatusEffects
 import net.minecraft.text.Style
@@ -66,7 +67,7 @@ object Fullbright : ImageSettingCategory(
 
     fun showFullbrightMessage() {
         val value = FullbrightSettings.brightness.get()
-        showTitle(brightnessTranslation((value * 100).toString() + "%").setStyle(Style.EMPTY.withColor(interpolateColor(0xFF0000, 0xFFFF00, value / 15))))
+        showTitle(brightnessTranslation((value * 100).toString() + "%").setStyle(Style.EMPTY.withColor((value / 15) within (0xFF0000 to 0xFFFF00))))
     }
 
     private val nightVisionInstance = StatusEffectInstance(StatusEffects.NIGHT_VISION, -1, 255, false, false, false)

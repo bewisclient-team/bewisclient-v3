@@ -2,6 +2,9 @@ package net.bewis09.bewisclient.logic
 
 import net.bewis09.bewisclient.api.APIEntrypointLoader
 import net.bewis09.bewisclient.exception.ProgramCodeException
+import net.minecraft.resource.ReloadableResourceManagerImpl
+import net.minecraft.resource.ResourceManager
+import net.minecraft.resource.SynchronousResourceReloader
 
 /**
  * A class when it is needed to do something when those entrypoints are called.
@@ -52,6 +55,13 @@ interface EventEntrypoint : BewisclientInterface {
      * This is the place to register data generators or other things that need to be done before the data generation.
      */
     fun onDatagen() {
+
+    }
+
+    /**
+     * Called when the resources are reloaded.
+     */
+    fun onResourcesReloaded() {
 
     }
 }

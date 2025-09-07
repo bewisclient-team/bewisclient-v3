@@ -7,7 +7,9 @@ import net.bewis09.bewisclient.drawable.renderables.VerticalAlignScrollPlane
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
+import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.impl.widget.TiwylaWidget
+import net.bewis09.bewisclient.logic.multiplyColor
 import net.bewis09.bewisclient.settings.types.ListSetting
 
 class TiwylaLinesSettingsPopup<T>(
@@ -74,7 +76,7 @@ class TiwylaLinesSettingsPopup<T>(
         }
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-            screenDrawing.fillWithBorderRounded(getX(), getY(), getWidth(), getHeight(), 5, 0x333333, 0.9f, 0xAAAAAA, 0.5f)
+            screenDrawing.fillWithBorderRounded(getX(), getY(), getWidth(), getHeight(), 5, OptionsMenuSettings.themeColor.get().getColor() multiplyColor 0x333333, 0.9f, OptionsMenuSettings.themeColor.get().getColor() multiplyColor 0xAAAAAA, 0.5f)
             renderRenderables(screenDrawing, mouseX, mouseY)
         }
 

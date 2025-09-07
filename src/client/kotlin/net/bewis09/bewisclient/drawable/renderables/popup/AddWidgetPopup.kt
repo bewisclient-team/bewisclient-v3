@@ -7,6 +7,9 @@ import net.bewis09.bewisclient.drawable.renderables.VerticalScrollGrid
 import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
+import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
+import net.bewis09.bewisclient.logic.multiplyColor
+import net.bewis09.bewisclient.logic.within
 import net.bewis09.bewisclient.widget.Widget
 import net.bewis09.bewisclient.widget.WidgetLoader
 
@@ -34,13 +37,13 @@ class AddWidgetPopup(val screen: HudEditScreen) : Renderable() {
     }
 
     inner class Inner : Renderable() {
-        val text = Text({ addText.getTranslatedString() }, centered = true)
+        val text = Text({ addText.getTranslatedString() }, 0.5f within (OptionsMenuSettings.themeColor.get().getColor() to 0xFFFFFF) or 0xFF000000.toInt(), centered = true)
         var grid = VerticalScrollGrid({
             WidgetLoader.widgets.filter { !it.isEnabled() }.map { widget -> WidgetElement(widget, screen, this).setHeight(90) }
         }, 5, 80)
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-            screenDrawing.fillWithBorderRounded(getX(), getY(), getWidth(), getHeight(), 10, 0x000000, 0.5f, 0xFFFFFF, 0.15f)
+            screenDrawing.fillWithBorderRounded(getX(), getY(), getWidth(), getHeight(), 10, 0.15f within (0 to OptionsMenuSettings.themeColor.get().getColor()), 0.5f, OptionsMenuSettings.themeColor.get().getColor(), 0.15f)
             renderRenderables(screenDrawing, mouseX, mouseY)
         }
 
@@ -67,9 +70,9 @@ class AddWidgetPopup(val screen: HudEditScreen) : Renderable() {
             val height = (screenDrawing.wrapText(widget.getTranslation().getTranslatedString(), getWidth() - 10).size - 1) * screenDrawing.getTextHeight()
             val descriptionHeight = (screenDrawing.wrapText(widget.getDescription().getTranslatedString(), getWidth() - 10).size - 1) * screenDrawing.getTextHeight()
 
-            screenDrawing.fillRounded(getX(), getY(), getWidth(), getHeight(), 5, 0xFFFFFF, hoverAnimation["hovering"] * 0.15f + 0.15f)
-            screenDrawing.drawCenteredWrappedText(widget.getTranslation().getTranslatedString(), getX() + getWidth() / 2, getY() + 14 - height / 2, getWidth() - 10, -1)
-            screenDrawing.drawCenteredWrappedText(widget.getDescription().getTranslatedString(), getX() + getWidth() / 2, getY() + getHeight() - 38 - descriptionHeight / 2, getWidth() - 10, 0xFFAAAAAA)
+            screenDrawing.fillRounded(getX(), getY(), getWidth(), getHeight(), 5, OptionsMenuSettings.themeColor.get().getColor(), hoverAnimation["hovering"] * 0.15f + 0.15f)
+            screenDrawing.drawCenteredWrappedText(widget.getTranslation().getTranslatedString(), getX() + getWidth() / 2, getY() + 14 - height / 2, getWidth() - 10, OptionsMenuSettings.themeColor.get().getColor(), 1.0f)
+            screenDrawing.drawCenteredWrappedText(widget.getDescription().getTranslatedString(), getX() + getWidth() / 2, getY() + getHeight() - 38 - descriptionHeight / 2, getWidth() - 10, OptionsMenuSettings.themeColor.get().getColor() multiplyColor 0xAAAAAA, 0.65f)
 
             renderRenderables(screenDrawing, mouseX, mouseY)
         }

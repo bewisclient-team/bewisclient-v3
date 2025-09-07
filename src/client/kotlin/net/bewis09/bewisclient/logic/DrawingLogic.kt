@@ -44,22 +44,6 @@ interface DrawingLogic : InGameLogic {
     fun withAlpha(rgb: Number, alpha: Float): Int {
         return ((rgb.toLong() and 0xFFFFFF) or ((alpha * 255).toLong() shl 24)).toInt()
     }
-
-    fun interpolateColor(startColor: Int, endColor: Int, factor: Float): Int {
-        val startRed = (startColor shr 16) and 0xFF
-        val startGreen = (startColor shr 8) and 0xFF
-        val startBlue = startColor and 0xFF
-
-        val endRed = (endColor shr 16) and 0xFF
-        val endGreen = (endColor shr 8) and 0xFF
-        val endBlue = endColor and 0xFF
-
-        val red = ((startRed + (endRed - startRed) * factor).toInt() shl 16)
-        val green = ((startGreen + (endGreen - startGreen) * factor).toInt() shl 8)
-        val blue = (startBlue + (endBlue - startBlue) * factor).toInt()
-
-        return red or green or blue
-    }
 }
 
 /** Checks if the mouse is hovering over a specific area and executes the appropriate action. */

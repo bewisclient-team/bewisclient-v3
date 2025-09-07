@@ -2,12 +2,15 @@ package net.bewis09.bewisclient.drawable.renderables.settings
 
 import net.bewis09.bewisclient.drawable.Translations
 import net.bewis09.bewisclient.drawable.renderables.ImageButton
+import net.bewis09.bewisclient.drawable.renderables.ResetButton
 import net.bewis09.bewisclient.drawable.renderables.Switch
 import net.bewis09.bewisclient.drawable.renderables.TooltipHoverable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
+import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.interfaces.Gettable
 import net.bewis09.bewisclient.interfaces.Settable
+import net.bewis09.bewisclient.logic.within
 import net.minecraft.util.Identifier
 
 class MultipleBooleanSettingsRenderable(
@@ -16,7 +19,7 @@ class MultipleBooleanSettingsRenderable(
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
         screenDrawing.push()
-        screenDrawing.drawCenteredText(title.getTranslatedString(), getX() + getWidth() / 2, getY() + 6, 0xFFFFFF, 1.0F)
+        screenDrawing.drawCenteredText(title.getTranslatedString(), getX() + getWidth() / 2, getY() + 6, 0.5f within (0xFFFFFF to OptionsMenuSettings.themeColor.get().getColor()), 1.0F)
         screenDrawing.pop()
         renderRenderables(screenDrawing, mouseX, mouseY)
     }
@@ -44,16 +47,14 @@ class MultipleBooleanSettingsRenderable(
             height = 16u
         }
 
-        val resetButton = ImageButton(Identifier.of("bewisclient", "textures/gui/sprites/reset.png"), {
-            setting.set(null)
-        }, Translations.RESET).setImagePadding(2).setSize(14, 14)
+        val resetButton = ResetButton(setting)
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             super.render(screenDrawing, mouseX, mouseY)
             screenDrawing.drawHorizontalLine(getX() + 5, getY() - 2, getWidth() - 10, 0xAAAAAA, 0.2F)
             screenDrawing.push()
             screenDrawing.translate(0f, getHeight() / 2f - screenDrawing.getTextHeight() / 2f)
-            screenDrawing.drawText(name.getTranslatedString(), getX() + 8, getY(), 0xFFFFFF, 1.0F)
+            screenDrawing.drawText(name.getTranslatedString(), getX() + 8, getY(), 0.5f within (0xFFFFFF to OptionsMenuSettings.themeColor.get().getColor()), 1.0F)
             screenDrawing.pop()
             renderRenderables(screenDrawing, mouseX, mouseY)
         }

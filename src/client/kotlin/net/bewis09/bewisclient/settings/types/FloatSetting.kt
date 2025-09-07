@@ -10,7 +10,7 @@ import net.bewis09.bewisclient.settings.Settings
 class FloatSetting : Setting<Float> {
     val precision: Precision
 
-    constructor(default: () -> Float, precision: Precision, onChangeListener: ((oldValue: Float?, newValue: Float?) -> Unit)? = null) : super(default, onChangeListener) {
+    constructor(default: () -> Float, precision: Precision, onChangeListener: (Setting<Float>.(oldValue: Float?, newValue: Float?) -> Unit)? = null) : super(default, onChangeListener) {
         this.precision = precision
     }
 
@@ -18,7 +18,7 @@ class FloatSetting : Setting<Float> {
         this.precision = precision
     }
 
-    constructor(default: Float, precision: Precision, onChangeListener: ((oldValue: Float?, newValue: Float?) -> Unit)? = null) : super({ default }, onChangeListener) {
+    constructor(default: Float, precision: Precision, onChangeListener: (Setting<Float>.(oldValue: Float?, newValue: Float?) -> Unit)? = null) : super({ default }, onChangeListener) {
         this.precision = precision
     }
 

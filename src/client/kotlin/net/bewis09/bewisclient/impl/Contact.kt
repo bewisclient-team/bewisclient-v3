@@ -4,6 +4,7 @@ import net.bewis09.bewisclient.data.Constants
 import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.animate
 import net.bewis09.bewisclient.drawable.renderables.Button
+import net.bewis09.bewisclient.drawable.renderables.ThemeButton
 import net.bewis09.bewisclient.drawable.renderables.VerticalAlignScrollPlane
 import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCategory
 import net.bewis09.bewisclient.drawable.renderables.settings.SettingRenderable
@@ -39,10 +40,10 @@ class ContactLinkElement(val id: String, val url: String, val title: String, val
 
     val menuAnimation = animate(OptionsMenuSettings.animationTime.get().toLong(), Animator.EASE_IN_OUT, "menu" to 0f)
 
-    val copyButton = Button(COPY_TO_CLIPBOARD.getTranslatedString()) {
+    val copyButton = ThemeButton(COPY_TO_CLIPBOARD.getTranslatedString()) {
         client.keyboard.clipboard = this.url
     }.setSize(100, 14)
-    val openButton = Button(OPEN_LINK.getTranslatedString()) {
+    val openButton = ThemeButton(OPEN_LINK.getTranslatedString()) {
         Util.getOperatingSystem().open(url)
     }.setSize(100, 14)
 

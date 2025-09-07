@@ -5,11 +5,11 @@ import com.google.gson.JsonPrimitive
 import net.bewis09.bewisclient.settings.Settings
 
 class StringSetting : Setting<String> {
-    constructor(default: String, onChangeListener: ((oldValue: String?, newValue: String?) -> Unit)? = null) : super(default, onChangeListener)
+    constructor(default: String, onChangeListener: (Setting<String>.(oldValue: String?, newValue: String?) -> Unit)? = null) : super(default, onChangeListener)
 
     constructor(default: String) : super(default)
 
-    constructor(default: () -> String, onChangeListener: ((oldValue: String?, newValue: String?) -> Unit)? = null) : super(default, onChangeListener)
+    constructor(default: () -> String, onChangeListener: (Setting<String>.(oldValue: String?, newValue: String?) -> Unit)? = null) : super(default, onChangeListener)
 
     constructor(default: () -> String) : super(default)
 

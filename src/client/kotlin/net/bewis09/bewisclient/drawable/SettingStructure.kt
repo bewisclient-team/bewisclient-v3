@@ -24,7 +24,8 @@ class SettingStructure(val screen: OptionScreen) : BewisclientInterface {
             OptionsMenuSettings.animationTime.createRenderable("menu.settings.animation_time", "Animation Time", "The time (in milliseconds) it takes for animations to complete"),
             OptionsMenuSettings.blurBackground.createRenderable("menu.settings.blur_background", "Blur Background", "Whether to blur the background when opening menus"),
             OptionsMenuSettings.buttonInTitleScreen.createRenderable("menu.settings.button_in_title_screen", "Button in Title Screen", "Whether to show the Bewisclient button in the title screen"),
-            OptionsMenuSettings.buttonInGameScreen.createRenderable("menu.settings.button_in_game_screen", "Button in Game Screen", "Whether to show the Bewisclient button in the in-game pause menu")
+            OptionsMenuSettings.buttonInGameScreen.createRenderable("menu.settings.button_in_game_screen", "Button in Game Screen", "Whether to show the Bewisclient button in the in-game pause menu"),
+            OptionsMenuSettings.themeColor.createRenderable("menu.settings.theme_color", "Theme Color", "The theme color used throughout the client"),
         ), 1
     )
 
@@ -38,7 +39,7 @@ class SettingStructure(val screen: OptionScreen) : BewisclientInterface {
         listOf(
             Button(Translation("menu.widgets.general_setting", "General Widget Settings").getTranslatedString()) {
                 screen.transformInside(
-                    Text(Translation("menu.widgets.general_setting", "General Widget Settings").getTranslatedString(), centered = true).setHeight(12), VerticalAlignScrollPlane({ generalWidgetSettings }, 5)
+                    Text(Translation("menu.widgets.general_setting", "General Widget Settings").getTranslatedString(), centered = true).setHeight(12), VerticalAlignScrollPlane({ generalWidgetSettings }, 1)
                 )
             }(x, y, width, 14), VerticalScrollGrid({ widgets.map { a -> a.setHeight(90) } }, 5, 80).invoke(x, y + 19, width, height - 19)
         )

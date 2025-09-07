@@ -1,8 +1,10 @@
 package net.bewis09.bewisclient.drawable.renderables.popup
 
+import kotlinx.atomicfu.AtomicRef
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.Button
 import net.bewis09.bewisclient.drawable.renderables.Rectangle
+import net.bewis09.bewisclient.drawable.renderables.ThemeButton
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.interfaces.Gettable
@@ -30,16 +32,15 @@ class ColorChangePopup(val state: Gettable<ColorSaver>, val onChange: (ColorSave
     inner class Inner : Renderable() {
         val buttons = types.map { type ->
             ColorSaver.getType(type)?.let {
-                Button(it.getTranslation().getTranslatedString(), { newColor ->
+                ThemeButton(it.getTranslation().getTranslatedString(), {
+                    state.get().getType() == type
+                }, { _ ->
                     if (state.get().getType() != type) {
                         onChange(it.getDefault())
                         renderables.clear()
                         init()
-
                     }
-                }, it.getDescription(), {
-                    state.get().getType() == type
-                })
+                }, it.getDescription())
             }
         }
 
