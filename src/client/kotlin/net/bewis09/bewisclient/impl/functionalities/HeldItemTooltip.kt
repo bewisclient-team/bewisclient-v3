@@ -26,7 +26,7 @@ import net.minecraft.util.profiler.Profilers
 
 object HeldItemTooltip : ImageSettingCategory(
     "held_item_tooltip", Translation("menu.category.held_item_tooltip", "Held Item Info"), arrayOf(
-        HeldItemTooltipSettings.maxShownLines.createRenderable("held_item_tooltip.max_shown_lines", "Max Shown Lines", "Maximum number of lines to show in the held item tooltip"), MultipleBooleanSettingsRenderable.Companion.create(
+        HeldItemTooltipSettings.maxShownLines.createRenderable("held_item_tooltip.max_shown_lines", "Max Shown Lines", "Maximum number of lines to show in the held item tooltip"), MultipleBooleanSettingsRenderable.create(
             "held_item_tooltip.multiple_boolean_settings", "Data Component Tooltips:", "Select which information to show in the held item tooltip"
         ) { HeldItemTooltip.componentRenderableParts }), HeldItemTooltipSettings.enabled
 ) {
@@ -65,7 +65,7 @@ object HeldItemTooltip : ImageSettingCategory(
             val id = toReadableString(Registries.DATA_COMPONENT_TYPE.getEntry(componentType).idAsString)
             parts.add(
                 MultipleBooleanSettingsRenderable.Part(
-                    Translation.Companion.literal(id), null, object : Settable<Boolean?>, Gettable<Boolean> {
+                    Translation.literal(id), null, object : Settable<Boolean?>, Gettable<Boolean> {
                         override fun get(): Boolean {
                             return HeldItemTooltipSettings.showMap[id, !defaultOff.contains(componentType)]
                         }
