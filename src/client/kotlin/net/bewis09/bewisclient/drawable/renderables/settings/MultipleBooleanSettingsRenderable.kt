@@ -1,7 +1,5 @@
 package net.bewis09.bewisclient.drawable.renderables.settings
 
-import net.bewis09.bewisclient.drawable.Translations
-import net.bewis09.bewisclient.drawable.renderables.ImageButton
 import net.bewis09.bewisclient.drawable.renderables.ResetButton
 import net.bewis09.bewisclient.drawable.renderables.Switch
 import net.bewis09.bewisclient.drawable.renderables.TooltipHoverable
@@ -11,7 +9,6 @@ import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.interfaces.Gettable
 import net.bewis09.bewisclient.interfaces.Settable
 import net.bewis09.bewisclient.logic.within
-import net.minecraft.util.Identifier
 
 class MultipleBooleanSettingsRenderable(
     val title: Translation, tooltip: Translation? = null, val settings: () -> List<Part<*>>

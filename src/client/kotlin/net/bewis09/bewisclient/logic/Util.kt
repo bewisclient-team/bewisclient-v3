@@ -1,6 +1,5 @@
 package net.bewis09.bewisclient.logic
 
-import kotlinx.atomicfu.AtomicRef
 import net.bewis09.bewisclient.drawable.screen_drawing.ArgbColor
 import net.bewis09.bewisclient.game.Translation
 import java.awt.Color

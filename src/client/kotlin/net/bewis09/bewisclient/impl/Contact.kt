@@ -3,7 +3,6 @@ package net.bewis09.bewisclient.impl
 import net.bewis09.bewisclient.data.Constants
 import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.animate
-import net.bewis09.bewisclient.drawable.renderables.Button
 import net.bewis09.bewisclient.drawable.renderables.ThemeButton
 import net.bewis09.bewisclient.drawable.renderables.VerticalAlignScrollPlane
 import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCategory

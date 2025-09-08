@@ -22,7 +22,6 @@ import net.bewis09.bewisclient.settings.SettingsLoader
 import net.bewis09.bewisclient.widget.Widget
 import net.bewis09.bewisclient.widget.WidgetLoader
 import net.minecraft.entity.EntityType
-import net.minecraft.entity.passive.*
 import kotlin.jvm.optionals.getOrNull
 
 class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint() {

@@ -1,8 +1,6 @@
 package net.bewis09.bewisclient.drawable.renderables.popup
 
-import kotlinx.atomicfu.AtomicRef
 import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.bewisclient.drawable.renderables.Button
 import net.bewis09.bewisclient.drawable.renderables.Rectangle
 import net.bewis09.bewisclient.drawable.renderables.ThemeButton
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen

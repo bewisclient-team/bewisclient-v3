@@ -2,9 +2,6 @@ package net.bewis09.bewisclient.logic
 
 import net.bewis09.bewisclient.api.APIEntrypointLoader
 import net.bewis09.bewisclient.exception.ProgramCodeException
-import net.minecraft.resource.ReloadableResourceManagerImpl
-import net.minecraft.resource.ResourceManager
-import net.minecraft.resource.SynchronousResourceReloader
 
 /**
  * A class when it is needed to do something when those entrypoints are called.
