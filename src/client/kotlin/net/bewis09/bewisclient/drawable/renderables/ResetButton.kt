@@ -6,7 +6,7 @@ import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.interfaces.Settable
 import net.minecraft.util.Identifier
 
-class ResetButton<T>(val setting: Settable<T?>): TooltipHoverable(Translations.RESET) {
+class ResetButton<T>(val setting: Settable<T?>) : TooltipHoverable(Translations.RESET) {
     init {
         width = 14u
         height = 14u

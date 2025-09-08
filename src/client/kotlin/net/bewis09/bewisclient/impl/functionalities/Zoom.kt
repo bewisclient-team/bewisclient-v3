@@ -1,4 +1,4 @@
-package net.bewis09.bewisclient.impl.functionalities.zoom
+package net.bewis09.bewisclient.impl.functionalities
 
 import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.renderables.options_structure.ImageSettingCategory
@@ -18,7 +18,7 @@ object Zoom : ImageSettingCategory(
         setUsed(it)
     }
 
-    var factorAnimation = Animator({ if (ZoomSettings.instant.get()) 1 else 100 }, Animator.EASE_OUT, "factor" to 1f)
+    var factorAnimation = Animator({ if (ZoomSettings.instant.get()) 1 else 100 }, Animator.Companion.EASE_OUT, "factor" to 1f)
 
     fun getFactor(): Float {
         return if (ZoomSettings.enabled.get()) factorAnimation["factor"] else 1f

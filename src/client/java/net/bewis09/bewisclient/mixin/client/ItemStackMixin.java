@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.mixin.client;
 
-import net.bewis09.bewisclient.impl.functionalities.held_item_info.HeldItemTooltip;
+import net.bewis09.bewisclient.impl.functionalities.HeldItemTooltip;
 import net.bewis09.bewisclient.impl.widget.InventoryWidget;
 import net.minecraft.component.ComponentType;
 import net.minecraft.component.type.TooltipDisplayComponent;

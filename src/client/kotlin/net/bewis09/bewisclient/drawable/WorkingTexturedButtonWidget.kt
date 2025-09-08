@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.drawable
 
-import net.bewis09.bewisclient.impl.functionalities.block_highlight.BlockHighlight.withAlpha
+import net.bewis09.bewisclient.impl.functionalities.BlockHighlight.withAlpha
 import net.minecraft.client.gl.RenderPipelines
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.ButtonTextures

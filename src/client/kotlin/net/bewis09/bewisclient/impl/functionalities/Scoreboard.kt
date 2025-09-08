@@ -1,4 +1,4 @@
-package net.bewis09.bewisclient.impl.functionalities.scoreboard
+package net.bewis09.bewisclient.impl.functionalities
 
 import net.bewis09.bewisclient.drawable.renderables.options_structure.ImageSettingCategory
 import net.bewis09.bewisclient.game.Translation

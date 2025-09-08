@@ -75,7 +75,7 @@ interface ScreenDrawingInterface : BewisclientInterface {
     class AfterDraw(val layer: Int, val func: () -> Unit)
 
     data class Color(val r: Float, val g: Float, val b: Float, val a: Float) {
-        constructor(@ArgbColor color: Number): this(
+        constructor(@ArgbColor color: Number) : this(
             (color.toInt() shr 16 and 0xFF) / 255f,
             (color.toInt() shr 8 and 0xFF) / 255f,
             (color.toInt() and 0xFF) / 255f,

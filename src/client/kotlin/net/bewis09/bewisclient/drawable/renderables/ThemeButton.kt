@@ -51,7 +51,7 @@ class ThemeButton : TooltipHoverable {
         screenDrawing.fillWithBorderRounded(0, 0, getWidth(), getHeight(), 5, color, (hoverAnimation["hovering"].coerceAtLeast(clickAnimation["color"]) + 1) * 0.15f, color, clickAnimation["color"] * 0.5f)
         screenDrawing.pop()
         screenDrawing.scale(0.95f + 0.05f * clickAnimation["click"], 0.95f + 0.05f * clickAnimation["click"])
-        screenDrawing.translate(0f,  -screenDrawing.getTextHeight() / 2f)
+        screenDrawing.translate(0f, -screenDrawing.getTextHeight() / 2f)
         screenDrawing.drawCenteredText(text, 0, 0, 0.5f within (0xFFFFFF to OptionsMenuSettings.themeColor.get().getColor()), 1.0F)
         screenDrawing.pop()
     }

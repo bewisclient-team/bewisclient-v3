@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.mixin.client;
 
-import net.bewis09.bewisclient.impl.functionalities.better_visibility.BetterVisibility;
+import net.bewis09.bewisclient.impl.functionalities.BetterVisibility;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.client.render.fog.FogData;
 import net.minecraft.client.render.fog.FogModifier;

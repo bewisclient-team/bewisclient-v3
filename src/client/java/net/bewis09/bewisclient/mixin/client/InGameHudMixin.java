@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.mixin.client;
 
-import net.bewis09.bewisclient.impl.functionalities.held_item_info.HeldItemTooltip;
+import net.bewis09.bewisclient.impl.functionalities.HeldItemTooltip;
 import net.bewis09.bewisclient.impl.settings.functionalities.HeldItemTooltipSettings;
 import net.bewis09.bewisclient.impl.settings.functionalities.ScoreboardSettings;
 import net.minecraft.client.MinecraftClient;

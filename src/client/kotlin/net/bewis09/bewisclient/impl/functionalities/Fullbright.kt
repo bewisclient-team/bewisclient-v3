@@ -1,4 +1,4 @@
-package net.bewis09.bewisclient.impl.functionalities.fullbright
+package net.bewis09.bewisclient.impl.functionalities
 
 import net.bewis09.bewisclient.drawable.renderables.options_structure.ImageSettingCategory
 import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable

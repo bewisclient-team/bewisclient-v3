@@ -3,6 +3,7 @@
   "package": "net.bewis09.bewisclient.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "BlockItemMixin",
     "ClientPlayerInteractionManagerMixin",
     "ClientPlayNetworkHandlerMixin",
     "EquippableComponentMixin",

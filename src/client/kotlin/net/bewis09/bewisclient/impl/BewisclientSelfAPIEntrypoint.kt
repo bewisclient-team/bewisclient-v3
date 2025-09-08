@@ -5,14 +5,8 @@ import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCategory
 import net.bewis09.bewisclient.game.Keybind
 import net.bewis09.bewisclient.game.KeybindingImplementer
-import net.bewis09.bewisclient.impl.functionalities.better_visibility.BetterVisibility
-import net.bewis09.bewisclient.impl.functionalities.block_highlight.BlockHighlight
-import net.bewis09.bewisclient.impl.functionalities.entity_highlight.EntityHighlight
-import net.bewis09.bewisclient.impl.functionalities.fullbright.Fullbright
-import net.bewis09.bewisclient.impl.functionalities.held_item_info.HeldItemTooltip
-import net.bewis09.bewisclient.impl.functionalities.pumpkin_overlay.PumpkinOverlay
-import net.bewis09.bewisclient.impl.functionalities.scoreboard.Scoreboard
-import net.bewis09.bewisclient.impl.functionalities.zoom.Zoom
+import net.bewis09.bewisclient.game.ShulkerBoxTooltipComponent
+import net.bewis09.bewisclient.impl.functionalities.*
 import net.bewis09.bewisclient.impl.settings.BewisclientSettings
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.bewis09.bewisclient.impl.widget.*
@@ -26,7 +20,7 @@ import kotlin.jvm.optionals.getOrNull
 
 class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint() {
     override fun getEventEntrypoints(): List<EventEntrypoint> = listOf(
-        WidgetLoader, SettingsLoader, KeybindingImplementer, TranslationLoader, BiomeWidget, SpeedWidget, TiwylaWidget
+        WidgetLoader, SettingsLoader, KeybindingImplementer, TranslationLoader, BiomeWidget, SpeedWidget, TiwylaWidget, ShulkerBoxTooltipComponent.Entrypoint
     )
 
     override fun getSettingsObjects(): List<Settings> = listOf(
@@ -44,7 +38,7 @@ class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint() {
     override fun getUtilities(): List<Renderable> = listOf(
         Fullbright, BlockHighlight, EntityHighlight, HeldItemTooltip, Zoom, PumpkinOverlay,
         // Crosshair,
-        BetterVisibility, Scoreboard
+        BetterVisibility, Scoreboard, ShulkerBoxTooltip
         // Chat Enhancements,
     )
 

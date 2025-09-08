@@ -30,7 +30,7 @@ open class ImageSettingCategory(val image: Identifier, text: Translation, settin
         val t = 1 - (1 - s) / 2.5f
 
         screenDrawing.pushColor(t, t, t, 1f)
-        screenDrawing.drawCenteredWrappedText(text.getTranslatedString(), getX() + getWidth() / 2, getY() + getHeight() - 27 - height / 3, getWidth() - 10, (state["state"] / 2) within (0xFFFFFF to OptionsMenuSettings.themeColor.get().getColor()), 1f)
+        screenDrawing.drawCenteredWrappedText(text.getTranslatedString(), getX() + getWidth() / 2, getY() + getHeight() - 27 - height / 3 * 2, getWidth() - 10, (state["state"] / 2) within (0xFFFFFF to OptionsMenuSettings.themeColor.get().getColor()), 1f)
 
         screenDrawing.drawTexture(image, getX() + getWidth() / 2 - 20, getY() + 14, 40, 40, state["state"] within (0xFFFFFF to OptionsMenuSettings.themeColor.get().getColor()), 1f)
 
@@ -68,6 +68,12 @@ abstract class SettingCategory(val text: Translation, val setting: Array<Rendera
     val state = Animator(200, Animator.EASE_IN_OUT, "state" to if (enableSetting?.get() != false) 1f else 0f)
 
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
+        if (setting.isEmpty()) {
+            enableSetting?.toggle()
+            resize()
+            return true
+        }
+
         OptionScreen.currentInstance?.transformInside(
             getHeader(), getPane(), enableSetting
         )

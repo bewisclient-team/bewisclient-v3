@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.mixin.client;
 
-import net.bewis09.bewisclient.impl.functionalities.fullbright.Fullbright;
+import net.bewis09.bewisclient.impl.functionalities.Fullbright;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;

@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.mixin.client;
 
-import net.bewis09.bewisclient.impl.functionalities.zoom.Zoom;
+import net.bewis09.bewisclient.impl.functionalities.Zoom;
 import net.bewis09.bewisclient.impl.widget.CPSWidget;
 import net.minecraft.client.Mouse;
 import net.minecraft.client.input.MouseInput;
