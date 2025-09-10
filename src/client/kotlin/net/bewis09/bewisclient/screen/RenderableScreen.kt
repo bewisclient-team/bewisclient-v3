@@ -35,15 +35,15 @@ class RenderableScreen(val renderable: Renderable) : Screen(Text.empty()) {
     override fun mouseClicked(arg: Click, bl: Boolean): Boolean {
         startX = arg.x
         startY = arg.y
-        return renderable.mouseClick(arg.x, arg.y, arg.keycode()) || super.mouseClicked(arg, bl)
+        return renderable.mouseClick(arg.x, arg.y, arg.keycode) || super.mouseClicked(arg, bl)
     }
 
     override fun mouseReleased(arg: Click): Boolean {
-        return renderable.mouseRelease(arg.x, arg.y, arg.keycode()) || super.mouseReleased(arg)
+        return renderable.mouseRelease(arg.x, arg.y, arg.keycode) || super.mouseReleased(arg)
     }
 
     override fun mouseDragged(arg: Click, d: Double, e: Double): Boolean {
-        return renderable.mouseDrag(arg.x, arg.y, startX, startY, arg.keycode()) || super.mouseDragged(arg, d, e)
+        return renderable.mouseDrag(arg.x, arg.y, startX, startY, arg.keycode) || super.mouseDragged(arg, d, e)
     }
 
     override fun mouseScrolled(mouseX: Double, mouseY: Double, horizontalAmount: Double, verticalAmount: Double): Boolean {
