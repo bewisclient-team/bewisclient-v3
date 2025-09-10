@@ -71,7 +71,7 @@ object CoordinatesWidget : LineWidget() {
     }
 
     override fun defaultPosition(): WidgetPosition = SidedPosition(
-        5, 5, SidedPosition.TransformerType.END, SidedPosition.TransformerType.START
+        5, 5, SidedPosition.END, SidedPosition.START
     )
 
     override fun getId(): Identifier = Identifier.of("bewisclient", "coordinates_widget")

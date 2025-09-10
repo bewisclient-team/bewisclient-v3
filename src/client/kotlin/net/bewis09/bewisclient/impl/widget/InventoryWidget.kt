@@ -52,7 +52,7 @@ object InventoryWidget : ScalableWidget() {
 
     val identifier: Identifier = Identifier.of("bewisclient", "textures/gui/widget/inventory_widget.png")
 
-    override fun defaultPosition(): WidgetPosition = SidedPosition(5, 5, SidedPosition.TransformerType.START, SidedPosition.TransformerType.START)
+    override fun defaultPosition(): WidgetPosition = SidedPosition(5, 5, SidedPosition.START, SidedPosition.START)
 
     override fun getId(): Identifier = Identifier.of("bewisclient", "inventory_widget")
 

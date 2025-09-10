@@ -7,7 +7,7 @@ import net.bewis09.bewisclient.widget.types.LineWidget
 import net.minecraft.util.Identifier
 
 object DayWidget : LineWidget() {
-    val dayText = Translation("widget.day_widget.day", "Day %d")
+    val dayText = Translation("widget.day_widget.day", "Day %s")
 
     val dayWidgetTranslation = Translation("widget.day_widget.name", "Day Widget")
     val dayWidgetDescription = Translation("widget.day_widget.description", "Displays the current in-game day.")

@@ -68,7 +68,7 @@ object BiomeWidget : LineWidget(), EventEntrypoint {
     override fun getLines(): List<String> = listOf(catch { getText(colorCodeBiome.get()) } ?: unknownBiome.getTranslatedString())
 
     override fun defaultPosition(): WidgetPosition = SidedPosition(
-        5, 5, SidedPosition.TransformerType.START, SidedPosition.TransformerType.END
+        5, 5, SidedPosition.START, SidedPosition.END
     )
 
     override fun getId(): Identifier = Identifier.of("bewisclient", "biome_widget")

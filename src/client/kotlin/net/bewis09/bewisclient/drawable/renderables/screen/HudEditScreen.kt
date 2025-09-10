@@ -212,8 +212,8 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
         var x = if (right) getWidth() - wX - widget.getScaledWidth() else wX
         var y = if (end) getHeight() - wY - widget.getScaledHeight() else wY
 
-        var xTransform = if (right) SidedPosition.TransformerType.END else SidedPosition.TransformerType.START
-        val yTransform = if (end) SidedPosition.TransformerType.END else SidedPosition.TransformerType.START
+        var xTransform = if (right) SidedPosition.END else SidedPosition.START
+        val yTransform = if (end) SidedPosition.END else SidedPosition.START
 
         if (!InputUtil.isKeyPressed(client.window, GLFW.GLFW_MOD_SHIFT)) {
             if (abs(x - DefaultWidgetSettings.screenEdgeDistance.get()) < 10) {
@@ -225,7 +225,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
             }
 
             if (abs(wX + widget.getScaledWidth() / 2 - getWidth() / 2) < 10) {
-                xTransform = SidedPosition.TransformerType.CENTER
+                xTransform = SidedPosition.CENTER
             }
         }
 

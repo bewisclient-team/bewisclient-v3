@@ -135,7 +135,7 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
 
     val blockStateInfoMap = sortedMapOf<String, Property<*>>()
 
-    override fun defaultPosition(): WidgetPosition = SidedPosition(0, 5, SidedPosition.TransformerType.CENTER, SidedPosition.TransformerType.START)
+    override fun defaultPosition(): WidgetPosition = SidedPosition(0, 5, SidedPosition.CENTER, SidedPosition.START)
 
     override fun getId(): Identifier = Identifier.of("bewisclient", "tiwyla_widget")
 
