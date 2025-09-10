@@ -8,9 +8,9 @@ import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.interfaces.Gettable
 import net.bewis09.bewisclient.interfaces.Settable
+import net.bewis09.bewisclient.logic.color.Color
 import net.bewis09.bewisclient.logic.color.alpha
 import net.bewis09.bewisclient.logic.color.within
-import net.bewis09.bewisclient.logic.color.Color
 
 class MultipleBooleanSettingsRenderable(
     val title: Translation, tooltip: Translation? = null, val settings: () -> List<Part<*>>

@@ -14,7 +14,6 @@ import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.bewis09.bewisclient.interfaces.BreakingProgressAccessor
 import net.bewis09.bewisclient.logic.EventEntrypoint
 import net.bewis09.bewisclient.logic.catch
-import net.bewis09.bewisclient.logic.color.alpha
 import net.bewis09.bewisclient.logic.color.color
 import net.bewis09.bewisclient.settings.types.BooleanMapSetting
 import net.bewis09.bewisclient.settings.types.ListSetting

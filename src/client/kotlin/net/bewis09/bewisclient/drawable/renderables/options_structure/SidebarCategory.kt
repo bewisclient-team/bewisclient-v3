@@ -8,8 +8,8 @@ import net.bewis09.bewisclient.drawable.renderables.VerticalScrollGrid
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
-import net.bewis09.bewisclient.logic.color.within
 import net.bewis09.bewisclient.logic.color.Color
+import net.bewis09.bewisclient.logic.color.within
 
 open class SidebarCategory(val name: Translation, val renderable: Renderable) {
     constructor(name: Translation, settings: List<Renderable>) : this(name, VerticalScrollGrid({ settings.map { it.setHeight(90) } }, 5, 80))

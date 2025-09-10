@@ -78,7 +78,7 @@ open class StaticColorSaver : ColorSaver {
     }
 
     class SettingRenderable(val get: () -> StaticColorSaver, val set: (ColorSaver) -> Unit) : Renderable() {
-        val colorPicker = ColorPicker({ get().getColor() }) { hue, sat -> set(StaticColorSaver(Color(hue, sat, get().getColor().brightness ))) }
+        val colorPicker = ColorPicker({ get().getColor() }) { hue, sat -> set(StaticColorSaver(Color(hue, sat, get().getColor().brightness))) }
         val fader = Fader({ get().getColor().brightness }, Precision(0f, 1f, 0.01f, 2)) { bri ->
             set(StaticColorSaver(get().getColor().withBrightness(bri)))
         }
@@ -134,7 +134,7 @@ open class StaticColorSaver : ColorSaver {
 
             override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
                 super.render(screenDrawing, mouseX, mouseY)
-                screenDrawing.fillWithBorderRounded(getX(), getY(), getWidth(), getHeight(), 3, color(), 0xAAAAAA.color alpha  0.5f)
+                screenDrawing.fillWithBorderRounded(getX(), getY(), getWidth(), getHeight(), 3, color(), 0xAAAAAA.color alpha 0.5f)
             }
 
             override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {

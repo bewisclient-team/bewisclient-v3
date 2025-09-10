@@ -4,7 +4,6 @@ import net.bewis09.bewisclient.drawable.renderables.TooltipHoverable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
-import net.bewis09.bewisclient.logic.color.alpha
 
 abstract class SettingRenderable(tooltip: () -> Translation?) : TooltipHoverable(tooltip) {
     constructor(tooltip: Translation? = null) : this({ tooltip })

@@ -51,7 +51,7 @@ class ShulkerBoxTooltipComponent(val data: Data) : TooltipComponent {
 
     companion object {
         fun of(stack: ItemStack, block: ShulkerBoxBlock): Data? {
-            return Data(Color(block.color?.entityColor ?: return null, 1f), DefaultedList.ofSize(27, ItemStack.EMPTY).also { (stack.get(DataComponentTypes.CONTAINER) ?: return null).copyTo(it); if (it.all(ItemStack::isEmpty) ) return null } )
+            return Data(Color(block.color?.entityColor ?: return null, 1f), DefaultedList.ofSize(27, ItemStack.EMPTY).also { (stack.get(DataComponentTypes.CONTAINER) ?: return null).copyTo(it); if (it.all(ItemStack::isEmpty)) return null })
         }
     }
 

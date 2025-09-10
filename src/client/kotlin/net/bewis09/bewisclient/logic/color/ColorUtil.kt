@@ -54,31 +54,31 @@ value class Color(val argb: Int) {
     }
 
     constructor(rgb: Int, alpha: Float) : this(rgb or (((alpha * 255).toInt()) shl 24))
-    
+
     constructor(red: Int, green: Int, blue: Int, alpha: Int = 255) : this(
         ((alpha and 0xFF) shl 24) + ((red and 0xFF) shl 16) + ((green and 0xFF) shl 8) + (blue and 0xFF)
     )
-    
+
     constructor(red: Float, green: Float, blue: Float, alpha: Float = 1f) : this(
-        (( (alpha * 255).toInt() and 0xFF) shl 24) + (((red * 255).toInt() and 0xFF) shl 16) + (((green * 255).toInt() and 0xFF) shl 8) + ((blue * 255).toInt() and 0xFF)
+        (((alpha * 255).toInt() and 0xFF) shl 24) + (((red * 255).toInt() and 0xFF) shl 16) + (((green * 255).toInt() and 0xFF) shl 8) + ((blue * 255).toInt() and 0xFF)
     )
-    
+
     constructor(hue: Float, sat: Float, bri: Float) : this(
         java.awt.Color.HSBtoRGB(hue, sat, bri)
     )
-    
+
     val alpha: Int
         get() = this.argb shr 24 and 0xFF
-    
+
     val red: Int
         get() = this.argb shr 16 and 0xFF
-    
+
     val green: Int
         get() = this.argb shr 8 and 0xFF
-    
+
     val blue: Int
         get() = this.argb and 0xFF
-    
+
     val brightness: Float
         get() = hsb()[2]
 
@@ -118,11 +118,11 @@ value class Color(val argb: Int) {
     fun withBlue(blue: Int): Color {
         return Color(this.red, this.green, blue, this.alpha)
     }
-    
+
     infix fun alpha(alpha: Float): Color {
         return Color(this.red, this.green, this.blue, (alpha * 255).toInt())
     }
-    
+
     fun hsb(): FloatArray {
         return java.awt.Color.RGBtoHSB(this.red, this.green, this.blue, null)
     }

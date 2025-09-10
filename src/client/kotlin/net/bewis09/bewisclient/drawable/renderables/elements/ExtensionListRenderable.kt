@@ -6,12 +6,12 @@ import net.bewis09.bewisclient.drawable.animate
 import net.bewis09.bewisclient.drawable.renderables.settings.SettingRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
+import net.bewis09.bewisclient.logic.color.Color
 import net.bewis09.bewisclient.logic.color.color
 import net.fabricmc.loader.api.ModContainer
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import net.minecraft.util.Identifier
-import net.bewis09.bewisclient.logic.color.Color
 import kotlin.math.roundToInt
 
 class ExtensionListRenderable(val modContainer: ModContainer, val entrypoint: BewisclientAPIEntrypoint) : SettingRenderable() {

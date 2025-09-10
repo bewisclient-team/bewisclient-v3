@@ -8,10 +8,10 @@ import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
+import net.bewis09.bewisclient.logic.color.Color
 import net.bewis09.bewisclient.logic.color.within
 import net.bewis09.bewisclient.widget.Widget
 import net.bewis09.bewisclient.widget.WidgetLoader
-import net.bewis09.bewisclient.logic.color.Color
 
 class AddWidgetPopup(val screen: HudEditScreen) : Renderable() {
     companion object {

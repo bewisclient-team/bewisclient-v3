@@ -9,12 +9,12 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.then
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.interfaces.BackgroundEffectProvider
+import net.bewis09.bewisclient.logic.color.Color
 import net.bewis09.bewisclient.logic.color.within
 import net.bewis09.bewisclient.screen.RenderableScreen
 import net.bewis09.bewisclient.settings.types.Setting
 import net.minecraft.util.Identifier
 import org.lwjgl.glfw.GLFW
-import net.bewis09.bewisclient.logic.color.Color
 
 class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvider {
     val clickedButton = atomic<ThemeButton?>(null)

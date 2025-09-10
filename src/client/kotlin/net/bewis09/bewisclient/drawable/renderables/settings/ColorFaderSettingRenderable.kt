@@ -6,11 +6,11 @@ import net.bewis09.bewisclient.drawable.renderables.ResetButton
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
+import net.bewis09.bewisclient.logic.color.Color
 import net.bewis09.bewisclient.logic.color.ColorSaver
 import net.bewis09.bewisclient.logic.color.within
 import net.bewis09.bewisclient.settings.types.FloatSetting
 import net.bewis09.bewisclient.settings.types.Setting
-import net.bewis09.bewisclient.logic.color.Color
 
 class ColorFaderSettingRenderable(val title: Translation, val description: Translation?, val setting: Setting<ColorSaver>, val types: Array<String>, val setting2: FloatSetting, val title2: Translation) : SettingRenderable(description) {
     val colorInfoButton = ColorInfoButton(

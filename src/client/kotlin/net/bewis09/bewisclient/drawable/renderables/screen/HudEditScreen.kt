@@ -8,6 +8,7 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.bewis09.bewisclient.interfaces.BackgroundEffectProvider
+import net.bewis09.bewisclient.logic.color.Color
 import net.bewis09.bewisclient.logic.color.alpha
 import net.bewis09.bewisclient.logic.hoverSeparate
 import net.bewis09.bewisclient.logic.number.Precision
@@ -21,7 +22,6 @@ import net.bewis09.bewisclient.widget.types.ScalableWidget
 import net.minecraft.client.util.InputUtil
 import net.minecraft.util.Identifier
 import org.lwjgl.glfw.GLFW
-import net.bewis09.bewisclient.logic.color.Color
 import kotlin.math.abs
 
 class HudEditScreen : PopupScreen(), BackgroundEffectProvider {

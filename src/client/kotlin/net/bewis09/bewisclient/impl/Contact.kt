@@ -10,10 +10,10 @@ import net.bewis09.bewisclient.drawable.renderables.settings.SettingRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
+import net.bewis09.bewisclient.logic.color.Color
 import net.bewis09.bewisclient.logic.color.alpha
 import net.minecraft.util.Identifier
 import net.minecraft.util.Util
-import net.bewis09.bewisclient.logic.color.Color
 import kotlin.math.roundToInt
 
 object Contact : SidebarCategory(

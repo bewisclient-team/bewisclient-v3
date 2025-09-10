@@ -1,8 +1,8 @@
 package net.bewis09.bewisclient.drawable.screen_drawing
 
+import net.bewis09.bewisclient.logic.color.Color
 import net.minecraft.client.gl.RenderPipelines
 import net.minecraft.util.Identifier
-import net.bewis09.bewisclient.logic.color.Color
 
 interface TextureDrawing : ScreenDrawingInterface {
     fun drawTexture(texture: Identifier, x: Int, y: Int, width: Int, height: Int) {

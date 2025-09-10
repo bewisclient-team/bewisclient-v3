@@ -3,7 +3,6 @@ package net.bewis09.bewisclient.widget.types
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
-import net.bewis09.bewisclient.logic.color.alpha
 
 abstract class LineWidget() : ScalableWidget() {
     val backgroundColor = create("background_color", DefaultWidgetSettings.backgroundColor.cloneWithDefault())
