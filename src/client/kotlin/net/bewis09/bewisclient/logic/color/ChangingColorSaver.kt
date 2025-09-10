@@ -34,8 +34,8 @@ class ChangingColorSaver : ColorSaver {
         return (((System.currentTimeMillis() - startTime) % changingSpeed) / changingSpeed.toFloat() + startHue) % 1f
     }
 
-    override fun getColor(): Int {
-        return Color.HSBtoRGB(getHue(), 1f, 1f)
+    override fun getColor(): Color {
+        return Color.getHSBColor(getHue(), 1f, 1f)
     }
 
     override fun getType(): String = "changing"
@@ -94,7 +94,7 @@ class ChangingColorSaver : ColorSaver {
             renderRenderables(screenDrawing, mouseX, mouseY)
             screenDrawing.push()
             screenDrawing.translate(get().getHue() * (getWidth() - 1), 0f)
-            screenDrawing.drawVerticalLine(getX(), getY() + 36, 8, 0, 1f)
+            screenDrawing.drawVerticalLine(getX(), getY() + 36, 8, Color.BLACK)
             screenDrawing.pop()
         }
 
@@ -113,7 +113,7 @@ class ChangingColorSaver : ColorSaver {
                 )
             )
             addRenderable(
-                Rectangle(0x7FAAAAAA)(
+                Rectangle(0xAAAAAA.color alpha 0.5f)(
                     getX(), getY() + 29, getWidth(), 1
                 )
             )
@@ -123,7 +123,7 @@ class ChangingColorSaver : ColorSaver {
                 )
             )
             addRenderable(
-                Rectangle(0x7FAAAAAA)(
+                Rectangle(0xAAAAAA.color alpha 0.5f)(
                     getX(), getY() + 49, getWidth(), 1
                 )
             )

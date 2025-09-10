@@ -8,7 +8,9 @@ import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.interfaces.Gettable
 import net.bewis09.bewisclient.interfaces.Settable
-import net.bewis09.bewisclient.logic.within
+import net.bewis09.bewisclient.logic.color.alpha
+import net.bewis09.bewisclient.logic.color.within
+import java.awt.Color
 
 class MultipleBooleanSettingsRenderable(
     val title: Translation, tooltip: Translation? = null, val settings: () -> List<Part<*>>
@@ -16,7 +18,7 @@ class MultipleBooleanSettingsRenderable(
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
         screenDrawing.push()
-        screenDrawing.drawCenteredText(title.getTranslatedString(), getX() + getWidth() / 2, getY() + 6, 0.5f within (0xFFFFFF to OptionsMenuSettings.themeColor.get().getColor()), 1.0F)
+        screenDrawing.drawCenteredText(title.getTranslatedString(), getX() + getWidth() / 2, getY() + 6, 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()))
         screenDrawing.pop()
         renderRenderables(screenDrawing, mouseX, mouseY)
     }
@@ -48,10 +50,10 @@ class MultipleBooleanSettingsRenderable(
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             super.render(screenDrawing, mouseX, mouseY)
-            screenDrawing.drawHorizontalLine(getX() + 5, getY() - 2, getWidth() - 10, 0xAAAAAA, 0.2F)
+            screenDrawing.drawHorizontalLine(getX() + 5, getY() - 2, getWidth() - 10, 0xAAAAAA alpha 0.2F)
             screenDrawing.push()
             screenDrawing.translate(0f, getHeight() / 2f - screenDrawing.getTextHeight() / 2f)
-            screenDrawing.drawText(name.getTranslatedString(), getX() + 8, getY(), 0.5f within (0xFFFFFF to OptionsMenuSettings.themeColor.get().getColor()), 1.0F)
+            screenDrawing.drawText(name.getTranslatedString(), getX() + 8, getY(), 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()))
             screenDrawing.pop()
             renderRenderables(screenDrawing, mouseX, mouseY)
         }

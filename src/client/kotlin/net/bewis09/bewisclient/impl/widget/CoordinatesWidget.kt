@@ -117,10 +117,10 @@ object CoordinatesWidget : LineWidget() {
             }
             val text = "- $direction -"
             if (shadow.get()) screenDrawing.drawRightAlignedTextWithShadow(
-                text, getWidth() - paddingSize.get(), paddingSize.get(), textColor.get().getColor(), 1f
+                text, getWidth() - paddingSize.get(), paddingSize.get(), textColor.get().getColor()
             )
             else screenDrawing.drawRightAlignedText(
-                text, getWidth() - paddingSize.get(), paddingSize.get(), textColor.get().getColor(), 1f
+                text, getWidth() - paddingSize.get(), paddingSize.get(), textColor.get().getColor()
             )
         }
     }

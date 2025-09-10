@@ -4,11 +4,13 @@ import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.then
+import net.bewis09.bewisclient.logic.color.alpha
 import org.lwjgl.glfw.GLFW
+import java.awt.Color
 
 abstract class PopupScreen : Renderable() {
     var popup: Popup? = null
-    var backgroundColor: Int = 0x7F000000
+    var backgroundColor: Color = Color.BLACK alpha 0.5f
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         val mx = if (popup != null) Integer.MIN_VALUE else mouseX
@@ -81,7 +83,7 @@ abstract class PopupScreen : Renderable() {
         }
     }
 
-    fun openPopup(popupRenderable: Renderable, backgroundColor: Int = 0x7F000000) {
+    fun openPopup(popupRenderable: Renderable, backgroundColor: Color = Color.BLACK alpha 0.5f) {
         this.backgroundColor = backgroundColor
         if (popup != null) {
             popup?.let { renderables.remove(it) }

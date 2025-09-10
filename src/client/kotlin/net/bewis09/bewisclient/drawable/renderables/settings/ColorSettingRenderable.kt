@@ -6,8 +6,9 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.logic.color.ColorSaver
-import net.bewis09.bewisclient.logic.within
+import net.bewis09.bewisclient.logic.color.within
 import net.bewis09.bewisclient.settings.types.Setting
+import java.awt.Color
 
 class ColorSettingRenderable(val title: Translation, val description: Translation?, val setting: Setting<ColorSaver>, val types: Array<String>) : SettingRenderable(description) {
     val colorInfoButton = ColorInfoButton(
@@ -24,7 +25,7 @@ class ColorSettingRenderable(val title: Translation, val description: Translatio
         super.render(screenDrawing, mouseX, mouseY)
         screenDrawing.push()
         screenDrawing.translate(0f, getHeight() / 2f - screenDrawing.getTextHeight() / 2f + 0.5f)
-        screenDrawing.drawText(title.getTranslatedString(), getX() + 8, getY(), 0.5f within (0xFFFFFF to OptionsMenuSettings.themeColor.get().getColor()), 1.0F)
+        screenDrawing.drawText(title.getTranslatedString(), getX() + 8, getY(), 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()))
         screenDrawing.pop()
         renderRenderables(screenDrawing, mouseX, mouseY)
     }

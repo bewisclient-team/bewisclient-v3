@@ -11,12 +11,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import java.awt.*;
+
 @Mixin(GameRenderer.class)
 public class GameRendererMixin {
     @Unique
     float alpha = EntityHighlightSettings.INSTANCE.getAlpha().get();
     @Unique
-    int color = EntityHighlightSettings.INSTANCE.getColor().get().getColor();
+    Color color = EntityHighlightSettings.INSTANCE.getColor().get().getColor();
     @Unique
     boolean enabled = EntityHighlightSettings.INSTANCE.getEnabled().get();
 
@@ -31,7 +33,7 @@ public class GameRendererMixin {
     @Inject(method = "getOverlayTexture", at = @At("HEAD"), cancellable = true)
     public void getOverlayTexture(CallbackInfoReturnable<OverlayTexture> cir) {
         if (EntityHighlightSettings.INSTANCE.getEnabled().get()) {
-            if (enabled != EntityHighlightSettings.INSTANCE.getEnabled().get() || alpha != EntityHighlightSettings.INSTANCE.getAlpha().get() || color != EntityHighlightSettings.INSTANCE.getColor().get().getColor()) {
+            if (enabled != EntityHighlightSettings.INSTANCE.getEnabled().get() || alpha != EntityHighlightSettings.INSTANCE.getAlpha().get() || color.equals(EntityHighlightSettings.INSTANCE.getColor().get().getColor())) {
                 alpha = EntityHighlightSettings.INSTANCE.getAlpha().get();
                 color = EntityHighlightSettings.INSTANCE.getColor().get().getColor();
                 enabled = EntityHighlightSettings.INSTANCE.getEnabled().get();

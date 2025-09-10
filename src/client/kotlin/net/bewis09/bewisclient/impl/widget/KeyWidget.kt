@@ -8,6 +8,7 @@ import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.bewis09.bewisclient.interfaces.KeyBindingAccessor
 import net.bewis09.bewisclient.logic.color.StaticColorSaver
+import net.bewis09.bewisclient.logic.color.alpha
 import net.bewis09.bewisclient.logic.staticFun
 import net.bewis09.bewisclient.screen.RenderableScreen
 import net.bewis09.bewisclient.settings.types.BooleanSetting
@@ -144,12 +145,12 @@ object KeyWidget : ScalableWidget() {
         val borderRadius = borderRadius.get()
 
         screenDrawing.fillWithBorderRounded(
-            x, y, width, height, borderRadius, backgroundColor, backgroundOpacity, borderColor, borderOpacity
+            x, y, width, height, borderRadius, backgroundColor alpha backgroundOpacity, borderColor alpha borderOpacity
         )
 
         screenDrawing.push()
         screenDrawing.translate(0f, height / 2f - screenDrawing.getTextHeight() / 2f + 1f)
-        screenDrawing.drawCenteredText(text, x + width / 2 + 1, y, textColor, 1f)
+        screenDrawing.drawCenteredText(text, x + width / 2 + 1, y, textColor)
         screenDrawing.pop()
     }
 

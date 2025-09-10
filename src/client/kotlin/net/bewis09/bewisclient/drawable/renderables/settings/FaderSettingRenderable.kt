@@ -5,9 +5,10 @@ import net.bewis09.bewisclient.drawable.renderables.ResetButton
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
+import net.bewis09.bewisclient.logic.color.within
 import net.bewis09.bewisclient.logic.number.Precision
-import net.bewis09.bewisclient.logic.within
 import net.bewis09.bewisclient.settings.types.Setting
+import java.awt.Color
 
 open class FaderSettingRenderable<T : Number>(val title: Translation, val description: Translation?, val setting: Setting<T>, val precision: Precision, val parser: (original: Float) -> T) : SettingRenderable(description) {
     val fader = Fader(
@@ -26,12 +27,12 @@ open class FaderSettingRenderable<T : Number>(val title: Translation, val descri
         super.render(screenDrawing, mouseX, mouseY)
         screenDrawing.push()
         screenDrawing.translate(0f, getHeight() / 2f - screenDrawing.getTextHeight() / 2f + 0.5f)
-        screenDrawing.drawText(title.getTranslatedString(), getX() + 8, getY(), 0.5f within (0xFFFFFF to OptionsMenuSettings.themeColor.get().getColor()), 1.0F)
+        screenDrawing.drawText(title.getTranslatedString(), getX() + 8, getY(), 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()))
         screenDrawing.pop()
         renderRenderables(screenDrawing, mouseX, mouseY)
         screenDrawing.push()
         screenDrawing.translate(0f, getHeight() / 2f - screenDrawing.getTextHeight() / 2f)
-        screenDrawing.drawRightAlignedText(precision.roundToString(setting.get().toFloat()), getX() + getWidth() - fader.getWidth() - 12 - resetButton.getWidth(), getY(), 0.5f within (0xFFFFFF to OptionsMenuSettings.themeColor.get().getColor()), 1.0F)
+        screenDrawing.drawRightAlignedText(precision.roundToString(setting.get().toFloat()), getX() + getWidth() - fader.getWidth() - 12 - resetButton.getWidth(), getY(), 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()))
         screenDrawing.pop()
     }
 

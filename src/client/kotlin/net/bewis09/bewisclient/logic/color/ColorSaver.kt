@@ -5,9 +5,10 @@ import com.google.gson.JsonObject
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.logic.catch
+import java.awt.Color
 
 interface ColorSaver {
-    fun getColor(): Int
+    fun getColor(): Color
     fun getType(): String
     fun saveToJson(): JsonElement
 

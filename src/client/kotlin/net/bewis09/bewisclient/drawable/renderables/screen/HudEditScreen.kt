@@ -8,6 +8,7 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.bewis09.bewisclient.interfaces.BackgroundEffectProvider
+import net.bewis09.bewisclient.logic.color.alpha
 import net.bewis09.bewisclient.logic.hoverSeparate
 import net.bewis09.bewisclient.logic.number.Precision
 import net.bewis09.bewisclient.screen.RenderableScreen
@@ -20,6 +21,7 @@ import net.bewis09.bewisclient.widget.types.ScalableWidget
 import net.minecraft.client.util.InputUtil
 import net.minecraft.util.Identifier
 import org.lwjgl.glfw.GLFW
+import java.awt.Color
 import kotlin.math.abs
 
 class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
@@ -121,8 +123,8 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
                 }
 
                 screenDrawing.afterDraw("tooltip", {
-                    screenDrawing.fillRounded(drawX, drawY, width, tooltipHeight, 5, 0x000000, 0.8f)
-                    screenDrawing.drawWrappedText(lines, drawX + 5, drawY + 5, -1)
+                    screenDrawing.fillRounded(drawX, drawY, width, tooltipHeight, 5, 0x000000 alpha 0.8f)
+                    screenDrawing.drawWrappedText(lines, drawX + 5, drawY + 5, Color.WHITE)
                 })
             }
         }
@@ -130,7 +132,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
 
     override fun init() {
         addRenderable(ImageButton(Identifier.of("bewisclient", "textures/gui/sprites/add.png")) {
-            openPopup(AddWidgetPopup(this), 0xA0000000.toInt())
+            openPopup(AddWidgetPopup(this), Color.BLACK alpha 0.625f)
         }.setImagePadding(0)(getWidth() - 16, getHeight() - 16, 14, 14))
         addRenderable(ImageButton(Identifier.of("bewisclient", "textures/gui/sprites/settings.png")) {
             client.setScreen(RenderableScreen(OptionScreen().also {

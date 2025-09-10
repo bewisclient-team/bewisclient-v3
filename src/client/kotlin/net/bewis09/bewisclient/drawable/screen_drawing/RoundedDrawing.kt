@@ -1,6 +1,7 @@
 package net.bewis09.bewisclient.drawable.screen_drawing
 
 import net.minecraft.util.Identifier
+import java.awt.Color
 import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.roundToInt
@@ -80,7 +81,7 @@ interface RoundedDrawing : RectDrawing, TextureDrawing {
         return identifier
     }
 
-    fun fillRounded(x: Int, y: Int, width: Int, height: Int, radius: Int, @ArgbColor color: Number) {
+    fun fillRounded(x: Int, y: Int, width: Int, height: Int, radius: Int, color: Color) {
         val adjustedRadius = min(radius, min(width / 2, height / 2))
 
         // Fill the main rectangle (without corners)
@@ -97,11 +98,7 @@ interface RoundedDrawing : RectDrawing, TextureDrawing {
         drawRoundedCorner(x + width - adjustedRadius, y + height - adjustedRadius, adjustedRadius, color, 0f) // Bottom-right
     }
 
-    fun fillRounded(x: Int, y: Int, width: Int, height: Int, radius: Int, @RgbColor color: Number, alpha: Float) {
-        fillRounded(x, y, width, height, radius, withAlpha(color, alpha))
-    }
-
-    fun drawBorderRounded(x: Int, y: Int, width: Int, height: Int, radius: Int, @ArgbColor color: Number) {
+    fun drawBorderRounded(x: Int, y: Int, width: Int, height: Int, radius: Int, color: Color) {
         val adjustedRadius = min(radius, min(width / 2, height / 2))
 
         // Draw the border lines (without corners)
@@ -119,33 +116,15 @@ interface RoundedDrawing : RectDrawing, TextureDrawing {
         drawRoundedCornerBorder(x + width - adjustedRadius, y + height - adjustedRadius, adjustedRadius, color, 0f) // Bottom-right
     }
 
-    fun drawBorderRounded(x: Int, y: Int, width: Int, height: Int, radius: Int, @RgbColor color: Number, alpha: Float) {
-        drawBorderRounded(x, y, width, height, radius, withAlpha(color, alpha))
-    }
-
     fun fillWithBorderRounded(
-        x: Int, y: Int, width: Int, height: Int, radius: Int, @ArgbColor fillColor: Number, @ArgbColor borderColor: Number
+        x: Int, y: Int, width: Int, height: Int, radius: Int, fillColor: Color, borderColor: Color
     ) {
         fillRounded(x, y, width, height, radius, fillColor)
         drawBorderRounded(x, y, width, height, radius, borderColor)
     }
 
-    fun fillWithBorderRounded(
-        x: Int, y: Int, width: Int, height: Int, radius: Int, @RgbColor fillColor: Number, @RgbColor borderColor: Number, alpha: Float
-    ) {
-        fillRounded(x, y, width, height, radius, fillColor, alpha)
-        drawBorderRounded(x, y, width, height, radius, borderColor, alpha)
-    }
-
-    fun fillWithBorderRounded(
-        x: Int, y: Int, width: Int, height: Int, radius: Int, @RgbColor fillColor: Number, fillAlpha: Float, @RgbColor borderColor: Number, borderAlpha: Float
-    ) {
-        fillRounded(x, y, width, height, radius, fillColor, fillAlpha)
-        drawBorderRounded(x, y, width, height, radius, borderColor, borderAlpha)
-    }
-
     private fun drawRoundedCorner(
-        centerX: Int, centerY: Int, radius: Int, @ArgbColor color: Number, startAngle: Float
+        centerX: Int, centerY: Int, radius: Int, color: Color, startAngle: Float
     ) {
         push()
         translate(centerX.toFloat(), centerY.toFloat())
@@ -161,7 +140,7 @@ interface RoundedDrawing : RectDrawing, TextureDrawing {
     }
 
     private fun drawRoundedCornerBorder(
-        centerX: Int, centerY: Int, radius: Int, @ArgbColor color: Number, startAngle: Float
+        centerX: Int, centerY: Int, radius: Int, color: Color, startAngle: Float
     ) {
         push()
         translate(centerX.toFloat(), centerY.toFloat())

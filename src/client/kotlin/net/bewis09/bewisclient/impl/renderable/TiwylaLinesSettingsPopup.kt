@@ -9,7 +9,9 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.impl.widget.TiwylaWidget
-import net.bewis09.bewisclient.logic.multiplyColor
+import net.bewis09.bewisclient.logic.color.alpha
+import net.bewis09.bewisclient.logic.color.color
+import net.bewis09.bewisclient.logic.color.times
 import net.bewis09.bewisclient.settings.types.ListSetting
 
 class TiwylaLinesSettingsPopup<T>(
@@ -76,7 +78,7 @@ class TiwylaLinesSettingsPopup<T>(
         }
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-            screenDrawing.fillWithBorderRounded(getX(), getY(), getWidth(), getHeight(), 5, OptionsMenuSettings.themeColor.get().getColor() multiplyColor 0x333333, 0.9f, OptionsMenuSettings.themeColor.get().getColor() multiplyColor 0xAAAAAA, 0.5f)
+            screenDrawing.fillWithBorderRounded(getX(), getY(), getWidth(), getHeight(), 5, OptionsMenuSettings.themeColor.get().getColor() * 0x333333.color alpha 0.9f, OptionsMenuSettings.themeColor.get().getColor() * 0xAAAAAA.color alpha 0.5f)
             renderRenderables(screenDrawing, mouseX, mouseY)
         }
 
