@@ -19,5 +19,5 @@ object FPSWidget : LineWidget() {
 
     override fun getId(): Identifier = Identifier.of("bewisclient", "fps_widget")
 
-    override fun getWidth(): Int = 80
+    override fun getMinimumWidth(): Int = 80
 }

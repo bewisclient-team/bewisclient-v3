@@ -3,8 +3,11 @@ package net.bewis09.bewisclient.widget.types
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
+import net.minecraft.util.math.MathHelper
 
 abstract class LineWidget() : ScalableWidget() {
+    private var lineWidth = 0
+
     val backgroundColor = create("background_color", DefaultWidgetSettings.backgroundColor.cloneWithDefault())
     val backgroundOpacity = create("background_opacity", DefaultWidgetSettings.backgroundOpacity.cloneWithDefault())
     val borderColor = create("border_color", DefaultWidgetSettings.borderColor.cloneWithDefault())
@@ -37,6 +40,8 @@ abstract class LineWidget() : ScalableWidget() {
         else getLines()
         if (lines.isEmpty()) return
 
+        lineWidth = lines.maxOfOrNull { screenDrawing.getTextWidth(it) }?.plus(2 * paddingSize) ?: 0
+
         screenDrawing.fillWithBorderRounded(
             0, 0, getWidth(), getHeight(), borderRadius, backgroundColor alpha backgroundOpacity, borderColor alpha borderOpacity
         )
@@ -58,6 +63,14 @@ abstract class LineWidget() : ScalableWidget() {
             }
         }
     }
+
+    final override fun getWidth(): Int {
+        return MathHelper.clamp(lineWidth, getMinimumWidth(), getMaximumWidth())
+    }
+
+    abstract fun getMinimumWidth(): Int
+
+    open fun getMaximumWidth(): Int = getMinimumWidth()
 
     override fun getHeight(): Int {
         val paddingSize = paddingSize.get()

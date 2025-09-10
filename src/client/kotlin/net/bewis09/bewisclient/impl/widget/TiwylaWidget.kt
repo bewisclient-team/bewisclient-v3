@@ -41,6 +41,8 @@ import kotlin.math.round
 import kotlin.math.roundToInt
 
 object TiwylaWidget : ScalableWidget(), EventEntrypoint {
+    private var lineWidth = 0
+
     var heartsFont: StyleSpriteSource = StyleSpriteSource.Font(Identifier.of("bewisclient", "extra"))
 
     val topTextColor = create("top_text_color", DefaultWidgetSettings.textColor.cloneWithDefault())
@@ -151,6 +153,8 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
 
         val title = getTitle() ?: return
 
+        lineWidth = screenDrawing.getTextWidth(title) + 2 * paddingSize
+
         val lines = getSublines()
 
         screenDrawing.fillWithBorderRounded(
@@ -216,7 +220,7 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
         }
     }
 
-    override fun getWidth(): Int = 150
+    override fun getWidth(): Int = 150.coerceAtLeast(lineWidth).coerceAtMost(250)
 
     override fun getHeight(): Int = 9 + getSublines().size * 6 + lineSpacing.get() * (getSublines().size) + 2 * paddingSize.get()
 

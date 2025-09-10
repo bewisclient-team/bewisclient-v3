@@ -27,5 +27,5 @@ object DayWidget : LineWidget() {
 
     override fun getId(): Identifier = Identifier.of("bewisclient", "day_widget")
 
-    override fun getWidth(): Int = 80
+    override fun getMinimumWidth(): Int = 80
 }

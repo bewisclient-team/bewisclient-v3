@@ -28,7 +28,7 @@ object SpeedWidget : LineWidget(), EventEntrypoint {
 
     override fun getId(): Identifier = Identifier.of("bewisclient", "speed_widget")
 
-    override fun getWidth(): Int = 80
+    override fun getMinimumWidth(): Int = 80
 
     override fun getTranslation(): Translation = speedWidgetTranslation
 

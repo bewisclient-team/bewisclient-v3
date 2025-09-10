@@ -73,7 +73,9 @@ object BiomeWidget : LineWidget(), EventEntrypoint {
 
     override fun getId(): Identifier = Identifier.of("bewisclient", "biome_widget")
 
-    override fun getWidth(): Int = 140
+    override fun getMinimumWidth(): Int = 140
+
+    override fun getMaximumWidth(): Int = 200
 
     private fun getBiomeString(biome: RegistryEntry<Biome>?): String {
         return biome?.keyOrValue?.map({ biomeKey: RegistryKey<Biome> -> biomeKey.value.toString() }, { b: Biome -> "[unregistered $b]" }) ?: unknownBiome.getTranslatedString()

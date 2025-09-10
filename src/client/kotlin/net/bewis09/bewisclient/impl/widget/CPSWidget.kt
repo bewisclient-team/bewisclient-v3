@@ -34,7 +34,7 @@ object CPSWidget : LineWidget() {
 
     override fun getId(): Identifier = Identifier.of("bewisclient", "cps_widget")
 
-    override fun getWidth(): Int = 80
+    override fun getMinimumWidth(): Int = 80
 
     fun getCPSCount(list: MutableList<Long>): Int {
         val currentTime = System.currentTimeMillis()

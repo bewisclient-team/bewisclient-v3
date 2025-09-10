@@ -31,7 +31,7 @@ object PingWidget : LineWidget() {
 
     override fun getId(): Identifier = Identifier.of("bewisclient", "ping_widget")
 
-    override fun getWidth(): Int = 80
+    override fun getMinimumWidth(): Int = 80
 
     override fun isHidden(): Boolean = client.isInSingleplayer
 

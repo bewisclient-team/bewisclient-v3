@@ -38,7 +38,7 @@ object DaytimeWidget : LineWidget() {
 
     override fun getId(): Identifier = Identifier.of("bewisclient", "daytime_widget")
 
-    override fun getWidth(): Int = 80
+    override fun getMinimumWidth(): Int = 80
 
     private fun isSystem12HourFormat(): Boolean {
         val df = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.getDefault())

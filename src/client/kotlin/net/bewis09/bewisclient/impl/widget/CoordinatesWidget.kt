@@ -76,7 +76,9 @@ object CoordinatesWidget : LineWidget() {
 
     override fun getId(): Identifier = Identifier.of("bewisclient", "coordinates_widget")
 
-    override fun getWidth(): Int = if (showBiome.get()) 140 else 100
+    override fun getMinimumWidth(): Int = if (showBiome.get()) 140 else 100
+
+    override fun getMaximumWidth(): Int = if (showBiome.get()) 200 else 100
 
     override fun isCentered(): Boolean = false
 
