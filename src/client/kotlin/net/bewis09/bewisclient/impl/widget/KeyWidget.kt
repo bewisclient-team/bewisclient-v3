@@ -7,6 +7,7 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.bewis09.bewisclient.interfaces.KeyBindingAccessor
+import net.bewis09.bewisclient.logic.color.Color
 import net.bewis09.bewisclient.logic.color.StaticColorSaver
 import net.bewis09.bewisclient.logic.staticFun
 import net.bewis09.bewisclient.screen.RenderableScreen
@@ -30,19 +31,19 @@ object KeyWidget : ScalableWidget() {
     val textColor = create("text_color", DefaultWidgetSettings.textColor.cloneWithDefault())
 
     val pressedBackgroundColor = color(
-        "pressed_background_color", StaticColorSaver(0xAAAAAA), ColorSetting.CHANGING, ColorSetting.STATIC
+        "pressed_background_color", StaticColorSaver(Color.LIGHT_GRAY), ColorSetting.CHANGING, ColorSetting.STATIC
     )
     val pressedBackgroundOpacity = create(
         "pressed_background_opacity", DefaultWidgetSettings.backgroundOpacity.cloneWithDefault()
     )
     val pressedBorderColor = color(
-        "pressed_border_color", StaticColorSaver(0xAAAAAA), ColorSetting.CHANGING, ColorSetting.STATIC
+        "pressed_border_color", StaticColorSaver(Color.LIGHT_GRAY), ColorSetting.CHANGING, ColorSetting.STATIC
     )
     val pressedBorderOpacity = create(
         "pressed_border_opacity", DefaultWidgetSettings.borderOpacity.cloneWithDefault()
     )
     val pressedTextColor = color(
-        "pressed_text_color", StaticColorSaver(0), ColorSetting.CHANGING, ColorSetting.STATIC
+        "pressed_text_color", StaticColorSaver(Color.BLACK), ColorSetting.CHANGING, ColorSetting.STATIC
     )
 
     val paddingSize = int("padding_size", 5, 0, 10)
@@ -144,12 +145,12 @@ object KeyWidget : ScalableWidget() {
         val borderRadius = borderRadius.get()
 
         screenDrawing.fillWithBorderRounded(
-            x, y, width, height, borderRadius, backgroundColor, backgroundOpacity, borderColor, borderOpacity
+            x, y, width, height, borderRadius, backgroundColor alpha backgroundOpacity, borderColor alpha borderOpacity
         )
 
         screenDrawing.push()
         screenDrawing.translate(0f, height / 2f - screenDrawing.getTextHeight() / 2f + 1f)
-        screenDrawing.drawCenteredText(text, x + width / 2 + 1, y, textColor, 1f)
+        screenDrawing.drawCenteredText(text, x + width / 2 + 1, y, textColor)
         screenDrawing.pop()
     }
 

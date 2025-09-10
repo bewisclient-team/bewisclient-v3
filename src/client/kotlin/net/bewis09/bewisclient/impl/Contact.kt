@@ -10,6 +10,8 @@ import net.bewis09.bewisclient.drawable.renderables.settings.SettingRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
+import net.bewis09.bewisclient.logic.color.Color
+import net.bewis09.bewisclient.logic.color.alpha
 import net.minecraft.util.Identifier
 import net.minecraft.util.Util
 import kotlin.math.roundToInt
@@ -57,8 +59,8 @@ class ContactLinkElement(val id: String, val url: String, val title: String, val
         screenDrawing.enableScissors(getX(), getY(), getWidth(), getHeight())
         screenDrawing.push()
         screenDrawing.translate(0f, 11 - screenDrawing.getTextHeight() / 2f + 0.5f)
-        screenDrawing.drawText(titleTranslation.getTranslatedString(), getX() + 32, getY(), 0xFFFFFF, 1.0F)
-        val lines = screenDrawing.drawWrappedText(descriptionTranslation.getTranslatedString(), getX() + 32, getY() + 10, getWidth() - 40, 0xAAAAAA, 0.8f)
+        screenDrawing.drawText(titleTranslation.getTranslatedString(), getX() + 32, getY(), Color.WHITE)
+        val lines = screenDrawing.drawWrappedText(descriptionTranslation.getTranslatedString(), getX() + 32, getY() + 10, getWidth() - 40, 0xAAAAAA alpha 0.8f)
         screenDrawing.pop()
         screenDrawing.drawTexture(identifier, getX() + 8, getY() + getHeight() / 2 - 8, 0f, 0f, 16, 16, 16, 16)
         renderRenderables(screenDrawing, mouseX, mouseY)

@@ -13,7 +13,6 @@ import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.logic.Bewisclient
 import net.bewis09.bewisclient.logic.number.Precision
 import net.minecraft.util.Identifier
-import java.awt.Color
 
 class ChangingColorSaver : ColorSaver {
     val changingSpeed: Int
@@ -34,8 +33,8 @@ class ChangingColorSaver : ColorSaver {
         return (((System.currentTimeMillis() - startTime) % changingSpeed) / changingSpeed.toFloat() + startHue) % 1f
     }
 
-    override fun getColor(): Int {
-        return Color.HSBtoRGB(getHue(), 1f, 1f)
+    override fun getColor(): Color {
+        return Color(getHue(), 1f, 1f)
     }
 
     override fun getType(): String = "changing"
@@ -83,8 +82,8 @@ class ChangingColorSaver : ColorSaver {
             val texture = Bewisclient.createTexture(Identifier.of("bewisclient", "color_strip_selector_190"), 190, 14) { image ->
                 for (x in 0 until 190) {
                     for (y in 0 until 14) {
-                        val color = Color.HSBtoRGB(x / 190f, 1f, 1f)
-                        image.setRGB(x, y, color)
+                        val color = Color(x / 190f, 1f, 1f)
+                        image.setRGB(x, y, color.argb)
                     }
                 }
             }
@@ -94,7 +93,7 @@ class ChangingColorSaver : ColorSaver {
             renderRenderables(screenDrawing, mouseX, mouseY)
             screenDrawing.push()
             screenDrawing.translate(get().getHue() * (getWidth() - 1), 0f)
-            screenDrawing.drawVerticalLine(getX(), getY() + 36, 8, 0, 1f)
+            screenDrawing.drawVerticalLine(getX(), getY() + 36, 8, Color.BLACK)
             screenDrawing.pop()
         }
 
@@ -113,7 +112,7 @@ class ChangingColorSaver : ColorSaver {
                 )
             )
             addRenderable(
-                Rectangle(0x7FAAAAAA)(
+                Rectangle(0xAAAAAA.color alpha 0.5f)(
                     getX(), getY() + 29, getWidth(), 1
                 )
             )
@@ -123,7 +122,7 @@ class ChangingColorSaver : ColorSaver {
                 )
             )
             addRenderable(
-                Rectangle(0x7FAAAAAA)(
+                Rectangle(0xAAAAAA.color alpha 0.5f)(
                     getX(), getY() + 49, getWidth(), 1
                 )
             )

@@ -17,7 +17,7 @@ public class WorldRendererMixin {
         var color = c;
 
         if (BlockHighlightSettings.INSTANCE.getEnabled().get()) {
-            color = (BlockHighlightSettings.INSTANCE.getColor().get().getColor() & 0x00FFFFFF) | ((int) (BlockHighlightSettings.INSTANCE.getThickness().get() * 255f) << 24);
+            color = (BlockHighlightSettings.INSTANCE.getColor().get().getColorInt() & 0x00FFFFFF) | ((int) (BlockHighlightSettings.INSTANCE.getThickness().get() * 255f) << 24);
         }
 
         VertexRendering.drawOutline(matrixStack, vertexConsumer, voxelShape, x, y, z, color);

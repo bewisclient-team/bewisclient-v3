@@ -9,6 +9,7 @@ import net.bewis09.bewisclient.impl.widget.TiwylaWidget
 import net.bewis09.bewisclient.interfaces.Gettable
 import net.bewis09.bewisclient.interfaces.Settable
 import net.bewis09.bewisclient.logic.TextColor
+import net.bewis09.bewisclient.logic.color.alpha
 import net.bewis09.bewisclient.logic.staticFun
 import net.minecraft.registry.Registries
 import net.minecraft.util.Identifier
@@ -64,7 +65,7 @@ class TiwylaInfoSettingsRenderable : Renderable() {
     override fun init() {
         if (getWidth() < 12) return
 
-        addRenderable(Rectangle(0x40FFFFFF)(getX() + getWidth() / 2, getY() + 5, 1, getHeight()))
+        addRenderable(Rectangle(0xFFFFFF alpha 0.25f)(getX() + getWidth() / 2, getY() + 5, 1, getHeight()))
         addRenderable(entityInfoList.setPosition(getX(), getY() + 5).setWidth((getWidth() - 11) / 2))
         addRenderable(blockInfoList.setPosition(getX() + getWidth() - (getWidth() - 11) / 2, getY() + 5).setWidth((getWidth() - 11) / 2))
     }

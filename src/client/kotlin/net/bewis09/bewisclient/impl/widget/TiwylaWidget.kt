@@ -14,6 +14,7 @@ import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.bewis09.bewisclient.interfaces.BreakingProgressAccessor
 import net.bewis09.bewisclient.logic.EventEntrypoint
 import net.bewis09.bewisclient.logic.catch
+import net.bewis09.bewisclient.logic.color.color
 import net.bewis09.bewisclient.settings.types.BooleanMapSetting
 import net.bewis09.bewisclient.settings.types.ListSetting
 import net.bewis09.bewisclient.widget.logic.SidedPosition
@@ -153,13 +154,13 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
         val lines = getSublines()
 
         screenDrawing.fillWithBorderRounded(
-            0, 0, getWidth(), getHeight(), borderRadius, backgroundColor, backgroundOpacity, borderColor, borderOpacity
+            0, 0, getWidth(), getHeight(), borderRadius, backgroundColor alpha backgroundOpacity, borderColor alpha borderOpacity
         )
 
         if (!shadow) {
-            screenDrawing.drawCenteredText(title, getWidth() / 2, paddingSize, topTextColor, 1f)
+            screenDrawing.drawCenteredText(title, getWidth() / 2, paddingSize, topTextColor)
         } else {
-            screenDrawing.drawCenteredTextWithShadow(title, getWidth() / 2, paddingSize, topTextColor, 1f)
+            screenDrawing.drawCenteredTextWithShadow(title, getWidth() / 2, paddingSize, topTextColor)
         }
 
         lines.forEachIndexed { i, line ->
@@ -167,9 +168,9 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
             screenDrawing.translate(getWidth() / 2f, paddingSize + 9f + lineSpacing + (i * (6 + lineSpacing)))
             screenDrawing.scale(0.77f, 0.77f)
             if (!shadow) {
-                screenDrawing.drawCenteredText(line, 0, 0, bottomTextColor, 1f)
+                screenDrawing.drawCenteredText(line, 0, 0, bottomTextColor)
             } else {
-                screenDrawing.drawCenteredTextWithShadow(line, 0, 0, bottomTextColor, 1f)
+                screenDrawing.drawCenteredTextWithShadow(line, 0, 0, bottomTextColor)
             }
             screenDrawing.pop()
         }
@@ -235,7 +236,7 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
             )
         )
         list.add(TiwylaLinesSettingsRenderable())
-        list.add(InfoTextRenderable(healthInfoText.getTranslatedString(), 0xFFAAAAAA.toInt(), true))
+        list.add(InfoTextRenderable(healthInfoText.getTranslatedString(), 0xAAAAAA.color, true))
         list.add(
             backgroundColor.createRenderableWithFader(
                 "widget.background", "Background", "Set the color and opacity of the widget", backgroundOpacity

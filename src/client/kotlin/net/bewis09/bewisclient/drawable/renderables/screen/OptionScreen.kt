@@ -9,7 +9,8 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.then
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.interfaces.BackgroundEffectProvider
-import net.bewis09.bewisclient.logic.within
+import net.bewis09.bewisclient.logic.color.Color
+import net.bewis09.bewisclient.logic.color.within
 import net.bewis09.bewisclient.screen.RenderableScreen
 import net.bewis09.bewisclient.settings.types.Setting
 import net.minecraft.util.Identifier
@@ -29,7 +30,7 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
 //            }.setHeight(14))
 //            it.add(Rectangle(combineInt(OptionsMenuSettings.themeColor.get().getColor(), 0.3f)).setHeight(1))
             it.addAll(settings.sidebarCategories)
-            it.add(Rectangle { withAlpha(OptionsMenuSettings.themeColor.get().getColor(), 0.3f) }.setHeight(1))
+            it.add(Rectangle { OptionsMenuSettings.themeColor.get().getColor() alpha 0.3f }.setHeight(1))
             it.add(ThemeButton("Edit HUD", clickedButton) {
                 alphaMainAnimation["alpha"] = 0f then {
                     client.setScreen(RenderableScreen(HudEditScreen()))
@@ -59,8 +60,8 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int, popupShown: Boolean) {
         screenDrawing.pushAlpha(alphaMainAnimation["alpha"])
         screenDrawing.setBewisclientFont()
-        screenDrawing.fillWithBorderRounded(30, 30, getWidth() - 60, getHeight() - 60, 10, 0.15f within (0 to OptionsMenuSettings.themeColor.get().getColor()), 0.6f, OptionsMenuSettings.themeColor.get().getColor(), 0.3f)
-        screenDrawing.fill(163, 31, 1, getHeight() - 62, withAlpha(OptionsMenuSettings.themeColor.get().getColor(), 0.3f))
+        screenDrawing.fillWithBorderRounded(30, 30, getWidth() - 60, getHeight() - 60, 10, 0.15f within (Color.BLACK to OptionsMenuSettings.themeColor.get().getColor()) alpha 0.6f, OptionsMenuSettings.themeColor.get().getColor() alpha 0.3f)
+        screenDrawing.fill(163, 31, 1, getHeight() - 62, OptionsMenuSettings.themeColor.get().getColor() alpha 0.3f)
         sidebarPlane.render(screenDrawing, mouseX, mouseY)
         image.render(screenDrawing, mouseX, mouseY)
         screenDrawing.pushAlpha(alphaMainAnimation["inside"])

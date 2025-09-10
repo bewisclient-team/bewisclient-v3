@@ -6,7 +6,8 @@ import net.bewis09.bewisclient.game.Keybind
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.functionalities.FullbrightSettings
 import net.bewis09.bewisclient.logic.TextColor
-import net.bewis09.bewisclient.logic.within
+import net.bewis09.bewisclient.logic.color.color
+import net.bewis09.bewisclient.logic.color.within
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.effect.StatusEffects
 import net.minecraft.text.Style
@@ -21,7 +22,7 @@ object Fullbright : ImageSettingCategory(
         InfoTextRenderable(
             Translation(
                 "fullbright.night_vision.error_text", "When night vision is applied via Bewisclient, the effect will not be the same as if you got it via a potion, because Bewisclient preserves the old way in which night vision works, which illuminates the world completely, whilst with the status effect it is always rendered as if the brightness is set all the way down to moody."
-            ).getTranslatedString(), 0xFFAAAAAA.toInt(), true
+            ).getTranslatedString(), 0xAAAAAA.color, true
         ),
     ), FullbrightSettings.enabled
 ) {
@@ -67,7 +68,7 @@ object Fullbright : ImageSettingCategory(
 
     fun showFullbrightMessage() {
         val value = FullbrightSettings.brightness.get()
-        showTitle(brightnessTranslation((value * 100).toString() + "%").setStyle(Style.EMPTY.withColor((value / 15) within (0xFF0000 to 0xFFFF00))))
+        showTitle(brightnessTranslation((value * 100).toString() + "%").setStyle(Style.EMPTY.withColor(((value / 15) within (0xFF0000.color to 0xFFFF00.color)).argb)))
     }
 
     private val nightVisionInstance = StatusEffectInstance(StatusEffects.NIGHT_VISION, -1, 255, false, false, false)

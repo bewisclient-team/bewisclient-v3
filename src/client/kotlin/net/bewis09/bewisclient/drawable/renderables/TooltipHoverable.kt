@@ -4,6 +4,7 @@ import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.animate
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
+import net.bewis09.bewisclient.logic.color.Color
 
 open class TooltipHoverable(val tooltip: () -> Translation?) : Hoverable() {
     constructor(tooltip: Translation? = null) : this({ tooltip })
@@ -47,8 +48,8 @@ open class TooltipHoverable(val tooltip: () -> Translation?) : Hoverable() {
                     screenDrawing.translate(-width.toFloat(), 0f)
                 }
 
-                screenDrawing.fillRounded(mouseX, mouseY - tooltipHeight, width, tooltipHeight, 5, 0x000000, tooltipAnimation["tooltip"] * 0.8f)
-                screenDrawing.drawWrappedText(wrappedText, mouseX + 5, mouseY - tooltipHeight + 5, withAlpha(0xFFFFFF, tooltipAnimation["tooltip"]))
+                screenDrawing.fillRounded(mouseX, mouseY - tooltipHeight, width, tooltipHeight, 5, Color.BLACK alpha tooltipAnimation["tooltip"] * 0.8f)
+                screenDrawing.drawWrappedText(wrappedText, mouseX + 5, mouseY - tooltipHeight + 5, Color.WHITE alpha tooltipAnimation["tooltip"])
             })
         } else {
             if (tooltipAnimation["tooltip"] != 0f) tooltipAnimation.pauseForOnce()

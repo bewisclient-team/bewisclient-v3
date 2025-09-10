@@ -10,6 +10,6 @@ abstract class SettingRenderable(tooltip: () -> Translation?) : TooltipHoverable
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
-        screenDrawing.fillRounded(getX(), getY(), getWidth(), getHeight(), 5, OptionsMenuSettings.themeColor.get().getColor(), hoverAnimation["hovering"] * 0.15f + 0.1f)
+        screenDrawing.fillRounded(getX(), getY(), getWidth(), getHeight(), 5, OptionsMenuSettings.themeColor.get().getColor() alpha hoverAnimation["hovering"] * 0.15f + 0.1f)
     }
 }

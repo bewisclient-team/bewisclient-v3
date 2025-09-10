@@ -38,22 +38,22 @@ abstract class LineWidget() : ScalableWidget() {
         if (lines.isEmpty()) return
 
         screenDrawing.fillWithBorderRounded(
-            0, 0, getWidth(), getHeight(), borderRadius, backgroundColor, backgroundOpacity, borderColor, borderOpacity
+            0, 0, getWidth(), getHeight(), borderRadius, backgroundColor alpha backgroundOpacity, borderColor alpha borderOpacity
         )
 
         lines.forEach { line ->
             val y = (lines.indexOf(line) * (9 + lineSpacing)) + paddingSize
             if (!shadow) {
                 if (isCentered()) {
-                    screenDrawing.drawCenteredText(line, getWidth() / 2, y, textColor, 1f)
+                    screenDrawing.drawCenteredText(line, getWidth() / 2, y, textColor)
                 } else {
-                    screenDrawing.drawText(line, paddingSize, y, textColor, 1f)
+                    screenDrawing.drawText(line, paddingSize, y, textColor)
                 }
             } else {
                 if (isCentered()) {
-                    screenDrawing.drawCenteredTextWithShadow(line, getWidth() / 2, y, textColor, 1f)
+                    screenDrawing.drawCenteredTextWithShadow(line, getWidth() / 2, y, textColor)
                 } else {
-                    screenDrawing.drawTextWithShadow(line, paddingSize, y, textColor, 1f)
+                    screenDrawing.drawTextWithShadow(line, paddingSize, y, textColor)
                 }
             }
         }

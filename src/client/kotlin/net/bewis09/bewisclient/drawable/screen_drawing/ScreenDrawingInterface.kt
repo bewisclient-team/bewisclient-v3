@@ -1,12 +1,12 @@
 package net.bewis09.bewisclient.drawable.screen_drawing
 
 import net.bewis09.bewisclient.logic.BewisclientInterface
+import net.bewis09.bewisclient.logic.color.Color
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Style
 import net.minecraft.text.StyleSpriteSource
 import net.minecraft.util.Identifier
-import kotlin.math.roundToInt
 
 interface ScreenDrawingInterface : BewisclientInterface {
     val drawContext: DrawContext
@@ -66,32 +66,11 @@ interface ScreenDrawingInterface : BewisclientInterface {
         drawContext.matrices.popMatrix()
     }
 
-    fun applyAlpha(color: Number): Int {
-        return (getCurrentColorModifier() * Color(
-            (color.toInt() shr 16 and 0xFF) / 255f, (color.toInt() shr 8 and 0xFF) / 255f, (color.toInt() and 0xFF) / 255f, (color.toInt() shr 24 and 0xFF) / 255f
-        )).toInt()
+    fun applyAlpha(color: Color): Int {
+        return (getCurrentColorModifier() * color).argb
     }
 
     class AfterDraw(val layer: Int, val func: () -> Unit)
-
-    data class Color(val r: Float, val g: Float, val b: Float, val a: Float) {
-        constructor(@ArgbColor color: Number) : this(
-            (color.toInt() shr 16 and 0xFF) / 255f,
-            (color.toInt() shr 8 and 0xFF) / 255f,
-            (color.toInt() and 0xFF) / 255f,
-            (color.toInt() shr 24 and 0xFF) / 255f
-        )
-
-        operator fun times(other: Color): Color {
-            return Color(
-                r * other.r, g * other.g, b * other.b, a * other.a
-            )
-        }
-
-        fun toInt(): Int {
-            return ((r * 255).roundToInt() shl 16) or ((g * 255).roundToInt() shl 8) or (b * 255).roundToInt() or ((a * 255).roundToInt() shl 24)
-        }
-    }
 
     var style: Style
     val colorStack: MutableList<Color>
@@ -109,14 +88,14 @@ interface ScreenDrawingInterface : BewisclientInterface {
         return if (colorStack.isNotEmpty()) {
             colorStack.removeLast()
         } else {
-            Color(1f, 1f, 1f, 1f)
+            Color.WHITE
         }
     }
 
     fun getCurrentColorModifier(): Color {
         return colorStack.reduceOrNull { acc, alpha ->
             acc * alpha
-        } ?: Color(1f, 1f, 1f, 1f)
+        } ?: Color.WHITE
     }
 
     fun setBewisclientFont() {

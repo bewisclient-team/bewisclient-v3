@@ -7,6 +7,8 @@ import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.interfaces.Gettable
 import net.bewis09.bewisclient.logic.color.ColorSaver
+import net.bewis09.bewisclient.logic.color.alpha
+import net.bewis09.bewisclient.logic.color.color
 
 class ColorChangePopup(val state: Gettable<ColorSaver>, val onChange: (ColorSaver) -> Unit, val types: Array<String>) : Renderable() {
     val inner = Inner()
@@ -48,7 +50,7 @@ class ColorChangePopup(val state: Gettable<ColorSaver>, val onChange: (ColorSave
         }
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-            screenDrawing.fillWithBorderRounded(getX(), getY(), getWidth(), getHeight(), 5, 0x333333, 0.9f, 0xAAAAAA, 0.5f)
+            screenDrawing.fillWithBorderRounded(getX(), getY(), getWidth(), getHeight(), 5, 0x333333 alpha 0.9f, 0xAAAAAA alpha 0.5f)
             renderRenderables(screenDrawing, mouseX, mouseY)
         }
 
@@ -62,7 +64,7 @@ class ColorChangePopup(val state: Gettable<ColorSaver>, val onChange: (ColorSave
                     addRenderable(it)
                 }
             }
-            addRenderable(Rectangle(0x7FAAAAAA)(getX() + 5, getY() + getHeight() - 26, getWidth() - 11, 1))
+            addRenderable(Rectangle(0xAAAAAA.color alpha 0.5f)(getX() + 5, getY() + getHeight() - 26, getWidth() - 11, 1))
             ColorSaver.getFactory(state.get())?.getSettingsRenderable({ state.get() }, onChange)(getX() + 5, getY() + 6, getWidth() - 11, getHeight() - 37)?.let { addRenderable(it); it.resize() }
         }
     }

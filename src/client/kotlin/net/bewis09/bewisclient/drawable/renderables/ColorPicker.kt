@@ -2,12 +2,12 @@ package net.bewis09.bewisclient.drawable.renderables
 
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.logic.getBrightness
+import net.bewis09.bewisclient.logic.color.Color
+import net.bewis09.bewisclient.logic.color.alpha
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.MathHelper
-import java.awt.Color
 
-class ColorPicker(val get: () -> Int, val set: (hue: Float, sat: Float) -> Unit) : Renderable() {
+class ColorPicker(val get: () -> Color, val set: (hue: Float, sat: Float) -> Unit) : Renderable() {
     companion object {
         val colorPickerCache = mutableMapOf<Int, Identifier>()
     }
@@ -24,7 +24,7 @@ class ColorPicker(val get: () -> Int, val set: (hue: Float, sat: Float) -> Unit)
         createTexture(identifier, size, size) {
             for (x in 0 until size) {
                 for (y in 0 until size) {
-                    val color = Color.HSBtoRGB(x / size.toFloat(), y / size.toFloat(), 1f)
+                    val color = java.awt.Color.HSBtoRGB(x / size.toFloat(), y / size.toFloat(), 1f)
                     it.setRGB(x, y, color)
                 }
             }
@@ -36,8 +36,8 @@ class ColorPicker(val get: () -> Int, val set: (hue: Float, sat: Float) -> Unit)
     }
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        screenDrawing.drawBorder(getX(), getY(), getWidth(), getHeight(), 0xAAAAAA, 0.5f)
-        getBrightness(get()).let { screenDrawing.pushColor(it, it, it, 1f) }
+        screenDrawing.drawBorder(getX(), getY(), getWidth(), getHeight(), 0xAAAAAA alpha 0.5f)
+        get().brightness.let { screenDrawing.pushColor(it, it, it, 1f) }
         screenDrawing.drawTexture(getColorPickerImage((getWidth() - 2).coerceAtMost((getHeight() - 2))), getX() + 1, getY() + 1, getWidth() - 2, getHeight() - 2)
         screenDrawing.popColor()
     }
