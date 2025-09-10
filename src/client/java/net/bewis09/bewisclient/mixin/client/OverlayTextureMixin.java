@@ -17,6 +17,6 @@ public class OverlayTextureMixin {
             return;
         }
 
-        instance.setColorArgb(j, i, ColorHelper.withAlpha(1 - EntityHighlightSettings.INSTANCE.getAlpha().get(), EntityHighlightSettings.INSTANCE.getColor().get().getColor().getRGB()));
+        instance.setColorArgb(j, i, ColorHelper.withAlpha(1 - EntityHighlightSettings.INSTANCE.getAlpha().get(), EntityHighlightSettings.INSTANCE.getColor().get().getColorInt()));
     }
 }

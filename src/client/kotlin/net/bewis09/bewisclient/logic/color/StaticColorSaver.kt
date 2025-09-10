@@ -9,7 +9,6 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.logic.colors
 import net.bewis09.bewisclient.logic.number.Precision
-import java.awt.Color
 
 open class StaticColorSaver : ColorSaver {
     private val color: Color
@@ -19,26 +18,22 @@ open class StaticColorSaver : ColorSaver {
 
         fun fromColorString(colorString: String): StaticColorSaver? {
             if (colorString.startsWith("#")) {
-                return StaticColorSaver(colorString.substring(1).toIntOrNull(16) ?: 0xFFFFFF)
+                return StaticColorSaver(colorString.substring(1).toIntOrNull(16)?.color ?: Color.WHITE)
             }
             return null
         }
     }
 
-    constructor(color: Int) {
-        this.color = createColor(color)
-    }
-
     constructor(color: Color) {
-        this.color = color
+        this.color = color.withAlpha(255)
     }
 
     constructor(r: Float, g: Float, b: Float) {
-        this.color = createColor(r, g, b)
+        this.color = Color((r * 255).toInt(), (g * 255).toInt(), (b * 255).toInt())
     }
 
     constructor(r: Int, g: Int, b: Int) {
-        this.color = createColor(r, g, b)
+        this.color = Color(r, g, b)
     }
 
     override fun getColor(): Color {
@@ -52,7 +47,7 @@ open class StaticColorSaver : ColorSaver {
     }
 
     fun getColorString(): String {
-        return String.format("#%06X", color.rgb and 0xFFFFFF)
+        return String.format("#%06X", color.argb and 0xFFFFFF)
     }
 
     object Factory : ColorSaverFactory<StaticColorSaver> {
@@ -71,7 +66,7 @@ open class StaticColorSaver : ColorSaver {
 
         override fun getTranslation(): Translation = translation
 
-        override fun getDefault(): StaticColorSaver = StaticColorSaver(0xFFFFFF)
+        override fun getDefault(): StaticColorSaver = StaticColorSaver(0xFFFFFF.color)
 
         override fun getDescription(): Translation = description
 
@@ -83,7 +78,7 @@ open class StaticColorSaver : ColorSaver {
     }
 
     class SettingRenderable(val get: () -> StaticColorSaver, val set: (ColorSaver) -> Unit) : Renderable() {
-        val colorPicker = ColorPicker({ get().getColor() }) { hue, sat -> set(StaticColorSaver(Color.HSBtoRGB(hue, sat, get().getColor().brightness ))) }
+        val colorPicker = ColorPicker({ get().getColor() }) { hue, sat -> set(StaticColorSaver(Color(hue, sat, get().getColor().brightness ))) }
         val fader = Fader({ get().getColor().brightness }, Precision(0f, 1f, 0.01f, 2)) { bri ->
             set(StaticColorSaver(get().getColor().withBrightness(bri)))
         }
@@ -113,7 +108,7 @@ open class StaticColorSaver : ColorSaver {
                 )
             )
             addRenderable(Rectangle(0xAAAAAA.color alpha 0.5f)(getX() + getHeight() + 5, getY() + 30, getWidth() - getHeight() - 5, 1))
-            addRenderable(ColorButton(getX() + getHeight() + 5, getY() + 36, 27, 27, { get().getColor() }, String.format("#%06X", get().getColor().rgb)))
+            addRenderable(ColorButton(getX() + getHeight() + 5, getY() + 36, 27, 27, { get().getColor() }, String.format("#%06X", get().getColor().argb)))
             addRenderable(Rectangle(0xAAAAAA.color alpha 0.5f)(getX() + getHeight() + 37, getY() + 36, 1, 27))
 
             addRenderable(

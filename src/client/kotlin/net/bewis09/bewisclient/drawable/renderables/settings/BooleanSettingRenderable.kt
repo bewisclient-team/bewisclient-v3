@@ -7,7 +7,7 @@ import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.logic.color.within
 import net.bewis09.bewisclient.settings.types.Setting
-import java.awt.Color
+import net.bewis09.bewisclient.logic.color.Color
 
 class BooleanSettingRenderable(val title: Translation, val description: Translation?, val setting: Setting<Boolean>) : SettingRenderable(description) {
     val switch = Switch(

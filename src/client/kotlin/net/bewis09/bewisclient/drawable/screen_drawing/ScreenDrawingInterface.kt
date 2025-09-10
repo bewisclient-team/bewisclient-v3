@@ -1,14 +1,12 @@
 package net.bewis09.bewisclient.drawable.screen_drawing
 
 import net.bewis09.bewisclient.logic.BewisclientInterface
-import net.bewis09.bewisclient.logic.color.createColor
-import net.bewis09.bewisclient.logic.color.times
+import net.bewis09.bewisclient.logic.color.Color
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Style
 import net.minecraft.text.StyleSpriteSource
 import net.minecraft.util.Identifier
-import java.awt.Color
 
 interface ScreenDrawingInterface : BewisclientInterface {
     val drawContext: DrawContext
@@ -69,7 +67,7 @@ interface ScreenDrawingInterface : BewisclientInterface {
     }
 
     fun applyAlpha(color: Color): Int {
-        return (getCurrentColorModifier() * color).rgb
+        return (getCurrentColorModifier() * color).argb
     }
 
     class AfterDraw(val layer: Int, val func: () -> Unit)
@@ -79,11 +77,11 @@ interface ScreenDrawingInterface : BewisclientInterface {
     val afterDrawStack: HashMap<String, AfterDraw>
 
     fun pushAlpha(alpha: Float) {
-        colorStack.add(createColor(1f, 1f, 1f, alpha))
+        colorStack.add(Color(1f, 1f, 1f, alpha))
     }
 
     fun pushColor(r: Float, g: Float, b: Float, a: Float) {
-        colorStack.add(createColor(r, g, b, a))
+        colorStack.add(Color(r, g, b, a))
     }
 
     fun popColor(): Color {

@@ -8,12 +8,11 @@ import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
-import net.bewis09.bewisclient.logic.color.alpha
+import net.bewis09.bewisclient.logic.color.Color
 import net.bewis09.bewisclient.logic.color.color
 import net.bewis09.bewisclient.logic.color.within
 import net.bewis09.bewisclient.settings.types.BooleanSetting
 import net.minecraft.util.Identifier
-import java.awt.Color
 
 open class ImageSettingCategory(val image: Identifier, text: Translation, setting: Array<Renderable>, enableSetting: BooleanSetting? = null) : SettingCategory(text, setting, enableSetting) {
     constructor(image: String, text: Translation, setting: Array<Renderable>, enableSetting: BooleanSetting? = null) : this(Identifier.of("bewisclient", "textures/gui/functionalities/$image.png"), text, setting, enableSetting)

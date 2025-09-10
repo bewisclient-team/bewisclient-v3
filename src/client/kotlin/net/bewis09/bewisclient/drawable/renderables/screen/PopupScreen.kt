@@ -4,9 +4,8 @@ import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.then
-import net.bewis09.bewisclient.logic.color.alpha
 import org.lwjgl.glfw.GLFW
-import java.awt.Color
+import net.bewis09.bewisclient.logic.color.Color
 
 abstract class PopupScreen : Renderable() {
     var popup: Popup? = null

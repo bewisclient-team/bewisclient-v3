@@ -2,7 +2,7 @@ package net.bewis09.bewisclient.logic
 
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.logic.color.color
-import java.awt.Color
+import net.bewis09.bewisclient.logic.color.Color
 
 inline fun <T> catch(block: () -> T, or: T) = try {
     block()

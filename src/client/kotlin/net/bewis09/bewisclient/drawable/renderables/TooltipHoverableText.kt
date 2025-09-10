@@ -3,7 +3,7 @@ package net.bewis09.bewisclient.drawable.renderables
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.logic.color.within
-import java.awt.Color
+import net.bewis09.bewisclient.logic.color.Color
 
 class TooltipHoverableText(val text: Translation, val color: Color, val hoverColor: Color = color, tooltip: Translation? = null, val centered: Boolean = false, val onClick: (() -> Unit)? = null) : TooltipHoverable(tooltip) {
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {

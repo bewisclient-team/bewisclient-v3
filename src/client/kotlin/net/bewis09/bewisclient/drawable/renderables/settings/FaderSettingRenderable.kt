@@ -8,7 +8,7 @@ import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.logic.color.within
 import net.bewis09.bewisclient.logic.number.Precision
 import net.bewis09.bewisclient.settings.types.Setting
-import java.awt.Color
+import net.bewis09.bewisclient.logic.color.Color
 
 open class FaderSettingRenderable<T : Number>(val title: Translation, val description: Translation?, val setting: Setting<T>, val precision: Precision, val parser: (original: Float) -> T) : SettingRenderable(description) {
     val fader = Fader(

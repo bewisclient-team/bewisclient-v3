@@ -18,7 +18,7 @@ public class GameRendererMixin {
     @Unique
     float alpha = EntityHighlightSettings.INSTANCE.getAlpha().get();
     @Unique
-    Color color = EntityHighlightSettings.INSTANCE.getColor().get().getColor();
+    int color = EntityHighlightSettings.INSTANCE.getColor().get().getColorInt();
     @Unique
     boolean enabled = EntityHighlightSettings.INSTANCE.getEnabled().get();
 
@@ -33,9 +33,9 @@ public class GameRendererMixin {
     @Inject(method = "getOverlayTexture", at = @At("HEAD"), cancellable = true)
     public void getOverlayTexture(CallbackInfoReturnable<OverlayTexture> cir) {
         if (EntityHighlightSettings.INSTANCE.getEnabled().get()) {
-            if (enabled != EntityHighlightSettings.INSTANCE.getEnabled().get() || alpha != EntityHighlightSettings.INSTANCE.getAlpha().get() || color.equals(EntityHighlightSettings.INSTANCE.getColor().get().getColor())) {
+            if (enabled != EntityHighlightSettings.INSTANCE.getEnabled().get() || alpha != EntityHighlightSettings.INSTANCE.getAlpha().get() || color != (EntityHighlightSettings.INSTANCE.getColor().get().getColorInt())) {
                 alpha = EntityHighlightSettings.INSTANCE.getAlpha().get();
-                color = EntityHighlightSettings.INSTANCE.getColor().get().getColor();
+                color = EntityHighlightSettings.INSTANCE.getColor().get().getColorInt();
                 enabled = EntityHighlightSettings.INSTANCE.getEnabled().get();
 
                 overlayTexture = new OverlayTexture();

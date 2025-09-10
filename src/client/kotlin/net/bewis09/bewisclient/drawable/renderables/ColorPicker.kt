@@ -2,11 +2,10 @@ package net.bewis09.bewisclient.drawable.renderables
 
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
+import net.bewis09.bewisclient.logic.color.Color
 import net.bewis09.bewisclient.logic.color.alpha
-import net.bewis09.bewisclient.logic.color.brightness
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.MathHelper
-import java.awt.Color
 
 class ColorPicker(val get: () -> Color, val set: (hue: Float, sat: Float) -> Unit) : Renderable() {
     companion object {
@@ -25,7 +24,7 @@ class ColorPicker(val get: () -> Color, val set: (hue: Float, sat: Float) -> Uni
         createTexture(identifier, size, size) {
             for (x in 0 until size) {
                 for (y in 0 until size) {
-                    val color = Color.HSBtoRGB(x / size.toFloat(), y / size.toFloat(), 1f)
+                    val color = java.awt.Color.HSBtoRGB(x / size.toFloat(), y / size.toFloat(), 1f)
                     it.setRGB(x, y, color)
                 }
             }

@@ -2,8 +2,7 @@ package net.bewis09.bewisclient.game
 
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.logic.EventEntrypoint
-import net.bewis09.bewisclient.logic.color.createColor
-import net.bewis09.bewisclient.logic.color.times
+import net.bewis09.bewisclient.logic.color.Color
 import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback
 import net.minecraft.block.ShulkerBoxBlock
 import net.minecraft.client.font.TextRenderer
@@ -14,7 +13,6 @@ import net.minecraft.item.ItemStack
 import net.minecraft.item.tooltip.TooltipData
 import net.minecraft.util.Identifier
 import net.minecraft.util.collection.DefaultedList
-import java.awt.Color
 
 class ShulkerBoxTooltipComponent(val data: Data) : TooltipComponent {
     override fun getHeight(textRenderer: TextRenderer?): Int {
@@ -53,7 +51,7 @@ class ShulkerBoxTooltipComponent(val data: Data) : TooltipComponent {
 
     companion object {
         fun of(stack: ItemStack, block: ShulkerBoxBlock): Data? {
-            return Data(createColor(block.color?.entityColor ?: return null), DefaultedList.ofSize(27, ItemStack.EMPTY).also { (stack.get(DataComponentTypes.CONTAINER) ?: return null).copyTo(it); if (it.all(ItemStack::isEmpty) ) return null } )
+            return Data(Color(block.color?.entityColor ?: return null, 1f), DefaultedList.ofSize(27, ItemStack.EMPTY).also { (stack.get(DataComponentTypes.CONTAINER) ?: return null).copyTo(it); if (it.all(ItemStack::isEmpty) ) return null } )
         }
     }
 

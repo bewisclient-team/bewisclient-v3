@@ -2,7 +2,7 @@ package net.bewis09.bewisclient.drawable.renderables
 
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import java.awt.Color
+import net.bewis09.bewisclient.logic.color.Color
 
 class Text(val text: () -> String, val color: () -> Color, val centered: Boolean = false) : Renderable() {
     constructor(text: String, color: () -> Color, centered: Boolean = false) : this({ text }, color, centered)

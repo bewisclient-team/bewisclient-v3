@@ -68,7 +68,7 @@ object Fullbright : ImageSettingCategory(
 
     fun showFullbrightMessage() {
         val value = FullbrightSettings.brightness.get()
-        showTitle(brightnessTranslation((value * 100).toString() + "%").setStyle(Style.EMPTY.withColor(((value / 15) within (0xFF0000.color to 0xFFFF00.color)).rgb)))
+        showTitle(brightnessTranslation((value * 100).toString() + "%").setStyle(Style.EMPTY.withColor(((value / 15) within (0xFF0000.color to 0xFFFF00.color)).argb)))
     }
 
     private val nightVisionInstance = StatusEffectInstance(StatusEffects.NIGHT_VISION, -1, 255, false, false, false)

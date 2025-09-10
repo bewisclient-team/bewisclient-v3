@@ -21,7 +21,7 @@ import net.bewis09.bewisclient.widget.types.ScalableWidget
 import net.minecraft.client.util.InputUtil
 import net.minecraft.util.Identifier
 import org.lwjgl.glfw.GLFW
-import java.awt.Color
+import net.bewis09.bewisclient.logic.color.Color
 import kotlin.math.abs
 
 class HudEditScreen : PopupScreen(), BackgroundEffectProvider {

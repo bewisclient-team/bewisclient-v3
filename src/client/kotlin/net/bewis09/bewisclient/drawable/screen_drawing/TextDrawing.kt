@@ -2,7 +2,7 @@ package net.bewis09.bewisclient.drawable.screen_drawing
 
 import net.minecraft.text.MutableText
 import net.minecraft.text.Text
-import java.awt.Color
+import net.bewis09.bewisclient.logic.color.Color
 
 interface TextDrawing : RectDrawing {
     fun drawText(text: String, x: Int, y: Int, color: Color) {

@@ -5,7 +5,6 @@ import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.interfaces.Gettable
 import net.bewis09.bewisclient.logic.color.alpha
 import net.bewis09.bewisclient.logic.color.color
-import net.bewis09.bewisclient.logic.color.times
 import net.bewis09.bewisclient.logic.color.within
 import net.bewis09.bewisclient.logic.number.Precision
 

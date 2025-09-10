@@ -1,6 +1,7 @@
 package net.bewis09.bewisclient.impl.settings
 
 import net.bewis09.bewisclient.logic.color.StaticColorSaver
+import net.bewis09.bewisclient.logic.color.color
 import net.bewis09.bewisclient.settings.types.ColorSetting
 import net.bewis09.bewisclient.settings.types.ObjectSetting
 
@@ -9,5 +10,5 @@ object OptionsMenuSettings : ObjectSetting() {
     val blurBackground = boolean("blur_background", true)
     val buttonInTitleScreen = boolean("button_in_title_screen", true)
     val buttonInGameScreen = boolean("button_in_game_screen", true)
-    val themeColor = color("theme_color", StaticColorSaver(0xFFFFFF), ColorSetting.STATIC)
+    val themeColor = color("theme_color", StaticColorSaver(0xFFFFFF.color), ColorSetting.STATIC)
 }

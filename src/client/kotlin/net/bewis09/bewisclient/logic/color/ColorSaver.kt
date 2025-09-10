@@ -5,12 +5,15 @@ import com.google.gson.JsonObject
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.logic.catch
-import java.awt.Color
 
 interface ColorSaver {
     fun getColor(): Color
     fun getType(): String
     fun saveToJson(): JsonElement
+
+    fun getColorInt(): Int {
+        return getColor().argb
+    }
 
     companion object {
         val types = listOf<ColorSaverFactory<*>>(

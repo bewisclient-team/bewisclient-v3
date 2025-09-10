@@ -13,7 +13,7 @@ import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.logic.color.alpha
 import net.minecraft.util.Identifier
 import net.minecraft.util.Util
-import java.awt.Color
+import net.bewis09.bewisclient.logic.color.Color
 import kotlin.math.roundToInt
 
 object Contact : SidebarCategory(

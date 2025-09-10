@@ -7,9 +7,8 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.then
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
-import net.bewis09.bewisclient.logic.color.alpha
 import net.bewis09.bewisclient.logic.color.within
-import java.awt.Color
+import net.bewis09.bewisclient.logic.color.Color
 
 class ThemeButton : TooltipHoverable {
     val text: String

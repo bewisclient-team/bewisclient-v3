@@ -13,7 +13,6 @@ import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.logic.Bewisclient
 import net.bewis09.bewisclient.logic.number.Precision
 import net.minecraft.util.Identifier
-import java.awt.Color
 
 class ChangingColorSaver : ColorSaver {
     val changingSpeed: Int
@@ -35,7 +34,7 @@ class ChangingColorSaver : ColorSaver {
     }
 
     override fun getColor(): Color {
-        return Color.getHSBColor(getHue(), 1f, 1f)
+        return Color(getHue(), 1f, 1f)
     }
 
     override fun getType(): String = "changing"
@@ -83,8 +82,8 @@ class ChangingColorSaver : ColorSaver {
             val texture = Bewisclient.createTexture(Identifier.of("bewisclient", "color_strip_selector_190"), 190, 14) { image ->
                 for (x in 0 until 190) {
                     for (y in 0 until 14) {
-                        val color = Color.HSBtoRGB(x / 190f, 1f, 1f)
-                        image.setRGB(x, y, color)
+                        val color = Color(x / 190f, 1f, 1f)
+                        image.setRGB(x, y, color.argb)
                     }
                 }
             }

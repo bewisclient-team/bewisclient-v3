@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.drawable.screen_drawing
 
 import net.minecraft.util.Identifier
-import java.awt.Color
+import net.bewis09.bewisclient.logic.color.Color
 import kotlin.math.min
 import kotlin.math.pow
 import kotlin.math.roundToInt

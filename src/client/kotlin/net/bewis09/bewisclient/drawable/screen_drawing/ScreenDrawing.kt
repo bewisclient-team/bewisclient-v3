@@ -3,7 +3,7 @@ package net.bewis09.bewisclient.drawable.screen_drawing
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Style
-import java.awt.Color
+import net.bewis09.bewisclient.logic.color.Color
 
 /**
  * A class representing a screen drawing context in Bewisclient. This class is used to encapsulate
