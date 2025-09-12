@@ -1,9 +1,7 @@
 package net.bewis09.bewisclient.drawable.renderables.screen
 
-import net.bewis09.bewisclient.drawable.Animator
-import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.drawable.*
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.drawable.then
 import net.bewis09.bewisclient.logic.color.Color
 import org.lwjgl.glfw.GLFW
 

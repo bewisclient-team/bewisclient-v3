@@ -4,9 +4,7 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.transform
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.interfaces.Gettable
-import net.bewis09.bewisclient.logic.color.alpha
-import net.bewis09.bewisclient.logic.color.color
-import net.bewis09.bewisclient.logic.color.within
+import net.bewis09.bewisclient.logic.color.*
 import net.bewis09.bewisclient.logic.number.Precision
 
 class Fader(val value: Gettable<Float>, val precision: Precision, val onChange: (new: Float) -> Unit) : Hoverable() {

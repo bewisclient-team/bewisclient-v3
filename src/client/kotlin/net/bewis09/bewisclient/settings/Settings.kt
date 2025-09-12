@@ -1,8 +1,6 @@
 package net.bewis09.bewisclient.settings
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.JsonElement
+import com.google.gson.*
 import net.bewis09.bewisclient.logic.BewisclientInterface
 import net.bewis09.bewisclient.settings.types.Setting
 

@@ -1,10 +1,7 @@
 package net.bewis09.bewisclient.drawable.renderables.options_structure
 
 import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.bewisclient.drawable.renderables.Plane
-import net.bewis09.bewisclient.drawable.renderables.TextElement
-import net.bewis09.bewisclient.drawable.renderables.ThemeButton
-import net.bewis09.bewisclient.drawable.renderables.VerticalScrollGrid
+import net.bewis09.bewisclient.drawable.renderables.*
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings

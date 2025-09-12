@@ -1,15 +1,11 @@
 package net.bewis09.bewisclient.drawable.renderables.settings
 
-import net.bewis09.bewisclient.drawable.renderables.ColorInfoButton
-import net.bewis09.bewisclient.drawable.renderables.Fader
-import net.bewis09.bewisclient.drawable.renderables.ResetButton
+import net.bewis09.bewisclient.drawable.renderables.*
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.translate
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
-import net.bewis09.bewisclient.logic.color.Color
-import net.bewis09.bewisclient.logic.color.ColorSaver
-import net.bewis09.bewisclient.logic.color.within
+import net.bewis09.bewisclient.logic.color.*
 import net.bewis09.bewisclient.settings.types.FloatSetting
 import net.bewis09.bewisclient.settings.types.Setting
 
@@ -20,8 +16,8 @@ class ColorFaderSettingRenderable(val title: Translation, val description: Trans
 
     val fader = Fader(
         value = { setting2.get() }, onChange = { value ->
-        setting2.set(value)
-    }, precision = setting2.precision
+            setting2.set(value)
+        }, precision = setting2.precision
     )
 
     val resetButton = ResetButton<Nothing> {

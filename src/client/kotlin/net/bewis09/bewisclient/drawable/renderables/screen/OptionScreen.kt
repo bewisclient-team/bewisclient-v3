@@ -1,12 +1,9 @@
 package net.bewis09.bewisclient.drawable.renderables.screen
 
 import kotlinx.atomicfu.atomic
-import net.bewis09.bewisclient.drawable.Animator
-import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.bewisclient.drawable.SettingStructure
+import net.bewis09.bewisclient.drawable.*
 import net.bewis09.bewisclient.drawable.renderables.*
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.drawable.then
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.interfaces.BackgroundEffectProvider
 import net.bewis09.bewisclient.logic.color.Color

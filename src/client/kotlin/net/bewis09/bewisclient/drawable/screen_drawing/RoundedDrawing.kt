@@ -2,10 +2,7 @@ package net.bewis09.bewisclient.drawable.screen_drawing
 
 import net.bewis09.bewisclient.logic.color.Color
 import net.minecraft.util.Identifier
-import kotlin.math.min
-import kotlin.math.pow
-import kotlin.math.roundToInt
-import kotlin.math.sqrt
+import kotlin.math.*
 
 interface RoundedDrawing : RectDrawing, TextureDrawing {
     companion object {

@@ -1,9 +1,7 @@
 package net.bewis09.bewisclient.drawable.renderables
 
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.logic.color.Color
-import net.bewis09.bewisclient.logic.color.color
-import net.bewis09.bewisclient.logic.color.within
+import net.bewis09.bewisclient.logic.color.*
 import net.minecraft.util.Identifier
 
 class RainbowImage(val image: Identifier, val alpha: Float) : Hoverable() {

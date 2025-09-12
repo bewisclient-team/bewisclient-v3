@@ -3,6 +3,9 @@
     <option name="AUTODETECT_INDENTS" value="false" />
     <option name="LINE_SEPARATOR" value="&#13;&#10;" />
     <option name="RIGHT_MARGIN" value="400" />
+    <JetCodeStyleSettings>
+      <option name="NAME_COUNT_TO_USE_STAR_IMPORT" value="3" />
+    </JetCodeStyleSettings>
     <codeStyleSettings language="kotlin">
       <option name="METHOD_CALL_CHAIN_WRAP" value="5" />
     </codeStyleSettings>

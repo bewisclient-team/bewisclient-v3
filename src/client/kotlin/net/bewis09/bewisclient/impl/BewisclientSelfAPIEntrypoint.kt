@@ -3,9 +3,7 @@ package net.bewis09.bewisclient.impl
 import net.bewis09.bewisclient.api.BewisclientAPIEntrypoint
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCategory
-import net.bewis09.bewisclient.game.Keybind
-import net.bewis09.bewisclient.game.KeybindingImplementer
-import net.bewis09.bewisclient.game.ShulkerBoxTooltipComponent
+import net.bewis09.bewisclient.game.*
 import net.bewis09.bewisclient.impl.functionalities.*
 import net.bewis09.bewisclient.impl.settings.BewisclientSettings
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings

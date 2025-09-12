@@ -14,8 +14,8 @@ import net.bewis09.bewisclient.settings.types.Setting
 open class FaderSettingRenderable<T : Number>(val title: Translation, val description: Translation?, val setting: Setting<T>, val precision: Precision, val parser: (original: Float) -> T) : SettingRenderable(description) {
     val fader = Fader(
         value = { setting.get().toFloat() }, onChange = { value ->
-        setting.set(parser(value))
-    }, precision = precision
+            setting.set(parser(value))
+        }, precision = precision
     )
 
     val resetButton = ResetButton(setting)

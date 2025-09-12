@@ -1,14 +1,11 @@
 package net.bewis09.bewisclient.impl.widget
 
-import com.google.gson.Gson
-import com.google.gson.JsonArray
-import com.google.gson.JsonElement
+import com.google.gson.*
 import net.bewis09.bewisclient.api.APIEntrypointLoader
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.transform
-import net.bewis09.bewisclient.drawable.screen_drawing.translate
 import net.bewis09.bewisclient.impl.renderable.TiwylaInfoSettingsRenderable
 import net.bewis09.bewisclient.impl.renderable.TiwylaLinesSettingsRenderable
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
@@ -21,25 +18,19 @@ import net.bewis09.bewisclient.settings.types.ListSetting
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.ScalableWidget
-import net.minecraft.block.Block
-import net.minecraft.block.BlockState
-import net.minecraft.block.Blocks
+import net.minecraft.block.*
 import net.minecraft.entity.Entity
 import net.minecraft.entity.EntityType
 import net.minecraft.registry.Registries
 import net.minecraft.registry.tag.BlockTags
 import net.minecraft.state.property.Property
-import net.minecraft.text.Style
-import net.minecraft.text.StyleSpriteSource
-import net.minecraft.text.Text
+import net.minecraft.text.*
 import net.minecraft.util.Identifier
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.hit.EntityHitResult
 import net.minecraft.util.math.BlockPos
 import kotlin.jvm.optionals.getOrNull
-import kotlin.math.ceil
-import kotlin.math.round
-import kotlin.math.roundToInt
+import kotlin.math.*
 
 object TiwylaWidget : ScalableWidget(Identifier.of("bewisclient", "tiwyla_widget")), EventEntrypoint {
     private var lineWidth = 0

@@ -1,16 +1,12 @@
 package net.bewis09.bewisclient.drawable.renderables.options_structure
 
-import net.bewis09.bewisclient.drawable.Animator
-import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.bewisclient.drawable.Translations
+import net.bewis09.bewisclient.drawable.*
 import net.bewis09.bewisclient.drawable.renderables.*
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
-import net.bewis09.bewisclient.logic.color.Color
-import net.bewis09.bewisclient.logic.color.color
-import net.bewis09.bewisclient.logic.color.within
+import net.bewis09.bewisclient.logic.color.*
 import net.bewis09.bewisclient.settings.types.BooleanSetting
 import net.minecraft.util.Identifier
 

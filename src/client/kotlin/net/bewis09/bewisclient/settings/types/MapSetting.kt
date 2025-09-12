@@ -1,8 +1,6 @@
 package net.bewis09.bewisclient.settings.types
 
-import com.google.gson.JsonElement
-import com.google.gson.JsonObject
-import com.google.gson.JsonPrimitive
+import com.google.gson.*
 import net.bewis09.bewisclient.logic.catch
 
 open class MapSetting<T>(val from: (JsonElement) -> T, val to: (T) -> JsonElement) : Setting<HashMap<String, T>>(hashMapOf()) {

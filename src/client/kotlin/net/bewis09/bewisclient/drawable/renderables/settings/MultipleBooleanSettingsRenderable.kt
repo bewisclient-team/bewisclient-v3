@@ -1,17 +1,13 @@
 package net.bewis09.bewisclient.drawable.renderables.settings
 
-import net.bewis09.bewisclient.drawable.renderables.ResetButton
-import net.bewis09.bewisclient.drawable.renderables.Switch
-import net.bewis09.bewisclient.drawable.renderables.TooltipHoverable
+import net.bewis09.bewisclient.drawable.renderables.*
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.translate
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.interfaces.Gettable
 import net.bewis09.bewisclient.interfaces.Settable
-import net.bewis09.bewisclient.logic.color.Color
-import net.bewis09.bewisclient.logic.color.alpha
-import net.bewis09.bewisclient.logic.color.within
+import net.bewis09.bewisclient.logic.color.*
 
 class MultipleBooleanSettingsRenderable(
     val title: Translation, tooltip: Translation? = null, val settings: () -> List<Part<*>>

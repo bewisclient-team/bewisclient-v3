@@ -1,12 +1,8 @@
 package net.bewis09.bewisclient.drawable.renderables
 
 import kotlinx.atomicfu.AtomicRef
-import net.bewis09.bewisclient.drawable.Animator
-import net.bewis09.bewisclient.drawable.animate
-import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.drawable.screen_drawing.scale
-import net.bewis09.bewisclient.drawable.screen_drawing.translate
-import net.bewis09.bewisclient.drawable.then
+import net.bewis09.bewisclient.drawable.*
+import net.bewis09.bewisclient.drawable.screen_drawing.*
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.logic.color.Color

@@ -6,9 +6,7 @@ import net.bewis09.bewisclient.drawable.renderables.ThemeButton
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.interfaces.Gettable
-import net.bewis09.bewisclient.logic.color.ColorSaver
-import net.bewis09.bewisclient.logic.color.alpha
-import net.bewis09.bewisclient.logic.color.color
+import net.bewis09.bewisclient.logic.color.*
 
 class ColorChangePopup(val state: Gettable<ColorSaver>, val onChange: (ColorSaver) -> Unit, val types: Array<String>) : Renderable() {
     val inner = Inner()
