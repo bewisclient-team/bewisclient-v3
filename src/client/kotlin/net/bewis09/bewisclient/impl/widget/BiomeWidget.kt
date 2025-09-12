@@ -24,13 +24,8 @@ object BiomeWidget : LineWidget(), EventEntrypoint {
     val biomeCodes = hashMapOf<Identifier, String>()
     var colorCodeBiome = boolean("color_code_biome", true)
 
-    val biomeWidgetTranslation = Translation("widget.biome_widget.name", "Biome Widget")
-    val biomeWidgetDescription = Translation(
-        "widget.biome_widget.description", "Displays the current biome at your position."
-    )
-
-    override fun getTranslation(): Translation = biomeWidgetTranslation
-    override fun getDescription(): Translation = biomeWidgetDescription
+    override val title = "Biome Widget"
+    override val description = "Displays the current biome at your position."
 
     override fun onMinecraftClientInitFinished() {
         val resources = client.resourceManager.findAllResources(
@@ -82,12 +77,15 @@ object BiomeWidget : LineWidget(), EventEntrypoint {
     }
 
     fun getText(colorCoded: Boolean): String {
-        val biome = Identifier.of(
-            (client.world?.getBiome(
-                client.cameraEntity?.blockPos ?: BlockPos(0, 0, 0)
-            ))?.let { getBiomeString(it) })
+        val biome = getBiomeID()
 
         return (if (colorCoded) biomeCodes[biome] else "") + Text.translatable(biome.toTranslationKey("biome")).string
+    }
+
+    fun getBiomeID(): Identifier {
+        return (client.world?.getBiome(
+            client.cameraEntity?.blockPos ?: BlockPos(0, 0, 0)
+        ))?.let { Identifier.of(getBiomeString(it)) } ?: getBiomeByMonth()
     }
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
@@ -115,11 +113,8 @@ object BiomeWidget : LineWidget(), EventEntrypoint {
         }
     }
 
-    override fun getOutOfWorldLines(): List<String> {
-        val biome = getBiomeByMonth()
-
-        return listOf(
-            (if (colorCodeBiome.get()) biomeCodes[biome] ?: "" else "") + Text.translatable(biome.toTranslationKey("biome")).string
-        )
-    }
+    override fun getCustomWidgetDataPoints(): List<CustomWidget.WidgetStringData> = listOf(
+        CustomWidget.WidgetStringData("biome_name", "Biome Name", "The name of the biome you are currently in", { color -> getText(color == "colored") + "§r" }, "\"colored\" to color code the biome name"),
+        CustomWidget.WidgetStringData("biome_id", "Biome ID", "The ID of the biome you are currently in", { color -> getBiomeID().let { (if (color == "colored") biomeCodes[it] else "") + it.toString() + "§r" } }, "\"colored\" to color code the biome name")
+    )
 }

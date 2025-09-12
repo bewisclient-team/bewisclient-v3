@@ -5,7 +5,6 @@ import com.google.gson.JsonPrimitive
 import net.bewis09.bewisclient.drawable.renderables.settings.FloatSettingRenderable
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.logic.number.Precision
-import net.bewis09.bewisclient.settings.Settings
 
 class FloatSetting : Setting<Float> {
     val precision: Precision
@@ -30,13 +29,7 @@ class FloatSetting : Setting<Float> {
         return getWithoutDefault()?.let { JsonPrimitive(it) }
     }
 
-    override fun setFromElement(data: JsonElement?) {
-        try {
-            setWithoutSave(processChange(data?.asFloat))
-        } catch (e: Throwable) {
-            info("Failed to deserialize FloatSetting: ${Settings.gson.toJson(data)} (${e.message})")
-        }
-    }
+    override fun convertFromElement(data: JsonElement?): Float? = processChange(data?.asFloat)
 
     fun createRenderable(
         id: String, title: String, description: String? = null

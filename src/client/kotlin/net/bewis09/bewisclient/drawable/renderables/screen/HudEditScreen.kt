@@ -100,7 +100,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
                 screenDrawing.setBewisclientFont()
 
                 val lines = mutableListOf<String>()
-                lines.add(it.getTranslation().getTranslatedString())
+                lines.add(it.widgetTitle.getTranslatedString())
                 lines.add("")
                 if (it is ScalableWidget) {
                     lines.add(scrollToZoom(Precision(0.5f, 2f, 0.01f, 2).roundToString(it.scale.get())).string)
@@ -167,7 +167,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
     }
 
     fun possibleAppendArea(widget: Widget, appendWidget: Widget, mouseX: Int, mouseY: Int): RelativePosition? {
-        if (widget == appendWidget) return null
+        if (widget == appendWidget || InputUtil.isKeyPressed(client.window, GLFW.GLFW_KEY_LEFT_SHIFT)) return null
 
         val sides = arrayOf("top", "right", "bottom", "left")
 
@@ -215,7 +215,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
         var xTransform = if (right) SidedPosition.END else SidedPosition.START
         val yTransform = if (end) SidedPosition.END else SidedPosition.START
 
-        if (!InputUtil.isKeyPressed(client.window, GLFW.GLFW_MOD_SHIFT)) {
+        if (!InputUtil.isKeyPressed(client.window, GLFW.GLFW_KEY_LEFT_SHIFT)) {
             if (abs(x - DefaultWidgetSettings.screenEdgeDistance.get()) < 10) {
                 x = DefaultWidgetSettings.screenEdgeDistance.get().toDouble()
             }

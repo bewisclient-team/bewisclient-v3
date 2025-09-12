@@ -54,6 +54,9 @@ class AddWidgetPopup(val screen: HudEditScreen) : Renderable() {
     }
 
     class WidgetElement(val widget: Widget, val screen: HudEditScreen, val inner: Inner) : Hoverable() {
+        val title = widget.widgetTitle.getTranslatedString()
+        val description = widget.widgetDescription.getTranslatedString()
+
         override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
             widget.enabled.set(true)
             inner.grid = VerticalScrollGrid({
@@ -67,12 +70,12 @@ class AddWidgetPopup(val screen: HudEditScreen) : Renderable() {
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             super.render(screenDrawing, mouseX, mouseY)
 
-            val height = (screenDrawing.wrapText(widget.getTranslation().getTranslatedString(), getWidth() - 10).size - 1) * screenDrawing.getTextHeight()
-            val descriptionHeight = (screenDrawing.wrapText(widget.getDescription().getTranslatedString(), getWidth() - 10).size - 1) * screenDrawing.getTextHeight()
+            val height = (screenDrawing.wrapText(title, getWidth() - 10).size - 1) * screenDrawing.getTextHeight()
+            val descriptionHeight = (screenDrawing.wrapText(description, getWidth() - 10).size - 1) * screenDrawing.getTextHeight()
 
             screenDrawing.fillRounded(getX(), getY(), getWidth(), getHeight(), 5, OptionsMenuSettings.themeColor.get().getColor() alpha hoverAnimation["hovering"] * 0.15f + 0.15f)
-            screenDrawing.drawCenteredWrappedText(widget.getTranslation().getTranslatedString(), getX() + getWidth() / 2, getY() + 14 - height / 2, getWidth() - 10, OptionsMenuSettings.themeColor.get().getColor())
-            screenDrawing.drawCenteredWrappedText(widget.getDescription().getTranslatedString(), getX() + getWidth() / 2, getY() + getHeight() - 38 - descriptionHeight / 2, getWidth() - 10, OptionsMenuSettings.themeColor.get().getColor() * 0xAAAAAA alpha 0.65f)
+            screenDrawing.drawCenteredWrappedText(title, getX() + getWidth() / 2, getY() + 14 - height / 2, getWidth() - 10, OptionsMenuSettings.themeColor.get().getColor())
+            screenDrawing.drawCenteredWrappedText(description, getX() + getWidth() / 2, getY() + getHeight() - 38 - descriptionHeight / 2, getWidth() - 10, OptionsMenuSettings.themeColor.get().getColor() * 0xAAAAAA alpha 0.65f)
 
             renderRenderables(screenDrawing, mouseX, mouseY)
         }

@@ -1,10 +1,10 @@
 package net.bewis09.bewisclient.impl.widget
 
-import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.logic.EventEntrypoint
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
+import net.minecraft.client.MinecraftClient
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.Vec3d
 import java.util.*
@@ -12,17 +12,11 @@ import java.util.*
 object SpeedWidget : LineWidget(), EventEntrypoint {
     val verticalSpeed = boolean("vertical_speed", false)
 
-    val speedWidgetTranslation = Translation("widget.speed_widget.name", "Speed Widget")
-    val speedWidgetDescription = Translation(
-        "widget.speed_widget.description", "Displays your current speed in blocks per second."
-    )
-
     var oldPos: Vec3d = Vec3d(0.0, 0.0, 0.0)
-    var speed = 0.0
+    var horizontalSpeed = 0.0
+    var totalSpeed = 0.0
 
-    override fun getLines(): List<String> = listOf(String.format("%.2f m/s", speed))
-
-    override fun getOutOfWorldLines(): List<String> = listOf(if (verticalSpeed.get()) "6.90 m/s" else "4.20 m/s")
+    override fun getLines(): List<String> = listOf(String.format("%.2f m/s", if(MinecraftClient.getInstance().world == null) if (verticalSpeed.get()) 6.9f else 4.2f else if (verticalSpeed.get()) totalSpeed else horizontalSpeed))
 
     override fun defaultPosition(): WidgetPosition = RelativePosition("bewisclient:ping_widget", "bottom")
 
@@ -30,9 +24,8 @@ object SpeedWidget : LineWidget(), EventEntrypoint {
 
     override fun getMinimumWidth(): Int = 80
 
-    override fun getTranslation(): Translation = speedWidgetTranslation
-
-    override fun getDescription(): Translation = speedWidgetDescription
+    override val title = "Speed Widget"
+    override val description = "Displays your current speed in blocks per second."
 
     override fun isEnabledByDefault(): Boolean = false
 
@@ -41,11 +34,8 @@ object SpeedWidget : LineWidget(), EventEntrypoint {
             object : TimerTask() {
                 override fun run() {
                     client.player?.pos?.let {
-                        speed = if (verticalSpeed.get()) {
-                            it.distanceTo(oldPos) * 20
-                        } else {
-                            it.subtract(oldPos).horizontalLength() * 20
-                        }
+                        totalSpeed = it.distanceTo(oldPos) * 20
+                        horizontalSpeed = it.subtract(oldPos).horizontalLength() * 20
                         oldPos = it
                     }
                 }
@@ -63,4 +53,9 @@ object SpeedWidget : LineWidget(), EventEntrypoint {
         )
         super.appendSettingsRenderables(list)
     }
+
+    override fun getCustomWidgetDataPoints(): List<CustomWidget.WidgetStringData> = listOf(
+        CustomWidget.WidgetStringData("horizontal_speed", "Horizontal Speed", "Your current horizontal speed in blocks per second", { String.format("%.2f", if(MinecraftClient.getInstance().world == null) 4.2f else horizontalSpeed) }),
+        CustomWidget.WidgetStringData("total_speed", "Total Speed", "Your current total speed in blocks per second", { String.format("%.2f", if(MinecraftClient.getInstance().world == null) 6.9f else totalSpeed) }),
+    )
 }

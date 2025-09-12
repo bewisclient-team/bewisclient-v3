@@ -14,6 +14,8 @@ import java.util.concurrent.CompletableFuture
 object BewisclientDataGenerator : DataGeneratorEntrypoint {
     val translations = hashMapOf<String, String>()
 
+    val datagenEnabled = System.getProperty("fabric-api.datagen") != null
+
     override fun onInitializeDataGenerator(fabricDataGenerator: FabricDataGenerator) {
         EventEntrypoint.onAllEventEntrypoints { it.onDatagen() }
 
@@ -31,7 +33,13 @@ object BewisclientDataGenerator : DataGeneratorEntrypoint {
     }
 }
 
-fun addTranslation(key: String, @Suppress("LocalVariableName") en_us: String) {
+fun addTranslation(namespace: String, key: String, @Suppress("LocalVariableName") en_us: String) {
+    if (!BewisclientDataGenerator.datagenEnabled) return
+
+    if (namespace.isEmpty()) {
+        throw IllegalArgumentException("Translation namespace cannot be empty")
+    }
+
     if (key.isEmpty()) {
         throw IllegalArgumentException("Translation key cannot be empty")
     }
@@ -40,5 +48,5 @@ fun addTranslation(key: String, @Suppress("LocalVariableName") en_us: String) {
         throw IllegalArgumentException("Translation value cannot be empty")
     }
 
-    BewisclientDataGenerator.translations["bewisclient.$key"] = en_us
+    BewisclientDataGenerator.translations["$namespace.$key"] = en_us
 }

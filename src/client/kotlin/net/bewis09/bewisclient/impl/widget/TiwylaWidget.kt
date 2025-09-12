@@ -105,11 +105,6 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
 
     val entityInfoProviders = APIEntrypointLoader.mapContainer { it.entrypoint.getTiwylaEntityExtraInfoProviders().map { provider -> Identifier.of(it.provider.metadata.id, Registries.ENTITY_TYPE.getId(provider.entityType).toString().replace(":", "/")) to provider } }.flatten()
 
-    val tiwylaWidgetTranslation = Translation("widget.tiwyla_widget.name", "Tiwyla Widget")
-    val tiwylaWidgetDescription = Translation(
-        "widget.tiwyla_widget.description", "A widget for displaying Tiwyla information."
-    )
-
     val progressText = Translation("widget.tiwyla_widget.progress", "Progress: %s%%")
     val toolText = Translation("widget.tiwyla_widget.tool", "Tool: %s")
     val miningLevel = Translation("widget.tiwyla_widget.mining_level", "Mining Level: %s")
@@ -151,7 +146,7 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
         val topTextColor = topTextColor.get().getColor()
         val bottomTextColor = bottomTextColor.get().getColor()
 
-        val title = getTitle() ?: return
+        val title = getTiwylaTitle() ?: return
 
         lineWidth = screenDrawing.getTextWidth(title) + 2 * paddingSize
 
@@ -180,9 +175,9 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
         }
     }
 
-    override fun isHidden(): Boolean = getTitle() == null
+    override fun isHidden(): Boolean = getTiwylaTitle() == null
 
-    fun getTitle(): String? {
+    fun getTiwylaTitle(): String? {
         if (client.world == null) return Blocks.GRASS_BLOCK.name.string
 
         return onHitResult({ data ->
@@ -224,9 +219,8 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
 
     override fun getHeight(): Int = 9 + getSublines().size * 6 + lineSpacing.get() * (getSublines().size) + 2 * paddingSize.get()
 
-    override fun getTranslation(): Translation = tiwylaWidgetTranslation
-
-    override fun getDescription(): Translation = tiwylaWidgetDescription
+    override val title = "Tiwyla Widget"
+    override val description = "Show information about the block or entity you are looking at."
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
         list.add(

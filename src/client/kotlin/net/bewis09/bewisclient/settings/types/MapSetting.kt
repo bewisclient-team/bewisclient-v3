@@ -4,7 +4,6 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import com.google.gson.JsonPrimitive
 import net.bewis09.bewisclient.logic.catch
-import net.bewis09.bewisclient.settings.Settings
 
 open class MapSetting<T>(val from: (JsonElement) -> T, val to: (T) -> JsonElement) : Setting<HashMap<String, T>>(hashMapOf()) {
     override fun convertToElement(): JsonElement {
@@ -35,13 +34,7 @@ open class MapSetting<T>(val from: (JsonElement) -> T, val to: (T) -> JsonElemen
         save()
     }
 
-    override fun setFromElement(data: JsonElement?) {
-        try {
-            setWithoutSave(data?.asJsonObject?.asMap()?.mapValues { catch { from(it.value) } }?.filter { it.value != null }?.map { it.key to it.value!! }?.toTypedArray()?.let { hashMapOf(*it) })
-        } catch (e: Exception) {
-            error("Failed to deserialize MapSetting: ${Settings.gson.toJson(data)} (${e.message})")
-        }
-    }
+    override fun convertFromElement(data: JsonElement?): HashMap<String, T>? = data?.asJsonObject?.asMap()?.mapValues { catch { from(it.value) } }?.filter { it.value != null }?.map { it.key to it.value!! }?.toTypedArray()?.let { hashMapOf(*it) }
 }
 
 class BooleanMapSetting : MapSetting<Boolean>(from = { it.asBoolean }, to = { JsonPrimitive(it) })

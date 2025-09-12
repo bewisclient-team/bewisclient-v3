@@ -5,7 +5,6 @@ import com.google.gson.JsonPrimitive
 import net.bewis09.bewisclient.drawable.renderables.settings.BooleanSettingRenderable
 import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSettingsRenderable
 import net.bewis09.bewisclient.game.Translation
-import net.bewis09.bewisclient.settings.Settings
 
 class BooleanSetting : Setting<Boolean> {
     constructor(default: () -> Boolean, onChangeListener: (Setting<Boolean>.(oldValue: Boolean?, newValue: Boolean?) -> Unit)? = null) : super(default, onChangeListener)
@@ -20,13 +19,7 @@ class BooleanSetting : Setting<Boolean> {
         return getWithoutDefault()?.let { JsonPrimitive(it) }
     }
 
-    override fun setFromElement(data: JsonElement?) {
-        try {
-            setWithoutSave(data?.asBoolean)
-        } catch (e: Throwable) {
-            info("Failed to deserialize BooleanSetting: ${Settings.gson.toJson(data)} (${e.message})")
-        }
-    }
+    override fun convertFromElement(data: JsonElement?): Boolean? = data?.asBoolean
 
     fun toggle() {
         set(!get())

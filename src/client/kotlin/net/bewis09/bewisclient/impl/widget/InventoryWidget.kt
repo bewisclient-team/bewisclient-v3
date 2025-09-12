@@ -1,7 +1,6 @@
 package net.bewis09.bewisclient.impl.widget
 
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.ScalableWidget
@@ -47,9 +46,6 @@ object InventoryWidget : ScalableWidget() {
         )
     }
 
-    val inventoryWidgetTranslation = Translation("widget.inventory_widget.name", "Inventory Widget")
-    val inventoryWidgetDescription = Translation("widget.inventory_widget.description", "Displays your inventory on the screen.")
-
     val identifier: Identifier = Identifier.of("bewisclient", "textures/gui/widget/inventory_widget.png")
 
     override fun defaultPosition(): WidgetPosition = SidedPosition(5, 5, SidedPosition.START, SidedPosition.START)
@@ -75,9 +71,8 @@ object InventoryWidget : ScalableWidget() {
 
     override fun getHeight(): Int = 60
 
-    override fun getTranslation(): Translation = inventoryWidgetTranslation
-
-    override fun getDescription(): Translation = inventoryWidgetDescription
+    override val title = "Inventory Widget"
+    override val description = "Displays your inventory on the screen."
 
     override fun isEnabledByDefault(): Boolean = false
 

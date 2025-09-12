@@ -12,14 +12,11 @@ object PingWidget : LineWidget() {
     var lastLatency = 0
     var lastRequest = System.currentTimeMillis()
 
-    val pingWidgetTranslation = Translation("widget.ping_widget.name", "Ping Widget")
-    val pingWidgetDescription = Translation("widget.ping_widget.description", "Displays your current ping in milliseconds (ms).")
-
     val pingText = Translation("widget.ping_widget.ping", "Ping: %s")
     val loadingText = Translation("widget.ping_widget.loading", "Loading...")
 
-    override fun getTranslation(): Translation = pingWidgetTranslation
-    override fun getDescription(): Translation = pingWidgetDescription
+    override val title = "Ping Widget"
+    override val description = "Displays your current ping in milliseconds (ms)."
 
     override fun getLines(): List<String> {
         if ((client.isInSingleplayer || client.world == null) && (client.currentScreen is RenderableScreen)) return arrayListOf(pingText(99.toString()).string)
@@ -37,6 +34,8 @@ object PingWidget : LineWidget() {
 
     private fun getLatency(): Int {
         try {
+            if (client.isInSingleplayer || client.networkHandler == null) return -1
+
             if (lastRequest + 100 < System.currentTimeMillis()) {
                 if (!client.debugHud.shouldShowPacketSizeAndPingCharts()) {
                     (client.networkHandler as ClientPlayNetworkHandlerMixin).pingMeasurer.ping()
@@ -61,4 +60,8 @@ object PingWidget : LineWidget() {
             return -1
         }
     }
+
+    override fun getCustomWidgetDataPoints(): List<CustomWidget.WidgetStringData> = listOf(
+        CustomWidget.WidgetStringData("ping", "Ping", "Your current ping in milliseconds", { getLatency() })
+    )
 }

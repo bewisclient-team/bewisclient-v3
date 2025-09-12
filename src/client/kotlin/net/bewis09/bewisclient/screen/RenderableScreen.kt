@@ -11,6 +11,8 @@ import net.minecraft.client.input.KeyInput
 import net.minecraft.text.Text
 
 class RenderableScreen(val renderable: Renderable) : Screen(Text.empty()) {
+    var deltaTicks: Float = 0f
+        private set
     var startX = 0.0
     var startY = 0.0
 
@@ -19,6 +21,7 @@ class RenderableScreen(val renderable: Renderable) : Screen(Text.empty()) {
     }
 
     override fun render(context: DrawContext, mouseX: Int, mouseY: Int, deltaTicks: Float) {
+        this.deltaTicks = deltaTicks
         val screenDrawing = ScreenDrawing(context, textRenderer)
         renderable.render(screenDrawing, mouseX, mouseY)
         screenDrawing.runAfterDraw()

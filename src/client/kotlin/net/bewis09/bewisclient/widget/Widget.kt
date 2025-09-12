@@ -4,6 +4,7 @@ import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
+import net.bewis09.bewisclient.impl.widget.CustomWidget
 import net.bewis09.bewisclient.logic.catch
 import net.bewis09.bewisclient.screen.RenderableScreen
 import net.bewis09.bewisclient.settings.types.ObjectSetting
@@ -14,6 +15,12 @@ import net.minecraft.util.Identifier
 abstract class Widget : ObjectSetting() {
     var position: WidgetPositionSetting = create("position", WidgetPositionSetting(defaultPosition()))
     var enabled = boolean("enabled", isEnabledByDefault())
+
+    protected abstract val title: String
+    protected abstract val description: String
+
+    val widgetTitle by lazy { Translation(getId().namespace,"widget.${getId().path}.name", title) }
+    val widgetDescription by lazy { Translation(getId().namespace, "widget.${getId().path}.description", description) }
 
     open fun isEnabledByDefault(): Boolean {
         return true
@@ -78,8 +85,7 @@ abstract class Widget : ObjectSetting() {
         return y.coerceAtLeast(0f).coerceAtMost(getScreenHeight() - getScaledHeight())
     }
 
-    abstract fun getTranslation(): Translation
-    abstract fun getDescription(): Translation
+    open fun getCustomWidgetDataPoints(): List<CustomWidget.WidgetStringData> = listOf()
 
     open fun appendSettingsRenderables(list: ArrayList<Renderable>) {}
 

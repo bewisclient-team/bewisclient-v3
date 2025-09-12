@@ -9,13 +9,7 @@ class ListSetting<T>(default: List<T>, val from: (JsonElement) -> T?, val to: (T
         return Settings.gson.toJsonTree(get().mapNotNull { to(it) })
     }
 
-    override fun setFromElement(data: JsonElement?) {
-        try {
-            setWithoutSave(data?.asJsonArray?.mapNotNull { catch { from(it) } }?.toMutableList())
-        } catch (e: Exception) {
-            error("Failed to deserialize ListSetting: ${Settings.gson.toJson(data)} (${e.message})")
-        }
-    }
+    override fun convertFromElement(data: JsonElement?): MutableList<T>? = data?.asJsonArray?.mapNotNull { catch { from(it) } }?.toMutableList()
 
     override fun containsAll(elements: Collection<T>): Boolean = get().containsAll(elements)
 

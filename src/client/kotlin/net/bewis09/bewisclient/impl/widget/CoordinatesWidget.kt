@@ -2,13 +2,9 @@ package net.bewis09.bewisclient.impl.widget
 
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.game.Translation
-import net.bewis09.bewisclient.impl.widget.BiomeWidget.biomeCodes
-import net.bewis09.bewisclient.impl.widget.BiomeWidget.getBiomeByMonth
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
-import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 
 object CoordinatesWidget : LineWidget() {
@@ -19,32 +15,14 @@ object CoordinatesWidget : LineWidget() {
 
     override fun hasMultipleLines(): Boolean = true
 
-    val coordinatesWidgetTranslation = Translation("widget.coordinates_widget.name", "Coordinates Widget")
-    val coordinatesWidgetDescription = Translation(
-        "widget.coordinates_widget.description", "Displays your current coordinates in the world"
-    )
-
-    override fun getTranslation(): Translation = coordinatesWidgetTranslation
-    override fun getDescription(): Translation = coordinatesWidgetDescription
+    override val title = "Coordinates Widget"
+    override val description = "Displays your current coordinates in the world"
 
     override fun getLines(): List<String> = listOf(
-        "X: ${client.cameraEntity?.blockPos?.x ?: 0} ${getAdditionString(0)}",
-        "Y: ${client.cameraEntity?.blockPos?.y ?: 0}",
-        "Z: ${client.cameraEntity?.blockPos?.z ?: 0} ${getAdditionString(2)}",
+        "X: ${client.cameraEntity?.blockPos?.x ?: 137} ${getAdditionString(0)}",
+        "Y: ${client.cameraEntity?.blockPos?.y ?: 69}",
+        "Z: ${client.cameraEntity?.blockPos?.z ?: 420} ${getAdditionString(2)}",
         if (showBiome.get()) BiomeWidget.getText(colorCodeBiome.get())
-        else null,
-    ).filter { it != null }.map { it!! }
-
-    override fun getOutOfWorldLines(): List<String> = listOf(
-        "X: 137 ${if (showCoordinateChange.get()) "(-)" else ""}",
-        "Y: 69",
-        "Z: 420 ${if (showCoordinateChange.get()) "(+)" else ""}",
-        if (showBiome.get()) let {
-            val biome = getBiomeByMonth()
-
-            return@let (if (colorCodeBiome.get()) biomeCodes[biome]
-            else "") + Text.translatable(biome.toTranslationKey("biome")).string
-        }
         else null,
     ).filter { it != null }.map { it!! }
 
@@ -66,9 +44,9 @@ object CoordinatesWidget : LineWidget() {
         }
     }
 
-    fun getYawPart(): Int = (((client.player!!.yaw / 45 - 112.5).toInt()) % 8).let {
+    fun getYawPart(): Int = client.cameraEntity?.let{ a -> (((a.yaw / 45 - 112.5).toInt()) % 8).let {
         if (it < 0) 8 + it else it
-    }
+    }} ?: 1
 
     override fun defaultPosition(): WidgetPosition = SidedPosition(
         5, 5, SidedPosition.END, SidedPosition.START
@@ -105,18 +83,7 @@ object CoordinatesWidget : LineWidget() {
     override fun render(screenDrawing: ScreenDrawing) {
         super.render(screenDrawing)
         if (showDirection.get()) {
-            val direction = if (client.player == null) "SW"
-            else when (getYawPart()) {
-                0 -> "S"
-                1 -> "SW"
-                2 -> "W"
-                3 -> "NW"
-                4 -> "N"
-                5 -> "NE"
-                6 -> "E"
-                7 -> "SE"
-                else -> "?"
-            }
+            val direction = getCardinalDirection()
             val text = "- $direction -"
             if (shadow.get()) screenDrawing.drawRightAlignedTextWithShadow(
                 text, getWidth() - paddingSize.get(), paddingSize.get(), textColor.get().getColor()
@@ -126,4 +93,25 @@ object CoordinatesWidget : LineWidget() {
             )
         }
     }
+
+    fun getCardinalDirection(long: Boolean = false): String {
+        return when (getYawPart()) {
+            0 -> if(long) "South" else "S"
+            1 -> if(long) "Southwest" else "SW"
+            2 -> if(long) "West" else "W"
+            3 -> if(long) "Northwest" else "NW"
+            4 -> if(long) "North" else "N"
+            5 -> if(long) "Northeast" else "NE"
+            6 -> if(long) "East" else "E"
+            7 -> if(long) "Southeast" else "SE"
+            else -> "?"
+        }
+    }
+
+    override fun getCustomWidgetDataPoints(): List<CustomWidget.WidgetStringData> = listOf(
+        CustomWidget.WidgetStringData("x", "X-Coordinate", "The current x coordinate of the player", { client.cameraEntity?.blockPos?.x?.toString() ?: "137" }),
+        CustomWidget.WidgetStringData("y", "Y-Coordinate", "The current y coordinate of the player", { client.cameraEntity?.blockPos?.y?.toString() ?: "49" }),
+        CustomWidget.WidgetStringData("z", "Z-Coordinate", "The current z coordinate of the player", { client.cameraEntity?.blockPos?.z?.toString() ?: "420" }),
+        CustomWidget.WidgetStringData("direction", "Direction", "The cardinal direction the player is facing", { getCardinalDirection(it == "long") }, "\"long\" for full cardinal direction name"),
+    )
 }

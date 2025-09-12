@@ -4,21 +4,23 @@ import net.bewis09.bewisclient.logic.addTranslation
 import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 
-class Translation(private val key: String, @Suppress("PropertyName") val en_us: String) {
+class Translation(private val namespace: String, private val key: String, @Suppress("PropertyName") val en_us: String) {
+    constructor(key: String, @Suppress("LocalVariableName") en_us: String) : this("bewisclient", key, en_us)
+
     init {
-        if (!key.isEmpty()) addTranslation(key, en_us)
+        if (!key.isEmpty()) addTranslation(namespace, key, en_us)
     }
 
     fun getTranslatedText(): MutableText {
         if (key.isEmpty()) {
             return Text.literal(en_us)
         }
-        return Text.translatable("bewisclient.$key")
+        return Text.translatable("$namespace.$key")
     }
 
     fun getTranslatedText(vararg args: Any): MutableText {
         return if (key.isEmpty()) Text.literal(en_us)
-        else Text.translatable("bewisclient.$key", *args)
+        else Text.translatable("$namespace.$key", *args)
     }
 
     fun getTranslatedString(): String {
@@ -27,7 +29,7 @@ class Translation(private val key: String, @Suppress("PropertyName") val en_us: 
     }
 
     fun getKey(): String {
-        return "bewisclient.$key"
+        return "$namespace.$key"
     }
 
     operator fun invoke(): MutableText {

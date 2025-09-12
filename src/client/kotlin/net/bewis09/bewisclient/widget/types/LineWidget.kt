@@ -23,8 +23,6 @@ abstract class LineWidget() : ScalableWidget() {
     abstract fun getLines(): List<String>
     open fun isCentered(): Boolean = true
 
-    open fun getOutOfWorldLines(): List<String> = getLines()
-
     override fun render(screenDrawing: ScreenDrawing) {
         val textColor = textColor.get().getColor()
         val backgroundColor = backgroundColor.get().getColor()
@@ -36,8 +34,7 @@ abstract class LineWidget() : ScalableWidget() {
         val paddingSize = paddingSize.get()
         val lineSpacing = lineSpacing.get()
 
-        val lines = if (client.world == null) getOutOfWorldLines()
-        else getLines()
+        val lines = getLines()
         if (lines.isEmpty()) return
 
         lineWidth = lines.maxOfOrNull { screenDrawing.getTextWidth(it) }?.plus(2 * paddingSize) ?: 0
@@ -76,8 +73,7 @@ abstract class LineWidget() : ScalableWidget() {
         val paddingSize = paddingSize.get()
         val lineSpacing = lineSpacing.get()
 
-        val lines = if (client.world == null) getOutOfWorldLines()
-        else getLines()
+        val lines = getLines()
         if (lines.isEmpty()) return 0
 
         return lines.size * (9 + lineSpacing) + 2 * paddingSize - lineSpacing - 2

@@ -16,14 +16,10 @@ class WidgetPositionSetting(defaultPos: WidgetPosition) : Setting<WidgetPosition
         return jsonObject
     }
 
-    override fun setFromElement(data: JsonElement?) {
-        if (data == null || !data.isJsonObject || !data.asJsonObject.has("positionType")) {
-            setWithoutSave(null)
-            return
-        }
+    override fun convertFromElement(data: JsonElement?): WidgetPosition? {
+        if (data == null || !data.isJsonObject || !data.asJsonObject.has("positionType")) return null
 
         val json = data.asJsonObject
-
         var value: WidgetPosition? = null
 
         WidgetPosition.types.forEach {
@@ -34,6 +30,6 @@ class WidgetPositionSetting(defaultPos: WidgetPosition) : Setting<WidgetPosition
             }
         }
 
-        setWithoutSave(value)
+        return value
     }
 }

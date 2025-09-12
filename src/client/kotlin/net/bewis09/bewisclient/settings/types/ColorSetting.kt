@@ -40,9 +40,7 @@ class ColorSetting(default: () -> ColorSaver, vararg val types: String = ALL) : 
         return jsonObject
     }
 
-    override fun setFromElement(data: JsonElement?) {
-        setWithoutSave(ColorSaver.fromJson(data))
-    }
+    override fun convertFromElement(data: JsonElement?): ColorSaver? = ColorSaver.fromJson(data)
 
     fun createRenderable(id: String, title: String, description: String? = null): ColorSettingRenderable {
         return ColorSettingRenderable(Translation("menu.$id", title), description?.let { Translation("menu.$id.description", it) }, this, types.map { it }.toTypedArray())

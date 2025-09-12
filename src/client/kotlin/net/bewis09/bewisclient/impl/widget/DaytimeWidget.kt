@@ -1,37 +1,34 @@
 package net.bewis09.bewisclient.impl.widget
 
 import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
 import net.minecraft.util.Identifier
 import java.text.DateFormat
+import java.time.Instant
 import java.util.*
 
 object DaytimeWidget : LineWidget() {
     var format12Hours = boolean("format_12_hours", isSystem12HourFormat())
 
-    val daytimeWidgetTranslation = Translation("widget.daytime_widget.name", "Daytime Widget")
-    val daytimeWidgetDescription = Translation(
-        "widget.daytime_widget.description", "Displays the current in-game time in hours and minutes."
-    )
+    override val title = "Daytime Widget"
+    override val description = "Displays the current in-game time in hours and minutes."
 
-    override fun getTranslation(): Translation = daytimeWidgetTranslation
-    override fun getDescription(): Translation = daytimeWidgetDescription
+    override fun getLines(): List<String> = listOf(getText(format12Hours.get()))
 
-    override fun getLines(): List<String> {
+    fun getText(format12Hours: Boolean): String {
         val daytime = client.world?.timeOfDay ?: 15684L
         val hours = (daytime / 1000L + 6) % 24
         val minutes = ((daytime % 1000L) / 1000f * 60L).toInt()
 
-        if (format12Hours.get()) {
+        if (format12Hours) {
             val period = if (hours < 12) "AM" else "PM"
             val adjustedHours = if (hours == 0L || hours == 12L) 12 else hours % 12
-            return listOf(String.format("%02d:%02d %s", adjustedHours, minutes, period))
+            return String.format("%02d:%02d %s", adjustedHours, minutes, period)
         }
 
-        return listOf(String.format("%02d:%02d", hours, minutes))
+        return String.format("%02d:%02d", hours, minutes)
     }
 
     override fun defaultPosition(): WidgetPosition = RelativePosition("bewisclient:cps_widget", "bottom")
@@ -54,4 +51,9 @@ object DaytimeWidget : LineWidget() {
         )
         super.appendSettingsRenderables(list)
     }
+
+    override fun getCustomWidgetDataPoints(): List<CustomWidget.WidgetStringData> = listOf(
+        CustomWidget.WidgetStringData("daytime", "In-Game Time", "The current in-game time in hours and minutes", { getText((it == "true" || format12Hours.get()) && it != "false") }, "\"true\" or \"false\" to override the 12-hour format setting"),
+        CustomWidget.WidgetStringData("real_time", "Real-Life Time", "The current real-life time in hours and minutes", { DateFormat.getTimeInstance(if (it == "seconds") DateFormat.MEDIUM else DateFormat.SHORT).format(Date.from(Instant.now())) }, "Use \"seconds\" to include seconds in the time"),
+    )
 }

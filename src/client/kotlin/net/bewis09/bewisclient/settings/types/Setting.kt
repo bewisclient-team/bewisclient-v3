@@ -4,6 +4,7 @@ import com.google.gson.JsonElement
 import net.bewis09.bewisclient.interfaces.Gettable
 import net.bewis09.bewisclient.interfaces.Settable
 import net.bewis09.bewisclient.logic.BewisclientInterface
+import net.bewis09.bewisclient.settings.Settings
 import net.bewis09.bewisclient.settings.SettingsLoader
 
 /**
@@ -104,7 +105,15 @@ abstract class Setting<T>(val default: () -> T, val onChangeListener: (Setting<T
      *
      * @param data The JsonElement containing the value to set.
      */
-    abstract fun setFromElement(data: JsonElement?)
+    fun setFromElement(data: JsonElement?) {
+        try {
+            setWithoutSave(convertFromElement(data))
+        } catch (e: Throwable) {
+            info("Failed to deserialize ${this.javaClass.simpleName}: ${Settings.gson.toJson(data)} (${e.message})")
+        }
+    }
+
+    abstract fun convertFromElement(data: JsonElement?): T?
 
     /**
      * Called when the value of the setting changes.

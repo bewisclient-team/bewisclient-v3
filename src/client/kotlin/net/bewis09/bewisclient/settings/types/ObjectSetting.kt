@@ -43,7 +43,7 @@ open class ObjectSetting() : Setting<JsonObject>(JsonObject()) {
      * @param key The key of the setting.
      * @param setting The setting to add.
      */
-    fun <T : Setting<*>> create(key: String, setting: T): T {
+    protected fun <T : Setting<*>> create(key: String, setting: T): T {
         map[key] = setting
         get().get(key)?.let {
             setting.setFromElement(it)
@@ -52,13 +52,7 @@ open class ObjectSetting() : Setting<JsonObject>(JsonObject()) {
         return setting
     }
 
-    override fun setFromElement(data: JsonElement?) {
-        try {
-            setWithoutSave(data?.asJsonObject)
-        } catch (e: Exception) {
-            error("Failed to deserialize ObjectSetting: ${Settings.gson.toJson(data)} (${e.message})")
-        }
-    }
+    override fun convertFromElement(data: JsonElement?): JsonObject? = data?.asJsonObject
 
     fun boolean(key: String, default: Boolean, onChangeListener: (Setting<Boolean>.(oldValue: Boolean?, newValue: Boolean?) -> Unit)? = null): BooleanSetting {
         return create(key, BooleanSetting(default, onChangeListener))

@@ -62,11 +62,6 @@ object KeyWidget : ScalableWidget() {
 
     val showCPS = boolean("show_cps", false)
 
-    val keyWidgetTranslation = Translation("widget.key_widget.name", "Key Widget")
-    val keyWidgetDescription = Translation(
-        "widget.key_widget.description", "Displays your movement and jump keys."
-    )
-
     override fun defaultPosition(): WidgetPosition = RelativePosition("bewisclient:biome_widget", "top")
 
     override fun getId(): Identifier = Identifier.of("bewisclient", "key_widget")
@@ -176,9 +171,8 @@ object KeyWidget : ScalableWidget() {
         return y
     }
 
-    override fun getTranslation(): Translation = keyWidgetTranslation
-
-    override fun getDescription(): Translation = keyWidgetDescription
+    override val title = "Key Widget"
+    override val description = "Displays your movement and jump keys."
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
         list.add(

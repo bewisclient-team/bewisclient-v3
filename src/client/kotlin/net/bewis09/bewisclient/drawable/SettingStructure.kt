@@ -15,7 +15,7 @@ import net.bewis09.bewisclient.widget.WidgetLoader
 
 class SettingStructure(val screen: OptionScreen) : BewisclientInterface {
     val widgets = WidgetLoader.widgets.map {
-        DescriptionSettingCategory(it.getTranslation(), it.getDescription(), arrayListOf<Renderable>().also { list -> it.appendSettingsRenderables(list) }.toTypedArray(), it.enabled)
+        DescriptionSettingCategory(it.widgetTitle, it.widgetDescription, arrayListOf<Renderable>().also { list -> it.appendSettingsRenderables(list) }.toTypedArray(), it.enabled)
     }
 
     val utilities = APIEntrypointLoader.mapEntrypoint { it.getUtilities() }.flatten()

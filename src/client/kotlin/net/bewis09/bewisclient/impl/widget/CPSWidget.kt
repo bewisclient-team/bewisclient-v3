@@ -1,7 +1,6 @@
 package net.bewis09.bewisclient.impl.widget
 
 import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.settings.types.BooleanSetting
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
@@ -12,16 +11,11 @@ object CPSWidget : LineWidget() {
     val leftEnabled: BooleanSetting = boolean("left_enabled", true) { _, new -> if (new == false) rightEnabled.set(true) }
     val rightEnabled: BooleanSetting = boolean("right_enabled", true) { _, new -> if (new == false) leftEnabled.set(true) }
 
-    val cpsWidgetTranslation = Translation("widget.cps_widget.name", "CPS Widget")
-    val cpsWidgetDescription = Translation(
-        "widget.cps_widget.description", "Displays your current clicks per second (CPS)."
-    )
-
     val leftMouseList = mutableListOf<Long>()
     val rightMouseList = mutableListOf<Long>()
 
-    override fun getTranslation(): Translation = cpsWidgetTranslation
-    override fun getDescription(): Translation = cpsWidgetDescription
+    override val title = "CPS Widget"
+    override val description = "Displays your current clicks per second (CPS)."
 
     override fun getLines(): List<String> {
         if (!rightEnabled.get()) return listOf("${getCPSCount(leftMouseList)} CPS")
@@ -55,4 +49,10 @@ object CPSWidget : LineWidget() {
         )
         super.appendSettingsRenderables(list)
     }
+
+    override fun getCustomWidgetDataPoints(): List<CustomWidget.WidgetStringData> = listOf(
+        CustomWidget.WidgetStringData("cps_left", "Left CPS", "Your current left clicks per second", { getCPSCount(leftMouseList) }),
+        CustomWidget.WidgetStringData("cps_right", "Right CPS", "Your current right clicks per second", { getCPSCount(rightMouseList) }),
+        CustomWidget.WidgetStringData("cps_total", "Total CPS", "Your current total clicks per second", { getCPSCount(leftMouseList) + getCPSCount(rightMouseList) }),
+    )
 }
