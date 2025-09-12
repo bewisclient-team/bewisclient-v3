@@ -7,8 +7,9 @@ import net.bewis09.bewisclient.drawable.Translations
 import net.bewis09.bewisclient.drawable.renderables.Fader
 import net.bewis09.bewisclient.drawable.renderables.ImageButton
 import net.bewis09.bewisclient.drawable.renderables.Rectangle
-import net.bewis09.bewisclient.drawable.renderables.Text
+import net.bewis09.bewisclient.drawable.renderables.TextElement
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
+import net.bewis09.bewisclient.drawable.screen_drawing.translate
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.logic.Bewisclient
 import net.bewis09.bewisclient.logic.number.Precision
@@ -74,7 +75,7 @@ class ChangingColorSaver : ColorSaver {
                 ChangingColorSaver(speed.toInt(), System.currentTimeMillis(), get().getHue())
             )
         }
-        val text = Text({ Translations.CHANGE_DURATION(get().changingSpeed / 1000f).string }, centered = true)
+        val text = TextElement({ Translations.CHANGE_DURATION(get().changingSpeed / 1000f).string }, centered = true)
         val spectrumButton = ImageButton(texture) {}.setImagePadding(0)
         val actionButton = Rectangle { get().getColor() }
 
@@ -91,10 +92,9 @@ class ChangingColorSaver : ColorSaver {
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             renderRenderables(screenDrawing, mouseX, mouseY)
-            screenDrawing.push()
-            screenDrawing.translate(get().getHue() * (getWidth() - 1), 0f)
-            screenDrawing.drawVerticalLine(getX(), getY() + 36, 8, Color.BLACK)
-            screenDrawing.pop()
+            screenDrawing.translate(get().getHue() * (getWidth() - 1), 0f) {
+                screenDrawing.drawVerticalLine(getX(), getY() + 36, 8, Color.BLACK)
+            }
         }
 
         override fun init() {

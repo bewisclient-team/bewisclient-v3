@@ -11,7 +11,7 @@ import net.minecraft.item.Items
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 
-object InventoryWidget : ScalableWidget() {
+object InventoryWidget : ScalableWidget(Identifier.of("bewisclient", "inventory_widget")) {
     val indicatorText: Text = Text.of("The way I would have to add Enchantments to the ItemStack is too complicated, so I am doing it via a mixin instead.")
 
     val exampleMap by lazy {
@@ -49,8 +49,6 @@ object InventoryWidget : ScalableWidget() {
     val identifier: Identifier = Identifier.of("bewisclient", "textures/gui/widget/inventory_widget.png")
 
     override fun defaultPosition(): WidgetPosition = SidedPosition(5, 5, SidedPosition.START, SidedPosition.START)
-
-    override fun getId(): Identifier = Identifier.of("bewisclient", "inventory_widget")
 
     override fun render(screenDrawing: ScreenDrawing) {
         screenDrawing.drawTexture(identifier, 0, 0, getWidth(), getHeight())

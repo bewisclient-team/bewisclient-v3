@@ -126,32 +126,24 @@ interface RoundedDrawing : RectDrawing, TextureDrawing {
     private fun drawRoundedCorner(
         centerX: Int, centerY: Int, radius: Int, color: Color, startAngle: Float
     ) {
-        push()
-        translate(centerX.toFloat(), centerY.toFloat())
-        rotateDegrees(startAngle)
-        scale(
-            1 / client.window.scaleFactor.toFloat(), 1 / client.window.scaleFactor.toFloat()
-        )
+        transform(centerX.toFloat(), centerY.toFloat(), 1 / client.window.scaleFactor.toFloat()) {
+            rotateDegrees(startAngle)
 
-        val r = radius * (client.window.scaleFactor)
+            val r = radius * (client.window.scaleFactor)
 
-        drawTexture(getRoundedImage(radius), 0, 0, 0f, 0f, r, r, r, r, color)
-        pop()
+            drawTexture(getRoundedImage(radius), 0, 0, 0f, 0f, r, r, r, r, color)
+        }
     }
 
     private fun drawRoundedCornerBorder(
         centerX: Int, centerY: Int, radius: Int, color: Color, startAngle: Float
     ) {
-        push()
-        translate(centerX.toFloat(), centerY.toFloat())
-        rotateDegrees(startAngle)
-        scale(
-            1 / client.window.scaleFactor.toFloat(), 1 / client.window.scaleFactor.toFloat()
-        )
+        transform(centerX.toFloat(), centerY.toFloat(), 1 / client.window.scaleFactor.toFloat()) {
+            rotateDegrees(startAngle)
 
-        val r = radius * (client.window.scaleFactor)
+            val r = radius * (client.window.scaleFactor)
 
-        drawTexture(getRoundedBorderImage(radius), 0, 0, 0f, 0f, r, r, r, r, color)
-        pop()
+            drawTexture(getRoundedBorderImage(radius), 0, 0, 0f, 0f, r, r, r, r, color)
+        }
     }
 }

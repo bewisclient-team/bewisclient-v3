@@ -1,32 +1,31 @@
 package net.bewis09.bewisclient.impl.widget
 
-import net.bewis09.bewisclient.game.Translation
+import net.bewis09.bewisclient.logic.toText
 import net.bewis09.bewisclient.mixin.client.ClientPlayNetworkHandlerMixin
 import net.bewis09.bewisclient.screen.RenderableScreen
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
+import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 
-object PingWidget : LineWidget() {
+object PingWidget : LineWidget(Identifier.of("bewisclient", "ping_widget")) {
     var lastLatency = 0
     var lastRequest = System.currentTimeMillis()
 
-    val pingText = Translation("widget.ping_widget.ping", "Ping: %s")
-    val loadingText = Translation("widget.ping_widget.loading", "Loading...")
+    val pingText = createTranslation("ping", "Ping: %s")
+    val loadingText = createTranslation("loading", "Loading...")
 
     override val title = "Ping Widget"
     override val description = "Displays your current ping in milliseconds (ms)."
 
-    override fun getLines(): List<String> {
-        if ((client.isInSingleplayer || client.world == null) && (client.currentScreen is RenderableScreen)) return arrayListOf(pingText(99.toString()).string)
-        if (getLatency() < 0) return arrayListOf(loadingText.getTranslatedString())
-        return arrayListOf(pingText(getLatency().toString()).string)
+    override fun getLine(): Text {
+        if ((client.isInSingleplayer || client.world == null) && (client.currentScreen is RenderableScreen)) return pingText(99.toString())
+        if (getLatency() < 0) return loadingText()
+        return pingText(getLatency().toString())
     }
 
     override fun defaultPosition(): WidgetPosition = RelativePosition("bewisclient:daytime_widget", "bottom")
-
-    override fun getId(): Identifier = Identifier.of("bewisclient", "ping_widget")
 
     override fun getMinimumWidth(): Int = 80
 
@@ -62,6 +61,6 @@ object PingWidget : LineWidget() {
     }
 
     override fun getCustomWidgetDataPoints(): List<CustomWidget.WidgetStringData> = listOf(
-        CustomWidget.WidgetStringData("ping", "Ping", "Your current ping in milliseconds", { getLatency() })
+        CustomWidget.WidgetStringData("ping", "Ping", "Your current ping in milliseconds", { getLatency().toText() })
     )
 }

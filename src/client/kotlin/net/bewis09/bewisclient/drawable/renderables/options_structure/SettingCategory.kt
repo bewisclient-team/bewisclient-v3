@@ -84,7 +84,7 @@ abstract class SettingCategory(val text: Translation, val setting: Array<Rendera
     }
 
     fun getHeader(): Renderable {
-        return Plane { x, y, width, height -> listOf(Text(text.getTranslatedString(), 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()), centered = true)(x, y, width, 13)) }.setHeight(14)
+        return Plane { x, y, width, height -> listOf(TextElement(text.getTranslatedString(), 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()), centered = true)(x, y, width, 13)) }.setHeight(14)
     }
 
     fun getPane(): Renderable {

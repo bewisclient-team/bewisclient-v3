@@ -1,7 +1,6 @@
 package net.bewis09.bewisclient.logic
 
 import net.bewis09.bewisclient.api.APIEntrypointLoader
-import net.bewis09.bewisclient.exception.ProgramCodeException
 
 /**
  * A class when it is needed to do something when those entrypoints are called.
@@ -14,11 +13,9 @@ interface EventEntrypoint : BewisclientInterface {
         /**
          * Registers all entrypoint receivers.
          * This should only be called once, and it will throw an exception if called multiple times.
-         *
-         * @throws ProgramCodeException if the entrypoint receivers are already registered.
          */
         fun registerEntrypoints() {
-            if (isRegistered) throw ProgramCodeException("EventEntrypoints already registered.")
+            if (isRegistered) throw IllegalStateException("EventEntrypoints already registered.")
 
             APIEntrypointLoader.mapEntrypoint { eventEntrypointReceivers.addAll(it.getEventEntrypoints()) }
         }

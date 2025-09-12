@@ -7,7 +7,8 @@ import net.bewis09.bewisclient.api.APIEntrypointLoader
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.game.Translation
+import net.bewis09.bewisclient.drawable.screen_drawing.transform
+import net.bewis09.bewisclient.drawable.screen_drawing.translate
 import net.bewis09.bewisclient.impl.renderable.TiwylaInfoSettingsRenderable
 import net.bewis09.bewisclient.impl.renderable.TiwylaLinesSettingsRenderable
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
@@ -40,7 +41,7 @@ import kotlin.math.ceil
 import kotlin.math.round
 import kotlin.math.roundToInt
 
-object TiwylaWidget : ScalableWidget(), EventEntrypoint {
+object TiwylaWidget : ScalableWidget(Identifier.of("bewisclient", "tiwyla_widget")), EventEntrypoint {
     private var lineWidth = 0
 
     var heartsFont: StyleSpriteSource = StyleSpriteSource.Font(Identifier.of("bewisclient", "extra"))
@@ -59,7 +60,7 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
     val blockSpecialInfoMap = create("block_special_info_map", BooleanMapSetting())
     val entitySpecialInfoMap = create("entity_special_info_map", BooleanMapSetting())
 
-    val healthInfoText = Translation("widget.tiwyla_widget.information.health_information", "The Information of the health of the entity that you are looking at is not available on multiplayer servers due to cheating concerns. In singleplayer worlds it is still available.")
+    val healthInfoText = createTranslation("information.health_information", "The Information of the health of the entity that you are looking at is not available on multiplayer servers due to cheating concerns. In singleplayer worlds it is still available.")
 
     val entityLines by lazy {
         create(
@@ -105,34 +106,32 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
 
     val entityInfoProviders = APIEntrypointLoader.mapContainer { it.entrypoint.getTiwylaEntityExtraInfoProviders().map { provider -> Identifier.of(it.provider.metadata.id, Registries.ENTITY_TYPE.getId(provider.entityType).toString().replace(":", "/")) to provider } }.flatten()
 
-    val progressText = Translation("widget.tiwyla_widget.progress", "Progress: %s%%")
-    val toolText = Translation("widget.tiwyla_widget.tool", "Tool: %s")
-    val miningLevel = Translation("widget.tiwyla_widget.mining_level", "Mining Level: %s")
+    val progressText = createTranslation("progress", "Progress: %s%%")
+    val toolText = createTranslation("tool", "Tool: %s")
+    val miningLevel = createTranslation("mining_level", "Mining Level: %s")
 
-    val axeToolText = Translation("widget.tiwyla_widget.tool.axe", "Axe")
-    val pickaxeToolText = Translation("widget.tiwyla_widget.tool.pickaxe", "Pickaxe")
-    val hoeToolText = Translation("widget.tiwyla_widget.tool.hoe", "Hoe")
-    val shovelToolText = Translation("widget.tiwyla_widget.tool.shovel", "Shovel")
-    val swordToolText = Translation("widget.tiwyla_widget.tool.sword", "Sword")
-    val noneToolText = Translation("widget.tiwyla_widget.tool.none", "None")
+    val axeToolText = createTranslation("tool.axe", "Axe")
+    val pickaxeToolText = createTranslation("tool.pickaxe", "Pickaxe")
+    val hoeToolText = createTranslation("tool.hoe", "Hoe")
+    val shovelToolText = createTranslation("tool.shovel", "Shovel")
+    val swordToolText = createTranslation("tool.sword", "Sword")
+    val noneToolText = createTranslation("tool.none", "None")
 
-    val noneLevelText = Translation("widget.tiwyla_widget.mining_level.none", "None")
-    val woodLevelText = Translation("widget.tiwyla_widget.mining_level.wood", "Wood")
-    val stoneLevelText = Translation("widget.tiwyla_widget.mining_level.stone", "Stone")
-    val ironLevelText = Translation("widget.tiwyla_widget.mining_level.iron", "Iron")
-    val diamondLevelText = Translation("widget.tiwyla_widget.mining_level.diamond", "Diamond")
+    val noneLevelText = createTranslation("mining_level.none", "None")
+    val woodLevelText = createTranslation("mining_level.wood", "Wood")
+    val stoneLevelText = createTranslation("mining_level.stone", "Stone")
+    val ironLevelText = createTranslation("mining_level.iron", "Iron")
+    val diamondLevelText = createTranslation("mining_level.diamond", "Diamond")
 
-    val instantText = Translation("widget.tiwyla_widget.instant", "Instant")
-    val secondsText = Translation("widget.tiwyla_widget.seconds", "%s seconds")
-    val minutesText = Translation("widget.tiwyla_widget.minutes", "%s minutes")
-    val hoursText = Translation("widget.tiwyla_widget.hours", "%s hours")
-    val daysText = Translation("widget.tiwyla_widget.days", "%s days")
+    val instantText = createTranslation("instant", "Instant")
+    val secondsText = createTranslation("seconds", "%s seconds")
+    val minutesText = createTranslation("minutes", "%s minutes")
+    val hoursText = createTranslation("hours", "%s hours")
+    val daysText = createTranslation("days", "%s days")
 
     val blockStateInfoMap = sortedMapOf<String, Property<*>>()
 
     override fun defaultPosition(): WidgetPosition = SidedPosition(0, 5, SidedPosition.CENTER, SidedPosition.START)
-
-    override fun getId(): Identifier = Identifier.of("bewisclient", "tiwyla_widget")
 
     override fun render(screenDrawing: ScreenDrawing) {
         val backgroundColor = backgroundColor.get().getColor()
@@ -163,15 +162,13 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
         }
 
         lines.forEachIndexed { i, line ->
-            screenDrawing.push()
-            screenDrawing.translate(getWidth() / 2f, paddingSize + 9f + lineSpacing + (i * (6 + lineSpacing)))
-            screenDrawing.scale(0.77f, 0.77f)
-            if (!shadow) {
-                screenDrawing.drawCenteredText(line, 0, 0, bottomTextColor)
-            } else {
-                screenDrawing.drawCenteredTextWithShadow(line, 0, 0, bottomTextColor)
+            screenDrawing.transform(getWidth() / 2f, paddingSize + 9f + lineSpacing + (i * (6 + lineSpacing)), 0.77f) {
+                if (!shadow) {
+                    screenDrawing.drawCenteredText(line, 0, 0, bottomTextColor)
+                } else {
+                    screenDrawing.drawCenteredTextWithShadow(line, 0, 0, bottomTextColor)
+                }
             }
-            screenDrawing.pop()
         }
     }
 
@@ -281,7 +278,7 @@ object TiwylaWidget : ScalableWidget(), EventEntrypoint {
         val first: Line<T>?, val second: Line<T>?
     ) {
         data class Line<T>(val fn: (data: T) -> Text?, val id: String, val priority: Int) {
-            val translation = Translation("widget.tiwyla_widget.information.$id", `snake_toWord With Spaces`(id))
+            val translation = createTranslation("information.$id", `snake_toWord With Spaces`(id))
 
             operator fun invoke(data: T): Text? = fn(data)
         }

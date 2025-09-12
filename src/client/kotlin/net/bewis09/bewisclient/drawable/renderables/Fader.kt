@@ -1,6 +1,7 @@
 package net.bewis09.bewisclient.drawable.renderables
 
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
+import net.bewis09.bewisclient.drawable.screen_drawing.transform
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.interfaces.Gettable
 import net.bewis09.bewisclient.logic.color.alpha
@@ -20,13 +21,12 @@ class Fader(val value: Gettable<Float>, val precision: Precision, val onChange: 
         screenDrawing.fillRounded(
             getX(), getY() + 5, getWidth(), 4, 2, 0xAAAAAA alpha hoverAnimation["hovering"] * 0.15f + 0.15f
         )
-        screenDrawing.push()
-        screenDrawing.translate(getX() + normalizedValue * (getWidth() - 8) + 4, getY() + 2f)
-        screenDrawing.scale(0.1f, 0.1f)
-        screenDrawing.fillRounded(
-            -20, 0, 40, 100, 20, (hoverAnimation["hovering"] within (0xCCCCCC.color to 0xFFFFFF.color)) * OptionsMenuSettings.themeColor.get().getColor()
-        )
-        screenDrawing.pop()
+
+        screenDrawing.transform(getX() + normalizedValue * (getWidth() - 8) + 4, getY() + 2f, 0.1f) {
+            screenDrawing.fillRounded(
+                -20, 0, 40, 100, 20, (hoverAnimation["hovering"] within (0xCCCCCC.color to 0xFFFFFF.color)) * OptionsMenuSettings.themeColor.get().getColor()
+            )
+        }
     }
 
     override fun onMouseDrag(mouseX: Double, mouseY: Double, startX: Double, startY: Double, button: Int): Boolean {

@@ -40,7 +40,7 @@ class SettingStructure(val screen: OptionScreen) : BewisclientInterface {
         listOf(
             Button(Translation("menu.widgets.general_setting", "General Widget Settings").getTranslatedString()) {
                 screen.transformInside(
-                    Text(Translation("menu.widgets.general_setting", "General Widget Settings").getTranslatedString(), centered = true).setHeight(12), VerticalAlignScrollPlane({ generalWidgetSettings }, 1)
+                    TextElement(Translation("menu.widgets.general_setting", "General Widget Settings").getTranslatedString(), centered = true).setHeight(12), VerticalAlignScrollPlane({ generalWidgetSettings }, 1)
                 )
             }(x, y, width, 14), VerticalScrollGrid({ widgets.map { a -> a.setHeight(90) } }, 5, 80).invoke(x, y + 19, width, height - 19)
         )

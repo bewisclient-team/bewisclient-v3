@@ -7,6 +7,8 @@ import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Style
 import net.minecraft.text.StyleSpriteSource
 import net.minecraft.util.Identifier
+import org.joml.Matrix3x2f
+import org.joml.Matrix3x2fStack
 
 interface ScreenDrawingInterface : BewisclientInterface {
     val drawContext: DrawContext
@@ -18,9 +20,7 @@ interface ScreenDrawingInterface : BewisclientInterface {
      * @param x The x offset to translate the context by.
      * @param y The y offset to translate the context by.
      */
-    fun translate(x: Float, y: Float) {
-        drawContext.matrices.translate(x, y)
-    }
+    fun translate(x: Float, y: Float): Matrix3x2f = drawContext.matrices.translate(x, y)
 
     /**
      * Scales the drawing context by the specified x and y factors.
@@ -28,47 +28,35 @@ interface ScreenDrawingInterface : BewisclientInterface {
      * @param x The x factor to scale the context by.
      * @param y The y factor to scale the context by.
      */
-    fun scale(x: Float, y: Float) {
-        drawContext.matrices.scale(x, y)
-    }
+    fun scale(x: Float, y: Float): Matrix3x2f = drawContext.matrices.scale(x, y)
 
     /**
      * Rotates the drawing context by the specified angle in degrees.
      *
      * @param angle The angle in degrees to rotate the context by.
      */
-    fun rotateDegrees(angle: Float) {
-        drawContext.matrices.rotate(Math.toRadians(angle.toDouble()).toFloat())
-    }
+    fun rotateDegrees(angle: Float): Matrix3x2f = drawContext.matrices.rotate(Math.toRadians(angle.toDouble()).toFloat())
 
     /**
      * Rotates the drawing context by the specified angle in radians.
      *
      * @param angle The angle in radians to rotate the context by.
      */
-    fun rotate(angle: Float) {
-        drawContext.matrices.rotate(angle)
-    }
+    fun rotate(angle: Float): Matrix3x2f = drawContext.matrices.rotate(angle)
 
     /**
      * Pushes a new matrix onto the drawing context's matrix stack. This is used to save the current
      * transformation state so that it can be restored later.
      */
-    fun push() {
-        drawContext.matrices.pushMatrix()
-    }
+    fun push(): Matrix3x2fStack = drawContext.matrices.pushMatrix()
 
     /**
      * Pops the last matrix from the drawing context's matrix stack. This restores the previous
      * transformation state that was saved by a push operation.
      */
-    fun pop() {
-        drawContext.matrices.popMatrix()
-    }
+    fun pop(): Matrix3x2fStack = drawContext.matrices.popMatrix()
 
-    fun applyAlpha(color: Color): Int {
-        return (getCurrentColorModifier() * color).argb
-    }
+    fun applyAlpha(color: Color): Int = (getCurrentColorModifier() * color).argb
 
     class AfterDraw(val layer: Int, val func: () -> Unit)
 
@@ -76,31 +64,21 @@ interface ScreenDrawingInterface : BewisclientInterface {
     val colorStack: MutableList<Color>
     val afterDrawStack: HashMap<String, AfterDraw>
 
-    fun pushAlpha(alpha: Float) {
-        colorStack.add(Color(1f, 1f, 1f, alpha))
+    fun pushAlpha(alpha: Float) = colorStack.add(Color(1f, 1f, 1f, alpha))
+
+    fun pushColor(r: Float, g: Float, b: Float, a: Float) = colorStack.add(Color(r, g, b, a))
+
+    fun popColor(): Color = if (colorStack.isNotEmpty()) {
+        colorStack.removeLast()
+    } else {
+        Color.WHITE
     }
 
-    fun pushColor(r: Float, g: Float, b: Float, a: Float) {
-        colorStack.add(Color(r, g, b, a))
-    }
+    fun getCurrentColorModifier(): Color = colorStack.reduceOrNull { acc, alpha ->
+        acc * alpha
+    } ?: Color.WHITE
 
-    fun popColor(): Color {
-        return if (colorStack.isNotEmpty()) {
-            colorStack.removeLast()
-        } else {
-            Color.WHITE
-        }
-    }
-
-    fun getCurrentColorModifier(): Color {
-        return colorStack.reduceOrNull { acc, alpha ->
-            acc * alpha
-        } ?: Color.WHITE
-    }
-
-    fun setBewisclientFont() {
-        setFont(Identifier.of("bewisclient", "screen"))
-    }
+    fun setBewisclientFont() = setFont(Identifier.of("bewisclient", "screen"))
 
     fun setFont(font: Identifier) {
         style = Style.EMPTY.withFont(StyleSpriteSource.Font(font))
@@ -116,15 +94,31 @@ interface ScreenDrawingInterface : BewisclientInterface {
 
     fun runAfterDraw() {
         for (function in afterDrawStack.values.sortedBy { it.layer }) {
+            push()
             function.func()
+            pop()
         }
     }
 
-    fun enableScissors(x: Int, y: Int, width: Int, height: Int) {
-        drawContext.enableScissor(x, y, x + width, y + height)
-    }
+    fun enableScissors(x: Int, y: Int, width: Int, height: Int) = drawContext.enableScissor(x, y, x + width, y + height)
 
-    fun disableScissors() {
-        drawContext.disableScissor()
-    }
+    fun disableScissors() = drawContext.disableScissor()
 }
+
+inline fun ScreenDrawingInterface.onNewLayer(apply: () -> Unit, transform: () -> Unit) {
+    push()
+    transform()
+    apply()
+    pop()
+}
+
+inline fun ScreenDrawingInterface.transform(translateX: Float, translateY: Float, scale: Float, func: () -> Unit) = transform(translateX, translateY, scale, scale, func)
+
+inline fun ScreenDrawingInterface.transform(translateX: Float, translateY: Float, scaleX: Float, scaleY: Float, func: () -> Unit) = onNewLayer(func) {
+    translate(translateX, translateY)
+    scale(scaleX, scaleY)
+}
+
+inline fun ScreenDrawingInterface.translate(x: Float, y: Float, func: () -> Unit) = onNewLayer(func) { translate(x, y) }
+
+inline fun ScreenDrawingInterface.scale(x: Float, y: Float, func: () -> Unit) = onNewLayer(func) { scale(x, y) }

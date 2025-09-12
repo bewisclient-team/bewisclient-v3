@@ -3,6 +3,8 @@ package net.bewis09.bewisclient.logic
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.logic.color.Color
 import net.bewis09.bewisclient.logic.color.color
+import net.minecraft.text.MutableText
+import net.minecraft.text.Text
 
 inline fun <T> catch(block: () -> T, or: T) = try {
     block()
@@ -101,3 +103,7 @@ val colors = listOf(
 class TranslatedColor(val color: Color, val translation: Translation)
 
 fun <T> T.staticFun(): () -> T = { this }
+
+fun String.toText(): MutableText = Text.literal(this)
+
+fun Int.toText(): MutableText = Text.literal(this.toString())

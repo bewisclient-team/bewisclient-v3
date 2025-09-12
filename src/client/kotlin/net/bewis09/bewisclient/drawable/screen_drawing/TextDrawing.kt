@@ -27,10 +27,9 @@ interface TextDrawing : RectDrawing {
 
     fun drawCenteredText(text: Text, centerX: Int, y: Int, color: Color) {
         val textWidth = textRenderer.getWidth(text.copy().fillStyle(style))
-        push()
-        translate(-textWidth / 2f, 0f)
-        drawContext.drawText(textRenderer, text.copy().fillStyle(style), centerX, y, applyAlpha(color), false)
-        pop()
+        translate(-textWidth / 2f, 0f) {
+            drawContext.drawText(textRenderer, text.copy().fillStyle(style), centerX, y, applyAlpha(color), false)
+        }
     }
 
     fun drawCenteredTextWithShadow(text: Text, centerX: Int, y: Int, color: Color) {

@@ -1,7 +1,5 @@
 package net.bewis09.bewisclient.drawable
 
-import net.bewis09.bewisclient.exception.ProgramCodeException
-
 /**
  * Animator class to handle animations of drawable properties.
  * It allows for smooth transitions between values over a specified duration.
@@ -44,7 +42,7 @@ class Animator(val duration: () -> Long, val interpolationType: (delta: Float) -
     }
 
     fun getWithoutInterpolation(key: String): Float {
-        return map[key] ?: throw ProgramCodeException("Animation for key '$key' has not been initialized")
+        return map[key] ?: throw IllegalStateException("Animation for key '$key' has not been initialized")
     }
 
     /**
@@ -55,7 +53,7 @@ class Animator(val duration: () -> Long, val interpolationType: (delta: Float) -
 
         val delta = (System.currentTimeMillis() - (animationStartMap[key] ?: 0)) / duration().toFloat()
 
-        val value = map[key] ?: throw ProgramCodeException("Animation for key '$key' has not been initialized")
+        val value = map[key] ?: throw IllegalStateException("Animation for key '$key' has not been initialized")
 
         if (delta >= 1) {
             val finishAction = finishMap[key]
@@ -99,11 +97,7 @@ class Animator(val duration: () -> Long, val interpolationType: (delta: Float) -
         finishAction?.invoke()
     }
 
-    operator fun set(key: String, value: Pair<Float, () -> Unit>) {
-        set(key, value.first)
-
-        finishMap[key] = value.second
-    }
+    operator fun set(key: String, value: Pair<Float, () -> Unit>) = set(key, value.first, value.second)
 
     fun set(key: String, value: Float, onFinish: () -> Unit) {
         set(key, value)

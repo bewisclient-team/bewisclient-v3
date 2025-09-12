@@ -8,11 +8,10 @@ interface ItemDrawing : ScreenDrawingInterface {
     }
 
     fun drawItemStack(itemStack: ItemStack, x: Int, y: Int, size: Int) {
-        push()
         val scale = size / 16.0f
-        scale(scale, scale)
-        drawItemStack(itemStack, (x / scale).toInt(), (y / scale).toInt())
-        pop()
+        scale(scale, scale) {
+            drawItemStack(itemStack, (x / scale).toInt(), (y / scale).toInt())
+        }
     }
 
     fun drawItemStackWithOverlay(itemStack: ItemStack, x: Int, y: Int) {
@@ -21,12 +20,11 @@ interface ItemDrawing : ScreenDrawingInterface {
     }
 
     fun drawItemStackWithOverlay(itemStack: ItemStack, x: Int, y: Int, size: Int) {
-        push()
         val scale = size / 16.0f
-        scale(scale, scale)
-        val scaledX = (x / scale).toInt()
-        val scaledY = (y / scale).toInt()
-        drawItemStackWithOverlay(itemStack, scaledX, scaledY)
-        pop()
+        scale(scale, scale) {
+            val scaledX = (x / scale).toInt()
+            val scaledY = (y / scale).toInt()
+            drawItemStackWithOverlay(itemStack, scaledX, scaledY)
+        }
     }
 }

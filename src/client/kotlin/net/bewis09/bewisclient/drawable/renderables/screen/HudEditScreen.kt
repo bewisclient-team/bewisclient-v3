@@ -172,7 +172,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
         val sides = arrayOf("top", "right", "bottom", "left")
 
         sides.forEach { side ->
-            val position = RelativePosition(widget.getId().toString(), side)
+            val position = RelativePosition(widget.id.toString(), side)
 
             val x1 = position.getX(appendWidget)
             val y1 = position.getY(appendWidget)

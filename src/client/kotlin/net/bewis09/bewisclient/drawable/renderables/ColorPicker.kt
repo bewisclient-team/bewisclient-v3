@@ -13,11 +13,7 @@ class ColorPicker(val get: () -> Color, val set: (hue: Float, sat: Float) -> Uni
     }
 
     fun getColorPickerImage(size: Int): Identifier {
-        val id = colorPickerCache[size]
-
-        if (id != null) {
-            return id
-        }
+        colorPickerCache[size]?.let { return it }
 
         val identifier = Identifier.of("bewisclient", "color_picker_${size}")
 

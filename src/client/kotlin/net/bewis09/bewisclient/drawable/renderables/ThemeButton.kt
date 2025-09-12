@@ -4,6 +4,8 @@ import kotlinx.atomicfu.AtomicRef
 import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.animate
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
+import net.bewis09.bewisclient.drawable.screen_drawing.scale
+import net.bewis09.bewisclient.drawable.screen_drawing.translate
 import net.bewis09.bewisclient.drawable.then
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
@@ -43,18 +45,18 @@ class ThemeButton : TooltipHoverable {
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
         clickAnimation["color"] = if (selected()) 1f else 0f
-        screenDrawing.push()
-        screenDrawing.translate(getX() + getWidth() / 2f, getHeight() / 2f + getY())
-        screenDrawing.push()
-        screenDrawing.scale(0.9f + 0.1f * clickAnimation["click"], 0.9f + 0.1f * clickAnimation["click"])
-        screenDrawing.translate(-getWidth() / 2f, -getHeight() / 2f)
-        val color = OptionsMenuSettings.themeColor.get().getColor()
-        screenDrawing.fillWithBorderRounded(0, 0, getWidth(), getHeight(), 5, color alpha (hoverAnimation["hovering"].coerceAtLeast(clickAnimation["color"]) + 1) * 0.15f, color alpha clickAnimation["color"] * 0.5f)
-        screenDrawing.pop()
-        screenDrawing.scale(0.95f + 0.05f * clickAnimation["click"], 0.95f + 0.05f * clickAnimation["click"])
-        screenDrawing.translate(0f, -screenDrawing.getTextHeight() / 2f)
-        screenDrawing.drawCenteredText(text, 0, 0, 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()))
-        screenDrawing.pop()
+        screenDrawing.translate(getX() + getWidth() / 2f, getHeight() / 2f + getY()) {
+            screenDrawing.scale(0.9f + 0.1f * clickAnimation["click"], 0.9f + 0.1f * clickAnimation["click"]) {
+                screenDrawing.translate(-getWidth() / 2f, -getHeight() / 2f)
+                val color = OptionsMenuSettings.themeColor.get().getColor()
+                screenDrawing.fillWithBorderRounded(0, 0, getWidth(), getHeight(), 5, color alpha (hoverAnimation["hovering"].coerceAtLeast(clickAnimation["color"]) + 1) * 0.15f, color alpha clickAnimation["color"] * 0.5f)
+            }
+
+            screenDrawing.scale(0.95f + 0.05f * clickAnimation["click"], 0.95f + 0.05f * clickAnimation["click"]) {
+                screenDrawing.translate(0f, -screenDrawing.getTextHeight() / 2f)
+                screenDrawing.drawCenteredText(text, 0, 0, 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()))
+            }
+        }
     }
 
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {

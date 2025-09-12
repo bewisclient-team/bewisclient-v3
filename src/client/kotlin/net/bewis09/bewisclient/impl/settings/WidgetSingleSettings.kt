@@ -5,8 +5,6 @@ import net.bewis09.bewisclient.widget.WidgetLoader
 
 object WidgetSingleSettings : ObjectSetting() {
     init {
-        WidgetLoader.widgets.forEach {
-            create(it.getId().toString(), it)
-        }
+        WidgetLoader.widgets.forEach { create(it.id.toString(), it) }
     }
 }

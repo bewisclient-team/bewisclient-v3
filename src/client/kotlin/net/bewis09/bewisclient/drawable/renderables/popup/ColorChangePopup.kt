@@ -58,9 +58,8 @@ class ColorChangePopup(val state: Gettable<ColorSaver>, val onChange: (ColorSave
             super.init()
             buttons.forEachIndexed { index, button ->
                 button?.let {
-                    it.setWidth((getWidth() - ((buttons.size - 1) * 5) - 10) / buttons.size)
+                    it.setSize((getWidth() - ((buttons.size - 1) * 5) - 10) / buttons.size, 14)
                     it.setPosition(getX() + 5 + index * (it.getWidth() + 5), getY() + getHeight() - 20)
-                    it.setHeight(14)
                     addRenderable(it)
                 }
             }

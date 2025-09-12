@@ -3,6 +3,7 @@ package net.bewis09.bewisclient.widget
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
+import net.bewis09.bewisclient.drawable.screen_drawing.transform
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.widget.CustomWidget
 import net.bewis09.bewisclient.logic.catch
@@ -12,64 +13,45 @@ import net.bewis09.bewisclient.settings.types.WidgetPositionSetting
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.minecraft.util.Identifier
 
-abstract class Widget : ObjectSetting() {
+abstract class Widget(val id: Identifier) : ObjectSetting() {
     var position: WidgetPositionSetting = create("position", WidgetPositionSetting(defaultPosition()))
     var enabled = boolean("enabled", isEnabledByDefault())
 
     protected abstract val title: String
     protected abstract val description: String
 
-    val widgetTitle by lazy { Translation(getId().namespace,"widget.${getId().path}.name", title) }
-    val widgetDescription by lazy { Translation(getId().namespace, "widget.${getId().path}.description", description) }
+    val widgetTitle by lazy { createTranslation("name", title) }
+    val widgetDescription by lazy { createTranslation("description", description) }
 
-    open fun isEnabledByDefault(): Boolean {
-        return true
-    }
+    fun createTranslation(key: String, @Suppress("LocalVariableName") en_us: String) = Translation(id.namespace, "widget.${id.path}.$key", en_us)
 
-    open fun isHidden(): Boolean {
-        return false
-    }
+    open fun isEnabledByDefault(): Boolean = true
+
+    open fun isHidden(): Boolean = false
 
     fun isShowing(): Boolean {
         return isEnabled() && (!isHidden() || ((client.currentScreen as? RenderableScreen)?.renderable is HudEditScreen))
     }
 
-    fun isEnabled(): Boolean {
-        return enabled.get()
-    }
+    fun isEnabled(): Boolean = enabled.get()
 
     abstract fun defaultPosition(): WidgetPosition
 
-    abstract fun getId(): Identifier
-
     fun renderScaled(screenDrawing: ScreenDrawing) {
-        screenDrawing.push()
-        screenDrawing.translate(getX(), getY())
-        screenDrawing.scale(getScale(), getScale())
-        catch { render(screenDrawing) } ?: run {
-            error("Error rendering widget ${getId()} - disabling it to prevent further errors")
-            enabled.set(false)
+        screenDrawing.transform(getX(), getY(), getScale()) {
+            catch { render(screenDrawing) } ?: run {
+                error("Error rendering widget $id - disabling it to prevent further errors")
+                enabled.set(false)
+            }
         }
-        screenDrawing.pop()
     }
 
     abstract fun render(screenDrawing: ScreenDrawing)
 
-    fun getScreenWidth(): Int {
-        return (client.window.scaledWidth)
-    }
-
-    fun getScreenHeight(): Int {
-        return (client.window.scaledHeight)
-    }
-
-    fun getScaledWidth(): Float {
-        return (getWidth() * getScale())
-    }
-
-    fun getScaledHeight(): Float {
-        return (getHeight() * getScale())
-    }
+    fun getScreenWidth(): Int = client.window.scaledWidth
+    fun getScreenHeight(): Int = client.window.scaledHeight
+    fun getScaledWidth(): Float = getWidth() * getScale()
+    fun getScaledHeight(): Float = getHeight() * getScale()
 
     abstract fun getWidth(): Int
     abstract fun getHeight(): Int

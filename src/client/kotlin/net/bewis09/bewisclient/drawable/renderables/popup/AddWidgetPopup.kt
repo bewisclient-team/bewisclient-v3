@@ -2,7 +2,7 @@ package net.bewis09.bewisclient.drawable.renderables.popup
 
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.Hoverable
-import net.bewis09.bewisclient.drawable.renderables.Text
+import net.bewis09.bewisclient.drawable.renderables.TextElement
 import net.bewis09.bewisclient.drawable.renderables.VerticalScrollGrid
 import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
@@ -37,7 +37,7 @@ class AddWidgetPopup(val screen: HudEditScreen) : Renderable() {
     }
 
     inner class Inner : Renderable() {
-        val text = Text({ addText.getTranslatedString() }, 0.5f within (OptionsMenuSettings.themeColor.get().getColor() to Color.WHITE), centered = true)
+        val text = TextElement({ addText.getTranslatedString() }, 0.5f within (OptionsMenuSettings.themeColor.get().getColor() to Color.WHITE), centered = true)
         var grid = VerticalScrollGrid({
             WidgetLoader.widgets.filter { !it.isEnabled() }.map { widget -> WidgetElement(widget, screen, this).setHeight(90) }
         }, 5, 80)

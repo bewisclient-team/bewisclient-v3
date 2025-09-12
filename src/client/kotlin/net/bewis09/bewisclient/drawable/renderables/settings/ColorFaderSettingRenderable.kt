@@ -4,6 +4,7 @@ import net.bewis09.bewisclient.drawable.renderables.ColorInfoButton
 import net.bewis09.bewisclient.drawable.renderables.Fader
 import net.bewis09.bewisclient.drawable.renderables.ResetButton
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
+import net.bewis09.bewisclient.drawable.screen_drawing.translate
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.logic.color.Color
@@ -19,8 +20,8 @@ class ColorFaderSettingRenderable(val title: Translation, val description: Trans
 
     val fader = Fader(
         value = { setting2.get() }, onChange = { value ->
-            setting2.set(value)
-        }, precision = setting2.precision
+        setting2.set(value)
+    }, precision = setting2.precision
     )
 
     val resetButton = ResetButton<Nothing> {
@@ -34,14 +35,10 @@ class ColorFaderSettingRenderable(val title: Translation, val description: Trans
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
-        screenDrawing.push()
-        screenDrawing.translate(0f, getHeight() / 2f - screenDrawing.getTextHeight() / 2f + 0.5f)
-        screenDrawing.drawText(title.getTranslatedString(), getX() + 8, getY(), 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()))
-        screenDrawing.pop()
-        screenDrawing.push()
-        screenDrawing.translate(0f, getY() + 22.5f)
-        screenDrawing.drawRightAlignedText(title2.getTranslatedString(), getX() + getWidth() - fader.getWidth() - 12 - resetButton.getWidth(), 0, 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()))
-        screenDrawing.pop()
+        drawVerticalCenteredText(screenDrawing, title)
+        screenDrawing.translate(0f, getY() + 22.5f) {
+            screenDrawing.drawRightAlignedText(title2.getTranslatedString(), getX() + getWidth() - fader.getWidth() - 12 - resetButton.getWidth(), 0, 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()))
+        }
         renderRenderables(screenDrawing, mouseX, mouseY)
     }
 

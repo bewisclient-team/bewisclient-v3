@@ -3,10 +3,16 @@ package net.bewis09.bewisclient.widget.types
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
+import net.minecraft.text.Text
+import net.minecraft.util.Identifier
 import net.minecraft.util.math.MathHelper
 
-abstract class LineWidget() : ScalableWidget() {
+abstract class LineWidget(id: Identifier) : ScalableWidget(id) {
     private var lineWidth = 0
+
+    companion object {
+        private val EMPTY = Text.empty()
+    }
 
     val backgroundColor = create("background_color", DefaultWidgetSettings.backgroundColor.cloneWithDefault())
     val backgroundOpacity = create("background_opacity", DefaultWidgetSettings.backgroundOpacity.cloneWithDefault())
@@ -18,9 +24,11 @@ abstract class LineWidget() : ScalableWidget() {
     val textColor = create("text_color", DefaultWidgetSettings.textColor.cloneWithDefault())
     val borderRadius = create("border_radius", DefaultWidgetSettings.borderRadius.cloneWithDefault())
 
-    open fun hasMultipleLines(): Boolean = false
+    open fun hasMultipleLines(): Boolean = getLine() === EMPTY
 
-    abstract fun getLines(): List<String>
+    open fun getLines() = listOf(getLine())
+    open fun getLine(): Text = EMPTY
+
     open fun isCentered(): Boolean = true
 
     override fun render(screenDrawing: ScreenDrawing) {

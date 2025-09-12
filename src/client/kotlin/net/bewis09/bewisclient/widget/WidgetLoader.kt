@@ -21,7 +21,7 @@ object WidgetLoader : EventEntrypoint {
 
         widgets.forEach {
             HudElementRegistry.addLast(
-                it.getId()
+                it.id
             ) { context, tickCounter ->
                 if (it.isShowing() && (client.currentScreen as? RenderableScreen)?.renderable !is HudEditScreen) it.renderScaled(ScreenDrawing(context, client.textRenderer))
             }

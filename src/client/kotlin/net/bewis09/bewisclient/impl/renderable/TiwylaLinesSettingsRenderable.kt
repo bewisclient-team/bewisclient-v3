@@ -3,7 +3,7 @@ package net.bewis09.bewisclient.impl.renderable
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.Button
 import net.bewis09.bewisclient.drawable.renderables.Rectangle
-import net.bewis09.bewisclient.drawable.renderables.Text
+import net.bewis09.bewisclient.drawable.renderables.TextElement
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
@@ -32,8 +32,8 @@ class TiwylaLinesSettingsRenderable : Renderable() {
         if (getWidth() < 12) return
 
         addRenderable(Rectangle(Color.WHITE alpha 0.25f)(getX() + getWidth() / 2, getY() + 5, 1, getHeight() - 5))
-        addRenderable(Text(entityText.getTranslatedString(), 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()), true)(getX(), getY() + 6, (getWidth() - 11) / 2, 9))
-        addRenderable(Text(blockText.getTranslatedString(), 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()), true)(getX() + getWidth() - (getWidth() - 11) / 2, getY() + 6, (getWidth() - 11) / 2, 9))
+        addRenderable(TextElement(entityText.getTranslatedString(), 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()), true)(getX(), getY() + 6, (getWidth() - 11) / 2, 9))
+        addRenderable(TextElement(blockText.getTranslatedString(), 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()), true)(getX() + getWidth() - (getWidth() - 11) / 2, getY() + 6, (getWidth() - 11) / 2, 9))
 
         addForSide(TiwylaWidget.entityLines)
         addForSide(TiwylaWidget.blockLines, right = true)

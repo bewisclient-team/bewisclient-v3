@@ -1,13 +1,18 @@
 package net.bewis09.bewisclient.impl.widget
 
 import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.logic.toText
 import net.bewis09.bewisclient.settings.types.BooleanSetting
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
+import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 
-object CPSWidget : LineWidget() {
+object CPSWidget : LineWidget(Identifier.of("bewisclient", "cps_widget")) {
+    val singleCPSText = createTranslation("singular_cps", "%s CPS")
+    val multiCPSText = createTranslation("multiple_cps", "%s | %s CPS")
+
     val leftEnabled: BooleanSetting = boolean("left_enabled", true) { _, new -> if (new == false) rightEnabled.set(true) }
     val rightEnabled: BooleanSetting = boolean("right_enabled", true) { _, new -> if (new == false) leftEnabled.set(true) }
 
@@ -17,16 +22,14 @@ object CPSWidget : LineWidget() {
     override val title = "CPS Widget"
     override val description = "Displays your current clicks per second (CPS)."
 
-    override fun getLines(): List<String> {
-        if (!rightEnabled.get()) return listOf("${getCPSCount(leftMouseList)} CPS")
-        if (!leftEnabled.get()) return listOf("${getCPSCount(rightMouseList)} CPS")
+    override fun getLine(): Text {
+        if (!rightEnabled.get()) return singleCPSText(getCPSCount(leftMouseList))
+        if (!leftEnabled.get()) return singleCPSText(getCPSCount(rightMouseList))
 
-        return listOf("${getCPSCount(leftMouseList)} | ${getCPSCount(rightMouseList)} CPS")
+        return multiCPSText(getCPSCount(leftMouseList), getCPSCount(rightMouseList))
     }
 
     override fun defaultPosition(): WidgetPosition = RelativePosition("bewisclient:day_widget", "bottom")
-
-    override fun getId(): Identifier = Identifier.of("bewisclient", "cps_widget")
 
     override fun getMinimumWidth(): Int = 80
 
@@ -51,8 +54,8 @@ object CPSWidget : LineWidget() {
     }
 
     override fun getCustomWidgetDataPoints(): List<CustomWidget.WidgetStringData> = listOf(
-        CustomWidget.WidgetStringData("cps_left", "Left CPS", "Your current left clicks per second", { getCPSCount(leftMouseList) }),
-        CustomWidget.WidgetStringData("cps_right", "Right CPS", "Your current right clicks per second", { getCPSCount(rightMouseList) }),
-        CustomWidget.WidgetStringData("cps_total", "Total CPS", "Your current total clicks per second", { getCPSCount(leftMouseList) + getCPSCount(rightMouseList) }),
+        CustomWidget.WidgetStringData("cps_left", "Left CPS", "Your current left clicks per second", { getCPSCount(leftMouseList).toText() }),
+        CustomWidget.WidgetStringData("cps_right", "Right CPS", "Your current right clicks per second", { getCPSCount(rightMouseList).toText() }),
+        CustomWidget.WidgetStringData("cps_total", "Total CPS", "Your current total clicks per second", { (getCPSCount(leftMouseList) + getCPSCount(rightMouseList)).toText() }),
     )
 }

@@ -7,7 +7,7 @@ import net.bewis09.bewisclient.widget.Widget
 import net.bewis09.bewisclient.widget.WidgetLoader
 
 class RelativePosition(val parent: String, val side: String) : WidgetPosition {
-    val parentWidget by lazy { WidgetLoader.widgets.find { it.getId().toString() == parent } }
+    val parentWidget by lazy { WidgetLoader.widgets.find { it.id.toString() == parent } }
 
     override fun getX(widget: Widget): Float {
         val parent = parentWidget ?: return 0f

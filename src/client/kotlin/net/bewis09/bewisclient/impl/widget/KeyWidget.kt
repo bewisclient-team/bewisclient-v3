@@ -4,7 +4,7 @@ import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
 import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSettingsRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.game.Translation
+import net.bewis09.bewisclient.drawable.screen_drawing.translate
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.bewis09.bewisclient.interfaces.KeyBindingAccessor
 import net.bewis09.bewisclient.logic.color.Color
@@ -21,7 +21,7 @@ import net.minecraft.client.util.InputUtil
 import net.minecraft.util.Identifier
 import org.lwjgl.glfw.GLFW
 
-object KeyWidget : ScalableWidget() {
+object KeyWidget : ScalableWidget(Identifier.of("bewisclient", "key_widget")) {
     val backgroundColor = create("background_color", DefaultWidgetSettings.backgroundColor.cloneWithDefault())
     val backgroundOpacity = create(
         "background_opacity", DefaultWidgetSettings.backgroundOpacity.cloneWithDefault()
@@ -64,8 +64,6 @@ object KeyWidget : ScalableWidget() {
 
     override fun defaultPosition(): WidgetPosition = RelativePosition("bewisclient:biome_widget", "top")
 
-    override fun getId(): Identifier = Identifier.of("bewisclient", "key_widget")
-
     override fun render(screenDrawing: ScreenDrawing) {
         val paddingSize = paddingSize.get()
 
@@ -92,8 +90,7 @@ object KeyWidget : ScalableWidget() {
             y += bottomHeight + gap.get()
         }
 
-        if (showJumpKey.get())
-            renderKey(screenDrawing, 0, y, totalWidth, bottomHeight, client.options.jumpKey)
+        if (showJumpKey.get()) renderKey(screenDrawing, 0, y, totalWidth, bottomHeight, client.options.jumpKey)
     }
 
     fun renderKey(
@@ -143,10 +140,9 @@ object KeyWidget : ScalableWidget() {
             x, y, width, height, borderRadius, backgroundColor alpha backgroundOpacity, borderColor alpha borderOpacity
         )
 
-        screenDrawing.push()
-        screenDrawing.translate(0f, height / 2f - screenDrawing.getTextHeight() / 2f + 1f)
-        screenDrawing.drawCenteredText(text, x + width / 2 + 1, y, textColor)
-        screenDrawing.pop()
+        screenDrawing.translate(0f, height / 2f - screenDrawing.getTextHeight() / 2f + 1f) {
+            screenDrawing.drawCenteredText(text, x + width / 2 + 1, y, textColor)
+        }
     }
 
     override fun getWidth(): Int {
@@ -177,7 +173,7 @@ object KeyWidget : ScalableWidget() {
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
         list.add(
             MultipleBooleanSettingsRenderable(
-                Translation("widget.key_widget.keys", "Select which keys should be shown"), null, listOf(
+                createTranslation("keys", "Select which keys should be shown"), null, listOf(
                     showMovementKeys.createRenderablePart("widget.key_widget.show_movement_keys", "Movement Keys"), showAttackUseKeys.createRenderablePart("widget.key_widget.show_attack_use_keys", "Attack/Use Keys"), showJumpKey.createRenderablePart("widget.key_widget.show_jump_key", "Jump Key")
                 ).staticFun()
             )

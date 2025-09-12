@@ -36,10 +36,9 @@ interface RectDrawing : ScreenDrawingInterface {
     fun drawVerticalGradient(
         x: Int, y: Int, width: Int, height: Int, startColor: Color, endColor: Color
     ) {
-        push()
-        translate((x - width).toFloat(), -y.toFloat())
-        rotate(-90f)
-        drawHorizontalGradient(0, 0, height, width, startColor, endColor)
-        pop()
+        translate((x - width).toFloat(), -y.toFloat()) {
+            rotate(-90f)
+            drawHorizontalGradient(0, 0, height, width, startColor, endColor)
+        }
     }
 }

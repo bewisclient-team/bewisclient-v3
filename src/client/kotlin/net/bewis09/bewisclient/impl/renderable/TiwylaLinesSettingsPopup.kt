@@ -2,7 +2,7 @@ package net.bewis09.bewisclient.impl.renderable
 
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.Button
-import net.bewis09.bewisclient.drawable.renderables.Text
+import net.bewis09.bewisclient.drawable.renderables.TextElement
 import net.bewis09.bewisclient.drawable.renderables.VerticalAlignScrollPlane
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
@@ -81,7 +81,7 @@ class TiwylaLinesSettingsPopup<T>(
         }
 
         override fun init() {
-            addRenderable(Text(selectText.getTranslatedString(), centered = true)(getX(), getY() + 6, getWidth(), 14))
+            addRenderable(TextElement(selectText.getTranslatedString(), centered = true)(getX(), getY() + 6, getWidth(), 14))
             addRenderable(plane(getX() + 5, getY() + 25, getWidth() - 10, getHeight() - 30))
         }
     }

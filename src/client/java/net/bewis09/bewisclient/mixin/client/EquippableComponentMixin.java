@@ -18,8 +18,6 @@ public class EquippableComponentMixin {
 
         if (cir.getReturnValue().isEmpty()) return;
 
-        var id = cir.getReturnValue().get();
-
-        if (id.toString().equals("minecraft:misc/pumpkinblur")) cir.setReturnValue(Optional.empty());
+        if (cir.getReturnValue().get().toString().equals("minecraft:misc/pumpkinblur")) cir.setReturnValue(Optional.empty());
     }
 }

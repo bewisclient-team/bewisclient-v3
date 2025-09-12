@@ -82,7 +82,7 @@ open class StaticColorSaver : ColorSaver {
         val fader = Fader({ get().getColor().brightness }, Precision(0f, 1f, 0.01f, 2)) { bri ->
             set(StaticColorSaver(get().getColor().withBrightness(bri)))
         }
-        val text = Text(Translations.CHANGE_BRIGHTNESS.getTranslatedString(), centered = true)
+        val text = TextElement(Translations.CHANGE_BRIGHTNESS.getTranslatedString(), centered = true)
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             renderRenderables(screenDrawing, mouseX, mouseY)

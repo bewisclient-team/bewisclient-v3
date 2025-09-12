@@ -2,7 +2,7 @@ package net.bewis09.bewisclient.drawable.renderables.options_structure
 
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.Plane
-import net.bewis09.bewisclient.drawable.renderables.Text
+import net.bewis09.bewisclient.drawable.renderables.TextElement
 import net.bewis09.bewisclient.drawable.renderables.ThemeButton
 import net.bewis09.bewisclient.drawable.renderables.VerticalScrollGrid
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
@@ -23,6 +23,6 @@ open class SidebarCategory(val name: Translation, val renderable: Renderable) {
     }
 
     fun getHeader(): Renderable {
-        return Plane { x, y, width, height -> listOf(Text(name.getTranslatedString(), { 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()) }, centered = true)(x, y, width, 13)) }.setHeight(14)
+        return Plane { x, y, width, height -> listOf(TextElement(name.getTranslatedString(), { 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()) }, centered = true)(x, y, width, 13)) }.setHeight(14)
     }
 }
