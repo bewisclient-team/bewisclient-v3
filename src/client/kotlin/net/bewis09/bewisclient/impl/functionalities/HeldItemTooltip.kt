@@ -5,8 +5,6 @@ import net.bewis09.bewisclient.drawable.renderables.options_structure.ImageSetti
 import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSettingsRenderable
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.functionalities.HeldItemTooltipSettings
-import net.bewis09.bewisclient.interfaces.Gettable
-import net.bewis09.bewisclient.interfaces.Settable
 import net.bewis09.bewisclient.interfaces.SettingInterface
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
