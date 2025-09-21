@@ -19,7 +19,7 @@ class TiwylaLinesSettingsRenderable : Renderable() {
     }
 
     init {
-        height = 78u
+        internalHeight = 78
     }
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
@@ -27,11 +27,11 @@ class TiwylaLinesSettingsRenderable : Renderable() {
     }
 
     override fun init() {
-        if (getWidth() < 12) return
+        if (width < 12) return
 
-        addRenderable(Rectangle(Color.WHITE alpha 0.25f)(getX() + getWidth() / 2, getY() + 5, 1, getHeight() - 5))
-        addRenderable(TextElement(entityText.getTranslatedString(), 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()), true)(getX(), getY() + 6, (getWidth() - 11) / 2, 9))
-        addRenderable(TextElement(blockText.getTranslatedString(), 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()), true)(getX() + getWidth() - (getWidth() - 11) / 2, getY() + 6, (getWidth() - 11) / 2, 9))
+        addRenderable(Rectangle(Color.WHITE alpha 0.25f)(centerX, y + 5, 1, height - 5))
+        addRenderable(TextElement(entityText(), 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()), true)(x, y + 6, (width - 11) / 2, 9))
+        addRenderable(TextElement(blockText(), 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()), true)(x2 - (width - 11) / 2, y + 6, (width - 11) / 2, 9))
 
         addForSide(TiwylaWidget.entityLines)
         addForSide(TiwylaWidget.blockLines, right = true)
@@ -45,16 +45,16 @@ class TiwylaLinesSettingsRenderable : Renderable() {
         for (i in 0..2.coerceAtMost(list.size + 1)) {
             val arr = arrayOf(list.get().getOrNull(i)?.first, list.get().getOrNull(i)?.second).filterNotNull().sortedBy { it.priority }
             if (arr.isEmpty()) {
-                addRenderable(Button((arr.getOrNull(0)?.translation ?: none).getTranslatedString(), {
+                addRenderable(Button((arr.getOrNull(0)?.translation ?: none)(), {
                     openPopup(i, true)
-                }, dark = arr.isEmpty())(if (right) getX() + getWidth() - (getWidth() - 11) / 2 else getX(), getY() + 20 + i * 20, (getWidth() - 11) / 2, 18))
+                }, dark = arr.isEmpty())(if (right) x2 - (width - 11) / 2 else x, y + 20 + i * 20, (width - 11) / 2, 18))
             } else {
-                addRenderable(Button((arr.getOrNull(0)?.translation ?: none).getTranslatedString(), {
+                addRenderable(Button((arr.getOrNull(0)?.translation ?: none)(), {
                     openPopup(i, true)
-                }, dark = arr.isEmpty())(if (right) getX() + getWidth() - (getWidth() - 11) / 2 else getX(), getY() + 20 + i * 20, (getWidth() - 13) / 4, 18))
-                addRenderable(Button((arr.getOrNull(1)?.translation ?: none).getTranslatedString(), {
+                }, dark = arr.isEmpty())(if (right) x2 - (width - 11) / 2 else x, y + 20 + i * 20, (width - 13) / 4, 18))
+                addRenderable(Button((arr.getOrNull(1)?.translation ?: none)(), {
                     openPopup(i, false)
-                }, dark = arr.size < 2)(if (right) getX() + getWidth() - (getWidth() - 13) / 4 else getX() + (getWidth() - 11) / 2 - (getWidth() - 13) / 4, getY() + 20 + i * 20, (getWidth() - 13) / 4, 18))
+                }, dark = arr.size < 2)(if (right) x2 - (width - 13) / 4 else x + (width - 11) / 2 - (width - 13) / 4, y + 20 + i * 20, (width - 13) / 4, 18))
             }
         }
     }

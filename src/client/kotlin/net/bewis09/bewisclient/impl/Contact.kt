@@ -29,7 +29,7 @@ object Contact : SidebarCategory(
     var hoveredElement: ContactLinkElement? = null
 }
 
-class ContactLinkElement(val id: String, val url: String, val title: String, val description: String) : SettingRenderable() {
+class ContactLinkElement(val id: String, val url: String, val title: String, val description: String) : SettingRenderable(null, 22) {
     companion object {
         val COPY_TO_CLIPBOARD = Translation("contact.copy_to_clipboard", "Copy to clipboard")
         val OPEN_LINK = Translation("contact.open_link", "Open link in browser")
@@ -50,19 +50,15 @@ class ContactLinkElement(val id: String, val url: String, val title: String, val
 
     var simpleHeight = 22
 
-    init {
-        height = 22u
-    }
-
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
-        screenDrawing.enableScissors(getX(), getY(), getWidth(), getHeight())
+        screenDrawing.enableScissors(x, y, width, height)
         screenDrawing.push()
         screenDrawing.translate(0f, 11 - screenDrawing.getTextHeight() / 2f + 0.5f)
-        screenDrawing.drawText(titleTranslation.getTranslatedString(), getX() + 32, getY(), Color.WHITE)
-        val lines = screenDrawing.drawWrappedText(descriptionTranslation.getTranslatedString(), getX() + 32, getY() + 10, getWidth() - 40, 0xAAAAAA alpha 0.8f)
+        screenDrawing.drawText(titleTranslation.getTranslatedString(), x + 32, y, Color.WHITE)
+        val lines = screenDrawing.drawWrappedText(descriptionTranslation.getTranslatedString(), x + 32, y + 10, width - 40, 0xAAAAAA alpha 0.8f)
         screenDrawing.pop()
-        screenDrawing.drawTexture(identifier, getX() + 8, getY() + getHeight() / 2 - 8, 0f, 0f, 16, 16, 16, 16)
+        screenDrawing.drawTexture(identifier, x + 8, y + height / 2 - 8, 0f, 0f, 16, 16, 16, 16)
         renderRenderables(screenDrawing, mouseX, mouseY)
         simpleHeight = 22 + lines.size * 9 + 1
         setHeight(simpleHeight + (menuAnimation["menu"] * 19).roundToInt())
@@ -71,8 +67,8 @@ class ContactLinkElement(val id: String, val url: String, val title: String, val
 
     override fun init() {
         super.init()
-        addRenderable(copyButton.setPosition(getX() + getWidth() - 210, getY() + simpleHeight))
-        addRenderable(openButton.setPosition(getX() + getWidth() - 105, getY() + simpleHeight))
+        addRenderable(copyButton.setPosition(x + width - 210, y + simpleHeight))
+        addRenderable(openButton.setPosition(x + width - 105, y + simpleHeight))
     }
 
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {

@@ -9,6 +9,7 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.logic.colors
 import net.bewis09.bewisclient.logic.number.Precision
+import net.bewis09.bewisclient.logic.string
 
 open class StaticColorSaver : ColorSaver {
     private val color: Color
@@ -55,11 +56,7 @@ open class StaticColorSaver : ColorSaver {
         private val description = Translation("color.static.description", "A static color that does not change.")
 
         override fun createFromJson(jsonElement: JsonElement): StaticColorSaver? {
-            return if (jsonElement.isJsonPrimitive) {
-                fromColorString(jsonElement.asString)
-            } else {
-                null
-            }
+            return jsonElement.string()?.let { fromColorString(it) }
         }
 
         override fun getType(): String = "static"
@@ -82,7 +79,7 @@ open class StaticColorSaver : ColorSaver {
         val fader = Fader({ get().getColor().brightness }, Precision(0f, 1f, 0.01f, 2)) { bri ->
             set(StaticColorSaver(get().getColor().withBrightness(bri)))
         }
-        val text = TextElement(Translations.CHANGE_BRIGHTNESS.getTranslatedString(), centered = true)
+        val text = TextElement(Translations.CHANGE_BRIGHTNESS(), centered = true)
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             renderRenderables(screenDrawing, mouseX, mouseY)
@@ -91,25 +88,25 @@ open class StaticColorSaver : ColorSaver {
         override fun init() {
             addRenderable(
                 colorPicker(
-                    getX(), getY(), getHeight(), getHeight()
+                    x, y, height, height
                 )
             )
             addRenderable(
                 text(
-                    getX() + getHeight() + 6,
-                    getY() + 2,
-                    getWidth() - getHeight() - 5,
+                    x + height + 6,
+                    y + 2,
+                    width - height - 5,
                     9,
                 )
             )
             addRenderable(
                 fader(
-                    getX() + getHeight() + 6, getY() + 11, getWidth() - getHeight() - 6, 14
+                    x + height + 6, y + 11, width - height - 6, 14
                 )
             )
-            addRenderable(Rectangle(0xAAAAAA.color alpha 0.5f)(getX() + getHeight() + 5, getY() + 30, getWidth() - getHeight() - 5, 1))
-            addRenderable(ColorButton(getX() + getHeight() + 5, getY() + 36, 27, 27, { get().getColor() }, String.format("#%06X", get().getColor().argb)))
-            addRenderable(Rectangle(0xAAAAAA.color alpha 0.5f)(getX() + getHeight() + 37, getY() + 36, 1, 27))
+            addRenderable(Rectangle(0xAAAAAA.color alpha 0.5f)(x + height + 5, y + 30, width - height - 5, 1))
+            addRenderable(ColorButton(x + height + 5, y + 36, 27, 27, { get().getColor() }, String.format("#%06X", get().getColor().argb)))
+            addRenderable(Rectangle(0xAAAAAA.color alpha 0.5f)(x + height + 37, y + 36, 1, 27))
 
             addRenderable(
                 HorizontalScrollGrid({
@@ -119,22 +116,22 @@ open class StaticColorSaver : ColorSaver {
                         })
                     }
                 }, 3, 12)(
-                    getX() + getHeight() + 43, getY() + 36, getWidth() - getHeight() - 43, 27
+                    x + height + 43, y + 36, width - height - 43, 27
                 )
             )
         }
 
         class ColorButton(x: Int, y: Int, width: Int, height: Int, val color: () -> Color, tooltip: String? = null, val onClick: ((Color) -> Unit)? = null) : TooltipHoverable(tooltip?.let { Translation.literal(it) }) {
             init {
-                this.x = x.toUInt()
-                this.y = y.toUInt()
-                this.width = width.toUInt()
-                this.height = height.toUInt()
+                this.internalX = x
+                this.internalY = y
+                this.internalWidth = width
+                this.internalHeight = height
             }
 
             override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
                 super.render(screenDrawing, mouseX, mouseY)
-                screenDrawing.fillWithBorderRounded(getX(), getY(), getWidth(), getHeight(), 3, color(), 0xAAAAAA.color alpha 0.5f)
+                screenDrawing.fillWithBorderRounded(x, y, width, height, 3, color(), 0xAAAAAA.color alpha 0.5f)
             }
 
             override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {

@@ -8,6 +8,6 @@ class Rectangle(var color: () -> Color) : Renderable() {
     constructor(color: Color) : this({ color })
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        screenDrawing.fill(getX(), getY(), getWidth(), getHeight(), color())
+        screenDrawing.fill(x, y, width, height, color())
     }
 }

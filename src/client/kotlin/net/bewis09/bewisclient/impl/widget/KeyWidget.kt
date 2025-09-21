@@ -31,21 +31,22 @@ object KeyWidget : ScalableWidget(Identifier.of("bewisclient", "key_widget")) {
     val textColor = create("text_color", DefaultWidgetSettings.textColor.cloneWithDefault())
 
     val pressedBackgroundColor = color(
-        "pressed_background_color", StaticColorSaver(Color.LIGHT_GRAY), ColorSetting.CHANGING, ColorSetting.STATIC
+        "pressed_background_color", StaticColorSaver(Color.LIGHT_GRAY), ColorSetting.CHANGING, ColorSetting.STATIC, ColorSetting.THEME
     )
     val pressedBackgroundOpacity = create(
         "pressed_background_opacity", DefaultWidgetSettings.backgroundOpacity.cloneWithDefault()
     )
     val pressedBorderColor = color(
-        "pressed_border_color", StaticColorSaver(Color.LIGHT_GRAY), ColorSetting.CHANGING, ColorSetting.STATIC
+        "pressed_border_color", StaticColorSaver(Color.LIGHT_GRAY), ColorSetting.CHANGING, ColorSetting.STATIC, ColorSetting.THEME
     )
     val pressedBorderOpacity = create(
         "pressed_border_opacity", DefaultWidgetSettings.borderOpacity.cloneWithDefault()
     )
     val pressedTextColor = color(
-        "pressed_text_color", StaticColorSaver(Color.BLACK), ColorSetting.CHANGING, ColorSetting.STATIC
+        "pressed_text_color", StaticColorSaver(Color.BLACK), ColorSetting.CHANGING, ColorSetting.STATIC, ColorSetting.THEME
     )
 
+    val shadow = boolean("shadow", false)
     val paddingSize = int("padding_size", 5, 0, 10)
     val borderRadius = create("border_radius", DefaultWidgetSettings.borderRadius.cloneWithDefault())
     val gap = int("gap", 2, 0, 20)
@@ -114,16 +115,10 @@ object KeyWidget : ScalableWidget(Identifier.of("bewisclient", "key_widget")) {
         return keyBinding.isPressed
     }
 
-    fun KeyBinding.getKeyText(): String {
-        if ((this as KeyBindingAccessor).getBoundKey().code == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
-            return "LMB"
-        }
-
-        if ((this as KeyBindingAccessor).getBoundKey().code == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
-            return "RMB"
-        }
-
-        return this.boundKeyLocalizedText.string
+    fun KeyBinding.getKeyText(): String = when ((this as KeyBindingAccessor).getBoundKey().code) {
+        GLFW.GLFW_MOUSE_BUTTON_LEFT -> "LMB"
+        GLFW.GLFW_MOUSE_BUTTON_RIGHT -> "RMB"
+        else -> this.boundKeyLocalizedText.string
     }
 
     fun renderKey(
@@ -141,7 +136,7 @@ object KeyWidget : ScalableWidget(Identifier.of("bewisclient", "key_widget")) {
         )
 
         screenDrawing.translate(0f, height / 2f - screenDrawing.getTextHeight() / 2f + 1f) {
-            screenDrawing.drawCenteredText(text, x + width / 2 + 1, y, textColor)
+            screenDrawing.drawCenteredText(text, x + width / 2 + 1, y, textColor, shadow.get())
         }
     }
 
@@ -215,6 +210,11 @@ object KeyWidget : ScalableWidget(Identifier.of("bewisclient", "key_widget")) {
             )
         )
 
+        list.add(
+            shadow.createRenderable(
+                "widget.text_shadow", "Text Shadow", "Set whether text in the widget has a shadow"
+            )
+        )
         list.add(
             gap.createRenderable(
                 "widget.gap", "Gap", "Set the gap between the keys in the widget"

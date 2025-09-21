@@ -16,7 +16,7 @@ class ColorChangePopup(val state: Gettable<ColorSaver>, val onChange: (ColorSave
     }
 
     override fun init() {
-        addRenderable(inner.setPosition(getWidth() / 2 - inner.getWidth() / 2, getHeight() / 2 - inner.getHeight() / 2))
+        addRenderable(inner.setPosition(width / 2 - inner.width / 2, height / 2 - inner.height / 2))
     }
 
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
@@ -43,12 +43,12 @@ class ColorChangePopup(val state: Gettable<ColorSaver>, val onChange: (ColorSave
         }
 
         init {
-            width = 200u
-            height = 100u
+            internalWidth = 200
+            internalHeight = 100
         }
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-            screenDrawing.fillWithBorderRounded(getX(), getY(), getWidth(), getHeight(), 5, 0x333333 alpha 0.9f, 0xAAAAAA alpha 0.5f)
+            screenDrawing.fillWithBorderRounded(x, y, width, height, 5, 0x333333 alpha 0.9f, 0xAAAAAA alpha 0.5f)
             renderRenderables(screenDrawing, mouseX, mouseY)
         }
 
@@ -56,13 +56,13 @@ class ColorChangePopup(val state: Gettable<ColorSaver>, val onChange: (ColorSave
             super.init()
             buttons.forEachIndexed { index, button ->
                 button?.let {
-                    it.setSize((getWidth() - ((buttons.size - 1) * 5) - 10) / buttons.size, 14)
-                    it.setPosition(getX() + 5 + index * (it.getWidth() + 5), getY() + getHeight() - 20)
+                    it.setSize((width - ((buttons.size - 1) * 5) - 10) / buttons.size, 14)
+                    it.setPosition(x + 5 + index * (it.width + 5), y + height - 20)
                     addRenderable(it)
                 }
             }
-            addRenderable(Rectangle(0xAAAAAA.color alpha 0.5f)(getX() + 5, getY() + getHeight() - 26, getWidth() - 11, 1))
-            ColorSaver.getFactory(state.get())?.getSettingsRenderable({ state.get() }, onChange)(getX() + 5, getY() + 6, getWidth() - 11, getHeight() - 37)?.let { addRenderable(it); it.resize() }
+            addRenderable(Rectangle(0xAAAAAA.color alpha 0.5f)(x + 5, y + height - 26, width - 11, 1))
+            ColorSaver.getFactory(state.get())?.getSettingsRenderable({ state.get() }, onChange)(x + 5, y + 6, width - 11, height - 37)?.let { addRenderable(it); it.resize() }
         }
     }
 }

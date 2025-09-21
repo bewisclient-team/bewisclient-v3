@@ -9,7 +9,7 @@ class Plane(val init: (x: Int, y: Int, width: Int, height: Int) -> List<Renderab
     }
 
     override fun init() {
-        init.invoke(getX(), getY(), getWidth(), getHeight()).forEach {
+        init.invoke(x, y, width, height).forEach {
             addRenderable(it)
         }
     }

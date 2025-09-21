@@ -25,7 +25,9 @@ object BiomeWidget : LineWidget(Identifier.of("bewisclient", "biome_widget")), E
     override val title = "Biome Widget"
     override val description = "Displays the current biome at your position."
 
-    override fun onMinecraftClientInitFinished() {
+    override fun onResourcesReloaded() {
+        biomeCodes.clear()
+
         val resources = client.resourceManager.findAllResources(
             "bewisclient/biome_codes"
         ) { it.path.endsWith(".json") }
@@ -44,7 +46,6 @@ object BiomeWidget : LineWidget(Identifier.of("bewisclient", "biome_widget")), E
                         }
                     }
                 } ?: warn("Invalid biome code JSON format in ${it.key}")
-
             }
         }
     }

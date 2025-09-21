@@ -3,6 +3,7 @@ package net.bewis09.bewisclient.settings.types
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import net.bewis09.bewisclient.logic.color.ColorSaver
+import net.bewis09.bewisclient.logic.jsonObject
 import net.bewis09.bewisclient.logic.number.Precision
 import net.bewis09.bewisclient.settings.Settings
 
@@ -52,7 +53,7 @@ open class ObjectSetting() : Setting<JsonObject>(JsonObject()) {
         return setting
     }
 
-    override fun convertFromElement(data: JsonElement?): JsonObject? = data?.asJsonObject
+    override fun convertFromElement(data: JsonElement?): JsonObject? = data?.jsonObject()
 
     fun boolean(key: String, default: Boolean, onChangeListener: (Setting<Boolean>.(oldValue: Boolean?, newValue: Boolean?) -> Unit)? = null): BooleanSetting {
         return create(key, BooleanSetting(default, onChangeListener))

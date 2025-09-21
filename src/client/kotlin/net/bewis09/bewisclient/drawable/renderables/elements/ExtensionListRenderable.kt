@@ -14,23 +14,19 @@ import net.minecraft.util.Formatting
 import net.minecraft.util.Identifier
 import kotlin.math.roundToInt
 
-class ExtensionListRenderable(val modContainer: ModContainer, val entrypoint: BewisclientAPIEntrypoint) : SettingRenderable() {
+class ExtensionListRenderable(val modContainer: ModContainer, val entrypoint: BewisclientAPIEntrypoint) : SettingRenderable(null, 22) {
     val notFoundIdentifier: Identifier = Identifier.of("textures/misc/unknown_pack.png")
 
     val menuAnimation = animate(OptionsMenuSettings.animationTime.get().toLong(), Animator.EASE_IN_OUT, "menu" to 0f)
-
-    init {
-        height = 22u
-    }
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
         screenDrawing.push()
         screenDrawing.translate(0f, 11 - screenDrawing.getTextHeight() / 2f + 0.5f)
-        screenDrawing.drawText(Text.literal("${entrypoint.getExtensionTitle(modContainer)} ").append(Text.literal("(${modContainer.metadata.id})").formatted(Formatting.GRAY)), getX() + 32, getY(), Color.WHITE)
-        val lines = screenDrawing.drawWrappedText(entrypoint.getExtensionDescription(modContainer), getX() + 32, getY() + 10, getWidth() - 40, 0xAAAAAA.color alpha 0.8f)
+        screenDrawing.drawText(Text.literal("${entrypoint.getExtensionTitle(modContainer)} ").append(Text.literal("(${modContainer.metadata.id})").formatted(Formatting.GRAY)), x + 32, y, Color.WHITE)
+        val lines = screenDrawing.drawWrappedText(entrypoint.getExtensionDescription(modContainer), x + 32, y + 10, width - 40, 0xAAAAAA.color alpha 0.8f)
         screenDrawing.pop()
-        screenDrawing.drawTexture(entrypoint.getIcon(modContainer) ?: notFoundIdentifier, getX() + 8, getY() + getHeight() / 2 - 8, 0f, 0f, 16, 16, 16, 16)
-        setHeight(22 + lines.size * 9 + 1 + (menuAnimation["menu"] * 19).roundToInt())
+        screenDrawing.drawTexture(entrypoint.getIcon(modContainer) ?: notFoundIdentifier, x + 8, centerY - 8, 0f, 0f, 16, 16, 16, 16)
+        internalHeight = 22 + lines.size * 9 + 1 + (menuAnimation["menu"] * 19).roundToInt()
     }
 }

@@ -21,6 +21,38 @@ interface TextDrawing : RectDrawing {
         drawContext.drawText(textRenderer, text.copy().fillStyle(style), x, y, applyAlpha(color), true)
     }
 
+    fun drawText(text: String, x: Int, y: Int, color: Color, shadow: Boolean) {
+        if (shadow) {
+            drawTextWithShadow(text, x, y, color)
+        } else {
+            drawText(text, x, y, color)
+        }
+    }
+
+    fun drawText(text: Text, x: Int, y: Int, color: Color, shadow: Boolean) {
+        if (shadow) {
+            drawTextWithShadow(text, x, y, color)
+        } else {
+            drawText(text, x, y, color)
+        }
+    }
+
+    fun drawCenteredText(text: String, centerX: Int, y: Int, color: Color, shadow: Boolean) {
+        if (shadow) {
+            drawCenteredTextWithShadow(text, centerX, y, color)
+        } else {
+            drawCenteredText(text, centerX, y, color)
+        }
+    }
+
+    fun drawCenteredText(text: Text, centerX: Int, y: Int, color: Color, shadow: Boolean) {
+        if (shadow) {
+            drawCenteredTextWithShadow(text, centerX, y, color)
+        } else {
+            drawCenteredText(text, centerX, y, color)
+        }
+    }
+
     fun drawCenteredText(text: String, centerX: Int, y: Int, color: Color) {
         drawCenteredText(Text.literal(text), centerX, y, color)
     }

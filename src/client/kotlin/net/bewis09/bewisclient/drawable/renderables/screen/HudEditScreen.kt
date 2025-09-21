@@ -133,14 +133,14 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
     override fun init() {
         addRenderable(ImageButton(Identifier.of("bewisclient", "textures/gui/sprites/add.png")) {
             openPopup(AddWidgetPopup(this), Color.BLACK alpha 0.625f)
-        }.setImagePadding(0)(getWidth() - 16, getHeight() - 16, 14, 14))
+        }.setImagePadding(0)(width - 16, height - 16, 14, 14))
         addRenderable(ImageButton(Identifier.of("bewisclient", "textures/gui/sprites/settings.png")) {
             client.setScreen(RenderableScreen(OptionScreen().also {
                 val widgetsCategory = SettingStructure(it).widgetsCategory
                 it.optionsHeader = widgetsCategory.getHeader()
                 it.optionsPane = widgetsCategory.renderable
             }))
-        }.setImagePadding(2)(getWidth() - 32, getHeight() - 16, 14, 14))
+        }.setImagePadding(2)(width - 32, height - 16, 14, 14))
     }
 
     override fun onMouseDrag(mouseX: Double, mouseY: Double, startX: Double, startY: Double, button: Int): Boolean {
@@ -183,9 +183,9 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
                 if (position.isInDependencyStack(appendWidget)) return@forEach
 
                 if (x1 < 0) return@forEach
-                if (x2 > getWidth()) return@forEach
+                if (x2 > width) return@forEach
                 if (y1 < 0) return@forEach
-                if (y2 > getWidth()) return@forEach
+                if (y2 > width) return@forEach
 
                 val overlaps = WidgetLoader.getEnabledWidgets().any { other ->
                     if (other == appendWidget || other == widget) return@any false
@@ -206,11 +206,11 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
     }
 
     fun createWidgetSidedPosition(widget: Widget, wX: Double, wY: Double): SidedPosition {
-        val right = wX + widget.getScaledWidth() / 2 > getWidth() / 2
-        val end = wY + widget.getScaledHeight() / 2 > getHeight() / 2
+        val right = wX + widget.getScaledWidth() / 2 > width / 2
+        val end = wY + widget.getScaledHeight() / 2 > height / 2
 
-        var x = if (right) getWidth() - wX - widget.getScaledWidth() else wX
-        var y = if (end) getHeight() - wY - widget.getScaledHeight() else wY
+        var x = if (right) width - wX - widget.getScaledWidth() else wX
+        var y = if (end) height - wY - widget.getScaledHeight() else wY
 
         var xTransform = if (right) SidedPosition.END else SidedPosition.START
         val yTransform = if (end) SidedPosition.END else SidedPosition.START
@@ -224,7 +224,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
                 y = DefaultWidgetSettings.screenEdgeDistance.get().toDouble()
             }
 
-            if (abs(wX + widget.getScaledWidth() / 2 - getWidth() / 2) < 10) {
+            if (abs(wX + widget.getScaledWidth() / 2 - width / 2) < 10) {
                 xTransform = SidedPosition.CENTER
             }
         }

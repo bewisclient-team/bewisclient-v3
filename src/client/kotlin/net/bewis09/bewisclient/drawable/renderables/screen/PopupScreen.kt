@@ -31,8 +31,9 @@ abstract class PopupScreen : Renderable() {
                 alphaAnimation["alpha"] = 0f then {
                     screen.popup?.let { a ->
                         screen.renderables.remove(a)
+                        screen.popup = null
+                        screen.selectedElement = null
                     }
-                    screen.popup = null
                 }
                 return true
             }
@@ -41,7 +42,7 @@ abstract class PopupScreen : Renderable() {
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             screenDrawing.pushAlpha(alphaAnimation["alpha"])
-            screenDrawing.fill(0, 0, getWidth(), getHeight(), screen.backgroundColor)
+            screenDrawing.fill(0, 0, width, height, screen.backgroundColor)
             screenDrawing.setBewisclientFont()
             child.render(screenDrawing, mouseX, mouseY)
             screenDrawing.defaultFont()
@@ -49,7 +50,7 @@ abstract class PopupScreen : Renderable() {
         }
 
         override fun init() {
-            addRenderable(child(0, 0, getWidth(), getHeight()))
+            addRenderable(child(0, 0, width, height))
         }
 
         override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int) = true
@@ -66,16 +67,16 @@ abstract class PopupScreen : Renderable() {
     }
 
     override fun init() {
-        popup?.invoke(0, 0, getWidth(), getHeight())?.let { addRenderable(it) }
+        popup?.invoke(0, 0, width, height)?.let { addRenderable(it) }
     }
 
     fun closePopup() {
-        if (popup != null) {
-            popup?.alphaAnimation?.let {
-                it["alpha"] = 0f then {
-                    popup?.let(renderables::remove)
-                    popup = null
-                }
+        val popup = this.popup
+        popup?.alphaAnimation?.let {
+            it["alpha"] = 0f then {
+                popup.let(renderables::remove)
+                this.popup = null
+                selectedElement = null
             }
         }
     }
@@ -87,7 +88,8 @@ abstract class PopupScreen : Renderable() {
         }
         popup = Popup(popupRenderable, this)
         renderables.addFirst(popup!!)
-        popup?.invoke(0, 0, getWidth(), getHeight())?.resize()
+        popup?.invoke(0, 0, width, height)?.resize()
+        selectedElement = popup
     }
 
     override fun renderRenderables(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {

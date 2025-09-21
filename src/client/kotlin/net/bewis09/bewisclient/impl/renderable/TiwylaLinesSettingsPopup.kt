@@ -24,7 +24,7 @@ class TiwylaLinesSettingsPopup<T>(
     }
 
     override fun init() {
-        addRenderable(inner(getWidth() / 2 - inner.getWidth() / 2, getHeight() / 2 - inner.getHeight() / 2, inner.getWidth(), inner.getHeight()))
+        addRenderable(inner(width / 2 - inner.width / 2, height / 2 - inner.height / 2, inner.width, inner.height))
     }
 
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
@@ -38,7 +38,7 @@ class TiwylaLinesSettingsPopup<T>(
     inner class Inner : Renderable() {
         val plane = VerticalAlignScrollPlane(
             {
-                mutableListOf(Button(TiwylaLinesSettingsRenderable.none.getTranslatedString()) {
+                mutableListOf(Button(TiwylaLinesSettingsRenderable.none()) {
                     if (yIndex < setting.size) {
                         val arr = arrayOf(setting[yIndex].first, setting[yIndex].second).filterNotNull().sortedBy { a -> a.priority }
                         setting[yIndex] = TiwylaWidget.Information(
@@ -50,7 +50,7 @@ class TiwylaLinesSettingsPopup<T>(
                     OptionScreen.currentInstance?.resize()
                 }.setHeight(14)).also {
                     it += options.map { option ->
-                        Button(option.translation.getTranslatedString()) {
+                        Button(option.translation()) {
                             if (yIndex >= setting.size) {
                                 setting.add(TiwylaWidget.Information(option, null))
                             } else {
@@ -69,18 +69,18 @@ class TiwylaLinesSettingsPopup<T>(
         )
 
         init {
-            width = 200u
-            height = 100u
+            internalWidth = 200
+            internalHeight = 100
         }
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-            screenDrawing.fillWithBorderRounded(getX(), getY(), getWidth(), getHeight(), 5, OptionsMenuSettings.themeColor.get().getColor() * 0x333333.color alpha 0.9f, OptionsMenuSettings.themeColor.get().getColor() * 0xAAAAAA.color alpha 0.5f)
+            screenDrawing.fillWithBorderRounded(x, y, width, height, 5, OptionsMenuSettings.themeColor.get().getColor() * 0x333333.color alpha 0.9f, OptionsMenuSettings.themeColor.get().getColor() * 0xAAAAAA.color alpha 0.5f)
             renderRenderables(screenDrawing, mouseX, mouseY)
         }
 
         override fun init() {
-            addRenderable(TextElement(selectText.getTranslatedString(), centered = true)(getX(), getY() + 6, getWidth(), 14))
-            addRenderable(plane(getX() + 5, getY() + 25, getWidth() - 10, getHeight() - 30))
+            addRenderable(TextElement(selectText(), centered = true)(x, y + 6, width, 14))
+            addRenderable(plane(x + 5, y + 25, width - 10, height - 30))
         }
     }
 }

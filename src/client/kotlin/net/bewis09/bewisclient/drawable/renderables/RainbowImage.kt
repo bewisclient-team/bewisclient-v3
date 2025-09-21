@@ -12,8 +12,8 @@ class RainbowImage(val image: Identifier, val alpha: Float) : Hoverable() {
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
         for (i in 0 until 6) {
-            val offsetY = i * getHeight() / 6
-            screenDrawing.drawTexture(image, getX(), getY() + offsetY, 0f, offsetY.toFloat(), getWidth(), (i + 1) * getHeight() / 6 - offsetY, getWidth(), getHeight(), hoverAnimation["hovering"] within (Color.WHITE to colors[i]) alpha alpha * (1 - hoverAnimation["hovering"]) + 1f * hoverAnimation["hovering"])
+            val offsetY = i * height / 6
+            screenDrawing.drawTexture(image, x, y + offsetY, 0f, offsetY.toFloat(), width, (i + 1) * height / 6 - offsetY, width, height, hoverAnimation["hovering"] within (Color.WHITE to colors[i]) alpha alpha * (1 - hoverAnimation["hovering"]) + 1f * hoverAnimation["hovering"])
         }
     }
 }

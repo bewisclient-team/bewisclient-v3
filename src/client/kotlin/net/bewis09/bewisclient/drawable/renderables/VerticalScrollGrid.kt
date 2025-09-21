@@ -8,18 +8,18 @@ class VerticalScrollGrid(val init: (Int) -> List<Renderable>, val gap: Int, val 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         if (renderables.isEmpty()) return
 
-        val elementsInRow = floor(((getWidth() + gap) / (minWidth + gap)).toDouble())
-        val elementWidth = (getWidth() + gap) / elementsInRow - gap
+        val elementsInRow = floor(((width + gap) / (minWidth + gap)).toDouble())
+        val elementWidth = (width + gap) / elementsInRow - gap
         val columnHeights = Array(elementsInRow.toInt()) { 0 }
 
-        screenDrawing.enableScissors(getX(), getY(), getWidth(), getHeight())
+        screenDrawing.enableScissors(x, y, width, height)
         for (it in renderables) {
             val min = columnHeights.minOrNull() ?: 0
             val columnIndex = columnHeights.indexOf(min)
 
             it.setWidth(elementWidth.toInt())
-            it.setPosition(getX() + (columnIndex * (elementWidth + gap)).toInt(), getY() + min + scrollAnimation["scrollY"].toInt())
-            columnHeights[columnIndex] += it.getHeight() + gap
+            it.setPosition(x + (columnIndex * (elementWidth + gap)).toInt(), y + min + scrollAnimation["scrollY"].toInt())
+            columnHeights[columnIndex] += it.height + gap
         }
         innerSize = (columnHeights.max() - gap).toFloat()
         renderRenderables(screenDrawing, mouseX, mouseY)
@@ -27,8 +27,8 @@ class VerticalScrollGrid(val init: (Int) -> List<Renderable>, val gap: Int, val 
     }
 
     override fun init() {
-        val elementsInRow = floor(((getWidth() + gap) / (minWidth + gap)).toDouble())
-        val elementWidth = (getWidth() + gap) / elementsInRow - gap
+        val elementsInRow = floor(((width + gap) / (minWidth + gap)).toDouble())
+        val elementWidth = (width + gap) / elementsInRow - gap
 
         init.invoke(elementWidth.toInt()).forEach {
             addRenderable(it)

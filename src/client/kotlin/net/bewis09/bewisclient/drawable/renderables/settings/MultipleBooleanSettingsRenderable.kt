@@ -5,16 +5,15 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.translate
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
-import net.bewis09.bewisclient.interfaces.Gettable
-import net.bewis09.bewisclient.interfaces.Settable
+import net.bewis09.bewisclient.interfaces.SettingInterface
 import net.bewis09.bewisclient.logic.color.*
 
 class MultipleBooleanSettingsRenderable(
-    val title: Translation, tooltip: Translation? = null, val settings: () -> List<Part<*>>
-) : SettingRenderable(tooltip) {
+    val title: Translation, tooltip: Translation? = null, val settings: () -> List<Part>
+) : SettingRenderable(tooltip, 22) {
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
-        screenDrawing.drawCenteredText(title.getTranslatedString(), getX() + getWidth() / 2, getY() + 6, 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()))
+        screenDrawing.drawCenteredText(title.getTranslatedString(), centerX, y + 6, 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()))
         renderRenderables(screenDrawing, mouseX, mouseY)
     }
 
@@ -22,49 +21,49 @@ class MultipleBooleanSettingsRenderable(
         super.init()
         var yOffset = 18
         for (setting in settings()) {
-            val renderable = setting.setPosition(getX(), getY() + 4 + yOffset).setWidth(getWidth())
+            val renderable = setting.setPosition(x, y + 4 + yOffset).setWidth(width)
             addRenderable(renderable)
-            yOffset += renderable.getHeight() + 2
+            yOffset += renderable.height + 2
         }
-        height = yOffset.toUInt() + 4u
+        internalHeight = yOffset + 4
     }
 
-    class Part<T>(
-        val name: Translation, tooltip: Translation? = null, val setting: T
-    ) : TooltipHoverable(tooltip) where T : Settable<Boolean?>, T : Gettable<Boolean> {
+    class Part(
+        val name: Translation, tooltip: Translation? = null, val setting: SettingInterface<Boolean>
+    ) : TooltipHoverable(tooltip) {
         val switch = Switch(
             state = setting::get,
             onChange = setting::set,
         )
 
         init {
-            height = 16u
+            internalHeight = 16
         }
 
         val resetButton = ResetButton(setting)
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             super.render(screenDrawing, mouseX, mouseY)
-            screenDrawing.drawHorizontalLine(getX() + 5, getY() - 2, getWidth() - 10, 0xAAAAAA alpha 0.2F)
-            screenDrawing.translate(0f, getHeight() / 2f - screenDrawing.getTextHeight() / 2f) {
-                screenDrawing.drawText(name.getTranslatedString(), getX() + 8, getY(), 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()))
+            screenDrawing.drawHorizontalLine(x + 5, y - 2, width - 10, 0xAAAAAA alpha 0.2F)
+            screenDrawing.translate(0f, height / 2f - screenDrawing.getTextHeight() / 2f) {
+                screenDrawing.drawText(name.getTranslatedString(), x + 8, y, 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()))
             }
             renderRenderables(screenDrawing, mouseX, mouseY)
         }
 
         override fun init() {
             super.init()
-            addRenderable(resetButton.setPosition(getX() + getWidth() - resetButton.getWidth() - 4, getY() + 1))
-            addRenderable(switch.setPosition(getX() + getWidth() - switch.getWidth() - 8 - resetButton.getWidth(), getY() + 2))
+            addRenderable(resetButton.setPosition(x2 - resetButton.width - 4, y + 1))
+            addRenderable(switch.setPosition(x2 - switch.width - 8 - resetButton.width, y + 2))
         }
     }
 
     companion object {
-        fun create(id: String, title: String, description: String? = null, settings: List<Part<*>>): MultipleBooleanSettingsRenderable {
+        fun create(id: String, title: String, description: String? = null, settings: List<Part>): MultipleBooleanSettingsRenderable {
             return MultipleBooleanSettingsRenderable(Translation("menu.$id", title), description?.let { Translation("menu.$id.description", it) }) { settings }
         }
 
-        fun create(id: String, title: String, description: String? = null, settings: () -> List<Part<*>>): MultipleBooleanSettingsRenderable {
+        fun create(id: String, title: String, description: String? = null, settings: () -> List<Part>): MultipleBooleanSettingsRenderable {
             return MultipleBooleanSettingsRenderable(Translation("menu.$id", title), description?.let { Translation("menu.$id.description", it) }, settings)
         }
     }

@@ -16,6 +16,16 @@ class RenderableScreen(val renderable: Renderable) : Screen(Text.empty()) {
     var startX = 0.0
     var startY = 0.0
 
+    fun getSelectedRenderable(): Renderable? {
+        var current: Renderable? = renderable
+        while (current != null) {
+            val selected = current.selectedElement ?: break
+            current = selected
+        }
+
+        return current
+    }
+
     override fun init() {
         renderable(0, 0, width, height)
     }

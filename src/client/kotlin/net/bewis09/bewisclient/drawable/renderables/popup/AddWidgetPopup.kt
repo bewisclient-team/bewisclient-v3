@@ -23,7 +23,7 @@ class AddWidgetPopup(val screen: HudEditScreen) : Renderable() {
     }
 
     override fun init() {
-        addRenderable(inner(50, 50, getWidth() - 100, getHeight() - 100))
+        addRenderable(inner(50, 50, width - 100, height - 100))
     }
 
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
@@ -35,19 +35,19 @@ class AddWidgetPopup(val screen: HudEditScreen) : Renderable() {
     }
 
     inner class Inner : Renderable() {
-        val text = TextElement({ addText.getTranslatedString() }, 0.5f within (OptionsMenuSettings.themeColor.get().getColor() to Color.WHITE), centered = true)
+        val text = TextElement({ addText() }, 0.5f within (OptionsMenuSettings.themeColor.get().getColor() to Color.WHITE), centered = true)
         var grid = VerticalScrollGrid({
             WidgetLoader.widgets.filter { !it.isEnabled() }.map { widget -> WidgetElement(widget, screen, this).setHeight(90) }
         }, 5, 80)
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-            screenDrawing.fillWithBorderRounded(getX(), getY(), getWidth(), getHeight(), 10, 0.15f within (Color.BLACK to OptionsMenuSettings.themeColor.get().getColor()) alpha 0.5f, OptionsMenuSettings.themeColor.get().getColor() alpha 0.15f)
+            screenDrawing.fillWithBorderRounded(x, y, width, height, 10, OptionsMenuSettings.getBackgroundColor(), OptionsMenuSettings.themeColor.get().getColor() alpha 0.15f)
             renderRenderables(screenDrawing, mouseX, mouseY)
         }
 
         override fun init() {
-            addRenderable(text(getX(), getY() + 7, getWidth(), 14))
-            addRenderable(grid(getX() + 10, getY() + 24, getWidth() - 20, getHeight() - 31))
+            addRenderable(text(x, y + 7, width, 14))
+            addRenderable(grid(x + 10, y + 24, width - 20, height - 31))
         }
     }
 
@@ -68,12 +68,12 @@ class AddWidgetPopup(val screen: HudEditScreen) : Renderable() {
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             super.render(screenDrawing, mouseX, mouseY)
 
-            val height = (screenDrawing.wrapText(title, getWidth() - 10).size - 1) * screenDrawing.getTextHeight()
-            val descriptionHeight = (screenDrawing.wrapText(description, getWidth() - 10).size - 1) * screenDrawing.getTextHeight()
+            val textHeight = (screenDrawing.wrapText(title, width - 10).size - 1) * screenDrawing.getTextHeight()
+            val descriptionHeight = (screenDrawing.wrapText(description, width - 10).size - 1) * screenDrawing.getTextHeight()
 
-            screenDrawing.fillRounded(getX(), getY(), getWidth(), getHeight(), 5, OptionsMenuSettings.themeColor.get().getColor() alpha hoverAnimation["hovering"] * 0.15f + 0.15f)
-            screenDrawing.drawCenteredWrappedText(title, getX() + getWidth() / 2, getY() + 14 - height / 2, getWidth() - 10, OptionsMenuSettings.themeColor.get().getColor())
-            screenDrawing.drawCenteredWrappedText(description, getX() + getWidth() / 2, getY() + getHeight() - 38 - descriptionHeight / 2, getWidth() - 10, OptionsMenuSettings.themeColor.get().getColor() * 0xAAAAAA alpha 0.65f)
+            screenDrawing.fillWithBorderRounded(x, y, width, height, 5, OptionsMenuSettings.themeColor.get().getColor() alpha hoverAnimation["hovering"] * 0.15f + 0.15f, OptionsMenuSettings.themeColor.get().getColor() alpha hoverAnimation["hovering"] * 0.15f + 0.15f)
+            screenDrawing.drawCenteredWrappedText(title, centerX, y + 14 - textHeight / 2, width - 10, OptionsMenuSettings.themeColor.get().getColor())
+            screenDrawing.drawCenteredWrappedText(description, centerX, y2 - 38 - descriptionHeight / 2, width - 10, OptionsMenuSettings.themeColor.get().getColor() * 0xAAAAAA alpha 0.65f)
 
             renderRenderables(screenDrawing, mouseX, mouseY)
         }

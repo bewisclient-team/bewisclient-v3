@@ -5,6 +5,6 @@ import net.bewis09.bewisclient.settings.types.ColorSetting
 import net.bewis09.bewisclient.settings.types.FeatureSetting
 
 object BlockHighlightSettings : FeatureSetting() {
-    val color = color("color", StaticColorSaver(0f, 0f, 0f), ColorSetting.STATIC, ColorSetting.CHANGING)
+    val color = color("color", StaticColorSaver(0f, 0f, 0f), ColorSetting.STATIC, ColorSetting.CHANGING, ColorSetting.THEME)
     val thickness = float("thickness", 0.4f, 0f, 1f, 0.01f, 2)
 }

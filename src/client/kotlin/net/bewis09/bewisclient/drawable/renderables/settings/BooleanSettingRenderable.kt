@@ -6,17 +6,13 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.settings.types.Setting
 
-class BooleanSettingRenderable(val title: Translation, val description: Translation?, val setting: Setting<Boolean>) : SettingRenderable(description) {
+class BooleanSettingRenderable(val title: Translation, val description: Translation?, val setting: Setting<Boolean>) : SettingRenderable(description, 22) {
     val switch = Switch(
         state = setting::get,
         onChange = setting::set,
     )
 
     val resetButton = ResetButton(setting)
-
-    init {
-        height = 22u
-    }
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
@@ -26,7 +22,7 @@ class BooleanSettingRenderable(val title: Translation, val description: Translat
 
     override fun init() {
         super.init()
-        addRenderable(resetButton.setPosition(getX() + getWidth() - resetButton.getWidth() - 4, getY() + 4))
-        addRenderable(switch.setPosition(getX() + getWidth() - switch.getWidth() - 8 - resetButton.getWidth(), getY() + 5))
+        addRenderable(resetButton.setPosition(x2 - resetButton.width - 4, y + 4))
+        addRenderable(switch.setPosition(x2 - switch.width - 8 - resetButton.width, y + 5))
     }
 }

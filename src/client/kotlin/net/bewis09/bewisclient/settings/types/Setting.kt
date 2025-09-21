@@ -1,8 +1,7 @@
 package net.bewis09.bewisclient.settings.types
 
 import com.google.gson.JsonElement
-import net.bewis09.bewisclient.interfaces.Gettable
-import net.bewis09.bewisclient.interfaces.Settable
+import net.bewis09.bewisclient.interfaces.SettingInterface
 import net.bewis09.bewisclient.logic.BewisclientInterface
 import net.bewis09.bewisclient.settings.Settings
 import net.bewis09.bewisclient.settings.SettingsLoader
@@ -15,7 +14,7 @@ import net.bewis09.bewisclient.settings.SettingsLoader
  * @param default The default value of the setting.
  * @param onChangeListener An optional listener that is called when the setting value changes.
  */
-abstract class Setting<T>(val default: () -> T, val onChangeListener: (Setting<T>.(oldValue: T?, newValue: T?) -> Unit)?) : BewisclientInterface, Gettable<T>, Settable<T?> {
+abstract class Setting<T>(val default: () -> T, val onChangeListener: (Setting<T>.(oldValue: T?, newValue: T?) -> Unit)?) : BewisclientInterface, SettingInterface<T> {
     constructor(default: () -> T) : this(default, null)
 
     constructor(default: T, onChangeListener: (Setting<T>.(oldValue: T?, newValue: T?) -> Unit)? = null) : this({ default }, onChangeListener)
@@ -50,12 +49,12 @@ abstract class Setting<T>(val default: () -> T, val onChangeListener: (Setting<T
      */
     override fun set(value: T?) {
         val oldValue = this.value
-        if (value == this.value) {
+        if (processChange(value) == this.value) {
             return // No change, do nothing
         }
-        this.value = value
-        onChange(oldValue, value)
-        onChangeListener?.invoke(this, oldValue, value)
+        this.value = processChange(value)
+        onChange(oldValue, this.value)
+        onChangeListener?.invoke(this, oldValue, this.value)
         save()
     }
 
@@ -63,9 +62,7 @@ abstract class Setting<T>(val default: () -> T, val onChangeListener: (Setting<T
         set(value as T?)
     }
 
-    operator fun invoke() {
-        get()
-    }
+    operator fun invoke() = get()
 
     /**
      * Saves the settings to the file.
@@ -83,7 +80,7 @@ abstract class Setting<T>(val default: () -> T, val onChangeListener: (Setting<T
      */
     fun setWithoutSave(value: T?) {
         val oldValue = this.value
-        if (value == this.value) {
+        if (processChange(value) == this.value) {
             return // No change, do nothing
         }
         this.value = processChange(value)

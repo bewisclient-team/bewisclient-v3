@@ -107,3 +107,5 @@ fun <T> T.staticFun(): () -> T = { this }
 fun String.toText(): MutableText = Text.literal(this)
 
 fun Int.toText(): MutableText = Text.literal(this.toString())
+
+infix fun <T> Boolean.then(other: T): T? = if (this) other else null

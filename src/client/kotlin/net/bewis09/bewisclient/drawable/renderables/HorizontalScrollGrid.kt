@@ -6,18 +6,18 @@ import kotlin.math.floor
 
 class HorizontalScrollGrid(val init: (Int) -> List<Renderable>, val gap: Int, val minHeight: Int) : Scrollable(Direction.HORIZONTAL) {
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        val elementsInColumn = floor(((getHeight() + gap) / (minHeight + gap)).toDouble())
-        val elementHeight = (getHeight() + gap) / elementsInColumn - gap
+        val elementsInColumn = floor(((height + gap) / (minHeight + gap)).toDouble())
+        val elementHeight = (height + gap) / elementsInColumn - gap
         val rowWidths = Array(elementsInColumn.toInt()) { 0 }
 
-        screenDrawing.enableScissors(getX(), getY(), getWidth(), getHeight())
+        screenDrawing.enableScissors(x, y, width, height)
         for (it in renderables) {
             val min = rowWidths.minOrNull() ?: 0
             val rowIndex = rowWidths.indexOf(min)
 
             it.setHeight(elementHeight.toInt())
-            it.setPosition(getX() + min + scrollAnimation["scrollY"].toInt(), getY() + (rowIndex * (elementHeight + gap)).toInt())
-            rowWidths[rowIndex] += it.getWidth() + gap
+            it.setPosition(x + min + scrollAnimation["scrollY"].toInt(), y + (rowIndex * (elementHeight + gap)).toInt())
+            rowWidths[rowIndex] += it.width + gap
         }
         innerSize = (rowWidths.max() - gap).toFloat()
         renderRenderables(screenDrawing, mouseX, mouseY)
@@ -25,8 +25,8 @@ class HorizontalScrollGrid(val init: (Int) -> List<Renderable>, val gap: Int, va
     }
 
     override fun init() {
-        val elementsInColumn = floor(((getHeight() + gap) / (minHeight + gap)).toDouble())
-        val elementHeight = (getHeight() + gap) / elementsInColumn - gap
+        val elementsInColumn = floor(((height + gap) / (minHeight + gap)).toDouble())
+        val elementHeight = (height + gap) / elementsInColumn - gap
 
         init.invoke(elementHeight.toInt()).forEach {
             addRenderable(it)

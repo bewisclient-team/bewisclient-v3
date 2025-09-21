@@ -2,16 +2,23 @@ package net.bewis09.bewisclient.settings.types
 
 import com.google.gson.JsonElement
 import net.bewis09.bewisclient.logic.catch
+import net.bewis09.bewisclient.logic.jsonArray
 import net.bewis09.bewisclient.settings.Settings
 
-class ListSetting<T>(default: List<T>, val from: (JsonElement) -> T?, val to: (T) -> JsonElement?) : Setting<MutableList<T>>(default.toMutableList()), MutableCollection<T> {
+class ListSetting<T>(default: List<T>, val from: (JsonElement) -> T?, val to: (T) -> JsonElement?) : Setting<MutableList<T>>(default.toMutableList()), MutableList<T> {
     override fun convertToElement(): JsonElement? {
         return Settings.gson.toJsonTree(get().mapNotNull { to(it) })
     }
 
-    override fun convertFromElement(data: JsonElement?): MutableList<T>? = data?.asJsonArray?.mapNotNull { catch { from(it) } }?.toMutableList()
+    override fun convertFromElement(data: JsonElement?): MutableList<T>? = data?.jsonArray()?.mapNotNull { catch { from(it) } }?.toMutableList()
 
     override fun containsAll(elements: Collection<T>): Boolean = get().containsAll(elements)
+
+    override fun get(index: Int): T = get()[index]
+
+    override fun indexOf(element: T): Int = get().indexOf(element)
+
+    override fun lastIndexOf(element: T): Int = get().lastIndexOf(element)
 
     override fun contains(element: T): Boolean = get().contains(element)
 
@@ -38,11 +45,21 @@ class ListSetting<T>(default: List<T>, val from: (JsonElement) -> T?, val to: (T
 
     override fun clear() = get().clear().also { save() }
 
+    override fun set(index: Int, element: T): T = get().set(index, element).also { save() }
+
+    override fun add(index: Int, element: T) = get().add(index, element).also { save() }
+
+    override fun removeAt(index: Int): T = get().removeAt(index).also { save() }
+
+    override fun listIterator(): MutableListIterator<T> = get().listIterator()
+
+    override fun listIterator(index: Int): MutableListIterator<T> = get().listIterator(index)
+
+    override fun subList(fromIndex: Int, toIndex: Int): MutableList<T> = get().subList(fromIndex, toIndex)
+
     override fun addAll(elements: Collection<T>): Boolean = get().addAll(elements).also { save() }
 
+    override fun addAll(index: Int, elements: Collection<T>): Boolean = get().addAll(index, elements).also { save() }
+
     override fun add(element: T): Boolean = get().add(element).also { save() }
-
-    operator fun set(index: Int, element: T) = get().set(index, element).also { save() }
-
-    operator fun get(index: Int): T = get()[index]
 }

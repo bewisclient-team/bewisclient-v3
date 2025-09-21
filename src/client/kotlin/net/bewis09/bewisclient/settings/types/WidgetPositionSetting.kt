@@ -2,6 +2,7 @@ package net.bewis09.bewisclient.settings.types
 
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
+import net.bewis09.bewisclient.logic.jsonObject
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 
 class WidgetPositionSetting(defaultPos: WidgetPosition) : Setting<WidgetPosition>(defaultPos) {
@@ -17,9 +18,9 @@ class WidgetPositionSetting(defaultPos: WidgetPosition) : Setting<WidgetPosition
     }
 
     override fun convertFromElement(data: JsonElement?): WidgetPosition? {
-        if (data == null || !data.isJsonObject || !data.asJsonObject.has("positionType")) return null
+        val json = (data ?: return null).jsonObject() ?: return null
 
-        val json = data.asJsonObject
+        if (!data.asJsonObject.has("positionType")) return null
         var value: WidgetPosition? = null
 
         WidgetPosition.types.forEach {

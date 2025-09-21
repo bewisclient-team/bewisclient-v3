@@ -6,8 +6,7 @@ import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSett
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.widget.TiwylaWidget
-import net.bewis09.bewisclient.interfaces.Gettable
-import net.bewis09.bewisclient.interfaces.Settable
+import net.bewis09.bewisclient.interfaces.SettingInterface
 import net.bewis09.bewisclient.logic.TextColor
 import net.bewis09.bewisclient.logic.color.alpha
 import net.bewis09.bewisclient.logic.staticFun
@@ -23,7 +22,7 @@ class TiwylaInfoSettingsRenderable : Renderable() {
             MultipleBooleanSettingsRenderable.Part(
                 Translation.literal(Registries.BLOCK.get(Identifier.of(it.key)).name.string + " -> " + it.value.name),
                 null,
-                object : Gettable<Boolean>, Settable<Boolean?> {
+                object : SettingInterface<Boolean> {
                     override fun get(): Boolean {
                         return TiwylaWidget.blockSpecialInfoMap[it.key ?: return true] != false
                     }
@@ -43,7 +42,7 @@ class TiwylaInfoSettingsRenderable : Renderable() {
             MultipleBooleanSettingsRenderable.Part(
                 Translation.literal(it.second.entityType.name.string + " ${TextColor.GRAY.code}(${it.first.namespace})"),
                 null,
-                object : Gettable<Boolean>, Settable<Boolean?> {
+                object : SettingInterface<Boolean> {
                     override fun get(): Boolean {
                         return TiwylaWidget.entitySpecialInfoMap[Registries.ENTITY_TYPE.getEntry(it.second.entityType).key.getOrNull()?.value?.toString() ?: return true] != false
                     }
@@ -59,14 +58,14 @@ class TiwylaInfoSettingsRenderable : Renderable() {
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         renderRenderables(screenDrawing, mouseX, mouseY)
 
-        setHeight(blockInfoList.getHeight().coerceAtLeast(entityInfoList.getHeight()) + 5)
+        setHeight(blockInfoList.height.coerceAtLeast(entityInfoList.height) + 5)
     }
 
     override fun init() {
-        if (getWidth() < 12) return
+        if (width < 12) return
 
-        addRenderable(Rectangle(0xFFFFFF alpha 0.25f)(getX() + getWidth() / 2, getY() + 5, 1, getHeight()))
-        addRenderable(entityInfoList.setPosition(getX(), getY() + 5).setWidth((getWidth() - 11) / 2))
-        addRenderable(blockInfoList.setPosition(getX() + getWidth() - (getWidth() - 11) / 2, getY() + 5).setWidth((getWidth() - 11) / 2))
+        addRenderable(Rectangle(0xFFFFFF alpha 0.25f)(centerX, y + 5, 1, height))
+        addRenderable(entityInfoList.setPosition(x, y + 5).setWidth((width - 11) / 2))
+        addRenderable(blockInfoList.setPosition(x2 - (width - 11) / 2, y + 5).setWidth((width - 11) / 2))
     }
 }

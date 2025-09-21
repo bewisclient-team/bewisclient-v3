@@ -1,9 +1,9 @@
 package net.bewis09.bewisclient.settings.types
 
 import com.google.gson.*
-import net.bewis09.bewisclient.logic.catch
+import net.bewis09.bewisclient.logic.*
 
-open class MapSetting<T>(val from: (JsonElement) -> T, val to: (T) -> JsonElement) : Setting<HashMap<String, T>>(hashMapOf()) {
+open class MapSetting<T>(val from: (JsonElement) -> T?, val to: (T) -> JsonElement) : Setting<HashMap<String, T>>(hashMapOf()) {
     override fun convertToElement(): JsonElement {
         return get().let { map ->
             JsonObject().also {
@@ -32,13 +32,13 @@ open class MapSetting<T>(val from: (JsonElement) -> T, val to: (T) -> JsonElemen
         save()
     }
 
-    override fun convertFromElement(data: JsonElement?): HashMap<String, T>? = data?.asJsonObject?.asMap()?.mapValues { catch { from(it.value) } }?.filter { it.value != null }?.map { it.key to it.value!! }?.toTypedArray()?.let { hashMapOf(*it) }
+    override fun convertFromElement(data: JsonElement?): HashMap<String, T>? = data?.jsonObject()?.asMap()?.mapValues { from(it.value) }?.filter { it.value != null }?.map { it.key to it.value!! }?.toTypedArray()?.let { hashMapOf(*it) }
 }
 
-class BooleanMapSetting : MapSetting<Boolean>(from = { it.asBoolean }, to = { JsonPrimitive(it) })
+class BooleanMapSetting : MapSetting<Boolean>(from = { it.boolean() }, to = { JsonPrimitive(it) })
 
-class IntegerMapSetting : MapSetting<Int>(from = { it.asInt }, to = { JsonPrimitive(it) })
+class IntegerMapSetting : MapSetting<Int>(from = { it.int() }, to = { JsonPrimitive(it) })
 
-class StringMapSetting : MapSetting<String>(from = { it.asString }, to = { JsonPrimitive(it) })
+class StringMapSetting : MapSetting<String>(from = { it.string() }, to = { JsonPrimitive(it) })
 
-class FloatMapSetting : MapSetting<Float>(from = { it.asFloat }, to = { JsonPrimitive(it) })
+class FloatMapSetting : MapSetting<Float>(from = { it.float() }, to = { JsonPrimitive(it) })

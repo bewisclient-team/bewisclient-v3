@@ -25,22 +25,14 @@ object CoordinatesWidget : LineWidget(Identifier.of("bewisclient", "coordinates_
         if (showBiome.get()) BiomeWidget.getText(colorCodeBiome.get()) else null,
     ).filter { it != null }.map { it!! }
 
+    val dirAdditions = listOf(
+        "", "(-)", "(--)", "(-)", "", "(+)", "(++)", "(+)"
+    )
+
     fun getAdditionString(correct: Int): String {
         if (!showCoordinateChange.get()) return ""
 
-        val rel = (getYawPart() - correct + 8) % 8
-
-        return when (rel) {
-            0 -> ""
-            1 -> "(-)"
-            2 -> "(--)"
-            3 -> "(-)"
-            4 -> ""
-            5 -> "(+)"
-            6 -> "(++)"
-            7 -> "(+)"
-            else -> ""
-        }
+        return dirAdditions.getOrElse((getYawPart() - correct + 8) % 8) { "" }
     }
 
     fun getYawPart(): Int = client.cameraEntity?.let { a ->

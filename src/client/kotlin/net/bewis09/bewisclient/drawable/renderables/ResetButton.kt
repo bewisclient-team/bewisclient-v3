@@ -8,16 +8,16 @@ import net.minecraft.util.Identifier
 
 class ResetButton<T>(val setting: Settable<T?>) : TooltipHoverable(Translations.RESET) {
     init {
-        width = 14u
-        height = 14u
+        internalWidth = 14
+        internalHeight = 14
     }
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
 
-        screenDrawing.fillRounded(getX(), getY(), getWidth(), getHeight(), 5, OptionsMenuSettings.themeColor.get().getColor() alpha hoverAnimation["hovering"] * 0.15f + 0.15f)
+        screenDrawing.fillRounded(x, y, width, height, 5, OptionsMenuSettings.themeColor.get().getColor() alpha hoverAnimation["hovering"] * 0.15f + 0.15f)
 
-        screenDrawing.drawTexture(Identifier.of("bewisclient", "textures/gui/sprites/reset.png"), getX() + 2, getY() + 2, getWidth() - 4, getHeight() - 4, OptionsMenuSettings.themeColor.get().getColor())
+        screenDrawing.drawTexture(Identifier.of("bewisclient", "textures/gui/sprites/reset.png"), x + 2, y + 2, width - 4, height - 4, OptionsMenuSettings.themeColor.get().getColor())
     }
 
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {

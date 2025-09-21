@@ -43,7 +43,7 @@ data class Precision(val min: Float, val max: Float, val step: Float, val precis
 
     fun getNearestStep(value: Float): Float {
         val steps = ((value - min) / step).roundToInt()
-        return min + steps * step
+        return round(min + steps * step)
     }
 
     fun normalize(value: Float): Float {

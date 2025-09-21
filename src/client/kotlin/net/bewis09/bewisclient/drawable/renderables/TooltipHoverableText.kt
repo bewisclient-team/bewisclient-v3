@@ -9,11 +9,11 @@ import net.bewis09.bewisclient.logic.color.within
 class TooltipHoverableText(val text: Translation, val color: Color, val hoverColor: Color = color, tooltip: Translation? = null, val centered: Boolean = false, val onClick: (() -> Unit)? = null) : TooltipHoverable(tooltip) {
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
-        screenDrawing.translate(0f, getHeight() / 2f - screenDrawing.getTextHeight() / 2f) {
+        screenDrawing.translate(0f, height / 2f - screenDrawing.getTextHeight() / 2f) {
             if (centered) {
-                screenDrawing.drawCenteredText(text.getTranslatedString(), getX() + getWidth() / 2, getY(), hoverAnimation["hovering"] within (color to hoverColor))
+                screenDrawing.drawCenteredText(text.getTranslatedString(), centerX, y, hoverAnimation["hovering"] within (color to hoverColor))
             } else {
-                screenDrawing.drawText(text.getTranslatedString(), getX(), getY(), hoverAnimation["hovering"] within (color to hoverColor))
+                screenDrawing.drawText(text.getTranslatedString(), x, y, hoverAnimation["hovering"] within (color to hoverColor))
             }
         }
     }

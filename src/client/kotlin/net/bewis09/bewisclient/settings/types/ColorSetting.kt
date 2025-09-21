@@ -21,6 +21,7 @@ class ColorSetting(default: () -> ColorSaver, vararg val types: String = ALL) : 
         val ALL = ColorSaver.types.map { it.getType() }.toTypedArray()
         const val STATIC = "static"
         const val CHANGING = "changing"
+        const val THEME = "theme"
 
         fun without(vararg types: String): Array<String> {
             return ALL.filterNot { it in types }.toTypedArray()

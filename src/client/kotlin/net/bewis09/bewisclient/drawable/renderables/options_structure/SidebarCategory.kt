@@ -20,6 +20,6 @@ open class SidebarCategory(val name: Translation, val renderable: Renderable) {
     }
 
     fun getHeader(): Renderable {
-        return Plane { x, y, width, height -> listOf(TextElement(name.getTranslatedString(), { 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()) }, centered = true)(x, y, width, 13)) }.setHeight(14)
+        return Plane { x, y, width, height -> listOf(TextElement(name(), { 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()) }, centered = true)(x, y, width, 13)) }.setHeight(14)
     }
 }

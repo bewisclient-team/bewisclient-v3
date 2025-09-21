@@ -32,39 +32,21 @@ abstract class LineWidget(id: Identifier) : ScalableWidget(id) {
     open fun isCentered(): Boolean = true
 
     override fun render(screenDrawing: ScreenDrawing) {
-        val textColor = textColor.get().getColor()
-        val backgroundColor = backgroundColor.get().getColor()
-        val backgroundOpacity = backgroundOpacity.get()
-        val borderColor = borderColor.get().getColor()
-        val borderOpacity = borderOpacity.get()
-        val borderRadius = borderRadius.get()
-        val shadow = shadow.get()
-        val paddingSize = paddingSize.get()
-        val lineSpacing = lineSpacing.get()
-
         val lines = getLines()
         if (lines.isEmpty()) return
 
-        lineWidth = lines.maxOfOrNull { screenDrawing.getTextWidth(it) }?.plus(2 * paddingSize) ?: 0
+        lineWidth = lines.maxOfOrNull { screenDrawing.getTextWidth(it) }?.plus(2 * paddingSize()) ?: 0
 
         screenDrawing.fillWithBorderRounded(
-            0, 0, getWidth(), getHeight(), borderRadius, backgroundColor alpha backgroundOpacity, borderColor alpha borderOpacity
+            0, 0, getWidth(), getHeight(), borderRadius(), backgroundColor().getColor() alpha backgroundOpacity(), borderColor().getColor() alpha borderOpacity()
         )
 
-        lines.forEach { line ->
-            val y = (lines.indexOf(line) * (9 + lineSpacing)) + paddingSize
-            if (!shadow) {
-                if (isCentered()) {
-                    screenDrawing.drawCenteredText(line, getWidth() / 2, y, textColor)
-                } else {
-                    screenDrawing.drawText(line, paddingSize, y, textColor)
-                }
+        lines.forEachIndexed { i, line ->
+            val y = (i * (9 + lineSpacing())) + paddingSize()
+            if (isCentered()) {
+                screenDrawing.drawCenteredText(line, getWidth() / 2, y, textColor().getColor(), shadow())
             } else {
-                if (isCentered()) {
-                    screenDrawing.drawCenteredTextWithShadow(line, getWidth() / 2, y, textColor)
-                } else {
-                    screenDrawing.drawTextWithShadow(line, paddingSize, y, textColor)
-                }
+                screenDrawing.drawText(line, paddingSize(), y, textColor().getColor(), shadow())
             }
         }
     }

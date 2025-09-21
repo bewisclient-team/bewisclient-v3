@@ -7,6 +7,6 @@ import net.minecraft.util.Identifier
 
 open class Image(val image: Identifier, val color: Color) : Renderable() {
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        screenDrawing.drawTexture(image, getX(), getY(), getWidth(), getHeight(), color)
+        screenDrawing.drawTexture(image, x, y, width, height, color)
     }
 }

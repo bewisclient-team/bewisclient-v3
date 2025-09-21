@@ -18,19 +18,16 @@ open class ImageSettingCategory(val image: Identifier, text: Translation, settin
 
         val s = (state["state"].coerceAtLeast(hoverAnimation["hovering"] / 3)) * 1f
 
-        val height = (screenDrawing.wrapText(text.getTranslatedString(), getWidth() - 10).size - 1) * screenDrawing.getTextHeight()
+        val textHeight = (screenDrawing.wrapText(text.getTranslatedString(), width - 10).size - 1) * screenDrawing.getTextHeight()
 
-        screenDrawing.pushColor(s, s, s, 1f)
-        screenDrawing.fillRounded(getX(), getY(), getWidth(), getHeight(), 5, state["state"] within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()) alpha hoverAnimation["hovering"] * 0.15f + 0.15f)
-
-        screenDrawing.popColor()
+        screenDrawing.fillWithBorderRounded(x, y, width, height, 5, ((state["state"] + 0.5f) / 1.5f within (Color.BLACK to OptionsMenuSettings.themeColor.get().getColor())) alpha hoverAnimation["hovering"] * 0.15f + 0.15f, OptionsMenuSettings.themeColor.get().getColor() alpha hoverAnimation["hovering"] * 0.15f + 0.15f)
 
         val t = 1 - (1 - s) / 2.5f
 
         screenDrawing.pushColor(t, t, t, 1f)
-        screenDrawing.drawCenteredWrappedText(text.getTranslatedString(), getX() + getWidth() / 2, getY() + getHeight() - 27 - height / 3 * 2, getWidth() - 10, (state["state"] / 2) within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()))
+        screenDrawing.drawCenteredWrappedText(text.getTranslatedString(), centerX, y2 - 27 - textHeight / 3 * 2, width - 10, (state["state"] / 2) within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()))
 
-        screenDrawing.drawTexture(image, getX() + getWidth() / 2 - 20, getY() + 14, 40, 40, state["state"] within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()))
+        screenDrawing.drawTexture(image, centerX - 20, y + 14, 40, 40, state["state"] within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()))
 
         renderRenderables(screenDrawing, mouseX, mouseY)
         screenDrawing.popColor()
@@ -43,19 +40,17 @@ open class DescriptionSettingCategory(text: Translation, val description: Transl
 
         val s = (state["state"].coerceAtLeast(hoverAnimation["hovering"] / 3)) * 1f
 
-        val height = (screenDrawing.wrapText(text.getTranslatedString(), getWidth() - 10).size - 1) * screenDrawing.getTextHeight()
-        val descriptionHeight = (screenDrawing.wrapText(description.getTranslatedString(), getWidth() - 10).size - 1) * screenDrawing.getTextHeight()
+        val textHeight = (screenDrawing.wrapText(text.getTranslatedString(), width - 10).size - 1) * screenDrawing.getTextHeight()
+        val descriptionHeight = (screenDrawing.wrapText(description.getTranslatedString(), width - 10).size - 1) * screenDrawing.getTextHeight()
 
-        screenDrawing.pushColor(s, s, s, 1f)
-        screenDrawing.fillRounded(getX(), getY(), getWidth(), getHeight(), 5, (state["state"] / 2) within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()) alpha hoverAnimation["hovering"] * 0.15f + 0.15f)
-        screenDrawing.popColor()
+        screenDrawing.fillWithBorderRounded(x, y, width, height, 5, ((state["state"] + 0.5f) / 1.5f within (Color.BLACK to OptionsMenuSettings.themeColor.get().getColor())) alpha hoverAnimation["hovering"] * 0.15f + 0.15f, OptionsMenuSettings.themeColor.get().getColor() alpha hoverAnimation["hovering"] * 0.15f + 0.15f)
 
         val t = 1 - (1 - s) / 2.5f
 
         screenDrawing.pushColor(t, t, t, 1f)
 
-        screenDrawing.drawCenteredWrappedText(text.getTranslatedString(), getX() + getWidth() / 2, getY() + 14 - height / 2, getWidth() - 10, (state["state"] / 2) within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()))
-        screenDrawing.drawCenteredWrappedText(description.getTranslatedString(), getX() + getWidth() / 2, getY() + getHeight() - 42 - descriptionHeight / 2, getWidth() - 10, state["state"] within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()) alpha 0.65f)
+        screenDrawing.drawCenteredWrappedText(text.getTranslatedString(), centerX, y + 14 - textHeight / 2, width - 10, (state["state"] / 2) within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()))
+        screenDrawing.drawCenteredWrappedText(description.getTranslatedString(), centerX, y2 - 42 - descriptionHeight / 2, width - 10, state["state"] within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()) alpha 0.65f)
 
         renderRenderables(screenDrawing, mouseX, mouseY)
         screenDrawing.popColor()
@@ -80,7 +75,7 @@ abstract class SettingCategory(val text: Translation, val setting: Array<Rendera
     }
 
     fun getHeader(): Renderable {
-        return Plane { x, y, width, height -> listOf(TextElement(text.getTranslatedString(), 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()), centered = true)(x, y, width, 13)) }.setHeight(14)
+        return Plane { x, y, width, height -> listOf(TextElement(text(), 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()), centered = true)(x, y, width, 13)) }.setHeight(14)
     }
 
     fun getPane(): Renderable {
@@ -99,7 +94,7 @@ abstract class SettingCategory(val text: Translation, val setting: Array<Rendera
             TooltipHoverableText(
                 if (enableSetting.get()) Translations.ENABLED else Translations.DISABLED, 0xAAAAAA.color, Color.WHITE, if (enableSetting.get()) Translations.CLICK_TO_DISABLE else Translations.CLICK_TO_ENABLE, true
             ) { enableSetting.toggle(); resize() }(
-                getX(), getY() + getHeight() - 14, getWidth(), 14
+                x, y2 - 14, width, 14
             )
         )
     }

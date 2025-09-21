@@ -7,20 +7,20 @@ class VerticalAlignScrollPlane(val init: (Int) -> List<Renderable>, val gap: Int
     constructor(list: List<Renderable>, gap: Int) : this({ list }, gap)
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        screenDrawing.enableScissors(getX(), getY(), getWidth(), getHeight())
-        var y = scrollAnimation["scrollY"].toInt()
+        screenDrawing.enableScissors(x, y, width, height)
+        var scrollY = scrollAnimation["scrollY"].toInt()
         for (it in renderables) {
-            it.setPosition(getX(), getY() + y)
-            it.setWidth(getWidth())
-            y += it.getHeight() + gap
+            it.setPosition(x, y + scrollY)
+            it.setWidth(width)
+            scrollY += it.height + gap
         }
-        innerSize = y - scrollAnimation["scrollY"] - gap
+        innerSize = scrollY - scrollAnimation["scrollY"] - gap
         renderRenderables(screenDrawing, mouseX, mouseY)
         screenDrawing.disableScissors()
     }
 
     override fun init() {
-        init.invoke(getWidth()).forEach {
+        init.invoke(width).forEach {
             addRenderable(it)
         }
     }

@@ -7,6 +7,7 @@ import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.functionalities.HeldItemTooltipSettings
 import net.bewis09.bewisclient.interfaces.Gettable
 import net.bewis09.bewisclient.interfaces.Settable
+import net.bewis09.bewisclient.interfaces.SettingInterface
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.component.ComponentType
@@ -46,7 +47,7 @@ object HeldItemTooltip : ImageSettingCategory(
     val componentRenderableParts by lazy {
         lookup()
 
-        val parts = arrayListOf<MultipleBooleanSettingsRenderable.Part<*>>()
+        val parts = arrayListOf<MultipleBooleanSettingsRenderable.Part>()
 
         for (componentType in componentSet.sortedWith { a, b ->
             val id1 = Registries.DATA_COMPONENT_TYPE.getEntry(a).idAsString
@@ -63,7 +64,7 @@ object HeldItemTooltip : ImageSettingCategory(
             val id = toReadableString(Registries.DATA_COMPONENT_TYPE.getEntry(componentType).idAsString)
             parts.add(
                 MultipleBooleanSettingsRenderable.Part(
-                    Translation.literal(id), null, object : Settable<Boolean?>, Gettable<Boolean> {
+                    Translation.literal(id), null, object : SettingInterface<Boolean> {
                         override fun get(): Boolean {
                             return HeldItemTooltipSettings.showMap[id, !defaultOff.contains(componentType)]
                         }

@@ -11,16 +11,16 @@ import net.bewis09.bewisclient.logic.color.ColorSaver
 
 class ColorInfoButton(val state: Gettable<ColorSaver>, val onChange: (ColorSaver) -> Unit, val types: Array<String>) : TooltipHoverable(Translations.CHANGE_COLOR) {
     init {
-        width = 160u
-        height = 14u
+        internalWidth = 160
+        internalHeight = 14
     }
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
         val colorSaver = state.get()
-        screenDrawing.fillWithBorderRounded(getX(), getY(), getWidth(), getHeight(), 5, colorSaver.getColor() alpha hoverAnimation["hovering"] * 0.3f + 0.3f, colorSaver.getColor() alpha hoverAnimation["hovering"] * 0.5f + 0.5f)
-        screenDrawing.translate(0f, getHeight() / 2f - screenDrawing.getTextHeight() / 2f + 0.5f) {
-            screenDrawing.drawCenteredText(colorSaver.toInfoString(), getX() + getWidth() / 2, getY(), Color.WHITE)
+        screenDrawing.fillWithBorderRounded(x, y, width, height, 5, colorSaver.getColor() alpha hoverAnimation["hovering"] * 0.3f + 0.3f, colorSaver.getColor() alpha hoverAnimation["hovering"] * 0.5f + 0.5f)
+        screenDrawing.translate(0f, height / 2f - screenDrawing.getTextHeight() / 2f + 0.5f) {
+            screenDrawing.drawCenteredText(colorSaver.toInfoString(), centerX, y, Color.WHITE)
         }
     }
 

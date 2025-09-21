@@ -41,11 +41,11 @@ class ThemeButton : TooltipHoverable {
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
         clickAnimation["color"] = if (selected()) 1f else 0f
-        screenDrawing.translate(getX() + getWidth() / 2f, getHeight() / 2f + getY()) {
+        screenDrawing.translate(centerX.toFloat(), centerY.toFloat()) {
             screenDrawing.scale(0.9f + 0.1f * clickAnimation["click"], 0.9f + 0.1f * clickAnimation["click"]) {
-                screenDrawing.translate(-getWidth() / 2f, -getHeight() / 2f)
+                screenDrawing.translate(-width / 2f, -height / 2f)
                 val color = OptionsMenuSettings.themeColor.get().getColor()
-                screenDrawing.fillWithBorderRounded(0, 0, getWidth(), getHeight(), 5, color alpha (hoverAnimation["hovering"].coerceAtLeast(clickAnimation["color"]) + 1) * 0.15f, color alpha clickAnimation["color"] * 0.5f)
+                screenDrawing.fillWithBorderRounded(0, 0, width, height, 5, color alpha (hoverAnimation["hovering"].coerceAtLeast(clickAnimation["color"]) + 1) * 0.15f, color alpha clickAnimation["color"] * 0.5f)
             }
 
             screenDrawing.scale(0.95f + 0.05f * clickAnimation["click"], 0.95f + 0.05f * clickAnimation["click"]) {

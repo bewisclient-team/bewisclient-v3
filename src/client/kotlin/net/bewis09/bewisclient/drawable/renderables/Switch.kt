@@ -14,8 +14,8 @@ class Switch(var state: Gettable<Boolean>, val onChange: (new: Boolean) -> Unit)
     val stateAnimation = animate(OptionsMenuSettings.animationTime.get().toLong(), Animator.EASE_IN_OUT, "state" to if (state.get()) 1f else 0f)
 
     init {
-        width = 24u
-        height = 12u
+        internalWidth = 24
+        internalHeight = 12
     }
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
@@ -24,10 +24,10 @@ class Switch(var state: Gettable<Boolean>, val onChange: (new: Boolean) -> Unit)
         stateAnimation["state"] = if (state.get()) 1f else 0f
 
         screenDrawing.fillWithBorderRounded(
-            getX(), getY(), getWidth(), getHeight(), 6, stateAnimation["state"] within (0x333333.color to OptionsMenuSettings.themeColor.get().getColor()) alpha hoverAnimation["hovering"].coerceAtLeast(stateAnimation["state"]) * 0.15f + 0.15f, stateAnimation["state"] within (0x888888.color to OptionsMenuSettings.themeColor.get().getColor()) alpha hoverAnimation["hovering"] * 0.5f + 0.5f
+            x, y, width, height, 6, stateAnimation["state"] within (0x333333.color to OptionsMenuSettings.themeColor.get().getColor()) alpha hoverAnimation["hovering"].coerceAtLeast(stateAnimation["state"]) * 0.15f + 0.15f, stateAnimation["state"] within (0x888888.color to OptionsMenuSettings.themeColor.get().getColor()) alpha hoverAnimation["hovering"] * 0.5f + 0.5f
         )
         val scaleFactor = 0.5f
-        screenDrawing.transform(getX() + ((getWidth() - 12) * stateAnimation["state"]) + 6f, getY() + 6f, 1 - scaleFactor + abs(stateAnimation["state"] - 0.5f) * 2 * scaleFactor, 1f) {
+        screenDrawing.transform(x + ((width - 12) * stateAnimation["state"]) + 6f, y + 6f, 1 - scaleFactor + abs(stateAnimation["state"] - 0.5f) * 2 * scaleFactor, 1f) {
             screenDrawing.fillRounded(
                 -4, -4, 8, 8, 4, stateAnimation["state"] within (0x888888.color to OptionsMenuSettings.themeColor.get().getColor()) alpha hoverAnimation["hovering"] * 0.5f + 0.5f
             )

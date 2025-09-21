@@ -9,7 +9,7 @@ import net.bewis09.bewisclient.logic.color.*
 import net.bewis09.bewisclient.settings.types.FloatSetting
 import net.bewis09.bewisclient.settings.types.Setting
 
-class ColorFaderSettingRenderable(val title: Translation, val description: Translation?, val setting: Setting<ColorSaver>, val types: Array<String>, val setting2: FloatSetting, val title2: Translation) : SettingRenderable(description) {
+class ColorFaderSettingRenderable(val title: Translation, val description: Translation?, val setting: Setting<ColorSaver>, val types: Array<String>, val setting2: FloatSetting, val title2: Translation) : SettingRenderable(description, 35) {
     val colorInfoButton = ColorInfoButton(
         state = setting::get, onChange = setting::set, types = types
     )
@@ -25,23 +25,19 @@ class ColorFaderSettingRenderable(val title: Translation, val description: Trans
         setting2.set(null)
     }
 
-    init {
-        height = 35u
-    }
-
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
         drawVerticalCenteredText(screenDrawing, title)
-        screenDrawing.translate(0f, getY() + 22.5f) {
-            screenDrawing.drawRightAlignedText(title2.getTranslatedString(), getX() + getWidth() - fader.getWidth() - 12 - resetButton.getWidth(), 0, 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()))
+        screenDrawing.translate(0f, y + 22.5f) {
+            screenDrawing.drawRightAlignedText(title2.getTranslatedString()+": "+setting2.get(), x2 - fader.width - 12 - resetButton.width, 0, 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()))
         }
         renderRenderables(screenDrawing, mouseX, mouseY)
     }
 
     override fun init() {
         super.init()
-        addRenderable(resetButton.setPosition(getX() + getWidth() - resetButton.getWidth() - 4, getY() + 4))
-        addRenderable(colorInfoButton.setPosition(getX() + getWidth() - colorInfoButton.getWidth() - 8 - resetButton.getWidth(), getY() + 4))
-        addRenderable(fader.setPosition(getX() + getWidth() - fader.getWidth() - 8 - resetButton.getWidth(), getY() + 20))
+        addRenderable(resetButton.setPosition(x2 - resetButton.width - 4, y + 4))
+        addRenderable(colorInfoButton.setPosition(x2 - colorInfoButton.width - 8 - resetButton.width, y + 4))
+        addRenderable(fader.setPosition(x2 - fader.width - 8 - resetButton.width, y + 20))
     }
 }

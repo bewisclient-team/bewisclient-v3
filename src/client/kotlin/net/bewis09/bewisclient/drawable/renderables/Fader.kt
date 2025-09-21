@@ -9,18 +9,18 @@ import net.bewis09.bewisclient.logic.number.Precision
 
 class Fader(val value: Gettable<Float>, val precision: Precision, val onChange: (new: Float) -> Unit) : Hoverable() {
     init {
-        width = 100u
-        height = 14u
+        internalWidth = 100
+        internalHeight = 14
     }
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
         val normalizedValue = precision.normalize(value.get())
         screenDrawing.fillRounded(
-            getX(), getY() + 5, getWidth(), 4, 2, 0xAAAAAA alpha hoverAnimation["hovering"] * 0.15f + 0.15f
+            x, y + 5, width, 4, 2, 0xAAAAAA alpha hoverAnimation["hovering"] * 0.15f + 0.15f
         )
 
-        screenDrawing.transform(getX() + normalizedValue * (getWidth() - 8) + 4, getY() + 2f, 0.1f) {
+        screenDrawing.transform(x + normalizedValue * (width - 8) + 4, y + 2f, 0.1f) {
             screenDrawing.fillRounded(
                 -20, 0, 40, 100, 20, (hoverAnimation["hovering"] within (0xCCCCCC.color to 0xFFFFFF.color)) * OptionsMenuSettings.themeColor.get().getColor()
             )
@@ -32,9 +32,9 @@ class Fader(val value: Gettable<Float>, val precision: Precision, val onChange: 
     }
 
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
-        val relativeX = mouseX - getX() - 4
+        val relativeX = mouseX - x - 4
         var newValue = precision.denormalize(
-            (relativeX / (getWidth() - 8)).coerceIn(0.0, 1.0).toFloat()
+            (relativeX / (width - 8)).coerceIn(0.0, 1.0).toFloat()
         )
         newValue = precision.getNearestStep(newValue)
         newValue = precision.round(newValue)

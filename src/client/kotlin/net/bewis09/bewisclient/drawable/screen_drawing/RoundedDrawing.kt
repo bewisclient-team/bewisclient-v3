@@ -5,13 +5,16 @@ import net.minecraft.util.Identifier
 import kotlin.math.*
 
 interface RoundedDrawing : RectDrawing, TextureDrawing {
+    val scaleFactor
+        get() = client.window.scaleFactor * 3
+
     companion object {
         val roundFillCache = mutableMapOf<Pair<Int, Int>, Identifier>()
         val roundBorderCache = mutableMapOf<Pair<Int, Int>, Identifier>()
     }
 
     fun getRoundedImage(radius: Int): Identifier {
-        val scale = client.window.scaleFactor
+        val scale = scaleFactor
 
         val id = roundFillCache[radius to scale]
 
@@ -43,7 +46,7 @@ interface RoundedDrawing : RectDrawing, TextureDrawing {
     }
 
     fun getRoundedBorderImage(radius: Int): Identifier {
-        val scale = client.window.scaleFactor
+        val scale = scaleFactor
 
         val id = roundBorderCache[radius to scale]
 
@@ -123,10 +126,10 @@ interface RoundedDrawing : RectDrawing, TextureDrawing {
     private fun drawRoundedCorner(
         centerX: Int, centerY: Int, radius: Int, color: Color, startAngle: Float
     ) {
-        transform(centerX.toFloat(), centerY.toFloat(), 1 / client.window.scaleFactor.toFloat()) {
+        transform(centerX.toFloat(), centerY.toFloat(), 1 / scaleFactor.toFloat()) {
             rotateDegrees(startAngle)
 
-            val r = radius * (client.window.scaleFactor)
+            val r = radius * (scaleFactor)
 
             drawTexture(getRoundedImage(radius), 0, 0, 0f, 0f, r, r, r, r, color)
         }
@@ -135,10 +138,10 @@ interface RoundedDrawing : RectDrawing, TextureDrawing {
     private fun drawRoundedCornerBorder(
         centerX: Int, centerY: Int, radius: Int, color: Color, startAngle: Float
     ) {
-        transform(centerX.toFloat(), centerY.toFloat(), 1 / client.window.scaleFactor.toFloat()) {
+        transform(centerX.toFloat(), centerY.toFloat(), 1 / scaleFactor.toFloat()) {
             rotateDegrees(startAngle)
 
-            val r = radius * (client.window.scaleFactor)
+            val r = radius * (scaleFactor)
 
             drawTexture(getRoundedBorderImage(radius), 0, 0, 0f, 0f, r, r, r, r, color)
         }

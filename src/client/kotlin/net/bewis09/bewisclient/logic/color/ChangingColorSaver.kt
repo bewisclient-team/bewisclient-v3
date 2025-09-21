@@ -9,6 +9,7 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.translate
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.logic.Bewisclient
+import net.bewis09.bewisclient.logic.int
 import net.bewis09.bewisclient.logic.number.Precision
 import net.minecraft.util.Identifier
 
@@ -46,11 +47,7 @@ class ChangingColorSaver : ColorSaver {
         private val description = Translation("color.changing.description", "A color that changes over time, cycling through the spectrum based on the speed set.")
 
         override fun createFromJson(jsonElement: JsonElement): ChangingColorSaver? {
-            return if (jsonElement.isJsonPrimitive && jsonElement.asJsonPrimitive.isNumber) {
-                ChangingColorSaver(jsonElement.asInt)
-            } else {
-                null
-            }
+            return jsonElement.int()?.let { ChangingColorSaver(it) }
         }
 
         override fun getType(): String = "changing"
@@ -72,7 +69,7 @@ class ChangingColorSaver : ColorSaver {
                 ChangingColorSaver(speed.toInt(), System.currentTimeMillis(), get().getHue())
             )
         }
-        val text = TextElement({ Translations.CHANGE_DURATION(get().changingSpeed / 1000f).string }, centered = true)
+        val text = TextElement({ Translations.CHANGE_DURATION(get().changingSpeed / 1000f) }, centered = true)
         val spectrumButton = ImageButton(texture) {}.setImagePadding(0)
         val actionButton = Rectangle { get().getColor() }
 
@@ -89,43 +86,43 @@ class ChangingColorSaver : ColorSaver {
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             renderRenderables(screenDrawing, mouseX, mouseY)
-            screenDrawing.translate(get().getHue() * (getWidth() - 1), 0f) {
-                screenDrawing.drawVerticalLine(getX(), getY() + 36, 8, Color.BLACK)
+            screenDrawing.translate(get().getHue() * (width - 1), 0f) {
+                screenDrawing.drawVerticalLine(x, y + 36, 8, Color.BLACK)
             }
         }
 
         override fun init() {
             addRenderable(
                 text(
-                    getX(),
-                    getY() + 2,
-                    getWidth(),
+                    x,
+                    y + 2,
+                    width,
                     9,
                 )
             )
             addRenderable(
                 fader(
-                    getX(), getY() + 11, getWidth(), 14
+                    x, y + 11, width, 14
                 )
             )
             addRenderable(
                 Rectangle(0xAAAAAA.color alpha 0.5f)(
-                    getX(), getY() + 29, getWidth(), 1
+                    x, y + 29, width, 1
                 )
             )
             addRenderable(
                 spectrumButton(
-                    getX(), getY() + 36, getWidth(), 8
+                    x, y + 36, width, 8
                 )
             )
             addRenderable(
                 Rectangle(0xAAAAAA.color alpha 0.5f)(
-                    getX(), getY() + 49, getWidth(), 1
+                    x, y + 49, width, 1
                 )
             )
             addRenderable(
                 actionButton(
-                    getX(), getY() + 55, getWidth(), 8
+                    x, y + 55, width, 8
                 )
             )
         }

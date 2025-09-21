@@ -2,6 +2,8 @@ package net.bewis09.bewisclient.widget.logic
 
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
+import net.bewis09.bewisclient.logic.int
+import net.bewis09.bewisclient.logic.string
 import net.bewis09.bewisclient.widget.Widget
 
 class SidedPosition(val x: Int, val y: Int, val xTransformer: TransformerType, val yTransformer: TransformerType) : WidgetPosition {
@@ -48,19 +50,11 @@ class SidedPosition(val x: Int, val y: Int, val xTransformer: TransformerType, v
             val xTransformerObj = jsonObject.get("x_transformer")
             val yTransformerObj = jsonObject.get("y_transformer")
 
-            if (xObj == null || yObj == null || !xObj.isJsonPrimitive || !yObj.isJsonPrimitive || !xObj.asJsonPrimitive.isNumber || !yObj.asJsonPrimitive.isNumber) {
-                return null
-            }
+            val x = xObj.int() ?: return null
+            val y = yObj.int() ?: return null
 
-            if (xTransformerObj == null || yTransformerObj == null || !xTransformerObj.isJsonPrimitive || !yTransformerObj.isJsonPrimitive) {
-                return null
-            }
-
-            val x = xObj.asInt
-            val y = yObj.asInt
-
-            val xTransformer = transformerTypes.find { it.id == xTransformerObj.asString } ?: return null
-            val yTransformer = transformerTypes.find { it.id == yTransformerObj.asString } ?: return null
+            val xTransformer = transformerTypes.find { it.id == xTransformerObj.string() } ?: return null
+            val yTransformer = transformerTypes.find { it.id == yTransformerObj.string() } ?: return null
 
             return SidedPosition(x, y, xTransformer, yTransformer)
         }

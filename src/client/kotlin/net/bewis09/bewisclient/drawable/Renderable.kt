@@ -4,22 +4,41 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.logic.BewisclientInterface
 
 abstract class Renderable : BewisclientInterface {
-    protected var x: UInt
-    protected var y: UInt
-    protected var width: UInt
-    protected var height: UInt
+    protected var internalX: Int
+    protected var internalY: Int
+    protected var internalWidth: Int
+    protected var internalHeight: Int
+
+    val x: Int
+        get() = internalX
+    val y: Int
+        get() = internalY
+    val width: Int
+        get() = internalWidth
+    val height: Int
+        get() = internalHeight
+    val x2: Int
+        get() = internalX + internalWidth
+    val y2: Int
+        get() = internalY + internalHeight
+    val centerX: Int
+        get() = internalX + internalWidth / 2
+    val centerY: Int
+        get() = internalY + internalHeight / 2
 
     constructor(x: Int, y: Int, width: Int, height: Int) {
-        this.x = x.toUInt()
-        this.y = y.toUInt()
-        this.width = width.toUInt()
-        this.height = height.toUInt()
+        this.internalX = x
+        this.internalY = y
+        this.internalWidth = width
+        this.internalHeight = height
         this.renderables = mutableListOf<Renderable>()
     }
 
     constructor() : this(0, 0, 0, 0)
 
     val renderables: MutableList<Renderable>
+
+    var selectedElement: Renderable? = null
 
     abstract fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int)
 
@@ -40,75 +59,70 @@ abstract class Renderable : BewisclientInterface {
     }
 
     fun setX(x: Int): Renderable {
-        if (x == getX()) return this
+        if (x == this.x) return this
 
-        this.x = x.toUInt()
+        this.internalX = x
         resize()
         return this
     }
 
     fun setY(y: Int): Renderable {
-        if (y == getY()) return this
+        if (y == this.y) return this
 
-        this.y = y.toUInt()
+        this.internalY = y
         resize()
         return this
     }
 
     fun setPosition(x: Int, y: Int): Renderable {
-        if (x == getX() && y == getY()) return this
+        if (x == this.x && y == this.y) return this
 
-        this.x = x.toUInt()
-        this.y = y.toUInt()
+        this.internalX = x
+        this.internalY = y
         resize()
         return this
     }
 
-    fun getX(): Int = x.toInt()
-    fun getY(): Int = y.toInt()
-    fun getWidth(): Int = width.toInt()
-    fun getHeight(): Int = height.toInt()
-
     fun setSize(width: Int, height: Int): Renderable {
         if (width < 0) throw IllegalArgumentException("Width cannot be negative")
         if (height < 0) throw IllegalArgumentException("Height cannot be negative")
-        if (width.toUInt() == this.width && height.toUInt() == this.height) return this
+        if (width == this.width && height == this.height) return this
 
-        this.width = width.toUInt()
-        this.height = height.toUInt()
+        this.internalWidth = width
+        this.internalHeight = height
         resize()
         return this
     }
 
     fun setWidth(width: Int): Renderable {
         if (width < 0) throw IllegalArgumentException("Width cannot be negative")
-        if (width.toUInt() == this.width) return this
+        if (width == this.width) return this
 
-        this.width = width.toUInt()
+        this.internalWidth = width
         resize()
         return this
     }
 
     fun setHeight(height: Int): Renderable {
         if (height < 0) throw IllegalArgumentException("Height cannot be negative")
-        if (height.toUInt() == this.height) return this
+        if (height == this.height) return this
 
-        this.height = height.toUInt()
+        this.internalHeight = height
         resize()
         return this
     }
 
     fun setBounds(x: Int, y: Int, width: Int, height: Int): Renderable {
-        if (x == getX() && y == getY() && width.toUInt() == this.width && height.toUInt() == this.height) return this
+        if (x == this.x && y == this.y && width == this.width && height == this.height) return this
 
         if (width < 0) throw IllegalArgumentException("Width cannot be negative")
         if (height < 0) throw IllegalArgumentException("Height cannot be negative")
 
-        this.x = x.toUInt()
-        this.y = y.toUInt()
+        this.internalX = x
+        this.internalY = y
 
-        this.width = width.toUInt()
-        this.height = height.toUInt()
+        this.internalWidth = width
+        this.internalHeight = height
 
         resize()
 
@@ -122,8 +136,14 @@ abstract class Renderable : BewisclientInterface {
     fun mouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
         if (!isMouseOver(mouseX, mouseY)) return false
 
-        renderables.firstOrNull { it.isMouseOver(mouseX, mouseY) }?.mouseClick(mouseX, mouseY, button)?.let { if (it) return true }
+        renderables.firstOrNull { it.isMouseOver(mouseX, mouseY) }?.also {
+            selectedElement = it
+            it.mouseClick(mouseX, mouseY, button).let { a ->
+                if (a) return true
+            }
+        }
 
+        selectedElement = null
         return onMouseClick(mouseX, mouseY, button)
     }
 
@@ -152,17 +172,17 @@ abstract class Renderable : BewisclientInterface {
     }
 
     fun keyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {
-        renderables.firstOrNull { it.keyPress(key, scanCode, modifiers) }?.let { return true }
+        selectedElement?.keyPress(key, scanCode, modifiers)?.let { if (it) return true }
         return onKeyPress(key, scanCode, modifiers)
     }
 
     fun keyRelease(key: Int, scanCode: Int, modifiers: Int): Boolean {
-        renderables.firstOrNull { it.keyRelease(key, scanCode, modifiers) }?.let { return true }
+        selectedElement?.keyRelease(key, scanCode, modifiers)?.let { if (it) return true }
         return onKeyRelease(key, scanCode, modifiers)
     }
 
     fun charTyped(character: Char, modifiers: Int): Boolean {
-        renderables.firstOrNull { it.charTyped(character, modifiers) }?.let { return true }
+        selectedElement?.charTyped(character, modifiers)?.let { if (it) return true }
         return onCharTyped(character, modifiers)
     }
 
@@ -175,7 +195,7 @@ abstract class Renderable : BewisclientInterface {
     open fun onCharTyped(character: Char, modifiers: Int): Boolean = false
 
     fun isMouseOver(mouseX: Double, mouseY: Double): Boolean {
-        return mouseX >= getX() && mouseX <= getX() + getWidth() && mouseY >= getY() && mouseY <= getY() + getHeight()
+        return mouseX >= this.x && mouseX <= this.x2 && mouseY >= this.y && mouseY <= this.y2
     }
 
     operator fun invoke(x: Int, y: Int, width: Int, height: Int): Renderable {

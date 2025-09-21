@@ -27,6 +27,7 @@ class SettingStructure(val screen: OptionScreen) : BewisclientInterface {
             OptionsMenuSettings.buttonInTitleScreen.createRenderable("menu.settings.button_in_title_screen", "Button in Title Screen", "Whether to show the Bewisclient button in the title screen"),
             OptionsMenuSettings.buttonInGameScreen.createRenderable("menu.settings.button_in_game_screen", "Button in Game Screen", "Whether to show the Bewisclient button in the in-game pause menu"),
             OptionsMenuSettings.themeColor.createRenderable("menu.settings.theme_color", "Theme Color", "The theme color used throughout the client"),
+            OptionsMenuSettings.backgroundColor.createRenderableWithFader("menu.settings.background_color", "Background Color", "The background color used for menus. Reset to use the theme color.", OptionsMenuSettings.backgroundOpacity)
         ), 1
     )
 
@@ -38,9 +39,9 @@ class SettingStructure(val screen: OptionScreen) : BewisclientInterface {
 
     val widgetsPlane = Plane { x, y, width, height ->
         listOf(
-            Button(Translation("menu.widgets.general_setting", "General Widget Settings").getTranslatedString()) {
+            Button(Translation("menu.widgets.general_setting", "General Widget Settings")()) {
                 screen.transformInside(
-                    TextElement(Translation("menu.widgets.general_setting", "General Widget Settings").getTranslatedString(), centered = true).setHeight(12), VerticalAlignScrollPlane({ generalWidgetSettings }, 1)
+                    TextElement(Translation("menu.widgets.general_setting", "General Widget Settings")(), centered = true).setHeight(12), VerticalAlignScrollPlane({ generalWidgetSettings }, 1)
                 )
             }(x, y, width, 14), VerticalScrollGrid({ widgets.map { a -> a.setHeight(90) } }, 5, 80).invoke(x, y + 19, width, height - 19)
         )
