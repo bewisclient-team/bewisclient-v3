@@ -40,7 +40,7 @@ class Input : Renderable {
         if (cursor == text.length) scrollX = scrollX.coerceAtMost(screenDrawing.textRenderer.getWidth(text) - width + 5).coerceAtLeast(0)
         screenDrawing.enableScissors(x, y, width, height)
         val shouldShow = System.currentTimeMillis() % 1000 < 500 && (client.currentScreen as? RenderableScreen)?.getSelectedRenderable() == this
-        screenDrawing.drawContext.drawTextWithShadow(screenDrawing.textRenderer, Text.literal(text + if(cursor == text.length && shouldShow) "_" else ""), x - scrollX, y + 1, screenDrawing.applyAlpha(color))
+        screenDrawing.drawContext.drawTextWithShadow(screenDrawing.textRenderer, Text.literal(text + if (cursor == text.length && shouldShow) "_" else ""), x - scrollX, y + 1, screenDrawing.applyAlpha(color))
         if (cursor != text.length && shouldShow)
             screenDrawing.drawContext.drawVerticalLine(screenDrawing.textRenderer.getWidth(text.substring(0, cursor)) + x - scrollX, y - 1, y + 11, screenDrawing.applyAlpha(color))
         screenDrawing.disableScissors()
@@ -86,6 +86,7 @@ class Input : Renderable {
                 }
                 true
             }
+
             GLFW.GLFW_KEY_DELETE -> {
                 if (text.isNotEmpty()) {
                     text = (text.substring(0, cursor) + text.substring((cursor + 1).coerceAtMost(text.length)))
@@ -93,14 +94,17 @@ class Input : Renderable {
                 }
                 true
             }
+
             GLFW.GLFW_KEY_LEFT -> {
                 if (cursor > 0) cursor--
                 true
             }
+
             GLFW.GLFW_KEY_RIGHT -> {
                 if (cursor < text.length) cursor++
                 true
             }
+
             else -> false
         }
     }

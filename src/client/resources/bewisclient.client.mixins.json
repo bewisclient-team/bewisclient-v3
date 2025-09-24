@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_21",
   "client": [
     "BlockItemMixin",
+    "CameraMixin",
     "ClientPlayerInteractionManagerMixin",
     "ClientPlayNetworkHandlerMixin",
     "EquippableComponentMixin",
@@ -20,7 +21,8 @@
     "OverlayTextureMixin",
     "TitleScreenMixin",
     "TooltipDisplayComponentMixin",
-    "WorldRendererMixin"
+    "WorldRendererMixin",
+    "EntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

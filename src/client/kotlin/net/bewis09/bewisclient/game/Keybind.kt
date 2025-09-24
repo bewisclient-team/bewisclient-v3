@@ -11,4 +11,8 @@ open class Keybind(default: Int, id: String, name: String, val action: (() -> Un
     val keyBinding = KeyBinding(
         registerTranslation("key.$id", name), InputUtil.Type.KEYSYM, default, KeyBinding.Category.MISC
     )
+
+    fun isPressed(): Boolean {
+        return keyBinding.isPressed
+    }
 }

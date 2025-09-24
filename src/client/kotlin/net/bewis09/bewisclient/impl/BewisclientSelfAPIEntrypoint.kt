@@ -26,7 +26,7 @@ class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint() {
     )
 
     override fun getKeybinds(): List<Keybind> = listOf(
-        OpenOptionScreen, Fullbright.ToggleNightVision, Fullbright.ToggleFullbright, Fullbright.IncreaseBrightness, Fullbright.DecreaseBrightness, Zoom.ZoomKeybind
+        OpenOptionScreen, Fullbright.ToggleNightVision, Fullbright.ToggleFullbright, Fullbright.IncreaseBrightness, Fullbright.DecreaseBrightness, Zoom.ZoomKeybind, Perspective.EnablePerspective
     )
 
     override fun getWidgets(): List<Widget> = listOf(
@@ -36,7 +36,7 @@ class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint() {
     override fun getUtilities(): List<Renderable> = listOf(
         Fullbright, BlockHighlight, EntityHighlight, HeldItemTooltip, Zoom, PumpkinOverlay,
         // Crosshair,
-        BetterVisibility, Scoreboard, ShulkerBoxTooltip
+        BetterVisibility, Scoreboard, ShulkerBoxTooltip, Perspective
         // Chat Enhancements,
     )
 

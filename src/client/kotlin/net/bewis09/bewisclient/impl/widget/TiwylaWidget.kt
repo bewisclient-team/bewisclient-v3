@@ -254,59 +254,59 @@ object TiwylaWidget : ScalableWidget(Identifier.of("bewisclient", "tiwyla_widget
 
     val blockInformation = listOf<Information.Line<BlockData>>(
         Information.Line({ data ->
-        if (data.state.isIn(BlockTags.AXE_MINEABLE)) return@Line toolText(axeToolText.getTranslatedString())
-        if (data.state.isIn(BlockTags.PICKAXE_MINEABLE)) return@Line toolText(pickaxeToolText.getTranslatedString())
-        if (data.state.isIn(BlockTags.HOE_MINEABLE)) return@Line toolText(hoeToolText.getTranslatedString())
-        if (data.state.isIn(BlockTags.SHOVEL_MINEABLE)) return@Line toolText(shovelToolText.getTranslatedString())
-        if (data.state.isIn(BlockTags.SWORD_EFFICIENT)) return@Line toolText(swordToolText.getTranslatedString())
-        return@Line toolText(noneToolText.getTranslatedString())
-    }, "tool", 0), Information.Line({ data ->
-        if (data.state.isIn(BlockTags.NEEDS_DIAMOND_TOOL)) return@Line miningLevel(diamondLevelText.getTranslatedString())
-        if (data.state.isIn(BlockTags.NEEDS_IRON_TOOL)) return@Line miningLevel(ironLevelText.getTranslatedString())
-        if (data.state.isIn(BlockTags.NEEDS_STONE_TOOL)) return@Line miningLevel(stoneLevelText.getTranslatedString())
+            if (data.state.isIn(BlockTags.AXE_MINEABLE)) return@Line toolText(axeToolText.getTranslatedString())
+            if (data.state.isIn(BlockTags.PICKAXE_MINEABLE)) return@Line toolText(pickaxeToolText.getTranslatedString())
+            if (data.state.isIn(BlockTags.HOE_MINEABLE)) return@Line toolText(hoeToolText.getTranslatedString())
+            if (data.state.isIn(BlockTags.SHOVEL_MINEABLE)) return@Line toolText(shovelToolText.getTranslatedString())
+            if (data.state.isIn(BlockTags.SWORD_EFFICIENT)) return@Line toolText(swordToolText.getTranslatedString())
+            return@Line toolText(noneToolText.getTranslatedString())
+        }, "tool", 0), Information.Line({ data ->
+            if (data.state.isIn(BlockTags.NEEDS_DIAMOND_TOOL)) return@Line miningLevel(diamondLevelText.getTranslatedString())
+            if (data.state.isIn(BlockTags.NEEDS_IRON_TOOL)) return@Line miningLevel(ironLevelText.getTranslatedString())
+            if (data.state.isIn(BlockTags.NEEDS_STONE_TOOL)) return@Line miningLevel(stoneLevelText.getTranslatedString())
 
-        if (data.state.isToolRequired) return@Line miningLevel(woodLevelText.getTranslatedString())
-        return@Line miningLevel(noneLevelText.getTranslatedString())
-    }, "mining_level", 0), Information.Line({ data ->
-        if (client.world == null) return@Line secondsText(4.5)
+            if (data.state.isToolRequired) return@Line miningLevel(woodLevelText.getTranslatedString())
+            return@Line miningLevel(noneLevelText.getTranslatedString())
+        }, "mining_level", 0), Information.Line({ data ->
+            if (client.world == null) return@Line secondsText(4.5)
 
-        val player = client.player ?: return@Line null
+            val player = client.player ?: return@Line null
 
-        if (data.state.calcBlockBreakingDelta(player, client.world, data.blockPos) > 1) return@Line instantText()
+            if (data.state.calcBlockBreakingDelta(player, client.world, data.blockPos) > 1) return@Line instantText()
 
-        val secs = (1f / data.state.calcBlockBreakingDelta(player, client.world, data.blockPos) * 5F).roundToInt() / 100F
+            val secs = (1f / data.state.calcBlockBreakingDelta(player, client.world, data.blockPos) * 5F).roundToInt() / 100F
 
-        if (secs > (3600 * 24)) return@Line daysText((secs / 36 / 24).roundToInt() / 100F)
-        if (secs > 3600) return@Line hoursText((secs / 36).roundToInt() / 100F)
-        if (secs > 60) return@Line minutesText((secs / 6 * 10).roundToInt() / 100F)
-        return@Line secondsText((secs * 100).roundToInt() / 100F)
-    }, "break_time", 0), Information.Line({ _ ->
-        val s = (((client.interactionManager as BreakingProgressAccessor?)?.getCurrentBreakingProgress() ?: 0f) * 1000)
-        if (s == 0F) {
-            return@Line null
-        }
-        return@Line progressText(round(s) / 10f)
-    }, "progress", 2), Information.Line({ data ->
-        val id = Registries.BLOCK.getEntry(data.state.block).key.getOrNull()?.value?.toString() ?: return@Line null
-        if (blockSpecialInfoMap[id] == false) return@Line null
-        val property = blockStateInfoMap[id] ?: return@Line null
-        return@Line Text.literal("${snake_toCamelCase(property.name)}: ${data.state.get(property)}")
-    }, "block_property", 1)
+            if (secs > (3600 * 24)) return@Line daysText((secs / 36 / 24).roundToInt() / 100F)
+            if (secs > 3600) return@Line hoursText((secs / 36).roundToInt() / 100F)
+            if (secs > 60) return@Line minutesText((secs / 6 * 10).roundToInt() / 100F)
+            return@Line secondsText((secs * 100).roundToInt() / 100F)
+        }, "break_time", 0), Information.Line({ _ ->
+            val s = (((client.interactionManager as BreakingProgressAccessor?)?.getCurrentBreakingProgress() ?: 0f) * 1000)
+            if (s == 0F) {
+                return@Line null
+            }
+            return@Line progressText(round(s) / 10f)
+        }, "progress", 2), Information.Line({ data ->
+            val id = Registries.BLOCK.getEntry(data.state.block).key.getOrNull()?.value?.toString() ?: return@Line null
+            if (blockSpecialInfoMap[id] == false) return@Line null
+            val property = blockStateInfoMap[id] ?: return@Line null
+            return@Line Text.literal("${snake_toCamelCase(property.name)}: ${data.state.get(property)}")
+        }, "block_property", 1)
     )
 
     val entityInformation = listOf<Information.Line<Entity>>(
         Information.Line({ entity ->
-        return@Line Text.literal(Registries.ENTITY_TYPE.getEntry(entity.type).key.get().value.toString())
-    }, "entity_id", 0), Information.Line({ entity ->
-        return@Line if (client.isInSingleplayer) entity.entity?.let {
-            convertToHearths(
-                it.health.toDouble(), it.maxHealth.toDouble(), it.absorptionAmount.toDouble()
-            )
-        } else null
-    }, "health", 1), Information.Line({ entity ->
-        if (Registries.ENTITY_TYPE.getEntry(entity.type).key.getOrNull()?.value?.let { blockSpecialInfoMap[it.toString()] } == false) return@Line null
-        return@Line provideEntityInfo(entity)?.let { Text.literal(it) }
-    }, "special_entity_info", 2)
+            return@Line Text.literal(Registries.ENTITY_TYPE.getEntry(entity.type).key.get().value.toString())
+        }, "entity_id", 0), Information.Line({ entity ->
+            return@Line if (client.isInSingleplayer) entity.entity?.let {
+                convertToHearths(
+                    it.health.toDouble(), it.maxHealth.toDouble(), it.absorptionAmount.toDouble()
+                )
+            } else null
+        }, "health", 1), Information.Line({ entity ->
+            if (Registries.ENTITY_TYPE.getEntry(entity.type).key.getOrNull()?.value?.let { blockSpecialInfoMap[it.toString()] } == false) return@Line null
+            return@Line provideEntityInfo(entity)?.let { Text.literal(it) }
+        }, "special_entity_info", 2)
     )
 
     fun convertToHearths(h: Double, mH: Double, a: Double): Text {

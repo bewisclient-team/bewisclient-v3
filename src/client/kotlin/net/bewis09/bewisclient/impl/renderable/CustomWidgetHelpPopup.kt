@@ -31,13 +31,15 @@ class CustomWidgetHelpPopup(val screen: PopupScreen) : Renderable() {
     }
 
     class Inner : Renderable() {
-        val plane = VerticalAlignScrollPlane(mutableListOf<Renderable>(
+        val plane = VerticalAlignScrollPlane(
+            mutableListOf<Renderable>(
             InfoTextRenderable(CustomWidget.customWidgetParamInfo().string, centered = true, padding = 0)
         ).also {
             it.addAll(CustomWidget.widgetStringDataPoints.map { dataPoint ->
                 DataPointRenderable(dataPoint)
             })
-        }, 6)
+        }, 6
+        )
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             screenDrawing.fillWithBorderRounded(x, y, width, height, 10, OptionsMenuSettings.getBackgroundColor() alpha 0.9f, OptionsMenuSettings.themeColor.get().getColor() alpha 0.15f)

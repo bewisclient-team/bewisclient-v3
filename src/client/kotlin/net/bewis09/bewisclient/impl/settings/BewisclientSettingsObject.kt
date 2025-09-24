@@ -15,5 +15,6 @@ object BewisclientSettingsObject : ObjectSetting() {
         create("better_visibility", BetterVisibilitySettings)
         create("scoreboard", ScoreboardSettings)
         create("entity_highlight", EntityHighlightSettings)
+        create("perspective", PerspectiveSettings)
     }
 }
