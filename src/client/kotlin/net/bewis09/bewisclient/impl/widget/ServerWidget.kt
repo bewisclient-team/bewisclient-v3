@@ -4,7 +4,6 @@ import net.bewis09.bewisclient.logic.toText
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
-import net.minecraft.client.MinecraftClient
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 
