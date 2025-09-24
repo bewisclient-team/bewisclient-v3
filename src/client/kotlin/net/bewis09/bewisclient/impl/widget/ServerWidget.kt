@@ -23,7 +23,7 @@ object ServerWidget : LineWidget(Identifier.of("bewisclient", "server_widget")) 
 
     override val description = "Displays your current server ip-address."
 
-    override fun isHidden(): Boolean = MinecraftClient.getInstance().currentServerEntry == null
+    override fun isHidden(): Boolean = client.currentServerEntry == null
 
     override fun getCustomWidgetDataPoints() = listOf(
         CustomWidget.WidgetStringData("server_ip","Server IP", "Your current server ip-address", { getLine() })
