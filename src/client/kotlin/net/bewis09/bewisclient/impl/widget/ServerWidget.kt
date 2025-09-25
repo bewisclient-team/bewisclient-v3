@@ -20,11 +20,11 @@ object ServerWidget : LineWidget(Identifier.of("bewisclient", "server_widget")) 
 
     override val title = "Server Widget"
 
-    override val description = "Displays your current server ip-address."
+    override val description = "Displays your current server IP address."
 
     override fun isHidden(): Boolean = client.currentServerEntry == null
 
     override fun getCustomWidgetDataPoints() = listOf(
-        CustomWidget.WidgetStringData("server_ip","Server IP", "Your current server ip-address", { getLine() })
+        CustomWidget.WidgetStringData("server_ip","Server IP", "Your current server IP address", { getLine() })
     )
 }
