@@ -4,7 +4,7 @@ import net.minecraft.item.ItemStack
 
 interface ItemDrawing : ScreenDrawingInterface {
     fun drawItemStack(itemStack: ItemStack, x: Int, y: Int) {
-        drawContext.drawItem(itemStack, x, y)
+        core.drawItemStack(itemStack, x, y)
     }
 
     fun drawItemStack(itemStack: ItemStack, x: Int, y: Int, size: Int) {
@@ -15,8 +15,8 @@ interface ItemDrawing : ScreenDrawingInterface {
     }
 
     fun drawItemStackWithOverlay(itemStack: ItemStack, x: Int, y: Int) {
-        drawContext.drawItem(itemStack, x, y)
-        drawContext.drawStackOverlay(textRenderer, itemStack, x, y)
+        drawItemStack(itemStack, x, y)
+        core.drawStackOverlay(itemStack, x, y)
     }
 
     fun drawItemStackWithOverlay(itemStack: ItemStack, x: Int, y: Int, size: Int) {

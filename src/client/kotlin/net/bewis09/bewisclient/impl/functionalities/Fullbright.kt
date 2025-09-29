@@ -5,12 +5,12 @@ import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.game.Keybind
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.functionalities.FullbrightSettings
-import net.bewis09.bewisclient.logic.TextColor
 import net.bewis09.bewisclient.logic.color.color
 import net.bewis09.bewisclient.logic.color.within
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.effect.StatusEffects
 import net.minecraft.text.Style
+import net.minecraft.util.Formatting
 import org.lwjgl.glfw.GLFW
 
 object Fullbright : ImageSettingCategory(
@@ -26,17 +26,17 @@ object Fullbright : ImageSettingCategory(
         ),
     ), FullbrightSettings.enabled
 ) {
-    val nightVisionEnabledTranslation = Translation("fullbright.night_vision.enabled", TextColor.YELLOW + "Night Vision Enabled")
-    val nightVisionDisabledTranslation = Translation("fullbright.night_vision.disabled", TextColor.RED + "Night Vision Disabled")
+    val nightVisionEnabledTranslation = Translation("fullbright.night_vision.enabled", "Night Vision Enabled")
+    val nightVisionDisabledTranslation = Translation("fullbright.night_vision.disabled", "Night Vision Disabled")
 
     val brightnessTranslation = Translation("fullbright.brightness", "Brightness: %s")
 
     object ToggleNightVision : Keybind(GLFW.GLFW_KEY_H, "fullbright.toggle_night_vision", "Toggle Night Vision", {
         FullbrightSettings.nightVision.toggle()
         if (hasNightVision()) {
-            showTitle(nightVisionEnabledTranslation())
+            showTitle(nightVisionEnabledTranslation().formatted(Formatting.YELLOW))
         } else {
-            showTitle(nightVisionDisabledTranslation())
+            showTitle(nightVisionDisabledTranslation().formatted(Formatting.RED))
         }
     })
 

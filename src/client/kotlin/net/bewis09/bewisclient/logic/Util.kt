@@ -1,106 +1,15 @@
 package net.bewis09.bewisclient.logic
 
-import net.bewis09.bewisclient.game.Translation
-import net.bewis09.bewisclient.logic.color.Color
-import net.bewis09.bewisclient.logic.color.color
 import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 
-inline fun <T> catch(block: () -> T, or: T) = try {
-    block()
-} catch (_: Throwable) {
-    or
-}
+inline fun <T> catch(block: () -> T, or: T) = catch(block) ?: or
 
 inline fun <T> catch(block: () -> T) = try {
     block()
 } catch (_: Throwable) {
     null
 }
-
-enum class TextColor(val code: String) {
-    BLACK("§0"),
-    DARK_BLUE("§1"),
-    DARK_GREEN("§2"),
-    DARK_AQUA("§3"),
-    DARK_RED("§4"),
-    DARK_PURPLE("§5"),
-    GOLD("§6"),
-    GRAY("§7"),
-    DARK_GRAY("§8"),
-    BLUE("§9"),
-    GREEN("§a"),
-    AQUA("§b"),
-    RED("§c"),
-    LIGHT_PURPLE("§d"),
-    YELLOW("§e"),
-    WHITE("§f");
-
-    operator fun plus(other: String) = code + other
-}
-
-val colors = listOf(
-    TranslatedColor(0xFF0000.color, Translation("color.red", "Red")),
-    TranslatedColor(0x00FF00.color, Translation("color.green", "Green")),
-    TranslatedColor(0x0000FF.color, Translation("color.blue", "Blue")),
-    TranslatedColor(0xFFFF00.color, Translation("color.yellow", "Yellow")),
-    TranslatedColor(0x00FFFF.color, Translation("color.cyan", "Cyan")),
-    TranslatedColor(0xFF00FF.color, Translation("color.magenta", "Magenta")),
-    TranslatedColor(0xFFFFFF.color, Translation("color.white", "White")),
-    TranslatedColor(0x000000.color, Translation("color.black", "Black")),
-    TranslatedColor(0x808080.color, Translation("color.gray", "Gray")),
-    TranslatedColor(0x404040.color, Translation("color.dark_gray", "Dark Gray")),
-    TranslatedColor(0xC0C0C0.color, Translation("color.light_gray", "Light Gray")),
-    TranslatedColor(0xFFA500.color, Translation("color.orange", "Orange")),
-    TranslatedColor(0xFFC0CB.color, Translation("color.pink", "Pink")),
-    TranslatedColor(0x800080.color, Translation("color.purple", "Purple")),
-    TranslatedColor(0xA52A2A.color, Translation("color.brown", "Brown")),
-    TranslatedColor(0x00FF00.color, Translation("color.lime", "Lime")),
-    TranslatedColor(0x008080.color, Translation("color.teal", "Teal")),
-    TranslatedColor(0x000080.color, Translation("color.navy", "Navy")),
-    TranslatedColor(0x808000.color, Translation("color.olive", "Olive")),
-    TranslatedColor(0x800000.color, Translation("color.maroon", "Maroon")),
-    TranslatedColor(0xFFD700.color, Translation("color.gold", "Gold")),
-    TranslatedColor(0xC0C0C0.color, Translation("color.silver", "Silver")),
-    TranslatedColor(0x4B0082.color, Translation("color.indigo", "Indigo")),
-    TranslatedColor(0xEE82EE.color, Translation("color.violet", "Violet")),
-    TranslatedColor(0xFF7F50.color, Translation("color.coral", "Coral")),
-    TranslatedColor(0xFA8072.color, Translation("color.salmon", "Salmon")),
-    TranslatedColor(0xF0E68C.color, Translation("color.khaki", "Khaki")),
-    TranslatedColor(0xDDA0DD.color, Translation("color.plum", "Plum")),
-    TranslatedColor(0xDA70D6.color, Translation("color.orchid", "Orchid")),
-    TranslatedColor(0x40E0D0.color, Translation("color.turquoise", "Turquoise")),
-    TranslatedColor(0xDC143C.color, Translation("color.crimson", "Crimson")),
-    TranslatedColor(0xA0522D.color, Translation("color.sienna", "Sienna")),
-    TranslatedColor(0xD2691E.color, Translation("color.chocolate", "Chocolate")),
-    TranslatedColor(0xD2B48C.color, Translation("color.tan", "Tan")),
-    TranslatedColor(0xFFDAB9.color, Translation("color.peach", "Peach")),
-    TranslatedColor(0xE6E6FA.color, Translation("color.lavender", "Lavender")),
-    TranslatedColor(0x98FF98.color, Translation("color.mint", "Mint")),
-    TranslatedColor(0x87CEEB.color, Translation("color.sky_blue", "Sky Blue")),
-    TranslatedColor(0x00FFFF.color, Translation("color.aqua", "Aqua")),
-    TranslatedColor(0x228B22.color, Translation("color.forest_green", "Forest Green")),
-    TranslatedColor(0x4169E1.color, Translation("color.royal_blue", "Royal Blue")),
-    TranslatedColor(0xFF1493.color, Translation("color.deep_pink", "Deep Pink")),
-    TranslatedColor(0xB22222.color, Translation("color.firebrick", "Firebrick")),
-    TranslatedColor(0x4682B4.color, Translation("color.steel_blue", "Steel Blue")),
-    TranslatedColor(0x006400.color, Translation("color.dark_green", "Dark Green")),
-    TranslatedColor(0x8B0000.color, Translation("color.dark_red", "Dark Red")),
-    TranslatedColor(0x00008B.color, Translation("color.dark_blue", "Dark Blue")),
-    TranslatedColor(0xFF69B4.color, Translation("color.hot_pink", "Hot Pink")),
-    TranslatedColor(0x32CD32.color, Translation("color.lime_green", "Lime Green")),
-    TranslatedColor(0xFF4500.color, Translation("color.orange_red", "Orange Red")),
-    TranslatedColor(0x2E8B57.color, Translation("color.sea_green", "Sea Green")),
-    TranslatedColor(0x708090.color, Translation("color.slate_gray", "Slate Gray")),
-    TranslatedColor(0x9370DB.color, Translation("color.medium_purple", "Medium Purple")),
-    TranslatedColor(0xFF8C00.color, Translation("color.dark_orange", "Dark Orange")),
-    TranslatedColor(0xADD8E6.color, Translation("color.light_blue", "Light Blue")),
-    TranslatedColor(0x90EE90.color, Translation("color.light_green", "Light Green")),
-    TranslatedColor(0xFFB6C1.color, Translation("color.light_pink", "Light Pink")),
-    TranslatedColor(0xF5DEB3.color, Translation("color.wheat", "Wheat")),
-)
-
-class TranslatedColor(val color: Color, val translation: Translation)
 
 fun <T> T.staticFun(): () -> T = { this }
 

@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.impl.widget
 
+import net.bewis09.bewisclient.core.CoreUtil
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
 import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSettingsRenderable
@@ -108,9 +109,7 @@ object KeyWidget : ScalableWidget(Identifier.of("bewisclient", "key_widget")) {
 
         val key = (keyBinding as KeyBindingAccessor).getBoundKey()
 
-        if (key.category == InputUtil.Type.KEYSYM) return InputUtil.isKeyPressed(
-            client.window, key.code
-        )
+        if (key.category == InputUtil.Type.KEYSYM) return CoreUtil.isKeyPressed(key.code)
         if (key.category == InputUtil.Type.MOUSE) return d.mouseMap[key.code] == true
         return keyBinding.isPressed
     }

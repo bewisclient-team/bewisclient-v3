@@ -7,7 +7,6 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.widget.TiwylaWidget
 import net.bewis09.bewisclient.interfaces.SettingInterface
-import net.bewis09.bewisclient.logic.TextColor
 import net.bewis09.bewisclient.logic.color.alpha
 import net.bewis09.bewisclient.logic.staticFun
 import net.minecraft.registry.Registries
@@ -40,7 +39,7 @@ class TiwylaInfoSettingsRenderable : Renderable() {
         null,
         TiwylaWidget.entityInfoProviders.map {
             MultipleBooleanSettingsRenderable.Part(
-                Translation.literal(it.second.entityType.name.string + " ${TextColor.GRAY.code}(${it.first.namespace})"),
+                Translation.literal(it.second.entityType.name.string + " §0(${it.first.namespace})"),
                 null,
                 object : SettingInterface<Boolean> {
                     override fun get(): Boolean {

@@ -1,7 +1,6 @@
 package net.bewis09.bewisclient.drawable.screen_drawing
 
 import net.bewis09.bewisclient.logic.color.Color
-import net.minecraft.client.gl.RenderPipelines
 import net.minecraft.util.Identifier
 
 interface TextureDrawing : ScreenDrawingInterface {
@@ -24,8 +23,8 @@ interface TextureDrawing : ScreenDrawingInterface {
     fun drawTexture(
         texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, textureWidth: Int, textureHeight: Int, color: Color
     ) {
-        drawContext.drawTexture(
-            RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, textureWidth, textureHeight, applyAlpha(color)
+        drawTextureRegion(
+            texture, x, y, u, v, width, height, textureWidth, textureHeight, textureWidth, textureHeight, color
         )
     }
 
@@ -40,8 +39,8 @@ interface TextureDrawing : ScreenDrawingInterface {
     fun drawTextureRegion(
         texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, regionWidth: Int, regionHeight: Int, textureWidth: Int, textureHeight: Int, color: Color
     ) {
-        drawContext.drawTexture(
-            RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, applyAlpha(color)
+        core.drawTexture(
+            texture, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, applyAlpha(color)
         )
     }
 }

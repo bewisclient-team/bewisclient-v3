@@ -31,7 +31,7 @@ class CustomWidgetLineRenderable : Renderable() {
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         textDisplay(x + width / 2 + 3, y + 7, (width / 2 - 3), lines.size * 10)
-        textDisplay.innerSize = (CustomWidget.lines.maxOfOrNull { screenDrawing.textRenderer.getWidth(CustomWidget.computeLine(it)) }?.toFloat() ?: 0f).coerceAtLeast(((width / 2 - 3).toFloat()))
+        textDisplay.innerSize = (CustomWidget.lines.maxOfOrNull { screenDrawing.getTextWidth(CustomWidget.computeLine(it), Style.EMPTY) }?.toFloat() ?: 0f).coerceAtLeast(((width / 2 - 3).toFloat()))
         if (centered != CustomWidget.centered.get()) {
             centered = CustomWidget.centered.get()
             resize()

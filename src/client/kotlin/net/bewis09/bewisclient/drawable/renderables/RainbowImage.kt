@@ -13,7 +13,7 @@ class RainbowImage(val image: Identifier, val alpha: Float) : Hoverable() {
         super.render(screenDrawing, mouseX, mouseY)
         for (i in 0 until 6) {
             val offsetY = i * height / 6
-            screenDrawing.drawTexture(image, x, y + offsetY, 0f, offsetY.toFloat(), width, (i + 1) * height / 6 - offsetY, width, height, hoverAnimation["hovering"] within (Color.WHITE to colors[i]) alpha alpha * (1 - hoverAnimation["hovering"]) + 1f * hoverAnimation["hovering"])
+            screenDrawing.drawTextureRegion(image, x, y + offsetY, 0f, offsetY.toFloat(), width, (i + 1) * height / 6 - offsetY, width, height / 6, width, height, hoverAnimation["hovering"] within (Color.WHITE to colors[i]) alpha alpha * (1 - hoverAnimation["hovering"]) + 1f * hoverAnimation["hovering"])
         }
     }
 }

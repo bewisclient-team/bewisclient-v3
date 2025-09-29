@@ -4,6 +4,7 @@ import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.logic.color.Color
 import net.bewis09.bewisclient.screen.RenderableScreen
+import net.minecraft.text.Style
 import net.minecraft.text.Text
 import org.lwjgl.glfw.GLFW
 
@@ -31,18 +32,18 @@ class Input : Renderable {
     }
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        if (screenDrawing.textRenderer.getWidth(text.substring(0, cursor)) - scrollX > width - 5) {
-            scrollX = screenDrawing.textRenderer.getWidth(text.substring(0, cursor)) - (width - 5)
-        } else if (screenDrawing.textRenderer.getWidth(text.substring(0, cursor)) - scrollX < 0) {
-            scrollX = screenDrawing.textRenderer.getWidth(text.substring(0, cursor)) - 5
+        if (screenDrawing.getTextWidth(text.substring(0, cursor), Style.EMPTY) - scrollX > width - 5) {
+            scrollX = screenDrawing.getTextWidth(text.substring(0, cursor), Style.EMPTY) - (width - 5)
+        } else if (screenDrawing.getTextWidth(text.substring(0, cursor), Style.EMPTY) - scrollX < 0) {
+            scrollX = screenDrawing.getTextWidth(text.substring(0, cursor), Style.EMPTY) - 5
             if (scrollX < 0) scrollX = 0
         }
-        if (cursor == text.length) scrollX = scrollX.coerceAtMost(screenDrawing.textRenderer.getWidth(text) - width + 5).coerceAtLeast(0)
+        if (cursor == text.length) scrollX = scrollX.coerceAtMost(screenDrawing.getTextWidth(text, Style.EMPTY) - width + 5).coerceAtLeast(0)
         screenDrawing.enableScissors(x, y, width, height)
         val shouldShow = System.currentTimeMillis() % 1000 < 500 && (client.currentScreen as? RenderableScreen)?.getSelectedRenderable() == this
-        screenDrawing.drawContext.drawTextWithShadow(screenDrawing.textRenderer, Text.literal(text + if (cursor == text.length && shouldShow) "_" else ""), x - scrollX, y + 1, screenDrawing.applyAlpha(color))
+        screenDrawing.drawTextWithShadow(Text.literal(text + if (cursor == text.length && shouldShow) "_" else ""), x - scrollX, y + 1, color, Style.EMPTY)
         if (cursor != text.length && shouldShow)
-            screenDrawing.drawContext.drawVerticalLine(screenDrawing.textRenderer.getWidth(text.substring(0, cursor)) + x - scrollX, y - 1, y + 11, screenDrawing.applyAlpha(color))
+            screenDrawing.drawVerticalLine(screenDrawing.getTextWidth(text.substring(0, cursor), Style.EMPTY) + x - scrollX, y - 1, 12, color)
         screenDrawing.disableScissors()
     }
 
@@ -61,7 +62,7 @@ class Input : Renderable {
     }
 
     override fun onCharTyped(character: Char, modifiers: Int): Boolean {
-        if (maxWidth == 0 || (client.currentScreen?.textRenderer?.getWidth(text + character) ?: 0) < maxWidth) {
+        if (maxWidth == 0 || (client.textRenderer?.getWidth(text + character) ?: 0) < maxWidth) {
             insertChar(character)
             onChange?.invoke(text)
         }

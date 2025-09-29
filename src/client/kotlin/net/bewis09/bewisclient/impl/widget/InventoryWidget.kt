@@ -19,7 +19,7 @@ object InventoryWidget : ScalableWidget(Identifier.of("bewisclient", "inventory_
             0 to Items.ITEM_FRAME.defaultStack.also { it.count = 38 },
             1 to Items.MOJANG_BANNER_PATTERN.defaultStack,
             2 to ItemStack.EMPTY,
-            3 to Items.COPPER_SWORD.defaultStack.also { it.set(DataComponentTypes.CUSTOM_NAME, indicatorText) },
+            3 to Items.WOODEN_SWORD.defaultStack.also { it.set(DataComponentTypes.CUSTOM_NAME, indicatorText) },
             4 to ItemStack.EMPTY,
             5 to ItemStack.EMPTY,
             6 to Items.COOKED_BEEF.defaultStack.also { it.count = 16 },

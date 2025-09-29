@@ -4,14 +4,14 @@ import net.bewis09.bewisclient.logic.color.Color
 
 interface RectDrawing : ScreenDrawingInterface {
     fun fill(x: Int, y: Int, width: Int, height: Int, color: Color) {
-        drawContext.fill(x, y, x + width, y + height, applyAlpha(color))
+        core.fill(x, y, x + width, y + height, applyAlpha(color))
     }
 
     fun drawBorder(x: Int, y: Int, width: Int, height: Int, color: Color) {
-        drawContext.fill(x, y, x + width, y + 1, applyAlpha(color))
-        drawContext.fill(x, y + height - 1, x + width, y + height, applyAlpha(color))
-        drawContext.fill(x, y, x + 1, y + height, applyAlpha(color))
-        drawContext.fill(x + width - 1, y, x + width, y + height, applyAlpha(color))
+        fill(x, y, width, 1, color)
+        fill(x, y + height - 1, width, height, color)
+        fill(x, y, 1, height, color)
+        fill(x + width - 1, y, width, height, color)
     }
 
     fun fillWithBorder(x: Int, y: Int, width: Int, height: Int, color: Color, borderColor: Color) {
@@ -30,7 +30,7 @@ interface RectDrawing : ScreenDrawingInterface {
     fun drawHorizontalGradient(
         x: Int, y: Int, width: Int, height: Int, startColor: Color, endColor: Color
     ) {
-        drawContext.fillGradient(x, y, x + width, y + height, applyAlpha(startColor), applyAlpha(endColor))
+        core.fillGradient(x, y, x + width, y + height, applyAlpha(startColor), applyAlpha(endColor))
     }
 
     fun drawVerticalGradient(

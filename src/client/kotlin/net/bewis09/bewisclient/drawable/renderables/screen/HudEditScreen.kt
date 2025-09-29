@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.drawable.renderables.screen
 
+import net.bewis09.bewisclient.core.CoreUtil
 import net.bewis09.bewisclient.drawable.SettingStructure
 import net.bewis09.bewisclient.drawable.renderables.ImageButton
 import net.bewis09.bewisclient.drawable.renderables.ThemeButton
@@ -19,7 +20,6 @@ import net.bewis09.bewisclient.widget.WidgetLoader.widgets
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.types.ScalableWidget
-import net.minecraft.client.util.InputUtil
 import net.minecraft.util.Identifier
 import org.lwjgl.glfw.GLFW
 import kotlin.math.abs
@@ -77,7 +77,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int, popupShown: Boolean) {
         widgets.forEach {
             if (it.isEnabled()) {
-                it.renderScaled(ScreenDrawing(screenDrawing.drawContext, client.textRenderer))
+                it.renderScaled(screenDrawing.copy())
 
                 hoverSeparate(mouseX.toFloat(), mouseY.toFloat(), (it.getX() + it.getScaledWidth() - 8).toInt(), (it.getY()).toInt(), 8, 8, {
                     screenDrawing.pushColor(1f, 1f, 1f, 1f)
@@ -167,7 +167,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
     }
 
     fun possibleAppendArea(widget: Widget, appendWidget: Widget, mouseX: Int, mouseY: Int): RelativePosition? {
-        if (widget == appendWidget || InputUtil.isKeyPressed(client.window, GLFW.GLFW_KEY_LEFT_SHIFT)) return null
+        if (widget == appendWidget || CoreUtil.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT)) return null
 
         val sides = arrayOf("top", "right", "bottom", "left")
 
@@ -215,7 +215,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
         var xTransform = if (right) SidedPosition.END else SidedPosition.START
         val yTransform = if (end) SidedPosition.END else SidedPosition.START
 
-        if (!InputUtil.isKeyPressed(client.window, GLFW.GLFW_KEY_LEFT_SHIFT)) {
+        if (!CoreUtil.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT)) {
             if (abs(x - DefaultWidgetSettings.screenEdgeDistance.get()) < 10) {
                 x = DefaultWidgetSettings.screenEdgeDistance.get().toDouble()
             }

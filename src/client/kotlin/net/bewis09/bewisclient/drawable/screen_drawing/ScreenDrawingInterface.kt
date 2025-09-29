@@ -1,18 +1,16 @@
 package net.bewis09.bewisclient.drawable.screen_drawing
 
+import net.bewis09.bewisclient.core.DrawingCore
+import net.bewis09.bewisclient.core.toStyleFont
 import net.bewis09.bewisclient.logic.BewisclientInterface
 import net.bewis09.bewisclient.logic.color.Color
-import net.minecraft.client.font.TextRenderer
-import net.minecraft.client.gui.DrawContext
 import net.minecraft.text.Style
-import net.minecraft.text.StyleSpriteSource
 import net.minecraft.util.Identifier
 import org.joml.Matrix3x2f
 import org.joml.Matrix3x2fStack
 
 interface ScreenDrawingInterface : BewisclientInterface {
-    val drawContext: DrawContext
-    val textRenderer: TextRenderer
+    val core: DrawingCore
 
     /**
      * Translates the drawing context by the specified x and y offsets.
@@ -20,7 +18,7 @@ interface ScreenDrawingInterface : BewisclientInterface {
      * @param x The x offset to translate the context by.
      * @param y The y offset to translate the context by.
      */
-    fun translate(x: Float, y: Float): Matrix3x2f = drawContext.matrices.translate(x, y)
+    fun translate(x: Float, y: Float): Matrix3x2f = core.translate(x, y)
 
     /**
      * Scales the drawing context by the specified x and y factors.
@@ -28,33 +26,33 @@ interface ScreenDrawingInterface : BewisclientInterface {
      * @param x The x factor to scale the context by.
      * @param y The y factor to scale the context by.
      */
-    fun scale(x: Float, y: Float): Matrix3x2f = drawContext.matrices.scale(x, y)
+    fun scale(x: Float, y: Float): Matrix3x2f = core.scale(x, y)
 
     /**
      * Rotates the drawing context by the specified angle in degrees.
      *
      * @param angle The angle in degrees to rotate the context by.
      */
-    fun rotateDegrees(angle: Float): Matrix3x2f = drawContext.matrices.rotate(Math.toRadians(angle.toDouble()).toFloat())
+    fun rotateDegrees(angle: Float): Matrix3x2f = core.rotate(Math.toRadians(angle.toDouble()).toFloat())
 
     /**
      * Rotates the drawing context by the specified angle in radians.
      *
      * @param angle The angle in radians to rotate the context by.
      */
-    fun rotate(angle: Float): Matrix3x2f = drawContext.matrices.rotate(angle)
+    fun rotate(angle: Float): Matrix3x2f = core.rotate(angle)
 
     /**
      * Pushes a new matrix onto the drawing context's matrix stack. This is used to save the current
      * transformation state so that it can be restored later.
      */
-    fun push(): Matrix3x2fStack = drawContext.matrices.pushMatrix()
+    fun push(): Matrix3x2fStack = core.push()
 
     /**
      * Pops the last matrix from the drawing context's matrix stack. This restores the previous
      * transformation state that was saved by a push operation.
      */
-    fun pop(): Matrix3x2fStack = drawContext.matrices.popMatrix()
+    fun pop(): Matrix3x2fStack = core.pop()
 
     fun applyAlpha(color: Color): Int = (getCurrentColorModifier() * color).argb
 
@@ -81,7 +79,7 @@ interface ScreenDrawingInterface : BewisclientInterface {
     fun setBewisclientFont() = setFont(Identifier.of("bewisclient", "screen"))
 
     fun setFont(font: Identifier) {
-        style = Style.EMPTY.withFont(StyleSpriteSource.Font(font))
+        style = font.toStyleFont()
     }
 
     fun defaultFont() {
@@ -100,9 +98,11 @@ interface ScreenDrawingInterface : BewisclientInterface {
         }
     }
 
-    fun enableScissors(x: Int, y: Int, width: Int, height: Int) = drawContext.enableScissor(x, y, x + width, y + height)
+    fun enableScissors(x: Int, y: Int, width: Int, height: Int) = core.enableScissors(x, y, x + width, y + height)
 
-    fun disableScissors() = drawContext.disableScissor()
+    fun disableScissors() = core.disableScissors()
+
+    fun scissorContains(x: Int, y: Int) = core.scissorContains(x, y)
 }
 
 inline fun ScreenDrawingInterface.onNewLayer(apply: () -> Unit, transform: () -> Unit) {

@@ -2,6 +2,7 @@ package net.bewis09.bewisclient.impl.widget
 
 import com.google.gson.*
 import net.bewis09.bewisclient.api.APIEntrypointLoader
+import net.bewis09.bewisclient.core.toStyleFont
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
@@ -19,12 +20,12 @@ import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.ScalableWidget
 import net.minecraft.block.*
-import net.minecraft.entity.Entity
-import net.minecraft.entity.EntityType
+import net.minecraft.entity.*
 import net.minecraft.registry.Registries
 import net.minecraft.registry.tag.BlockTags
 import net.minecraft.state.property.Property
-import net.minecraft.text.*
+import net.minecraft.text.Style
+import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.hit.EntityHitResult
@@ -35,7 +36,7 @@ import kotlin.math.*
 object TiwylaWidget : ScalableWidget(Identifier.of("bewisclient", "tiwyla_widget")), EventEntrypoint {
     private var lineWidth = 0
 
-    var heartsFont: StyleSpriteSource = StyleSpriteSource.Font(Identifier.of("bewisclient", "extra"))
+    var heartStyle: Style = Identifier.of("bewisclient", "extra").toStyleFont()
 
     val topTextColor = create("top_text_color", DefaultWidgetSettings.textColor.cloneWithDefault())
     val bottomTextColor = create("bottom_text_color", DefaultWidgetSettings.textColor.cloneWithDefault())
@@ -298,7 +299,7 @@ object TiwylaWidget : ScalableWidget(Identifier.of("bewisclient", "tiwyla_widget
         Information.Line({ entity ->
             return@Line Text.literal(Registries.ENTITY_TYPE.getEntry(entity.type).key.get().value.toString())
         }, "entity_id", 0), Information.Line({ entity ->
-            return@Line if (client.isInSingleplayer) entity.entity?.let {
+            return@Line if (client.isInSingleplayer) (entity as? LivingEntity)?.let {
                 convertToHearths(
                     it.health.toDouble(), it.maxHealth.toDouble(), it.absorptionAmount.toDouble()
                 )
@@ -328,10 +329,10 @@ object TiwylaWidget : ScalableWidget(Identifier.of("bewisclient", "tiwyla_widget
             val maxHealthLeft = (maxHealth - ((health.toInt()) + (if (isHalf) 1 else 0)) + (if (isMaxHalf) 1 else 0)).toInt()
             return Text.literal("❤".repeat(health.toInt()))
                 .setStyle(Style.EMPTY.withColor(0xFF0000))
-                .append(Text.literal(if (isHalf) "\uE0aa" else "").setStyle(Style.EMPTY.withFont(heartsFont).withColor(0xFFFFFF)))
+                .append(Text.literal(if (isHalf) "\uE0aa" else "").setStyle(heartStyle.withColor(0xFFFFFF)))
                 .append(Text.literal("❤".repeat(maxHealthLeft)).setStyle(Style.EMPTY.withColor(0xFFFFFF)))
                 .append(Text.literal("❤".repeat(absorption.toInt())).setStyle(Style.EMPTY.withColor(0xFFFF00)))
-                .append(Text.literal(if (isAbsorptionHalf) "\uE0ab" else "").setStyle(Style.EMPTY.withFont(heartsFont).withColor(0xFFFFFF)))
+                .append(Text.literal(if (isAbsorptionHalf) "\uE0ab" else "").setStyle(heartStyle.withColor(0xFFFFFF)))
         } catch (_: Exception) {
             return Text.of("")
         }

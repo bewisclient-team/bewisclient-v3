@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.game
 
+import net.bewis09.bewisclient.core.IndependentTooltipComponent
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.logic.EventEntrypoint
 import net.bewis09.bewisclient.logic.color.Color
@@ -7,20 +8,33 @@ import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback
 import net.minecraft.block.ShulkerBoxBlock
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.gui.tooltip.TooltipComponent
 import net.minecraft.component.DataComponentTypes
 import net.minecraft.item.ItemStack
 import net.minecraft.item.tooltip.TooltipData
 import net.minecraft.util.Identifier
 import net.minecraft.util.collection.DefaultedList
 
-class ShulkerBoxTooltipComponent(val data: Data) : TooltipComponent {
-    override fun getHeight(textRenderer: TextRenderer?): Int {
+class ShulkerBoxTooltipComponent(val data: Data) : IndependentTooltipComponent {
+    override fun getHeightDef(): Int {
         return 77
     }
 
-    override fun getWidth(textRenderer: TextRenderer?): Int {
+    override fun getWidthDef(): Int {
         return 180
+    }
+
+    override fun drawItems(x: Int, y: Int, screenDrawing: ScreenDrawing) {
+        screenDrawing.fill(x + 1, y + 1, getWidthDef() - 2, getHeightDef() - 7, data.color * 0xC3C3C3)
+        screenDrawing.fill(x + 4, y + 4, getWidthDef() - 8, getHeightDef() - 13, data.color)
+        var i = 0
+        for (k in 0..2) {
+            for (l in 0..8) {
+                val n = x + l * 18 + 9
+                val o = y + k * 18 + 9
+                this.drawSlot(n, o, i, screenDrawing)
+                i++
+            }
+        }
     }
 
     override fun drawItems(textRenderer: TextRenderer, x: Int, y: Int, width: Int, height: Int, context: DrawContext) {

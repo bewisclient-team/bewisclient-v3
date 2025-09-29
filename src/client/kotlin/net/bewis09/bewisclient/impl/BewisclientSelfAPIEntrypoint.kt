@@ -1,6 +1,7 @@
 package net.bewis09.bewisclient.impl
 
 import net.bewis09.bewisclient.api.BewisclientAPIEntrypoint
+import net.bewis09.bewisclient.core.getColor
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCategory
 import net.bewis09.bewisclient.game.*
@@ -61,7 +62,7 @@ class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint() {
         TiwylaWidget.EntityInfoProvider(EntityType.CAT) { it.variant?.key?.getOrNull()?.value?.toString() },
         TiwylaWidget.EntityInfoProvider(EntityType.FROG) { it.variant?.key?.getOrNull()?.value?.toString() },
         TiwylaWidget.EntityInfoProvider(EntityType.AXOLOTL) { it.variant?.name },
-        TiwylaWidget.EntityInfoProvider(EntityType.HORSE) { it.horseColor.asString().lowercase() + ", " + it.marking.name.lowercase() },
+        TiwylaWidget.EntityInfoProvider(EntityType.HORSE) { it.getColor() + ", " + it.marking.name.lowercase() },
         TiwylaWidget.EntityInfoProvider(EntityType.RABBIT) { it.variant.name.lowercase() },
         TiwylaWidget.EntityInfoProvider(EntityType.LLAMA) { it.variant.name.lowercase() },
     )

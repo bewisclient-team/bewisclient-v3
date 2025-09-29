@@ -41,7 +41,7 @@ class Translation(private val namespace: String, private val key: String, @Suppr
     }
 
     companion object {
-        fun literal(tooltip: String): Translation = Translation("", tooltip)
+        fun literal(text: String): Translation = Translation("", text)
     }
 }
 

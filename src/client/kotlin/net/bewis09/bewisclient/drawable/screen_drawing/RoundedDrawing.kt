@@ -6,7 +6,7 @@ import kotlin.math.*
 
 interface RoundedDrawing : RectDrawing, TextureDrawing {
     val scaleFactor
-        get() = client.window.scaleFactor * 3
+        get() = client.window.scaleFactor.toInt() * 3
 
     companion object {
         val roundFillCache = mutableMapOf<Pair<Int, Int>, Identifier>()
