@@ -1,6 +1,5 @@
 package net.bewis09.bewisclient.core
 
-import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.tooltip.TooltipComponent
@@ -18,8 +17,8 @@ interface IndependentTooltipComponent : TooltipComponent {
     }
 
     override fun drawItems(textRenderer: TextRenderer, x: Int, y: Int, width: Int, height: Int, context: DrawContext) {
-        drawItems(x, y, ScreenDrawing(context, textRenderer))
+        drawItems(x, y, DrawingCore(context, textRenderer))
     }
 
-    fun drawItems(x: Int, y: Int, screenDrawing: ScreenDrawing)
+    fun drawItems(x: Int, y: Int, drawingCore: DrawingCore)
 }

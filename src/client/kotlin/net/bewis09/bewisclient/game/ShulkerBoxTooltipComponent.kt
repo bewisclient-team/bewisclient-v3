@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.game
 
+import net.bewis09.bewisclient.core.DrawingCore
 import net.bewis09.bewisclient.core.IndependentTooltipComponent
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.logic.EventEntrypoint
@@ -23,7 +24,8 @@ class ShulkerBoxTooltipComponent(val data: Data) : IndependentTooltipComponent {
         return 180
     }
 
-    override fun drawItems(x: Int, y: Int, screenDrawing: ScreenDrawing) {
+    override fun drawItems(x: Int, y: Int, drawingCore: DrawingCore) {
+        val screenDrawing = ScreenDrawing(drawingCore)
         screenDrawing.fill(x + 1, y + 1, getWidthDef() - 2, getHeightDef() - 7, data.color * 0xC3C3C3)
         screenDrawing.fill(x + 4, y + 4, getWidthDef() - 8, getHeightDef() - 13, data.color)
         var i = 0
