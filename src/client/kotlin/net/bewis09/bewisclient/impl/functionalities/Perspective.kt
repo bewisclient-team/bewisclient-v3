@@ -14,5 +14,5 @@ object Perspective : ImageSettingCategory(
     @JvmField
     var cameraAddYaw: Float = 0f
 
-    object EnablePerspective : Keybind(GLFW.GLFW_KEY_DOWN, "perspective.enable_perspective", "Perspective", {})
+    object EnablePerspective : Keybind(GLFW.GLFW_KEY_LEFT_ALT, "perspective.enable_perspective", "Perspective", {})
 }
