@@ -2,6 +2,7 @@ package net.bewis09.bewisclient.impl.widget
 
 import com.google.gson.Gson
 import com.google.gson.JsonElement
+import net.bewis09.bewisclient.core.BewisclientID
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.logic.*
 import net.bewis09.bewisclient.widget.logic.SidedPosition
@@ -10,16 +11,14 @@ import net.bewis09.bewisclient.widget.types.LineWidget
 import net.minecraft.registry.RegistryKey
 import net.minecraft.registry.entry.RegistryEntry
 import net.minecraft.text.*
-import net.minecraft.text.TextColor
-import net.minecraft.util.Identifier
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.biome.Biome
 import java.util.*
 
-object BiomeWidget : LineWidget(Identifier.of("bewisclient", "biome_widget")), EventEntrypoint {
+object BiomeWidget : LineWidget(BewisclientID("bewisclient", "biome_widget")), EventEntrypoint {
     val unknownBiome = createTranslation("unknown_biome", "Unknown Biome")
 
-    val biomeCodes = hashMapOf<Identifier, String>()
+    val biomeCodes = hashMapOf<BewisclientID, String>()
     var colorCodeBiome = boolean("color_code_biome", true)
 
     override val title = "Biome Widget"
@@ -39,7 +38,7 @@ object BiomeWidget : LineWidget(Identifier.of("bewisclient", "biome_widget")), E
                         jsonObject.keySet().forEach { key ->
                             val biomeCode = jsonObject.get(key)
                             if (biomeCode.isJsonPrimitive) {
-                                biomeCodes[Identifier.of(key)] = biomeCode.asString
+                                biomeCodes[BewisclientID(key)] = biomeCode.asString
                             } else {
                                 warn("Invalid biome code format for $key in ${it.key}")
                             }
@@ -75,10 +74,10 @@ object BiomeWidget : LineWidget(Identifier.of("bewisclient", "biome_widget")), E
         return text
     }
 
-    fun getBiomeID(): Identifier {
+    fun getBiomeID(): BewisclientID {
         return (client.world?.getBiome(
             client.cameraEntity?.blockPos ?: BlockPos(0, 0, 0)
-        ))?.let { Identifier.of(getBiomeString(it)) } ?: getBiomeByMonth()
+        ))?.let { BewisclientID(getBiomeString(it)) } ?: getBiomeByMonth()
     }
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
@@ -88,21 +87,21 @@ object BiomeWidget : LineWidget(Identifier.of("bewisclient", "biome_widget")), E
 
     override fun isEnabledByDefault(): Boolean = false
 
-    fun getBiomeByMonth(): Identifier {
+    fun getBiomeByMonth(): BewisclientID {
         return when (Calendar.getInstance().get(Calendar.MONTH)) {
-            0 -> Identifier.of("minecraft:snowy_plains")
-            1 -> Identifier.of("minecraft:ice_spikes")
-            2 -> Identifier.of("minecraft:swamp")
-            3 -> Identifier.of("minecraft:flower_forest")
-            4 -> Identifier.of("minecraft:forest")
-            5 -> Identifier.of("minecraft:plains")
-            6 -> Identifier.of("minecraft:sunflower_plains")
-            7 -> Identifier.of("minecraft:beach")
-            8 -> Identifier.of("minecraft:wooded_badlands")
-            9 -> Identifier.of("minecraft:dark_forest")
-            10 -> Identifier.of("minecraft:old_growth_spruce_taiga")
-            11 -> Identifier.of("minecraft:taiga")
-            else -> Identifier.of("minecraft:plains")
+            0 -> BewisclientID("minecraft:snowy_plains")
+            1 -> BewisclientID("minecraft:ice_spikes")
+            2 -> BewisclientID("minecraft:swamp")
+            3 -> BewisclientID("minecraft:flower_forest")
+            4 -> BewisclientID("minecraft:forest")
+            5 -> BewisclientID("minecraft:plains")
+            6 -> BewisclientID("minecraft:sunflower_plains")
+            7 -> BewisclientID("minecraft:beach")
+            8 -> BewisclientID("minecraft:wooded_badlands")
+            9 -> BewisclientID("minecraft:dark_forest")
+            10 -> BewisclientID("minecraft:old_growth_spruce_taiga")
+            11 -> BewisclientID("minecraft:taiga")
+            else -> BewisclientID("minecraft:plains")
         }
     }
 

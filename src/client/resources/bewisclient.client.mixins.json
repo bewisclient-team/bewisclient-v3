@@ -22,12 +22,10 @@
     "TitleScreenMixin",
     "TooltipDisplayComponentMixin",
     "WorldRendererMixin",
-    "EntityMixin"
+    "EntityMixin",
+    "ItemStackMixin"
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-    "ItemStackMixin"
-  ]
+  }
 }

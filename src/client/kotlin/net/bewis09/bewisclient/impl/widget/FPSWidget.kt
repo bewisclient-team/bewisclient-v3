@@ -1,12 +1,12 @@
 package net.bewis09.bewisclient.impl.widget
 
+import net.bewis09.bewisclient.core.BewisclientID
 import net.bewis09.bewisclient.logic.toText
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
-import net.minecraft.util.Identifier
 
-object FPSWidget : LineWidget(Identifier.of("bewisclient", "fps_widget")) {
+object FPSWidget : LineWidget(BewisclientID("bewisclient", "fps_widget")) {
     override val title = "FPS Widget"
     override val description = "Displays your current frames per second (FPS)."
 

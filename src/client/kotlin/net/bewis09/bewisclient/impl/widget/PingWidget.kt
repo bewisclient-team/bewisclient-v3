@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.impl.widget
 
+import net.bewis09.bewisclient.core.BewisclientID
 import net.bewis09.bewisclient.logic.toText
 import net.bewis09.bewisclient.mixin.client.ClientPlayNetworkHandlerMixin
 import net.bewis09.bewisclient.screen.RenderableScreen
@@ -7,9 +8,8 @@ import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
 import net.minecraft.text.Text
-import net.minecraft.util.Identifier
 
-object PingWidget : LineWidget(Identifier.of("bewisclient", "ping_widget")) {
+object PingWidget : LineWidget(BewisclientID("bewisclient", "ping_widget")) {
     var lastLatency = 0
     var lastRequest = System.currentTimeMillis()
 

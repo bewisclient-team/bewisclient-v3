@@ -1,6 +1,7 @@
 package net.bewis09.bewisclient.drawable.renderables.screen
 
 import kotlinx.atomicfu.atomic
+import net.bewis09.bewisclient.core.BewisclientID
 import net.bewis09.bewisclient.drawable.*
 import net.bewis09.bewisclient.drawable.renderables.*
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
@@ -8,7 +9,6 @@ import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.interfaces.BackgroundEffectProvider
 import net.bewis09.bewisclient.screen.RenderableScreen
 import net.bewis09.bewisclient.settings.types.Setting
-import net.minecraft.util.Identifier
 import org.lwjgl.glfw.GLFW
 
 class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvider {
@@ -44,7 +44,7 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
 
     var switch = Switch(state = { optionsHeaderBooleanSetting?.get() ?: false }, onChange = { optionsHeaderBooleanSetting?.set(it) })
 
-    val image = RainbowImage(Identifier.of("bewisclient", "icon_long.png"), 0.5f)
+    val image = RainbowImage(BewisclientID("bewisclient", "icon_long.png"), 0.5f)
 
     init {
         currentInstance = this

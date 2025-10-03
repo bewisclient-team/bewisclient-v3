@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.impl.widget
 
+import net.bewis09.bewisclient.core.BewisclientID
 import net.bewis09.bewisclient.core.CoreUtil
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
@@ -19,10 +20,9 @@ import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.ScalableWidget
 import net.minecraft.client.option.KeyBinding
 import net.minecraft.client.util.InputUtil
-import net.minecraft.util.Identifier
 import org.lwjgl.glfw.GLFW
 
-object KeyWidget : ScalableWidget(Identifier.of("bewisclient", "key_widget")) {
+object KeyWidget : ScalableWidget(BewisclientID("bewisclient", "key_widget")) {
     val backgroundColor = create("background_color", DefaultWidgetSettings.backgroundColor.cloneWithDefault())
     val backgroundOpacity = create(
         "background_opacity", DefaultWidgetSettings.backgroundOpacity.cloneWithDefault()

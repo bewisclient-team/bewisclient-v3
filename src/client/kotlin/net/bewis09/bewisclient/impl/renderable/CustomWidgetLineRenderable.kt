@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.impl.renderable
 
+import net.bewis09.bewisclient.core.BewisclientID
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.*
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
@@ -9,7 +10,6 @@ import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.impl.widget.CustomWidget
 import net.bewis09.bewisclient.logic.color.Color
 import net.minecraft.text.Style
-import net.minecraft.util.Identifier
 
 class CustomWidgetLineRenderable : Renderable() {
     val addLine = Translation("widget.tiwyla_widget.add_line", "Add Line")
@@ -45,12 +45,12 @@ class CustomWidgetLineRenderable : Renderable() {
         addRenderable(Rectangle { OptionsMenuSettings.themeColor.get().getColor() alpha 0.5f }(x, y + 3, width, 1))
         addRenderable(Rectangle { OptionsMenuSettings.themeColor.get().getColor() alpha 0.5f }(x, y + 27 + lines.size * 10 - if (CustomWidget.lines.isEmpty()) 1 else 0, width, 1))
         lines.forEachIndexed { index, input ->
-            addRenderable(ImageButton(Identifier.of("bewisclient", "textures/gui/sprites/remove.png")) {
+            addRenderable(ImageButton(BewisclientID("bewisclient", "textures/gui/sprites/remove.png")) {
                 CustomWidget.lines.removeAt(index)
                 lines = computeLines()
                 resize()
             }.setImagePadding(1)(x, index * 10 + y + 7, 9, 9))
-            addRenderable(ImageButton(Identifier.of("bewisclient", "textures/gui/sprites/up.png")) {
+            addRenderable(ImageButton(BewisclientID("bewisclient", "textures/gui/sprites/up.png")) {
                 if (index > 0) {
                     val temp = CustomWidget.lines[index - 1]
                     CustomWidget.lines[index - 1] = CustomWidget.lines[index]
@@ -59,7 +59,7 @@ class CustomWidgetLineRenderable : Renderable() {
                     resize()
                 }
             }.setImagePadding(0)(x + 10, index * 10 + y + 7, 9, 9))
-            addRenderable(ImageButton(Identifier.of("bewisclient", "textures/gui/sprites/down.png")) {
+            addRenderable(ImageButton(BewisclientID("bewisclient", "textures/gui/sprites/down.png")) {
                 if (index < lines.size - 1) {
                     val temp = CustomWidget.lines[index + 1]
                     CustomWidget.lines[index + 1] = CustomWidget.lines[index]
@@ -77,7 +77,7 @@ class CustomWidgetLineRenderable : Renderable() {
             lines = computeLines()
             resize()
         }(x, y + 9 + lines.size * 10 - if (CustomWidget.lines.isEmpty()) 1 else 0, width - 16, 14))
-        addRenderable(ImageButton(Identifier.of("bewisclient", "textures/gui/sprites/help.png")) {
+        addRenderable(ImageButton(BewisclientID("bewisclient", "textures/gui/sprites/help.png")) {
             OptionScreen.currentInstance?.let { it.openPopup(CustomWidgetHelpPopup(it), Color.BLACK alpha 0.9f) }
         }.setImagePadding(2)(x + width - 14, y + 9 + lines.size * 10 - if (CustomWidget.lines.isEmpty()) 1 else 0, 14, 14))
     }

@@ -1,6 +1,7 @@
 package net.bewis09.bewisclient.drawable.renderables.elements
 
 import net.bewis09.bewisclient.api.BewisclientAPIEntrypoint
+import net.bewis09.bewisclient.core.BewisclientID
 import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.animate
 import net.bewis09.bewisclient.drawable.renderables.settings.SettingRenderable
@@ -11,11 +12,10 @@ import net.bewis09.bewisclient.logic.color.color
 import net.fabricmc.loader.api.ModContainer
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
-import net.minecraft.util.Identifier
 import kotlin.math.roundToInt
 
 class ExtensionListRenderable(val modContainer: ModContainer, val entrypoint: BewisclientAPIEntrypoint) : SettingRenderable(null, 22) {
-    val notFoundIdentifier: Identifier = Identifier.of("textures/misc/unknown_pack.png")
+    val notFoundIdentifier: BewisclientID = BewisclientID("textures/misc/unknown_pack.png")
 
     val menuAnimation = animate(OptionsMenuSettings.animationTime.get().toLong(), Animator.EASE_IN_OUT, "menu" to 0f)
 

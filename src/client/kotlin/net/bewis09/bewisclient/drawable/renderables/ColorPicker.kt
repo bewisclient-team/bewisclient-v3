@@ -1,21 +1,21 @@
 package net.bewis09.bewisclient.drawable.renderables
 
+import net.bewis09.bewisclient.core.BewisclientID
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.logic.color.Color
 import net.bewis09.bewisclient.logic.color.alpha
-import net.minecraft.util.Identifier
 import net.minecraft.util.math.MathHelper
 
 class ColorPicker(val get: () -> Color, val set: (hue: Float, sat: Float) -> Unit) : Renderable() {
     companion object {
-        val colorPickerCache = mutableMapOf<Int, Identifier>()
+        val colorPickerCache = mutableMapOf<Int, BewisclientID>()
     }
 
-    fun getColorPickerImage(size: Int): Identifier {
+    fun getColorPickerImage(size: Int): BewisclientID {
         colorPickerCache[size]?.let { return it }
 
-        val identifier = Identifier.of("bewisclient", "color_picker_${size}")
+        val identifier = BewisclientID("bewisclient", "color_picker_${size}")
 
         createTexture(identifier, size, size) {
             for (x in 0 until size) {

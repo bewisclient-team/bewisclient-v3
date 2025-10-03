@@ -1,15 +1,15 @@
 package net.bewis09.bewisclient.impl.widget
 
+import net.bewis09.bewisclient.core.BewisclientID
 import net.bewis09.bewisclient.logic.toText
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
-import net.minecraft.util.Identifier
 import java.text.DateFormat
 import java.time.Instant
 import java.util.*
 
-object DayWidget : LineWidget(Identifier.of("bewisclient", "day_widget")) {
+object DayWidget : LineWidget(BewisclientID("bewisclient", "day_widget")) {
     val dayText = createTranslation("day", "Day %s")
 
     override val title = "Day Widget"

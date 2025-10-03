@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.impl
 
+import net.bewis09.bewisclient.core.BewisclientID
 import net.bewis09.bewisclient.data.Constants
 import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.animate
@@ -12,7 +13,6 @@ import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.logic.color.Color
 import net.bewis09.bewisclient.logic.color.alpha
-import net.minecraft.util.Identifier
 import net.minecraft.util.Util
 import kotlin.math.roundToInt
 
@@ -37,7 +37,7 @@ class ContactLinkElement(val id: String, val url: String, val title: String, val
 
     val titleTranslation = Translation("contact.$id.title", title)
     val descriptionTranslation = Translation("contact.$id.description", description)
-    val identifier: Identifier = Identifier.of("bewisclient", "textures/gui/contact/$id.png")
+    val identifier: BewisclientID = BewisclientID("bewisclient", "textures/gui/contact/$id.png")
 
     val menuAnimation = animate(OptionsMenuSettings.animationTime.get().toLong(), Animator.EASE_IN_OUT, "menu" to 0f)
 

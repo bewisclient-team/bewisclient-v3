@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.drawable.screen_drawing
 
+import net.bewis09.bewisclient.core.BewisclientID
 import net.bewis09.bewisclient.logic.color.Color
-import net.minecraft.util.Identifier
 import kotlin.math.*
 
 interface RoundedDrawing : RectDrawing, TextureDrawing {
@@ -9,18 +9,18 @@ interface RoundedDrawing : RectDrawing, TextureDrawing {
         get() = client.window.scaleFactor.toFloat().toInt() * 3
 
     companion object {
-        val roundFillCache = mutableMapOf<Pair<Int, Int>, Identifier>()
-        val roundBorderCache = mutableMapOf<Pair<Int, Int>, Identifier>()
+        val roundFillCache = mutableMapOf<Pair<Int, Int>, BewisclientID>()
+        val roundBorderCache = mutableMapOf<Pair<Int, Int>, BewisclientID>()
     }
 
-    fun getRoundedImage(radius: Int): Identifier {
+    fun getRoundedImage(radius: Int): BewisclientID {
         val scale = scaleFactor
 
         val id = roundFillCache[radius to scale]
 
         if (id != null) return id
 
-        val identifier = Identifier.of("bewisclient", "rounded_${radius}_$scale")
+        val identifier = BewisclientID("bewisclient", "rounded_${radius}_$scale")
 
         val r = radius * scale
 
@@ -45,7 +45,7 @@ interface RoundedDrawing : RectDrawing, TextureDrawing {
         return identifier
     }
 
-    fun getRoundedBorderImage(radius: Int): Identifier {
+    fun getRoundedBorderImage(radius: Int): BewisclientID {
         val scale = scaleFactor
 
         val id = roundBorderCache[radius to scale]
@@ -54,7 +54,7 @@ interface RoundedDrawing : RectDrawing, TextureDrawing {
             return id
         }
 
-        val identifier = Identifier.of("bewisclient", "rounded_border_${radius}_$scale")
+        val identifier = BewisclientID("bewisclient", "rounded_border_${radius}_$scale")
 
         val r = radius * scale
 

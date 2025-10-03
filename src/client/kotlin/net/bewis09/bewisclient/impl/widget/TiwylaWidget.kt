@@ -2,7 +2,9 @@ package net.bewis09.bewisclient.impl.widget
 
 import com.google.gson.*
 import net.bewis09.bewisclient.api.APIEntrypointLoader
-import net.bewis09.bewisclient.core.toStyleFont
+import net.bewis09.bewisclient.core.*
+import net.bewis09.bewisclient.core.wrapper.BlockStateWrapper
+import net.bewis09.bewisclient.core.wrapper.TextWrapper
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
@@ -10,7 +12,6 @@ import net.bewis09.bewisclient.drawable.screen_drawing.transform
 import net.bewis09.bewisclient.impl.renderable.TiwylaInfoSettingsRenderable
 import net.bewis09.bewisclient.impl.renderable.TiwylaLinesSettingsRenderable
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
-import net.bewis09.bewisclient.interfaces.BreakingProgressAccessor
 import net.bewis09.bewisclient.logic.EventEntrypoint
 import net.bewis09.bewisclient.logic.catch
 import net.bewis09.bewisclient.logic.color.color
@@ -33,10 +34,10 @@ import net.minecraft.util.math.BlockPos
 import kotlin.jvm.optionals.getOrNull
 import kotlin.math.*
 
-object TiwylaWidget : ScalableWidget(Identifier.of("bewisclient", "tiwyla_widget")), EventEntrypoint {
+object TiwylaWidget : ScalableWidget(BewisclientID("bewisclient", "tiwyla_widget")), EventEntrypoint {
     private var lineWidth = 0
 
-    var heartStyle: Style = Identifier.of("bewisclient", "extra").toStyleFont()
+    var heartStyle: Style = BewisclientID("bewisclient", "extra").toStyleFont()
 
     val topTextColor = create("top_text_color", DefaultWidgetSettings.textColor.cloneWithDefault())
     val bottomTextColor = create("bottom_text_color", DefaultWidgetSettings.textColor.cloneWithDefault())
@@ -143,18 +144,18 @@ object TiwylaWidget : ScalableWidget(Identifier.of("bewisclient", "tiwyla_widget
 
     override fun isHidden(): Boolean = getTiwylaTitle() == null
 
-    fun getTiwylaTitle(): String? {
-        if (client.world == null) return Blocks.GRASS_BLOCK.name.string
+    fun getTiwylaTitle(): TextWrapper? {
+        if (!core.isInWorld()) return Blocks.GRASS_BLOCK.getText()
 
         return onHitResult({ data ->
-            data.state.block.name.string
+            data.state.getBlockTitle()
         }, { entity ->
-            entity.name.string
+            entity.getText()
         })
     }
 
     fun <T> onHitResult(block: (hitResult: BlockData) -> T, entity: (hitResult: Entity) -> T): T? {
-        val world = client.world ?: return null
+        val world = core.getWorld() ?: return null
 
         return when (val hitResult = client.crosshairTarget) {
             is BlockHitResult -> if (world.getBlockState(hitResult.blockPos).isAir) null else block(BlockData(world.getBlockState(hitResult.blockPos), hitResult.blockPos))
@@ -164,7 +165,7 @@ object TiwylaWidget : ScalableWidget(Identifier.of("bewisclient", "tiwyla_widget
     }
 
     fun getSublines(): List<Text> {
-        if (client.world == null) return getBlockSublines(BlockData(Blocks.GRASS_BLOCK.defaultState, BlockPos.ORIGIN))
+        if (!core.isInWorld()) return getBlockSublines(BlockData(Blocks.GRASS_BLOCK.defaultState, BlockPos.ORIGIN))
 
         return onHitResult(::getBlockSublines, ::getEntitySublines) ?: listOf()
     }
@@ -251,7 +252,7 @@ object TiwylaWidget : ScalableWidget(Identifier.of("bewisclient", "tiwyla_widget
         }
     }
 
-    data class BlockData(val state: BlockState, val blockPos: BlockPos)
+    data class BlockData(val state: BlockStateWrapper, val blockPos: BlockPos)
 
     val blockInformation = listOf<Information.Line<BlockData>>(
         Information.Line({ data ->
@@ -269,7 +270,7 @@ object TiwylaWidget : ScalableWidget(Identifier.of("bewisclient", "tiwyla_widget
             if (data.state.isToolRequired) return@Line miningLevel(woodLevelText.getTranslatedString())
             return@Line miningLevel(noneLevelText.getTranslatedString())
         }, "mining_level", 0), Information.Line({ data ->
-            if (client.world == null) return@Line secondsText(4.5)
+            if (!core.isInWorld()) return@Line secondsText(4.5)
 
             val player = client.player ?: return@Line null
 
@@ -282,7 +283,7 @@ object TiwylaWidget : ScalableWidget(Identifier.of("bewisclient", "tiwyla_widget
             if (secs > 60) return@Line minutesText((secs / 6 * 10).roundToInt() / 100F)
             return@Line secondsText((secs * 100).roundToInt() / 100F)
         }, "break_time", 0), Information.Line({ _ ->
-            val s = (((client.interactionManager as BreakingProgressAccessor?)?.getCurrentBreakingProgress() ?: 0f) * 1000)
+            val s = CoreUtil.getBreakingProgress() * 1000
             if (s == 0F) {
                 return@Line null
             }

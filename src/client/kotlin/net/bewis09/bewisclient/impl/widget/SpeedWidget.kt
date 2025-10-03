@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.impl.widget
 
+import net.bewis09.bewisclient.core.BewisclientID
 import net.bewis09.bewisclient.core.pos
 import net.bewis09.bewisclient.logic.EventEntrypoint
 import net.bewis09.bewisclient.logic.toText
@@ -7,11 +8,10 @@ import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
 import net.minecraft.client.MinecraftClient
-import net.minecraft.util.Identifier
 import net.minecraft.util.math.Vec3d
 import java.util.*
 
-object SpeedWidget : LineWidget(Identifier.of("bewisclient", "speed_widget")), EventEntrypoint {
+object SpeedWidget : LineWidget(BewisclientID("bewisclient", "speed_widget")), EventEntrypoint {
     val verticalSpeed = boolean("vertical_speed", false)
 
     var oldPos: Vec3d = Vec3d(0.0, 0.0, 0.0)

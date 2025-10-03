@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.drawable.renderables.screen
 
+import net.bewis09.bewisclient.core.BewisclientID
 import net.bewis09.bewisclient.core.CoreUtil
 import net.bewis09.bewisclient.drawable.SettingStructure
 import net.bewis09.bewisclient.drawable.renderables.ImageButton
@@ -20,7 +21,6 @@ import net.bewis09.bewisclient.widget.WidgetLoader.widgets
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.types.ScalableWidget
-import net.minecraft.util.Identifier
 import org.lwjgl.glfw.GLFW
 import kotlin.math.abs
 
@@ -37,7 +37,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
     var startOffsetX: Float? = null
     var startOffsetY: Float? = null
 
-    val removeTexture: Identifier = Identifier.of("bewisclient", "textures/gui/sprites/remove.png")
+    val removeTexture: BewisclientID = BewisclientID("bewisclient", "textures/gui/sprites/remove.png")
 
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
         mouseMap[button] = true
@@ -131,10 +131,10 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
     }
 
     override fun init() {
-        addRenderable(ImageButton(Identifier.of("bewisclient", "textures/gui/sprites/add.png")) {
+        addRenderable(ImageButton(BewisclientID("bewisclient", "textures/gui/sprites/add.png")) {
             openPopup(AddWidgetPopup(this), Color.BLACK alpha 0.625f)
         }.setImagePadding(0)(width - 16, height - 16, 14, 14))
-        addRenderable(ImageButton(Identifier.of("bewisclient", "textures/gui/sprites/settings.png")) {
+        addRenderable(ImageButton(BewisclientID("bewisclient", "textures/gui/sprites/settings.png")) {
             client.setScreen(RenderableScreen(OptionScreen().also {
                 val widgetsCategory = SettingStructure(it).widgetsCategory
                 it.optionsHeader = widgetsCategory.getHeader()

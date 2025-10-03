@@ -1,13 +1,13 @@
 package net.bewis09.bewisclient.logic
 
-import net.minecraft.client.MinecraftClient
+import net.bewis09.bewisclient.core.CoreUtil
 import net.minecraft.text.Text
 
 interface InGameLogic {
     fun showTitle(title: Text) {
-        client.player?.sendMessage(title, true)
+        core.sendMessage(title, true)
     }
 
-    val client: MinecraftClient
-        get() = MinecraftClient.getInstance()
+    val core: CoreUtil
+        get() = CoreUtil
 }

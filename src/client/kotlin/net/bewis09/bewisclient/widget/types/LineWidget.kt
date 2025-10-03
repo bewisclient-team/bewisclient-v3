@@ -1,13 +1,13 @@
 package net.bewis09.bewisclient.widget.types
 
+import net.bewis09.bewisclient.core.BewisclientID
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.minecraft.text.Text
-import net.minecraft.util.Identifier
 import net.minecraft.util.math.MathHelper
 
-abstract class LineWidget(id: Identifier) : ScalableWidget(id) {
+abstract class LineWidget(id: BewisclientID) : ScalableWidget(id) {
     private var lineWidth = 0
 
     companion object {

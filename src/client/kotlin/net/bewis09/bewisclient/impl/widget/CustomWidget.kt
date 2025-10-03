@@ -2,6 +2,7 @@ package net.bewis09.bewisclient.impl.widget
 
 import com.google.gson.JsonPrimitive
 import net.bewis09.bewisclient.api.APIEntrypointLoader
+import net.bewis09.bewisclient.core.BewisclientID
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.renderable.CustomWidgetLineRenderable
@@ -14,9 +15,8 @@ import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
 import net.minecraft.text.MutableText
 import net.minecraft.text.Text
-import net.minecraft.util.Identifier
 
-object CustomWidget : LineWidget(Identifier.of("bewisclient", "custom_widget")) {
+object CustomWidget : LineWidget(BewisclientID("bewisclient", "custom_widget")) {
     val customWidgetParamInfo = createTranslation("param_info", "You can include live information in the Custom Widget using curly brackets, e.g. {biome_id}. Some data points can take parameters, which can be specified after a | character. For example, {real_time|seconds} will show the real time including seconds.")
 
     class WidgetStringData(val id: String, val name: Translation, val description: Translation, val func: (param: String?) -> Text, val param: Translation? = null) {

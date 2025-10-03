@@ -1,17 +1,17 @@
 package net.bewis09.bewisclient.impl.widget
 
+import net.bewis09.bewisclient.core.BewisclientID
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.logic.toText
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
 import net.minecraft.text.Text
-import net.minecraft.util.Identifier
 import java.text.DateFormat
 import java.time.Instant
 import java.util.*
 
-object DaytimeWidget : LineWidget(Identifier.of("bewisclient", "daytime_widget")) {
+object DaytimeWidget : LineWidget(BewisclientID("bewisclient", "daytime_widget")) {
     var format12Hours = boolean("format_12_hours", isSystem12HourFormat())
 
     override val title = "Daytime Widget"

@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.widget
 
+import net.bewis09.bewisclient.core.BewisclientID
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
@@ -11,9 +12,8 @@ import net.bewis09.bewisclient.screen.RenderableScreen
 import net.bewis09.bewisclient.settings.types.ObjectSetting
 import net.bewis09.bewisclient.settings.types.WidgetPositionSetting
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
-import net.minecraft.util.Identifier
 
-abstract class Widget(val id: Identifier) : ObjectSetting() {
+abstract class Widget(val id: BewisclientID) : ObjectSetting() {
     var position: WidgetPositionSetting = create("position", WidgetPositionSetting(defaultPosition()))
     var enabled = boolean("enabled", isEnabledByDefault())
 

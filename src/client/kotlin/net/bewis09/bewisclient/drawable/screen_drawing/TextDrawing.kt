@@ -1,117 +1,118 @@
 package net.bewis09.bewisclient.drawable.screen_drawing
 
+import net.bewis09.bewisclient.core.BewisclientID
+import net.bewis09.bewisclient.core.toText
+import net.bewis09.bewisclient.core.wrapper.TextWrapper
 import net.bewis09.bewisclient.logic.color.Color
-import net.bewis09.bewisclient.logic.toText
-import net.minecraft.text.*
 
 interface TextDrawing : RectDrawing {
-    fun drawText(text: String, x: Int, y: Int, color: Color, style: Style = this.style) {
-        drawText(Text.literal(text), x, y, color, style)
+    fun drawText(text: String, x: Int, y: Int, color: Color, font: BewisclientID? = this.font) {
+        drawText(text.toText(), x, y, color, font)
     }
 
-    fun drawText(text: Text, x: Int, y: Int, color: Color, style: Style = this.style) {
-        core.drawText(text.copy().fillStyle(style), x, y, applyAlpha(color), false)
+    fun drawText(text: TextWrapper, x: Int, y: Int, color: Color, font: BewisclientID? = this.font) {
+        drawingCore.drawText(text.copy().setFont(font), x, y, applyAlpha(color), false)
     }
 
-    fun drawTextWithShadow(text: String, x: Int, y: Int, color: Color, style: Style = this.style) {
-        drawTextWithShadow(Text.literal(text), x, y, color, style)
+    fun drawTextWithShadow(text: String, x: Int, y: Int, color: Color, font: BewisclientID? = this.font) {
+        drawTextWithShadow(text.toText(), x, y, color, font)
     }
 
-    fun drawTextWithShadow(text: Text, x: Int, y: Int, color: Color, style: Style = this.style) {
-        core.drawText(text.copy().fillStyle(style), x, y, applyAlpha(color), true)
+    fun drawTextWithShadow(text: TextWrapper, x: Int, y: Int, color: Color, font: BewisclientID? = this.font) {
+        drawingCore.drawText(text.copy().setFont(font), x, y, applyAlpha(color), true)
     }
 
-    fun drawText(text: String, x: Int, y: Int, color: Color, shadow: Boolean, style: Style = this.style) {
+    fun drawText(text: String, x: Int, y: Int, color: Color, shadow: Boolean, font: BewisclientID? = this.font) {
         if (shadow) {
-            drawTextWithShadow(text, x, y, color, style)
+            drawTextWithShadow(text, x, y, color, font)
         } else {
-            drawText(text, x, y, color, style)
+            drawText(text, x, y, color, font)
         }
     }
 
-    fun drawText(text: Text, x: Int, y: Int, color: Color, shadow: Boolean, style: Style = this.style) {
+    fun drawText(text: TextWrapper, x: Int, y: Int, color: Color, shadow: Boolean, font: BewisclientID? = this.font) {
         if (shadow) {
-            drawTextWithShadow(text, x, y, color, style)
+            drawTextWithShadow(text, x, y, color, font)
         } else {
-            drawText(text, x, y, color, style)
+            drawText(text, x, y, color, font)
         }
     }
 
-    fun drawCenteredText(text: String, centerX: Int, y: Int, color: Color, shadow: Boolean, style: Style = this.style) {
+    fun drawCenteredText(text: String, centerX: Int, y: Int, color: Color, shadow: Boolean, font: BewisclientID? = this.font) {
         if (shadow) {
-            drawCenteredTextWithShadow(text, centerX, y, color, style)
+            drawCenteredTextWithShadow(text, centerX, y, color, font)
         } else {
-            drawCenteredText(text, centerX, y, color, style)
+            drawCenteredText(text, centerX, y, color, font)
         }
     }
 
-    fun drawCenteredText(text: Text, centerX: Int, y: Int, color: Color, shadow: Boolean, style: Style = this.style) {
+    fun drawCenteredText(text: TextWrapper, centerX: Int, y: Int, color: Color, shadow: Boolean, font: BewisclientID? = this.font) {
         if (shadow) {
-            drawCenteredTextWithShadow(text, centerX, y, color, style)
+            drawCenteredTextWithShadow(text, centerX, y, color, font)
         } else {
-            drawCenteredText(text, centerX, y, color, style)
+            drawCenteredText(text, centerX, y, color, font)
         }
     }
 
-    fun drawCenteredText(text: String, centerX: Int, y: Int, color: Color, style: Style = this.style) {
-        drawCenteredText(Text.literal(text), centerX, y, color, style)
+    fun drawCenteredText(text: String, centerX: Int, y: Int, color: Color, font: BewisclientID? = this.font) {
+        drawCenteredText(text.toText(), centerX, y, color, font)
     }
 
-    fun drawCenteredText(text: Text, centerX: Int, y: Int, color: Color, style: Style = this.style) {
-        val textWidth = getTextWidth(text, style)
+    fun drawCenteredText(text: TextWrapper, centerX: Int, y: Int, color: Color, font: BewisclientID? = this.font) {
+        val textWidth = getTextWidth(text, font)
         translate(-textWidth / 2f, 0f) {
-            drawText(text.copy().fillStyle(style), centerX, y, color, style)
+            drawText(text.copy().setFont(font), centerX, y, color, font)
         }
     }
 
-    fun drawCenteredTextWithShadow(text: Text, centerX: Int, y: Int, color: Color, style: Style = this.style) {
-        val textWidth = getTextWidth(text, style)
-        drawTextWithShadow(text.copy().fillStyle(style), centerX - textWidth / 2, y, color, style)
+    fun drawCenteredTextWithShadow(text: TextWrapper, centerX: Int, y: Int, color: Color, font: BewisclientID? = this.font) {
+        val textWidth = getTextWidth(text.copy().setFont(font), font)
+        drawTextWithShadow(text.copy().setFont(font), centerX - textWidth / 2, y, color, font)
     }
 
-    fun drawCenteredTextWithShadow(text: String, centerX: Int, y: Int, color: Color, style: Style = this.style) {
-        drawCenteredTextWithShadow(Text.literal(text), centerX, y, color, style)
+    fun drawCenteredTextWithShadow(text: String, centerX: Int, y: Int, color: Color, font: BewisclientID? = this.font) {
+        drawCenteredTextWithShadow(text.toText(), centerX, y, color, font)
     }
 
-    fun drawRightAlignedText(text: String, rightX: Int, y: Int, color: Color, style: Style = this.style) {
-        val textWidth = getTextWidth(text, style)
-        drawText(text, rightX - textWidth, y, color, style)
+    fun drawRightAlignedText(text: String, rightX: Int, y: Int, color: Color, font: BewisclientID? = this.font) {
+        val textWidth = getTextWidth(text, font)
+        drawText(text, rightX - textWidth, y, color, font)
     }
 
-    fun drawRightAlignedTextWithShadow(text: String, rightX: Int, y: Int, color: Color, style: Style = this.style) {
+    fun drawRightAlignedTextWithShadow(text: String, rightX: Int, y: Int, color: Color, font: BewisclientID? = this.font) {
         val textWidth = getTextWidth(text)
-        drawTextWithShadow(text, rightX - textWidth, y, color, style)
+        drawTextWithShadow(text, rightX - textWidth, y, color, font)
     }
 
-    fun drawWrappedText(text: String, x: Int, y: Int, maxWidth: Int, color: Color, style: Style = this.style): List<String> {
-        return wrapText(text, maxWidth, style).also { drawWrappedText(it, x, y, color, style) }
+    fun drawWrappedText(text: String, x: Int, y: Int, maxWidth: Int, color: Color, font: BewisclientID? = this.font): List<String> {
+        return wrapText(text, maxWidth, font).also { drawWrappedText(it, x, y, color, font) }
     }
 
-    fun drawWrappedText(lines: List<String>, x: Int, y: Int, color: Color, style: Style = this.style) {
+    fun drawWrappedText(lines: List<String>, x: Int, y: Int, color: Color, font: BewisclientID? = this.font) {
         val lineHeight = getTextHeight()
         for (i in lines.indices) {
-            drawText(literalWithStyle(lines[i]), x, y + i * lineHeight, color, style)
+            drawText(literalWithStyle(lines[i]), x, y + i * lineHeight, color, font)
         }
     }
 
-    fun drawWrappedText(text: Text, x: Int, y: Int, maxWidth: Int, color: Color, style: Style = this.style): List<String> {
-        return drawWrappedText(text.string, x, y, maxWidth, color, style)
+    fun drawWrappedText(text: TextWrapper, x: Int, y: Int, maxWidth: Int, color: Color, font: BewisclientID? = this.font): List<String> {
+        return drawWrappedText(text.string, x, y, maxWidth, color, font)
     }
 
-    fun drawCenteredWrappedText(text: String, centerX: Int, y: Int, maxWidth: Int, color: Color, style: Style = this.style): List<String> {
-        return wrapText(text, maxWidth, style).let { lines ->
+    fun drawCenteredWrappedText(text: String, centerX: Int, y: Int, maxWidth: Int, color: Color, font: BewisclientID? = this.font): List<String> {
+        return wrapText(text, maxWidth, font).let { lines ->
             val lineHeight = getTextHeight()
             for (i in lines.indices) {
                 drawCenteredText(
-                    lines[i], centerX, y + i * lineHeight, color, style
+                    lines[i], centerX, y + i * lineHeight, color, font
                 )
             }
             lines
         }
     }
 
-    fun drawCenteredWrappedText(text: Text, centerX: Int, y: Int, maxWidth: Int, color: Color, style: Style = this.style): List<String> {
-        return drawCenteredWrappedText(text.string, centerX, y, maxWidth, color, style)
+    fun drawCenteredWrappedText(text: TextWrapper, centerX: Int, y: Int, maxWidth: Int, color: Color, font: BewisclientID? = this.font): List<String> {
+        return drawCenteredWrappedText(text.string, centerX, y, maxWidth, color, font)
     }
 
     /**
@@ -120,7 +121,7 @@ interface TextDrawing : RectDrawing {
      * @param maxWidth The maximum width for each line.
      * @return A list of strings, each representing a line of wrapped text.
      */
-    fun wrapText(text: String, maxWidth: Int, style: Style = this.style): List<String> {
+    fun wrapText(text: String, maxWidth: Int, font: BewisclientID? = this.font): List<String> {
         val lines = mutableListOf<String>()
 
         val paragraphs = text.split("\n")
@@ -132,7 +133,7 @@ interface TextDrawing : RectDrawing {
             for (word in words) {
                 val testLine = if (currentLine.isEmpty()) word else "$currentLine $word"
 
-                if (getTextWidth(testLine, style) <= maxWidth) {
+                if (getTextWidth(testLine, font) <= maxWidth) {
                     currentLine = testLine
                 } else {
                     if (currentLine.isNotEmpty()) {
@@ -140,10 +141,10 @@ interface TextDrawing : RectDrawing {
                         currentLine = word
                     }
 
-                    while (getTextWidth(currentLine, style) > maxWidth && currentLine.isNotEmpty()) {
+                    while (getTextWidth(currentLine, font) > maxWidth && currentLine.isNotEmpty()) {
                         var cutIndex = currentLine.length - 1
 
-                        while (cutIndex > 0 && getTextWidth(currentLine.take(cutIndex), style) > maxWidth) {
+                        while (cutIndex > 0 && getTextWidth(currentLine.take(cutIndex), font) > maxWidth) {
                             cutIndex--
                         }
 
@@ -166,8 +167,8 @@ interface TextDrawing : RectDrawing {
      *
      * @return The width of the text in pixels.
      */
-    fun getTextWidth(text: String, style: Style = this.style): Int {
-        return getTextWidth(text.toText(), style)
+    fun getTextWidth(text: String, font: BewisclientID? = this.font): Int {
+        return getTextWidth(text.toText(), font)
     }
 
     /**
@@ -175,8 +176,8 @@ interface TextDrawing : RectDrawing {
      *
      * @return The width of the text in pixels.
      */
-    fun getTextWidth(text: Text, style: Style = this.style): Int {
-        return core.getTextWidth(text.copy().setStyle(style))
+    fun getTextWidth(text: TextWrapper, font: BewisclientID? = this.font): Int {
+        return drawingCore.getTextWidth(text.setFont(font))
     }
 
     /**
@@ -185,8 +186,8 @@ interface TextDrawing : RectDrawing {
      * @return The height of a line of text in pixels.
      */
     fun getTextHeight(): Int {
-        return core.getFontHeight()
+        return drawingCore.getFontHeight()
     }
 
-    fun literalWithStyle(text: String, style: Style = this.style): MutableText = Text.literal(text).fillStyle(style)
+    fun literalWithStyle(text: String, font: BewisclientID? = this.font): TextWrapper = text.toText().setFont(font)
 }

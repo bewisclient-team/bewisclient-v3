@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.impl.widget
 
+import net.bewis09.bewisclient.core.BewisclientID
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
@@ -9,9 +10,8 @@ import net.minecraft.component.DataComponentTypes
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
 import net.minecraft.text.Text
-import net.minecraft.util.Identifier
 
-object InventoryWidget : ScalableWidget(Identifier.of("bewisclient", "inventory_widget")) {
+object InventoryWidget : ScalableWidget(BewisclientID("bewisclient", "inventory_widget")) {
     val indicatorText: Text = Text.of("The way I would have to add Enchantments to the ItemStack is too complicated, so I am doing it via a mixin instead.")
 
     val exampleMap by lazy {
@@ -46,7 +46,7 @@ object InventoryWidget : ScalableWidget(Identifier.of("bewisclient", "inventory_
         )
     }
 
-    val identifier: Identifier = Identifier.of("bewisclient", "textures/gui/widget/inventory_widget.png")
+    val identifier: BewisclientID = BewisclientID("bewisclient", "textures/gui/widget/inventory_widget.png")
 
     override fun defaultPosition(): WidgetPosition = SidedPosition(5, 5, SidedPosition.START, SidedPosition.START)
 

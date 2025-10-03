@@ -11,12 +11,12 @@ import net.minecraft.text.Style
  * the drawing context
  */
 @Suppress("Unused")
-class ScreenDrawing(override val core: DrawingCore) : TextDrawing, RoundedDrawing, ItemDrawing {
+class ScreenDrawing(override val drawingCore: DrawingCore) : TextDrawing, RoundedDrawing, ItemDrawing {
     constructor(drawContext: DrawContext, textRenderer: TextRenderer): this(DrawingCore(drawContext, textRenderer))
 
     override var style: Style = Style.EMPTY
     override val afterDrawStack: HashMap<String, ScreenDrawingInterface.AfterDraw> = hashMapOf()
     override val colorStack: MutableList<Color> = mutableListOf()
 
-    fun copy(): ScreenDrawing = ScreenDrawing(core)
+    fun copy(): ScreenDrawing = ScreenDrawing(drawingCore)
 }
