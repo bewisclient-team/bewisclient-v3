@@ -1,4 +1,4 @@
-package net.bewis09.bewisclient.logic.color
+package net.bewis09.bewisclient.util.color
 
 import com.google.gson.JsonElement
 import com.google.gson.JsonPrimitive
@@ -7,8 +7,8 @@ import net.bewis09.bewisclient.drawable.Translations
 import net.bewis09.bewisclient.drawable.renderables.*
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
-import net.bewis09.bewisclient.logic.number.Precision
-import net.bewis09.bewisclient.logic.string
+import net.bewis09.bewisclient.util.number.Precision
+import net.bewis09.bewisclient.util.string
 
 open class StaticColorSaver : ColorSaver {
     private val color: Color

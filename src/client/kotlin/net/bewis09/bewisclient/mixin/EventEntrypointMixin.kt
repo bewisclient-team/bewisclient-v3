@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.mixin
 
-import net.bewis09.bewisclient.logic.EventEntrypoint
-import net.bewis09.bewisclient.logic.EventEntrypoint.Companion.onAllEventEntrypoints
+import net.bewis09.bewisclient.util.EventEntrypoint
+import net.bewis09.bewisclient.util.EventEntrypoint.Companion.onAllEventEntrypoints
 
 object EventEntrypointMixin {
     /**

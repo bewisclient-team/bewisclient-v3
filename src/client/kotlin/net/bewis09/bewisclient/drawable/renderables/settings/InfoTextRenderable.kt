@@ -3,7 +3,7 @@ package net.bewis09.bewisclient.drawable.renderables.settings
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
-import net.bewis09.bewisclient.logic.color.Color
+import net.bewis09.bewisclient.util.color.Color
 
 class InfoTextRenderable(val text: String, val color: Color = Color.WHITE, val centered: Boolean = false, val selfResize: Boolean = true, val padding: Int = 5) : Renderable() {
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {

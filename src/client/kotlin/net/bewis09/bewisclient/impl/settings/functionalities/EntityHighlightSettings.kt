@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.impl.settings.functionalities
 
-import net.bewis09.bewisclient.logic.color.StaticColorSaver
-import net.bewis09.bewisclient.logic.color.color
+import net.bewis09.bewisclient.util.color.StaticColorSaver
+import net.bewis09.bewisclient.util.color.color
 import net.bewis09.bewisclient.settings.types.ColorSetting
 import net.bewis09.bewisclient.settings.types.FeatureSetting
 

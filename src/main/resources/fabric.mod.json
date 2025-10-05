@@ -23,7 +23,7 @@
     ],
     "fabric-datagen": [
       {
-        "value": "net.bewis09.bewisclient.logic.BewisclientDataGenerator",
+        "value": "net.bewis09.bewisclient.util.BewisclientDataGenerator",
         "adapter": "kotlin"
       }
     ],

@@ -2,7 +2,7 @@ package net.bewis09.bewisclient.drawable.renderables
 
 import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.bewisclient.logic.MathHelper
+import net.bewis09.bewisclient.util.MathHelper
 
 abstract class Scrollable(val direction: Direction) : Renderable() {
     var scrollAnimation = Animator(200, Animator.EASE_OUT, "scrollY" to 0f)

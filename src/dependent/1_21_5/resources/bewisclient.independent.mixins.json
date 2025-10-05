@@ -11,7 +11,8 @@
     "OverlayTextureMixin",
     "TitleScreenMixin",
     "WorldRendererMixin",
-    "TooltipDisplayComponentMixin"
+    "TooltipDisplayComponentMixin",
+    "SkinTexturesMixin"
   ],
   "injectors": {
     "defaultRequire": 1

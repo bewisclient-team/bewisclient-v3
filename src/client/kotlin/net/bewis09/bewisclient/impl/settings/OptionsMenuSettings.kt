@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.impl.settings
 
-import net.bewis09.bewisclient.logic.color.*
+import net.bewis09.bewisclient.util.color.*
 import net.bewis09.bewisclient.settings.types.ColorSetting
 import net.bewis09.bewisclient.settings.types.ObjectSetting
 

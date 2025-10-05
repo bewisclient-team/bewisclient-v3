@@ -7,7 +7,7 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.impl.widget.TiwylaWidget
-import net.bewis09.bewisclient.logic.color.color
+import net.bewis09.bewisclient.util.color.color
 import net.bewis09.bewisclient.settings.types.ListSetting
 
 class TiwylaLinesSettingsPopup<T>(

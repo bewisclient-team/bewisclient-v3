@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.impl.widget
 
 import net.bewis09.bewisclient.core.pos
-import net.bewis09.bewisclient.logic.*
+import net.bewis09.bewisclient.util.*
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget

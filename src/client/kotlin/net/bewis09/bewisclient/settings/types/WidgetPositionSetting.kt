@@ -2,7 +2,7 @@ package net.bewis09.bewisclient.settings.types
 
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
-import net.bewis09.bewisclient.logic.jsonObject
+import net.bewis09.bewisclient.util.jsonObject
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 
 class WidgetPositionSetting(defaultPos: WidgetPosition) : Setting<WidgetPosition>(defaultPos) {

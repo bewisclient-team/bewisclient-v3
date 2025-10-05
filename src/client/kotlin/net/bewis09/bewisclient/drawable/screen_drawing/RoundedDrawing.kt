@@ -1,8 +1,8 @@
 package net.bewis09.bewisclient.drawable.screen_drawing
 
-import net.bewis09.bewisclient.logic.UtilLogic.scaleFactor
-import net.bewis09.bewisclient.logic.color.Color
-import net.bewis09.bewisclient.logic.createIdentifier
+import net.bewis09.bewisclient.util.logic.UtilLogic.scaleFactor
+import net.bewis09.bewisclient.util.color.Color
+import net.bewis09.bewisclient.util.createIdentifier
 import net.minecraft.util.Identifier
 import kotlin.math.*
 

@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.settings
 
 import net.bewis09.bewisclient.api.APIEntrypointLoader
-import net.bewis09.bewisclient.logic.EventEntrypoint
+import net.bewis09.bewisclient.util.EventEntrypoint
 
 object SettingsLoader : EventEntrypoint {
     override fun onInitializeClient() {

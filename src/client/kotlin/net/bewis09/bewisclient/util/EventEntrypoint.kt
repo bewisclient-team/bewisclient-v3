@@ -1,6 +1,7 @@
-package net.bewis09.bewisclient.logic
+package net.bewis09.bewisclient.util
 
 import net.bewis09.bewisclient.api.APIEntrypointLoader
+import net.bewis09.bewisclient.util.logic.BewisclientInterface
 
 /**
  * A class when it is needed to do something when those entrypoints are called.

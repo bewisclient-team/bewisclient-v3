@@ -10,11 +10,11 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.bewis09.bewisclient.interfaces.BackgroundEffectProvider
-import net.bewis09.bewisclient.logic.color.Color
-import net.bewis09.bewisclient.logic.color.alpha
-import net.bewis09.bewisclient.logic.createIdentifier
-import net.bewis09.bewisclient.logic.hoverSeparate
-import net.bewis09.bewisclient.logic.number.Precision
+import net.bewis09.bewisclient.util.color.Color
+import net.bewis09.bewisclient.util.color.alpha
+import net.bewis09.bewisclient.util.createIdentifier
+import net.bewis09.bewisclient.util.logic.hoverSeparate
+import net.bewis09.bewisclient.util.number.Precision
 import net.bewis09.bewisclient.screen.RenderableScreen
 import net.bewis09.bewisclient.widget.Widget
 import net.bewis09.bewisclient.widget.WidgetLoader

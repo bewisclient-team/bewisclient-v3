@@ -2,9 +2,9 @@ package net.bewis09.bewisclient.game
 
 import net.bewis09.bewisclient.core.IndependentTooltipComponent
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.logic.EventEntrypoint
-import net.bewis09.bewisclient.logic.color.Color
-import net.bewis09.bewisclient.logic.createIdentifier
+import net.bewis09.bewisclient.util.EventEntrypoint
+import net.bewis09.bewisclient.util.color.Color
+import net.bewis09.bewisclient.util.createIdentifier
 import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback
 import net.minecraft.item.ItemStack
 import net.minecraft.item.tooltip.TooltipData

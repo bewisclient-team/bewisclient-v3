@@ -10,7 +10,8 @@
     "MouseMixin",
     "OverlayTextureMixin",
     "TitleScreenMixin",
-    "WorldRendererMixin"
+    "WorldRendererMixin",
+    "SkinTexturesMixin"
   ],
   "injectors": {
     "defaultRequire": 1

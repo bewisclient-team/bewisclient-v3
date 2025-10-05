@@ -1,10 +1,10 @@
-package net.bewis09.bewisclient.logic.color
+package net.bewis09.bewisclient.util.color
 
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.game.Translation
-import net.bewis09.bewisclient.logic.catch
+import net.bewis09.bewisclient.util.catch
 
 interface ColorSaver {
     fun getColor(): Color

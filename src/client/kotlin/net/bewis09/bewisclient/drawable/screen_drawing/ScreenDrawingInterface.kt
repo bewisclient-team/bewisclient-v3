@@ -5,9 +5,9 @@ import net.bewis09.bewisclient.core.push
 import net.bewis09.bewisclient.core.rotate
 import net.bewis09.bewisclient.core.scale
 import net.bewis09.bewisclient.core.translate
-import net.bewis09.bewisclient.logic.BewisclientInterface
-import net.bewis09.bewisclient.logic.color.Color
-import net.bewis09.bewisclient.logic.createIdentifier
+import net.bewis09.bewisclient.util.logic.BewisclientInterface
+import net.bewis09.bewisclient.util.color.Color
+import net.bewis09.bewisclient.util.createIdentifier
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.util.Identifier

@@ -7,8 +7,8 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.widget.TiwylaWidget
 import net.bewis09.bewisclient.interfaces.SettingInterface
-import net.bewis09.bewisclient.logic.color.alpha
-import net.bewis09.bewisclient.logic.staticFun
+import net.bewis09.bewisclient.util.color.alpha
+import net.bewis09.bewisclient.util.staticFun
 import net.minecraft.registry.Registries
 import net.minecraft.util.Identifier
 import kotlin.jvm.optionals.getOrNull

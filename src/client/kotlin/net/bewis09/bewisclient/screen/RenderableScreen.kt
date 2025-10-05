@@ -4,7 +4,7 @@ import net.bewis09.bewisclient.core.IndependentScreen
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.interfaces.BackgroundEffectProvider
-import net.bewis09.bewisclient.logic.toText
+import net.bewis09.bewisclient.util.toText
 import net.minecraft.client.gui.DrawContext
 
 class RenderableScreen(val renderable: Renderable) : IndependentScreen("".toText()) {

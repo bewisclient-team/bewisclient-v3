@@ -11,8 +11,8 @@ import net.bewis09.bewisclient.impl.renderable.TiwylaInfoSettingsRenderable
 import net.bewis09.bewisclient.impl.renderable.TiwylaLinesSettingsRenderable
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.bewis09.bewisclient.interfaces.BreakingProgressAccessor
-import net.bewis09.bewisclient.logic.*
-import net.bewis09.bewisclient.logic.color.color
+import net.bewis09.bewisclient.util.*
+import net.bewis09.bewisclient.util.color.color
 import net.bewis09.bewisclient.settings.types.BooleanMapSetting
 import net.bewis09.bewisclient.settings.types.ListSetting
 import net.bewis09.bewisclient.widget.logic.SidedPosition

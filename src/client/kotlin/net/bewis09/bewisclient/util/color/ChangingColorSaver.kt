@@ -1,4 +1,4 @@
-package net.bewis09.bewisclient.logic.color
+package net.bewis09.bewisclient.util.color
 
 import com.google.gson.JsonElement
 import com.google.gson.JsonPrimitive
@@ -8,8 +8,8 @@ import net.bewis09.bewisclient.drawable.renderables.*
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.translate
 import net.bewis09.bewisclient.game.Translation
-import net.bewis09.bewisclient.logic.*
-import net.bewis09.bewisclient.logic.number.Precision
+import net.bewis09.bewisclient.util.*
+import net.bewis09.bewisclient.util.number.Precision
 
 class ChangingColorSaver : ColorSaver {
     val changingSpeed: Int

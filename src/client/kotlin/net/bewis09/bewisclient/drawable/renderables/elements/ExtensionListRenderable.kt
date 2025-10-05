@@ -6,11 +6,11 @@ import net.bewis09.bewisclient.drawable.animate
 import net.bewis09.bewisclient.drawable.renderables.settings.SettingRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
-import net.bewis09.bewisclient.logic.color.Color
-import net.bewis09.bewisclient.logic.color.color
-import net.bewis09.bewisclient.logic.createIdentifier
-import net.bewis09.bewisclient.logic.setColor
-import net.bewis09.bewisclient.logic.toText
+import net.bewis09.bewisclient.util.color.Color
+import net.bewis09.bewisclient.util.color.color
+import net.bewis09.bewisclient.util.createIdentifier
+import net.bewis09.bewisclient.util.setColor
+import net.bewis09.bewisclient.util.toText
 import net.fabricmc.loader.api.ModContainer
 import net.minecraft.util.Identifier
 import kotlin.math.roundToInt

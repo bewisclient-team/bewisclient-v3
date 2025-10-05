@@ -121,5 +121,5 @@ publishing {
 }
 
 loom {
-    accessWidenerPath = file("src/main/resources/bewisclient.accesswidener")
+    accessWidenerPath = file("src/dependent/"+project.property("like_version_"+project.minecraft_version.replace('.','_')).replace('.','_')+"/resources/bewisclient.accesswidener")
 }

@@ -1,8 +1,8 @@
 package net.bewis09.bewisclient.settings.types
 
 import com.google.gson.JsonElement
-import net.bewis09.bewisclient.logic.catch
-import net.bewis09.bewisclient.logic.jsonArray
+import net.bewis09.bewisclient.util.catch
+import net.bewis09.bewisclient.util.jsonArray
 import net.bewis09.bewisclient.settings.Settings
 
 class ListSetting<T>(default: List<T>, val from: (JsonElement) -> T?, val to: (T) -> JsonElement?) : Setting<MutableList<T>>(default.toMutableList()), MutableList<T> {

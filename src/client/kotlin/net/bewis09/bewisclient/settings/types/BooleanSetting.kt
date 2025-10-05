@@ -5,7 +5,7 @@ import com.google.gson.JsonPrimitive
 import net.bewis09.bewisclient.drawable.renderables.settings.BooleanSettingRenderable
 import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSettingsRenderable
 import net.bewis09.bewisclient.game.Translation
-import net.bewis09.bewisclient.logic.boolean
+import net.bewis09.bewisclient.util.boolean
 
 class BooleanSetting : Setting<Boolean> {
     constructor(default: () -> Boolean, onChangeListener: (Setting<Boolean>.(oldValue: Boolean?, newValue: Boolean?) -> Unit)? = null) : super(default, onChangeListener)

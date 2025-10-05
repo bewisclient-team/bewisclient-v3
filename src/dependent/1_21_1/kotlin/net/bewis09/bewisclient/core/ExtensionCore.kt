@@ -2,7 +2,7 @@ package net.bewis09.bewisclient.core
 
 import com.mojang.blaze3d.systems.RenderSystem
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawingInterface
-import net.bewis09.bewisclient.logic.color.color
+import net.bewis09.bewisclient.util.color.color
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.font.TextRenderer

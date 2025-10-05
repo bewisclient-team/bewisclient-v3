@@ -1,8 +1,9 @@
 package net.bewis09.bewisclient.drawable.renderables.screen
 
+import net.bewis09.bewisclient.core.translateToTopOptional
 import net.bewis09.bewisclient.drawable.*
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.logic.color.Color
+import net.bewis09.bewisclient.util.color.Color
 import org.lwjgl.glfw.GLFW
 
 abstract class PopupScreen : Renderable() {
@@ -41,12 +42,15 @@ abstract class PopupScreen : Renderable() {
         }
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+            screenDrawing.push()
+            screenDrawing.drawContext.translateToTopOptional()
             screenDrawing.pushAlpha(alphaAnimation["alpha"])
             screenDrawing.fill(0, 0, width, height, screen.backgroundColor)
             screenDrawing.setBewisclientFont()
             child.render(screenDrawing, mouseX, mouseY)
             screenDrawing.defaultFont()
             screenDrawing.popColor()
+            screenDrawing.pop()
         }
 
         override fun init() {

@@ -5,8 +5,9 @@ import net.bewis09.bewisclient.drawable.renderables.options_structure.SettingCat
 import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCategory
 import net.bewis09.bewisclient.game.Keybind
 import net.bewis09.bewisclient.impl.widget.TiwylaWidget
-import net.bewis09.bewisclient.logic.*
+import net.bewis09.bewisclient.util.*
 import net.bewis09.bewisclient.settings.Settings
+import net.bewis09.bewisclient.util.logic.BewisclientInterface
 import net.bewis09.bewisclient.widget.Widget
 import net.fabricmc.loader.api.ModContainer
 import net.minecraft.util.Identifier

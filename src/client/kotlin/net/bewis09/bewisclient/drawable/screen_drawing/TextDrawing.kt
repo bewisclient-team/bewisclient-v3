@@ -1,9 +1,9 @@
 package net.bewis09.bewisclient.drawable.screen_drawing
 
 import net.bewis09.bewisclient.core.setFont
-import net.bewis09.bewisclient.logic.color.Color
-import net.bewis09.bewisclient.logic.color.color
-import net.bewis09.bewisclient.logic.toText
+import net.bewis09.bewisclient.util.color.Color
+import net.bewis09.bewisclient.util.color.color
+import net.bewis09.bewisclient.util.toText
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 

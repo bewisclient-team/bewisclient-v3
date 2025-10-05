@@ -6,7 +6,7 @@ import net.bewis09.bewisclient.drawable.Translations
 import net.bewis09.bewisclient.drawable.renderables.settings.ColorFaderSettingRenderable
 import net.bewis09.bewisclient.drawable.renderables.settings.ColorSettingRenderable
 import net.bewis09.bewisclient.game.Translation
-import net.bewis09.bewisclient.logic.color.ColorSaver
+import net.bewis09.bewisclient.util.color.ColorSaver
 
 /**
  * A setting that allows the user to select a color.

@@ -1,4 +1,4 @@
-package net.bewis09.bewisclient.logic
+package net.bewis09.bewisclient.util
 
 object MathHelper {
     fun clamp(num: Float, min: Float, max: Float): Float {

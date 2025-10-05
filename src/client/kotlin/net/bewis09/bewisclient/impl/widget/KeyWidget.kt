@@ -8,10 +8,10 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.translate
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.bewis09.bewisclient.interfaces.KeyBindingAccessor
-import net.bewis09.bewisclient.logic.color.Color
-import net.bewis09.bewisclient.logic.color.StaticColorSaver
-import net.bewis09.bewisclient.logic.createIdentifier
-import net.bewis09.bewisclient.logic.staticFun
+import net.bewis09.bewisclient.util.color.Color
+import net.bewis09.bewisclient.util.color.StaticColorSaver
+import net.bewis09.bewisclient.util.createIdentifier
+import net.bewis09.bewisclient.util.staticFun
 import net.bewis09.bewisclient.settings.types.BooleanSetting
 import net.bewis09.bewisclient.settings.types.ColorSetting
 import net.bewis09.bewisclient.widget.logic.RelativePosition

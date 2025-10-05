@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.mixin.client;
 
 import kotlin.Unit;
-import net.bewis09.bewisclient.logic.EventEntrypoint;
+import net.bewis09.bewisclient.util.EventEntrypoint;
 import net.bewis09.bewisclient.mixin.EventEntrypointMixin;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;

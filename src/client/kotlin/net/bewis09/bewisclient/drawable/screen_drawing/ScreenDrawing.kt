@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.drawable.screen_drawing
 
-import net.bewis09.bewisclient.logic.color.Color
+import net.bewis09.bewisclient.util.color.Color
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.util.Identifier

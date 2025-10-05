@@ -2,8 +2,8 @@ package net.bewis09.bewisclient.widget.logic
 
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
-import net.bewis09.bewisclient.logic.int
-import net.bewis09.bewisclient.logic.string
+import net.bewis09.bewisclient.util.int
+import net.bewis09.bewisclient.util.string
 import net.bewis09.bewisclient.widget.Widget
 
 class SidedPosition(val x: Int, val y: Int, val xTransformer: TransformerType, val yTransformer: TransformerType) : WidgetPosition {

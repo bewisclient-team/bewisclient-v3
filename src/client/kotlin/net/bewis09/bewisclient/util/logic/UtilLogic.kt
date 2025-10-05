@@ -1,4 +1,4 @@
-package net.bewis09.bewisclient.logic
+package net.bewis09.bewisclient.util.logic
 
 import net.bewis09.bewisclient.screen.RenderableScreen
 import net.minecraft.client.MinecraftClient

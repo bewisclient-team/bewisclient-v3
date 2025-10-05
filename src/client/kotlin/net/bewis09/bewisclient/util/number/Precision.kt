@@ -1,4 +1,4 @@
-package net.bewis09.bewisclient.logic.number
+package net.bewis09.bewisclient.util.number
 
 import kotlin.math.pow
 import kotlin.math.roundToInt

@@ -3,8 +3,8 @@ package net.bewis09.bewisclient.widget.types
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
-import net.bewis09.bewisclient.logic.MathHelper
-import net.bewis09.bewisclient.logic.toText
+import net.bewis09.bewisclient.util.MathHelper
+import net.bewis09.bewisclient.util.toText
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 

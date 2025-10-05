@@ -5,9 +5,9 @@ import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.game.Keybind
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.functionalities.FullbrightSettings
-import net.bewis09.bewisclient.logic.color.color
-import net.bewis09.bewisclient.logic.color.within
-import net.bewis09.bewisclient.logic.setColor
+import net.bewis09.bewisclient.util.color.color
+import net.bewis09.bewisclient.util.color.within
+import net.bewis09.bewisclient.util.setColor
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.effect.StatusEffects
 import org.lwjgl.glfw.GLFW

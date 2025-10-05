@@ -26,7 +26,6 @@ import net.minecraft.util.profiler.Profilers
 import org.joml.Quaternionf
 import org.joml.Vector3f
 import java.util.function.Consumer
-import java.util.function.Function
 
 fun LivingEntity.pos(): Vec3d = this.pos
 

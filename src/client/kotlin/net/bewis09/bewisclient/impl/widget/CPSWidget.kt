@@ -1,8 +1,8 @@
 package net.bewis09.bewisclient.impl.widget
 
 import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.bewisclient.logic.createIdentifier
-import net.bewis09.bewisclient.logic.toText
+import net.bewis09.bewisclient.util.createIdentifier
+import net.bewis09.bewisclient.util.toText
 import net.bewis09.bewisclient.settings.types.BooleanSetting
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition

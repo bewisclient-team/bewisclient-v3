@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.drawable
 
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.logic.BewisclientInterface
+import net.bewis09.bewisclient.util.logic.BewisclientInterface
 
 abstract class Renderable : BewisclientInterface {
     protected var internalX: Int

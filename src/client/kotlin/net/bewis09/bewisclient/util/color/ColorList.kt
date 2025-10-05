@@ -1,4 +1,4 @@
-package net.bewis09.bewisclient.logic.color
+package net.bewis09.bewisclient.util.color
 
 import net.bewis09.bewisclient.game.Translation
 

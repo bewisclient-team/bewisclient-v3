@@ -3,7 +3,7 @@ package net.bewis09.bewisclient.impl.widget
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.bewisclient.logic.*
+import net.bewis09.bewisclient.util.*
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget

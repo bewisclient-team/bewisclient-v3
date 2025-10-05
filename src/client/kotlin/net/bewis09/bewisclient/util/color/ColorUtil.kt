@@ -1,4 +1,4 @@
-package net.bewis09.bewisclient.logic.color
+package net.bewis09.bewisclient.util.color
 
 infix fun Float.within(pair: Pair<Color, Color>): Color {
     val startAlpha = pair.first.alpha

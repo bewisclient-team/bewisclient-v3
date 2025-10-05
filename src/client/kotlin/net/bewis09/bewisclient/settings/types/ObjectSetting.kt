@@ -2,9 +2,9 @@ package net.bewis09.bewisclient.settings.types
 
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
-import net.bewis09.bewisclient.logic.color.ColorSaver
-import net.bewis09.bewisclient.logic.jsonObject
-import net.bewis09.bewisclient.logic.number.Precision
+import net.bewis09.bewisclient.util.color.ColorSaver
+import net.bewis09.bewisclient.util.jsonObject
+import net.bewis09.bewisclient.util.number.Precision
 import net.bewis09.bewisclient.settings.Settings
 
 open class ObjectSetting() : Setting<JsonObject>(JsonObject()) {

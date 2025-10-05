@@ -10,8 +10,8 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.functionalities.HeldItemTooltipSettings
 import net.bewis09.bewisclient.interfaces.SettingInterface
-import net.bewis09.bewisclient.logic.color.Color
-import net.bewis09.bewisclient.logic.setColor
+import net.bewis09.bewisclient.util.color.Color
+import net.bewis09.bewisclient.util.setColor
 import net.minecraft.client.MinecraftClient
 import net.minecraft.component.ComponentType
 import net.minecraft.component.DataComponentTypes
@@ -105,6 +105,8 @@ object HeldItemTooltip : ImageSettingCategory(
                 texts = texts.subList(0, HeldItemTooltipSettings.maxShownLines.get())
                 texts.add(Translations.MORE_LINES(beforeSize - texts.size))
             }
+
+            texts = texts.filter { !it.string.isEmpty() }.toMutableList()
 
             var l = (heldItemTooltipFade * 256.0f / 10.0f).toInt()
             if (l > 255) {

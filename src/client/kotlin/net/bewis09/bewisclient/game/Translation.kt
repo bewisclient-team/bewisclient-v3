@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.game
 
-import net.bewis09.bewisclient.logic.addTranslation
-import net.bewis09.bewisclient.logic.toText
+import net.bewis09.bewisclient.util.addTranslation
+import net.bewis09.bewisclient.util.toText
 import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 

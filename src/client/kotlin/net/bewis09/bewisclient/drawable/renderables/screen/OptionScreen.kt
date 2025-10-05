@@ -6,7 +6,7 @@ import net.bewis09.bewisclient.drawable.renderables.*
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.interfaces.BackgroundEffectProvider
-import net.bewis09.bewisclient.logic.createIdentifier
+import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.screen.RenderableScreen
 import net.bewis09.bewisclient.settings.types.Setting
 import org.lwjgl.glfw.GLFW

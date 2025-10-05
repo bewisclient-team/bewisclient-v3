@@ -3,7 +3,7 @@ package net.bewis09.bewisclient.drawable.renderables
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.translate
-import net.bewis09.bewisclient.logic.color.Color
+import net.bewis09.bewisclient.util.color.Color
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 

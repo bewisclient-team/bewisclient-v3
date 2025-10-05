@@ -6,8 +6,8 @@ import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
-import net.bewis09.bewisclient.logic.color.*
-import net.bewis09.bewisclient.logic.createIdentifier
+import net.bewis09.bewisclient.util.color.*
+import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.settings.types.BooleanSetting
 import net.minecraft.util.Identifier
 

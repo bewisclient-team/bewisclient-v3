@@ -5,9 +5,9 @@ import net.bewis09.bewisclient.api.APIEntrypointLoader
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.renderable.CustomWidgetLineRenderable
-import net.bewis09.bewisclient.logic.createIdentifier
-import net.bewis09.bewisclient.logic.string
-import net.bewis09.bewisclient.logic.toText
+import net.bewis09.bewisclient.util.createIdentifier
+import net.bewis09.bewisclient.util.string
+import net.bewis09.bewisclient.util.toText
 import net.bewis09.bewisclient.settings.types.ListSetting
 import net.bewis09.bewisclient.widget.Widget
 import net.bewis09.bewisclient.widget.logic.SidedPosition

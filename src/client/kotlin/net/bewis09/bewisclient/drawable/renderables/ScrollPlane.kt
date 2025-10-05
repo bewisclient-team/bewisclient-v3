@@ -2,7 +2,7 @@ package net.bewis09.bewisclient.drawable.renderables
 
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.logic.then
+import net.bewis09.bewisclient.util.then
 
 class ScrollPlane(direction: Direction, val init: (x: Int, y: Int, width: Int, height: Int, scroll: Float) -> List<Renderable>) : Scrollable(direction) {
     var lastScroll = scrollAnimation["scrollY"]

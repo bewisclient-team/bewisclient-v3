@@ -2,6 +2,7 @@ package net.bewis09.bewisclient.impl
 
 import net.bewis09.bewisclient.api.BewisclientAPIEntrypoint
 import net.bewis09.bewisclient.core.getColor
+import net.bewis09.bewisclient.cosmetics.CosmeticLoader
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCategory
 import net.bewis09.bewisclient.game.*
@@ -9,7 +10,7 @@ import net.bewis09.bewisclient.impl.functionalities.*
 import net.bewis09.bewisclient.impl.settings.BewisclientSettings
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.bewis09.bewisclient.impl.widget.*
-import net.bewis09.bewisclient.logic.EventEntrypoint
+import net.bewis09.bewisclient.util.EventEntrypoint
 import net.bewis09.bewisclient.settings.Settings
 import net.bewis09.bewisclient.settings.SettingsLoader
 import net.bewis09.bewisclient.widget.Widget
@@ -19,7 +20,7 @@ import kotlin.jvm.optionals.getOrNull
 
 class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint() {
     override fun getEventEntrypoints(): List<EventEntrypoint> = listOf(
-        WidgetLoader, SettingsLoader, KeybindingImplementer, TranslationLoader, BiomeWidget, SpeedWidget, TiwylaWidget, ShulkerBoxTooltipComponent.Entrypoint
+        WidgetLoader, SettingsLoader, KeybindingImplementer, TranslationLoader, BiomeWidget, SpeedWidget, TiwylaWidget, ShulkerBoxTooltipComponent.Entrypoint, CosmeticLoader
     )
 
     override fun getSettingsObjects(): List<Settings> = listOf(

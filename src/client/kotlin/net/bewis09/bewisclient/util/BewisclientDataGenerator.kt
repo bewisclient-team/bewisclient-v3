@@ -1,4 +1,4 @@
-package net.bewis09.bewisclient.logic
+package net.bewis09.bewisclient.util
 
 import net.fabricmc.fabric.api.datagen.v1.*
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider

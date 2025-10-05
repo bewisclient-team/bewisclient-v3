@@ -5,7 +5,7 @@ import net.bewis09.bewisclient.core.Profiler
 import net.bewis09.bewisclient.core.registerWidget
 import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.logic.EventEntrypoint
+import net.bewis09.bewisclient.util.EventEntrypoint
 import net.minecraft.client.MinecraftClient
 
 /**

@@ -6,8 +6,8 @@ import net.bewis09.bewisclient.drawable.renderables.settings.FloatSettingRendera
 import net.bewis09.bewisclient.drawable.renderables.settings.IntegerSettingRenderable
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.interfaces.SettingInterface
-import net.bewis09.bewisclient.logic.float
-import net.bewis09.bewisclient.logic.number.Precision
+import net.bewis09.bewisclient.util.float
+import net.bewis09.bewisclient.util.number.Precision
 
 class FloatSetting : Setting<Float> {
     val precision: Precision

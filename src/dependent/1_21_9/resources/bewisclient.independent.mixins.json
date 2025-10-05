@@ -12,7 +12,8 @@
     "TooltipDisplayComponentMixin",
     "OverlayTextureMixin",
     "LightmapTextureManagerMixin",
-    "GameRendererMixin"
+    "GameRendererMixin",
+    "SkinTexturesMixin"
   ],
   "injectors": {
     "defaultRequire": 1

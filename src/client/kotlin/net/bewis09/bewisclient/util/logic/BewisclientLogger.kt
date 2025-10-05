@@ -1,4 +1,4 @@
-package net.bewis09.bewisclient.logic
+package net.bewis09.bewisclient.util.logic
 
 import org.slf4j.Logger
 

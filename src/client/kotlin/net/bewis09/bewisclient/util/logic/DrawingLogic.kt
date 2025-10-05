@@ -1,4 +1,4 @@
-package net.bewis09.bewisclient.logic
+package net.bewis09.bewisclient.util.logic
 
 import net.bewis09.bewisclient.core.registerTexture
 import net.minecraft.client.MinecraftClient
@@ -15,13 +15,22 @@ interface DrawingLogic : InGameLogic {
 
         supplier(image)
 
-        val os = ByteArrayOutputStream()
-        ImageIO.write(image, "png", os)
-        val fis: InputStream = ByteArrayInputStream(os.toByteArray())
+        return createTexture(identifier, image)
+    }
+
+    fun createTexture(identifier: Identifier, byteArray: ByteArray): Identifier {
+        val fis: InputStream = ByteArrayInputStream(byteArray)
 
         MinecraftClient.getInstance().registerTexture(identifier, NativeImage.read(fis))
 
         return identifier
+    }
+
+    fun createTexture(identifier: Identifier, image: BufferedImage): Identifier {
+        val os = ByteArrayOutputStream()
+        ImageIO.write(image, "png", os)
+
+        return createTexture(identifier, os.toByteArray())
     }
 
     fun createTexture(identifier: Identifier, fileURL: URL): Identifier {

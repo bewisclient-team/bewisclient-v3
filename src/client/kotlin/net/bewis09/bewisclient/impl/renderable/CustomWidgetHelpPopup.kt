@@ -7,10 +7,10 @@ import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.impl.widget.CustomWidget
-import net.bewis09.bewisclient.logic.color.Color
-import net.bewis09.bewisclient.logic.color.within
-import net.bewis09.bewisclient.logic.setColor
-import net.bewis09.bewisclient.logic.toText
+import net.bewis09.bewisclient.util.color.Color
+import net.bewis09.bewisclient.util.color.within
+import net.bewis09.bewisclient.util.setColor
+import net.bewis09.bewisclient.util.toText
 
 class CustomWidgetHelpPopup(val screen: PopupScreen) : Renderable() {
     val inner = Inner()

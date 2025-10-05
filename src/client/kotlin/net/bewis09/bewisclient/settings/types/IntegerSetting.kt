@@ -4,7 +4,7 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonPrimitive
 import net.bewis09.bewisclient.drawable.renderables.settings.IntegerSettingRenderable
 import net.bewis09.bewisclient.game.Translation
-import net.bewis09.bewisclient.logic.int
+import net.bewis09.bewisclient.util.int
 
 class IntegerSetting(default: () -> Int, val min: Int, val max: Int, onChangeListener: (Setting<Int>.(oldValue: Int?, newValue: Int?) -> Unit)? = null) : Setting<Int>(default, onChangeListener) {
     constructor(default: Int, min: Int, max: Int, onChangeListener: (Setting<Int>.(oldValue: Int?, newValue: Int?) -> Unit)? = null) : this({ default }, min, max, onChangeListener)

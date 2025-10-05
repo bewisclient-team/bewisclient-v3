@@ -1,4 +1,4 @@
-package net.bewis09.bewisclient.logic
+package net.bewis09.bewisclient.util
 
 import net.minecraft.block.BlockState
 import net.minecraft.entity.Entity
