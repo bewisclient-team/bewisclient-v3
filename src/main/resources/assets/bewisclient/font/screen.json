@@ -9,6 +9,16 @@
       ],
       "size": 8.0,
       "oversample": 10.0
+    },    
+	{
+      "type": "ttf",
+      "file": "bewisclient:screen_zh.ttf",
+      "shift": [
+        0,
+        0
+      ],
+      "size": 8.0,
+      "oversample": 10.0
     }
   ]
 }
