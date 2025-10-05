@@ -1,25 +1,24 @@
 package net.bewis09.bewisclient.impl.functionalities
 
+import net.bewis09.bewisclient.core.Profiler
+import net.bewis09.bewisclient.core.appendTooltip
+import net.bewis09.bewisclient.core.getItemFormattedName
 import net.bewis09.bewisclient.drawable.Translations
 import net.bewis09.bewisclient.drawable.renderables.options_structure.ImageSettingCategory
 import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSettingsRenderable
+import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.functionalities.HeldItemTooltipSettings
 import net.bewis09.bewisclient.interfaces.SettingInterface
-import net.minecraft.client.font.TextRenderer
-import net.minecraft.client.gui.DrawContext
+import net.bewis09.bewisclient.logic.color.Color
+import net.bewis09.bewisclient.logic.setColor
+import net.minecraft.client.MinecraftClient
 import net.minecraft.component.ComponentType
 import net.minecraft.component.DataComponentTypes
-import net.minecraft.component.type.TooltipDisplayComponent
-import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
-import net.minecraft.item.tooltip.TooltipType
 import net.minecraft.registry.Registries
-import net.minecraft.text.*
-import net.minecraft.util.Colors
-import net.minecraft.util.Formatting
-import net.minecraft.util.math.ColorHelper
-import net.minecraft.util.profiler.Profilers
+import net.minecraft.text.Style
+import net.minecraft.text.Text
 
 object HeldItemTooltip : ImageSettingCategory(
     "held_item_tooltip", Translation("menu.category.held_item_tooltip", "Held Item Info"), arrayOf(
@@ -30,7 +29,7 @@ object HeldItemTooltip : ImageSettingCategory(
     fun lookup() {
         isLookup = true
 
-        ItemStack.EMPTY.appendTooltip(Item.TooltipContext.DEFAULT, TooltipDisplayComponent.DEFAULT, null, TooltipType.BASIC) {}
+        ItemStack.EMPTY.appendTooltip {}
 
         isLookup = false
     }
@@ -59,10 +58,10 @@ object HeldItemTooltip : ImageSettingCategory(
 
             id1.compareTo(id2)
         }) {
-            val id = toReadableString(Registries.DATA_COMPONENT_TYPE.getEntry(componentType).idAsString)
+            val id = Registries.DATA_COMPONENT_TYPE.getEntry(componentType).idAsString
             parts.add(
                 MultipleBooleanSettingsRenderable.Part(
-                    Translation.literal(id), null, object : SettingInterface<Boolean> {
+                    Translation.literal(toReadableString(id)), null, object : SettingInterface<Boolean> {
                         override fun get(): Boolean {
                             return HeldItemTooltipSettings.showMap[id, !defaultOff.contains(componentType)]
                         }
@@ -78,31 +77,26 @@ object HeldItemTooltip : ImageSettingCategory(
 
     val defaultOff = arrayOf(DataComponentTypes.DAMAGE, DataComponentTypes.ATTRIBUTE_MODIFIERS)
 
-    fun render(drawContext: DrawContext, textRenderer: TextRenderer, heldItemTooltipFade: Int, currentStack: ItemStack) {
-        Profilers.get().push("heldItemTooltip")
-        if (heldItemTooltipFade > 0 && !currentStack.isEmpty) {
+    fun render(screenDrawing: ScreenDrawing, heldItemTooltipFade: Int, stack: ItemStack) {
+        Profiler.push("heldItemTooltip")
+        if (heldItemTooltipFade > 0 && !stack.isEmpty) {
             isRendering = true
 
-            val mutableText: MutableText = Text.empty().append(currentStack.name).formatted(currentStack.rarity.formatting)
-            if (currentStack.contains(DataComponentTypes.CUSTOM_NAME)) {
-                mutableText.formatted(Formatting.ITALIC)
+            val mutableText: Text = stack.getItemFormattedName()
+
+            var texts: MutableList<Text> = mutableListOf(mutableText)
+
+            if (stack.contains(DataComponentTypes.DAMAGE) && HeldItemTooltipSettings.showMap["minecraft:damage", false]) {
+                texts.add(Text.translatable("item.durability", stack.maxDamage - stack.damage, stack.maxDamage))
             }
 
-            var texts: MutableList<MutableText> = mutableListOf(mutableText)
-
-            if (currentStack.contains(DataComponentTypes.DAMAGE)) {
-                if (TooltipDisplayComponent.DEFAULT.shouldDisplay(DataComponentTypes.DAMAGE)) {
-                    texts.add(Text.translatable("item.durability", currentStack.maxDamage - currentStack.damage, currentStack.maxDamage))
-                }
-            }
-
-            currentStack.appendTooltip(Item.TooltipContext.create(client.world), TooltipDisplayComponent.DEFAULT, client.player, TooltipType.BASIC) {
+            stack.appendTooltip {
                 texts.add(it.copy())
             }
 
             if (texts.size > 1) {
                 for (it in texts.subList(1, texts.size)) {
-                    if (it.style.color?.rgb == -1 || it.style == Style.EMPTY) it.formatted(Formatting.GRAY)
+                    if (it.style.color?.rgb == -1 || it.style == Style.EMPTY) it.setColor(0xAAAAAA)
                 }
             }
 
@@ -117,23 +111,20 @@ object HeldItemTooltip : ImageSettingCategory(
                 l = 255
             }
 
-            var y: Int = drawContext.scaledWindowHeight - 59
-            if (client.interactionManager?.hasStatusBars() == false) {
+            var y: Int = util.height - 59
+            if (MinecraftClient.getInstance().interactionManager?.hasStatusBars() == false) {
                 y += 14
             }
 
             if (l > 0) {
                 for ((index, text) in texts.withIndex()) {
-                    val width: Int = textRenderer.getWidth(text)
-                    val x: Int = (drawContext.scaledWindowWidth - width) / 2
-
-                    drawContext.drawTextWithBackground(textRenderer, text, x, y + (index - texts.size + 1) * 10, width, ColorHelper.withAlpha(l, Colors.WHITE))
+                    screenDrawing.drawCenteredTextWithShadow(text, util.width / 2, y + (index - texts.size + 1) * 10, Color.WHITE alpha (l / 255f))
                 }
             }
             isRendering = false
         }
 
-        Profilers.get().pop()
+        Profiler.pop()
     }
 
     fun toReadableString(id: String): String {

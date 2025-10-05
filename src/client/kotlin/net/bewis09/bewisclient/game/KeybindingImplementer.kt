@@ -8,10 +8,6 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper
 import net.minecraft.client.MinecraftClient
 
 object KeybindingImplementer : EventEntrypoint {
-    val CATEGORY = Translation(
-        "key.category", "Bewisclient"
-    )
-
     override fun onInitializeClient() {
         val keybinds = APIEntrypointLoader.mapEntrypoint { it.getKeybinds() }.flatten()
 
@@ -19,7 +15,7 @@ object KeybindingImplementer : EventEntrypoint {
             KeyBindingHelper.registerKeyBinding(it.keyBinding)
         }
 
-        ClientTickEvents.END_CLIENT_TICK.register(ClientTickEvents.EndTick { client: MinecraftClient? ->
+        ClientTickEvents.END_CLIENT_TICK.register(ClientTickEvents.EndTick { client: MinecraftClient ->
             keybinds.forEach {
                 while (it.keyBinding.wasPressed()) {
                     it.action?.invoke()
@@ -30,7 +26,7 @@ object KeybindingImplementer : EventEntrypoint {
                 }
             }
 
-            if (MinecraftClient.getInstance().options.togglePerspectiveKey.isPressed) {
+            if (client.options.togglePerspectiveKey.isPressed) {
                 Perspective.cameraAddPitch = 0f
                 Perspective.cameraAddYaw = 0f
             }

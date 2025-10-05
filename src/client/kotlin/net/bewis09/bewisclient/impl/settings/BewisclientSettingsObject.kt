@@ -16,5 +16,6 @@ object BewisclientSettingsObject : ObjectSetting() {
         create("scoreboard", ScoreboardSettings)
         create("entity_highlight", EntityHighlightSettings)
         create("perspective", PerspectiveSettings)
+        create("shulker_box_tooltip", ShulkerBoxTooltipSettings)
     }
 }

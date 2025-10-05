@@ -1,26 +1,28 @@
 package net.bewis09.bewisclient.drawable.screen_drawing
 
-import net.bewis09.bewisclient.core.BewisclientID
+import net.bewis09.bewisclient.logic.UtilLogic.scaleFactor
 import net.bewis09.bewisclient.logic.color.Color
+import net.bewis09.bewisclient.logic.createIdentifier
+import net.minecraft.util.Identifier
 import kotlin.math.*
 
 interface RoundedDrawing : RectDrawing, TextureDrawing {
-    val scaleFactor
-        get() = client.window.scaleFactor.toFloat().toInt() * 3
+    val factor
+        get() = scaleFactor * 3
 
     companion object {
-        val roundFillCache = mutableMapOf<Pair<Int, Int>, BewisclientID>()
-        val roundBorderCache = mutableMapOf<Pair<Int, Int>, BewisclientID>()
+        val roundFillCache = mutableMapOf<Pair<Int, Int>, Identifier>()
+        val roundBorderCache = mutableMapOf<Pair<Int, Int>, Identifier>()
     }
 
-    fun getRoundedImage(radius: Int): BewisclientID {
-        val scale = scaleFactor
+    fun getRoundedImage(radius: Int): Identifier {
+        val scale = factor
 
         val id = roundFillCache[radius to scale]
 
         if (id != null) return id
 
-        val identifier = BewisclientID("bewisclient", "rounded_${radius}_$scale")
+        val identifier = createIdentifier("bewisclient", "rounded_${radius}_$scale")
 
         val r = radius * scale
 
@@ -45,8 +47,8 @@ interface RoundedDrawing : RectDrawing, TextureDrawing {
         return identifier
     }
 
-    fun getRoundedBorderImage(radius: Int): BewisclientID {
-        val scale = scaleFactor
+    fun getRoundedBorderImage(radius: Int): Identifier {
+        val scale = factor
 
         val id = roundBorderCache[radius to scale]
 
@@ -54,7 +56,7 @@ interface RoundedDrawing : RectDrawing, TextureDrawing {
             return id
         }
 
-        val identifier = BewisclientID("bewisclient", "rounded_border_${radius}_$scale")
+        val identifier = createIdentifier("bewisclient", "rounded_border_${radius}_$scale")
 
         val r = radius * scale
 
@@ -126,10 +128,10 @@ interface RoundedDrawing : RectDrawing, TextureDrawing {
     private fun drawRoundedCorner(
         centerX: Int, centerY: Int, radius: Int, color: Color, startAngle: Float
     ) {
-        transform(centerX.toFloat(), centerY.toFloat(), 1 / scaleFactor.toFloat()) {
+        transform(centerX.toFloat(), centerY.toFloat(), 1 / factor.toFloat()) {
             rotateDegrees(startAngle)
 
-            val r = radius * (scaleFactor)
+            val r = radius * (factor)
 
             drawTexture(getRoundedImage(radius), 0, 0, 0f, 0f, r, r, r, r, color)
         }
@@ -138,10 +140,10 @@ interface RoundedDrawing : RectDrawing, TextureDrawing {
     private fun drawRoundedCornerBorder(
         centerX: Int, centerY: Int, radius: Int, color: Color, startAngle: Float
     ) {
-        transform(centerX.toFloat(), centerY.toFloat(), 1 / scaleFactor.toFloat()) {
+        transform(centerX.toFloat(), centerY.toFloat(), 1 / factor.toFloat()) {
             rotateDegrees(startAngle)
 
-            val r = radius * (scaleFactor)
+            val r = radius * (factor)
 
             drawTexture(getRoundedBorderImage(radius), 0, 0, 0f, 0f, r, r, r, r, color)
         }

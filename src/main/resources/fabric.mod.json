@@ -38,11 +38,15 @@
     {
       "config": "bewisclient.client.mixins.json",
       "environment": "client"
+    },
+    {
+      "config": "bewisclient.independent.mixins.json",
+      "environment": "client"
     }
   ],
   "depends": {
     "fabricloader": ">=0.16.14",
-    "minecraft": ">=1.21.9-beta.1",
+    "minecraft": "${minecraft_version}",
     "java": ">=21",
     "fabric-api": "*",
     "fabric-language-kotlin": "*"

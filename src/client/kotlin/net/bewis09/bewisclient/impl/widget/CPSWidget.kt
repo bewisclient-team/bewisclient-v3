@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.impl.widget
 
-import net.bewis09.bewisclient.core.BewisclientID
 import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.logic.createIdentifier
 import net.bewis09.bewisclient.logic.toText
 import net.bewis09.bewisclient.settings.types.BooleanSetting
 import net.bewis09.bewisclient.widget.logic.RelativePosition
@@ -9,7 +9,7 @@ import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
 import net.minecraft.text.Text
 
-object CPSWidget : LineWidget(BewisclientID("bewisclient", "cps_widget")) {
+object CPSWidget : LineWidget(createIdentifier("bewisclient", "cps_widget")) {
     val singleCPSText = createTranslation("singular_cps", "%s CPS")
     val multiCPSText = createTranslation("multiple_cps", "%s | %s CPS")
 

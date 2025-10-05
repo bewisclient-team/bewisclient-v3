@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.logic
 
+import net.minecraft.client.MinecraftClient
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -13,4 +14,10 @@ interface BewisclientInterface : BewisclientLogger, FileLogic, InGameLogic, Draw
 
     override val logger: Logger
         get() = BewisclientInterface.logger
+
+    val util: UtilLogic
+        get() = UtilLogic
+
+    val client: MinecraftClient
+        get() = MinecraftClient.getInstance()
 }

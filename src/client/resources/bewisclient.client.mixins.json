@@ -7,8 +7,6 @@
     "CameraMixin",
     "ClientPlayerInteractionManagerMixin",
     "ClientPlayNetworkHandlerMixin",
-    "EquippableComponentMixin",
-    "FogRendererMixin",
     "GameMenuScreenMixin",
     "GameOptionsMixin",
     "GameRendererMixin",
@@ -17,13 +15,7 @@
     "LightmapTextureManagerMixin",
     "LivingEntityMixin",
     "MinecraftClientMixin",
-    "MouseMixin",
-    "OverlayTextureMixin",
-    "TitleScreenMixin",
-    "TooltipDisplayComponentMixin",
-    "WorldRendererMixin",
-    "EntityMixin",
-    "ItemStackMixin"
+    "EntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1

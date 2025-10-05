@@ -4,10 +4,10 @@ import net.bewis09.bewisclient.core.IndependentScreen
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.interfaces.BackgroundEffectProvider
+import net.bewis09.bewisclient.logic.toText
 import net.minecraft.client.gui.DrawContext
-import net.minecraft.text.Text
 
-class RenderableScreen(val renderable: Renderable) : IndependentScreen(Text.empty()) {
+class RenderableScreen(val renderable: Renderable) : IndependentScreen("".toText()) {
     var deltaTicks: Float = 0f
         private set
     var startX = 0.0
@@ -28,6 +28,7 @@ class RenderableScreen(val renderable: Renderable) : IndependentScreen(Text.empt
     }
 
     override fun render(context: DrawContext, mouseX: Int, mouseY: Int, deltaTicks: Float) {
+        renderIndependentBackground(context, mouseX, mouseY, deltaTicks)
         this.deltaTicks = deltaTicks
         val screenDrawing = ScreenDrawing(context, textRenderer)
         renderable.render(screenDrawing, mouseX, mouseY)
@@ -42,11 +43,15 @@ class RenderableScreen(val renderable: Renderable) : IndependentScreen(Text.empt
         }
     }
 
-    override fun onMouseClick(x: Double, y: Double, button: Int): Boolean = renderable.mouseClick(x, y, button)
+    override fun onMouseClick(x: Double, y: Double, button: Int): Boolean {
+        startX = x
+        startY = y
+        return renderable.mouseClick(x, y, button)
+    }
 
     override fun onMouseRelease(x: Double, y: Double, button: Int): Boolean = renderable.mouseRelease(x, y, button)
 
-    override fun onMouseDrag(x: Double, y: Double, deltaX: Double, deltaY: Double, button: Int): Boolean = renderable.mouseDrag(x, y, deltaX, deltaY, button)
+    override fun onMouseDrag(x: Double, y: Double, deltaX: Double, deltaY: Double, button: Int): Boolean = renderable.mouseDrag(x, y, startX, startY, button)
 
     override fun onMouseScroll(mouseX: Double, mouseY: Double, horizontalAmount: Double, verticalAmount: Double): Boolean = renderable.mouseScroll(mouseX, mouseY, horizontalAmount, verticalAmount)
 

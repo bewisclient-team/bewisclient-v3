@@ -1,15 +1,15 @@
 package net.bewis09.bewisclient.impl.widget
 
-import net.bewis09.bewisclient.core.BewisclientID
+import net.bewis09.bewisclient.logic.createIdentifier
 import net.bewis09.bewisclient.logic.toText
 import net.bewis09.bewisclient.mixin.client.ClientPlayNetworkHandlerMixin
-import net.bewis09.bewisclient.screen.RenderableScreen
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
+import net.minecraft.client.MinecraftClient
 import net.minecraft.text.Text
 
-object PingWidget : LineWidget(BewisclientID("bewisclient", "ping_widget")) {
+object PingWidget : LineWidget(createIdentifier("bewisclient", "ping_widget")) {
     var lastLatency = 0
     var lastRequest = System.currentTimeMillis()
 
@@ -20,7 +20,7 @@ object PingWidget : LineWidget(BewisclientID("bewisclient", "ping_widget")) {
     override val description = "Displays your current ping in milliseconds (ms)."
 
     override fun getLine(): Text {
-        if ((client.isInSingleplayer || client.world == null) && (client.currentScreen is RenderableScreen)) return pingText(99.toString())
+        if ((client.isInSingleplayer || !util.isInWorld()) && util.getCurrentRenderableScreen() != null) return pingText(99.toString())
         if (getLatency() < 0) return loadingText()
         return pingText(getLatency().toString())
     }
@@ -33,11 +33,11 @@ object PingWidget : LineWidget(BewisclientID("bewisclient", "ping_widget")) {
 
     private fun getLatency(): Int {
         try {
-            if (client.isInSingleplayer || client.networkHandler == null) return -1
+            if (client.isInSingleplayer || MinecraftClient.getInstance().networkHandler == null) return -1
 
             if (lastRequest + 100 < System.currentTimeMillis()) {
-                if (!client.debugHud.shouldShowPacketSizeAndPingCharts()) {
-                    (client.networkHandler as ClientPlayNetworkHandlerMixin).pingMeasurer.ping()
+                if (!MinecraftClient.getInstance().debugHud.shouldShowPacketSizeAndPingCharts()) {
+                    (MinecraftClient.getInstance().networkHandler as ClientPlayNetworkHandlerMixin).pingMeasurer.ping()
                 }
 
                 var l = 0
@@ -46,7 +46,7 @@ object PingWidget : LineWidget(BewisclientID("bewisclient", "ping_widget")) {
 
                 for (i in 0..19.coerceAtMost(log.length - 1)) {
                     o++
-                    l += log.get(i).toInt()
+                    l += log[i].toInt()
                 }
 
                 lastRequest = System.currentTimeMillis()

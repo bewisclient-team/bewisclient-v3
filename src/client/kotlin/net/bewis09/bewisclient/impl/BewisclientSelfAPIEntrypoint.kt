@@ -10,7 +10,6 @@ import net.bewis09.bewisclient.impl.settings.BewisclientSettings
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.bewis09.bewisclient.impl.widget.*
 import net.bewis09.bewisclient.logic.EventEntrypoint
-import net.bewis09.bewisclient.mixin.MixinFunctionImpl
 import net.bewis09.bewisclient.settings.Settings
 import net.bewis09.bewisclient.settings.SettingsLoader
 import net.bewis09.bewisclient.widget.Widget
@@ -20,7 +19,7 @@ import kotlin.jvm.optionals.getOrNull
 
 class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint() {
     override fun getEventEntrypoints(): List<EventEntrypoint> = listOf(
-        WidgetLoader, SettingsLoader, KeybindingImplementer, TranslationLoader, BiomeWidget, SpeedWidget, TiwylaWidget, ShulkerBoxTooltipComponent.Entrypoint, MixinFunctionImpl
+        WidgetLoader, SettingsLoader, KeybindingImplementer, TranslationLoader, BiomeWidget, SpeedWidget, TiwylaWidget, ShulkerBoxTooltipComponent.Entrypoint
     )
 
     override fun getSettingsObjects(): List<Settings> = listOf(
@@ -52,7 +51,7 @@ class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint() {
         DefaultWidgetSettings.shadow.createRenderable("widget.default_text_shadow", "Default Text Shadow", "Set whether text in a widget has a shadow by default"),
         DefaultWidgetSettings.textColor.createRenderable("widget.default_text_color", "Default Text Color", "Set the default color of the text in a widget"),
         DefaultWidgetSettings.borderRadius.createRenderable("widget.default_border_radius", "Default Border Radius", "Set the default radius of a widget's border corners"),
-        DefaultWidgetSettings.scale.createRenderable("widget.default_scale", "Default Scale", "Set the default scale of a widget"),
+        DefaultWidgetSettings.scale.createRenderable("widget.default_scale", "Default Scale", "Set the default net.bewis09.bewisclient.core.scale of a widget"),
     )
 
     override fun getSidebarCategories(): List<SidebarCategory> = listOf(

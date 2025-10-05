@@ -2,15 +2,13 @@ package net.bewis09.bewisclient.logic.color
 
 import com.google.gson.JsonElement
 import com.google.gson.JsonPrimitive
-import net.bewis09.bewisclient.core.BewisclientID
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.Translations
 import net.bewis09.bewisclient.drawable.renderables.*
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.translate
 import net.bewis09.bewisclient.game.Translation
-import net.bewis09.bewisclient.logic.Bewisclient
-import net.bewis09.bewisclient.logic.int
+import net.bewis09.bewisclient.logic.*
 import net.bewis09.bewisclient.logic.number.Precision
 
 class ChangingColorSaver : ColorSaver {
@@ -74,7 +72,7 @@ class ChangingColorSaver : ColorSaver {
         val actionButton = Rectangle { get().getColor() }
 
         companion object {
-            val texture = Bewisclient.createTexture(BewisclientID("bewisclient", "color_strip_selector_190"), 190, 14) { image ->
+            val texture = Bewisclient.createTexture(createIdentifier("bewisclient", "color_strip_selector_190"), 190, 14) { image ->
                 for (x in 0 until 190) {
                     for (y in 0 until 14) {
                         val color = Color(x / 190f, 1f, 1f)

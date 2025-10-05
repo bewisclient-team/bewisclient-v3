@@ -9,7 +9,8 @@ import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.impl.widget.CustomWidget
 import net.bewis09.bewisclient.logic.color.Color
 import net.bewis09.bewisclient.logic.color.within
-import net.minecraft.text.Text
+import net.bewis09.bewisclient.logic.setColor
+import net.bewis09.bewisclient.logic.toText
 
 class CustomWidgetHelpPopup(val screen: PopupScreen) : Renderable() {
     val inner = Inner()
@@ -57,7 +58,7 @@ class CustomWidgetHelpPopup(val screen: PopupScreen) : Renderable() {
             }
 
             override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-                screenDrawing.drawText(dataPoint.name().append(" ").append(Text.literal("{${dataPoint.id}}").withColor((0.5f within (Color.BLACK to OptionsMenuSettings.themeColor.get().getColor())).argb)), x, y, OptionsMenuSettings.themeColor.get().getColor())
+                screenDrawing.drawText(dataPoint.name().append(" ".toText()).append(("{${dataPoint.id}}").toText().setColor((0.5f within (Color.BLACK to OptionsMenuSettings.themeColor.get().getColor())).argb)), x, y, OptionsMenuSettings.themeColor.get().getColor())
                 val texts = screenDrawing.drawWrappedText(dataPoint.description().string, x, y + 10, width, OptionsMenuSettings.themeColor.get().getColor() alpha 0.7f)
                 val paramTexts = dataPoint.param?.let { screenDrawing.drawWrappedText("Param: " + it().string, x, y + 10 + texts.size * 10, width, OptionsMenuSettings.themeColor.get().getColor() alpha 0.4f) } ?: emptyList()
                 internalHeight = 9 + texts.size * 10 + paramTexts.size * 10

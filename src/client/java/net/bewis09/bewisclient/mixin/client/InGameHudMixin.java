@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.mixin.client;
 
+import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing;
 import net.bewis09.bewisclient.impl.functionalities.HeldItemTooltip;
 import net.bewis09.bewisclient.impl.settings.functionalities.HeldItemTooltipSettings;
 import net.bewis09.bewisclient.impl.settings.functionalities.ScoreboardSettings;
@@ -34,7 +35,7 @@ abstract class InGameHudMixin {
     @Inject(method = "renderHeldItemTooltip", at = @At("HEAD"), cancellable = true)
     private void bewisclient$renderHeldItemTooltip(DrawContext drawContext, CallbackInfo ci) {
         if (HeldItemTooltipSettings.INSTANCE.getEnabled().get()) {
-            HeldItemTooltip.INSTANCE.render(drawContext, getTextRenderer(), heldItemTooltipFade, currentStack);
+            HeldItemTooltip.INSTANCE.render(new ScreenDrawing(drawContext, getTextRenderer()), heldItemTooltipFade, currentStack);
             ci.cancel();
         }
     }
@@ -43,13 +44,15 @@ abstract class InGameHudMixin {
     private void bewisclient$renderScoreboardSidebar(DrawContext context, ScoreboardObjective objective, CallbackInfo ci) {
         float scale = ScoreboardSettings.INSTANCE.getEnabled().get() ? ScoreboardSettings.INSTANCE.getScale().get() : 1.0f;
 
-        context.getMatrices().pushMatrix();
-        context.getMatrices().scale(scale, scale);
-        context.getMatrices().translate((float) (-client.getWindow().getScaledWidth()) * (1.0f - 1 / scale), (float) (-client.getWindow().getScaledHeight()) * (1.0f - 1 / scale) / 2.0f);
+        ScreenDrawing screenDrawing = new ScreenDrawing(context, client.textRenderer);
+
+        screenDrawing.push();
+        screenDrawing.scale(scale, scale);
+        screenDrawing.translate((float) (-client.getWindow().getScaledWidth()) * (1.0f - 1 / scale), (float) (-client.getWindow().getScaledHeight()) * (1.0f - 1 / scale) / 2.0f);
     }
 
     @Inject(method = "renderScoreboardSidebar(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/scoreboard/ScoreboardObjective;)V", at = @At("RETURN"))
     private void bewisclient$renderScoreboardSidebarReturn(DrawContext context, ScoreboardObjective objective, CallbackInfo ci) {
-        context.getMatrices().popMatrix();
+        new ScreenDrawing(context, client.textRenderer).pop();
     }
 }

@@ -1,16 +1,15 @@
 package net.bewis09.bewisclient.api
 
-import net.bewis09.bewisclient.core.BewisclientID
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.options_structure.SettingCategory
 import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCategory
 import net.bewis09.bewisclient.game.Keybind
 import net.bewis09.bewisclient.impl.widget.TiwylaWidget
-import net.bewis09.bewisclient.logic.BewisclientInterface
-import net.bewis09.bewisclient.logic.EventEntrypoint
+import net.bewis09.bewisclient.logic.*
 import net.bewis09.bewisclient.settings.Settings
 import net.bewis09.bewisclient.widget.Widget
 import net.fabricmc.loader.api.ModContainer
+import net.minecraft.util.Identifier
 import kotlin.jvm.optionals.getOrNull
 
 /**
@@ -21,16 +20,16 @@ import kotlin.jvm.optionals.getOrNull
  * Then register your entrypoint in your `fabric.mod.json` file under `custom`, `bewisclient`
  */
 open class BewisclientAPIEntrypoint : BewisclientInterface {
-    val iconIdentifier: BewisclientID? = null
+    val iconIdentifier: Identifier? = null
 
     open fun getExtensionTitle(modContainer: ModContainer): String = modContainer.metadata.name
 
     open fun getExtensionDescription(modContainer: ModContainer): String = modContainer.metadata.description
 
-    open fun getIcon(modContainer: ModContainer): BewisclientID? {
+    open fun getIcon(modContainer: ModContainer): Identifier? {
         return iconIdentifier ?: modContainer.metadata.getIconPath(64).getOrNull()?.let {
             modContainer.findPath(it).getOrNull()?.let { path ->
-                createTexture(BewisclientID(modContainer.metadata.id, "extension_icon_${(1..99999).random()}"), path.toUri().toURL())
+                createTexture(createIdentifier(modContainer.metadata.id, "extension_icon_${(1..99999).random()}"), path.toUri().toURL())
             }
         }
     }

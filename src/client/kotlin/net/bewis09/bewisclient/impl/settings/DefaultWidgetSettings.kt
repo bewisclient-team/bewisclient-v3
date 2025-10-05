@@ -14,7 +14,7 @@ object DefaultWidgetSettings : ObjectSetting() {
     val textColor = color("text_color", StaticColorSaver(1f, 1f, 1f), ColorSetting.STATIC, ColorSetting.CHANGING, ColorSetting.THEME)
     val borderRadius = int("border_radius", 0, 0, 20)
     val shadow = boolean("shadow", true)
-    val scale = float("scale", .8f, 0.5f, 2f, 0.01f, 2)
+    val scale = float("net.bewis09.bewisclient.core.scale", .8f, 0.5f, 2f, 0.01f, 2)
     val gap = int("gap", 1, 0, 20)
     val screenEdgeDistance = int("screen_edge_distance", 5, 0, 10)
 }

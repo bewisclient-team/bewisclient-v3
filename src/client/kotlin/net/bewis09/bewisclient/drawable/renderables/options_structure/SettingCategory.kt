@@ -1,6 +1,5 @@
 package net.bewis09.bewisclient.drawable.renderables.options_structure
 
-import net.bewis09.bewisclient.core.BewisclientID
 import net.bewis09.bewisclient.drawable.*
 import net.bewis09.bewisclient.drawable.renderables.*
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
@@ -8,10 +7,12 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.logic.color.*
+import net.bewis09.bewisclient.logic.createIdentifier
 import net.bewis09.bewisclient.settings.types.BooleanSetting
+import net.minecraft.util.Identifier
 
-open class ImageSettingCategory(val image: BewisclientID, text: Translation, setting: Array<Renderable>, enableSetting: BooleanSetting? = null) : SettingCategory(text, setting, enableSetting) {
-    constructor(image: String, text: Translation, setting: Array<Renderable>, enableSetting: BooleanSetting? = null) : this(BewisclientID("bewisclient", "textures/gui/functionalities/$image.png"), text, setting, enableSetting)
+open class ImageSettingCategory(val image: Identifier, text: Translation, setting: Array<Renderable>, enableSetting: BooleanSetting? = null) : SettingCategory(text, setting, enableSetting) {
+    constructor(image: String, text: Translation, setting: Array<Renderable>, enableSetting: BooleanSetting? = null) : this(createIdentifier("bewisclient", "textures/gui/functionalities/$image.png"), text, setting, enableSetting)
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)

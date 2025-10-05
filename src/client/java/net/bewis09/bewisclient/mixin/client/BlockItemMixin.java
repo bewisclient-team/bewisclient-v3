@@ -1,6 +1,7 @@
 package net.bewis09.bewisclient.mixin.client;
 
-import net.bewis09.bewisclient.core.Core;
+import net.bewis09.bewisclient.game.ShulkerBoxTooltipComponent;
+import net.bewis09.bewisclient.impl.settings.functionalities.ShulkerBoxTooltipSettings;
 import net.minecraft.block.ShulkerBoxBlock;
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.component.type.ContainerComponent;
@@ -20,17 +21,16 @@ public class BlockItemMixin extends Item {
 
     @Override
     public Optional<TooltipData> getTooltipData(ItemStack stack) {
-        if (stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof ShulkerBoxBlock block) {
+        if (stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof ShulkerBoxBlock block && ShulkerBoxTooltipSettings.INSTANCE.getEnabled().get()) {
             ContainerComponent component = stack.get(DataComponentTypes.CONTAINER);
 
-            if (Core.mixinFunctions == null || component == null) return super.getTooltipData(stack);
-
-            ItemStack[] array = component.stream().toArray((i) -> new ItemStack[27]);
+            assert component != null;
+            ItemStack[] array = component.stream().toArray(ItemStack[]::new);
 
             if (block.getColor() == null)
-                return Optional.ofNullable(Core.mixinFunctions.getShulkerBoxTooltipData(null, array));
+                return Optional.ofNullable(ShulkerBoxTooltipComponent.Companion.of(null, array));
 
-            return Optional.ofNullable(Core.mixinFunctions.getShulkerBoxTooltipData(block.getColor().getEntityColor(), array));
+            return Optional.ofNullable(ShulkerBoxTooltipComponent.Companion.of(block.getColor().getEntityColor(), array));
         }
         return super.getTooltipData(stack);
     }

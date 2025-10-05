@@ -23,11 +23,6 @@ public class GameRendererMixin {
     @Unique
     OverlayTexture overlayTexture = new OverlayTexture();
 
-    @Inject(method = "getFov", at = @At("RETURN"), cancellable = true)
-    public void inject(Camera camera, float tickProgress, boolean changingFov, CallbackInfoReturnable<Float> cir) {
-        cir.setReturnValue(cir.getReturnValue() * Zoom.INSTANCE.getFactor());
-    }
-
     @Inject(method = "getOverlayTexture", at = @At("HEAD"), cancellable = true)
     public void getOverlayTexture(CallbackInfoReturnable<OverlayTexture> cir) {
         if (EntityHighlightSettings.INSTANCE.getEnabled().get()) {
