@@ -1,7 +1,8 @@
 package net.bewis09.bewisclient.impl.widget
 
-import net.bewis09.bewisclient.core.BewisclientID
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
+import net.bewis09.bewisclient.logic.createIdentifier
+import net.bewis09.bewisclient.logic.then
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.ScalableWidget
@@ -10,8 +11,9 @@ import net.minecraft.component.DataComponentTypes
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
 import net.minecraft.text.Text
+import net.minecraft.util.Identifier
 
-object InventoryWidget : ScalableWidget(BewisclientID("bewisclient", "inventory_widget")) {
+object InventoryWidget : ScalableWidget(createIdentifier("bewisclient", "inventory_widget")) {
     val indicatorText: Text = Text.of("The way I would have to add Enchantments to the ItemStack is too complicated, so I am doing it via a mixin instead.")
 
     val exampleMap by lazy {
@@ -46,7 +48,7 @@ object InventoryWidget : ScalableWidget(BewisclientID("bewisclient", "inventory_
         )
     }
 
-    val identifier: BewisclientID = BewisclientID("bewisclient", "textures/gui/widget/inventory_widget.png")
+    val identifier: Identifier = createIdentifier("bewisclient", "textures/gui/widget/inventory_widget.png")
 
     override fun defaultPosition(): WidgetPosition = SidedPosition(5, 5, SidedPosition.START, SidedPosition.START)
 
@@ -55,7 +57,7 @@ object InventoryWidget : ScalableWidget(BewisclientID("bewisclient", "inventory_
 
         for (y in 0 until 3) {
             for (x in 0 until 9) {
-                val itemStack: ItemStack = client.player?.inventory?.getStack(x + y * 9 + 9) ?: client.world?.let { ItemStack.EMPTY } ?: getSampleStack(x, y)
+                val itemStack: ItemStack = client.player?.inventory?.getStack(x + y * 9 + 9) ?: (util.isInWorld() then ItemStack.EMPTY) ?: getSampleStack(x, y)
                 drawSlot(screenDrawing, x * 20 + 2, y * 20 + 2, itemStack)
             }
         }

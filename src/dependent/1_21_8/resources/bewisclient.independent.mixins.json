@@ -1,0 +1,20 @@
+{
+  "required": true,
+  "package": "net.bewis09.bewisclient.core.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "WorldRendererMixin",
+    "FogRendererMixin",
+    "MouseMixin",
+    "ItemStackMixin",
+    "TitleScreenMixin",
+    "EquippableComponentMixin",
+    "TooltipDisplayComponentMixin",
+    "OverlayTextureMixin",
+    "LightmapTextureManagerMixin",
+    "GameRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

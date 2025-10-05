@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.drawable.renderables.screen
 
-import net.bewis09.bewisclient.core.BewisclientID
-import net.bewis09.bewisclient.core.CoreUtil
+import net.bewis09.bewisclient.core.isKeyPressed
+import net.bewis09.bewisclient.core.translateToTopOptional
 import net.bewis09.bewisclient.drawable.SettingStructure
 import net.bewis09.bewisclient.drawable.renderables.ImageButton
 import net.bewis09.bewisclient.drawable.renderables.ThemeButton
@@ -12,6 +12,7 @@ import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.bewis09.bewisclient.interfaces.BackgroundEffectProvider
 import net.bewis09.bewisclient.logic.color.Color
 import net.bewis09.bewisclient.logic.color.alpha
+import net.bewis09.bewisclient.logic.createIdentifier
 import net.bewis09.bewisclient.logic.hoverSeparate
 import net.bewis09.bewisclient.logic.number.Precision
 import net.bewis09.bewisclient.screen.RenderableScreen
@@ -21,6 +22,7 @@ import net.bewis09.bewisclient.widget.WidgetLoader.widgets
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.types.ScalableWidget
+import net.minecraft.util.Identifier
 import org.lwjgl.glfw.GLFW
 import kotlin.math.abs
 
@@ -37,7 +39,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
     var startOffsetX: Float? = null
     var startOffsetY: Float? = null
 
-    val removeTexture: BewisclientID = BewisclientID("bewisclient", "textures/gui/sprites/remove.png")
+    val removeTexture: Identifier = createIdentifier("bewisclient", "textures/gui/sprites/remove.png")
 
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
         mouseMap[button] = true
@@ -115,7 +117,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
                 var drawX = mouseX
                 var drawY = mouseY - tooltipHeight
 
-                if (drawX + width > client.window.scaledWidth) {
+                if (drawX + width > util.width) {
                     drawX -= width
                 }
                 if (drawY < 0) {
@@ -123,18 +125,21 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
                 }
 
                 screenDrawing.afterDraw("tooltip", {
+                    screenDrawing.push()
+                    screenDrawing.drawContext.translateToTopOptional()
                     screenDrawing.fillRounded(drawX, drawY, width, tooltipHeight, 5, 0x000000 alpha 0.8f)
                     screenDrawing.drawWrappedText(lines, drawX + 5, drawY + 5, Color.WHITE)
+                    screenDrawing.pop()
                 })
             }
         }
     }
 
     override fun init() {
-        addRenderable(ImageButton(BewisclientID("bewisclient", "textures/gui/sprites/add.png")) {
+        addRenderable(ImageButton(createIdentifier("bewisclient", "textures/gui/sprites/add.png")) {
             openPopup(AddWidgetPopup(this), Color.BLACK alpha 0.625f)
         }.setImagePadding(0)(width - 16, height - 16, 14, 14))
-        addRenderable(ImageButton(BewisclientID("bewisclient", "textures/gui/sprites/settings.png")) {
+        addRenderable(ImageButton(createIdentifier("bewisclient", "textures/gui/sprites/settings.png")) {
             client.setScreen(RenderableScreen(OptionScreen().also {
                 val widgetsCategory = SettingStructure(it).widgetsCategory
                 it.optionsHeader = widgetsCategory.getHeader()
@@ -167,7 +172,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
     }
 
     fun possibleAppendArea(widget: Widget, appendWidget: Widget, mouseX: Int, mouseY: Int): RelativePosition? {
-        if (widget == appendWidget || CoreUtil.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT)) return null
+        if (widget == appendWidget || client.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT)) return null
 
         val sides = arrayOf("top", "right", "bottom", "left")
 
@@ -215,7 +220,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
         var xTransform = if (right) SidedPosition.END else SidedPosition.START
         val yTransform = if (end) SidedPosition.END else SidedPosition.START
 
-        if (!CoreUtil.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT)) {
+        if (!client.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT)) {
             if (abs(x - DefaultWidgetSettings.screenEdgeDistance.get()) < 10) {
                 x = DefaultWidgetSettings.screenEdgeDistance.get().toDouble()
             }

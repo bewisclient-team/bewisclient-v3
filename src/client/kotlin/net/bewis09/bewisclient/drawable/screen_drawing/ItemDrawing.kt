@@ -1,10 +1,11 @@
 package net.bewis09.bewisclient.drawable.screen_drawing
 
+import net.bewis09.bewisclient.core.drawItemOverlay
 import net.minecraft.item.ItemStack
 
 interface ItemDrawing : ScreenDrawingInterface {
     fun drawItemStack(itemStack: ItemStack, x: Int, y: Int) {
-        drawingCore.drawItemStack(itemStack, x, y)
+        drawContext.drawItem(itemStack, x, y)
     }
 
     fun drawItemStack(itemStack: ItemStack, x: Int, y: Int, size: Int) {
@@ -16,7 +17,7 @@ interface ItemDrawing : ScreenDrawingInterface {
 
     fun drawItemStackWithOverlay(itemStack: ItemStack, x: Int, y: Int) {
         drawItemStack(itemStack, x, y)
-        drawingCore.drawStackOverlay(itemStack, x, y)
+        drawContext.drawItemOverlay(textRenderer, itemStack, x, y)
     }
 
     fun drawItemStackWithOverlay(itemStack: ItemStack, x: Int, y: Int, size: Int) {

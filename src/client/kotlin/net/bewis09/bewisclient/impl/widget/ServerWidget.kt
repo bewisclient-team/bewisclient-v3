@@ -1,13 +1,13 @@
 package net.bewis09.bewisclient.impl.widget
 
-import net.bewis09.bewisclient.core.BewisclientID
+import net.bewis09.bewisclient.logic.createIdentifier
 import net.bewis09.bewisclient.logic.toText
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
 import net.minecraft.text.Text
 
-object ServerWidget : LineWidget(BewisclientID("bewisclient", "server_widget")) {
+object ServerWidget : LineWidget(createIdentifier("bewisclient", "server_widget")) {
     override fun getLine(): Text = (client.currentServerEntry?.address ?: "example.com").toText()
 
     override fun defaultPosition(): WidgetPosition = SidedPosition(5,5, SidedPosition.END, SidedPosition.END)

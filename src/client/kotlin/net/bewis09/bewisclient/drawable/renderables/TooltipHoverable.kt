@@ -44,7 +44,7 @@ open class TooltipHoverable(val tooltip: () -> Translation?) : Hoverable() {
 
                 val width = wrappedText.maxOfOrNull { screenDrawing.getTextWidth(it) }?.plus(10) ?: 210
 
-                if (mouseX + width > client.window.scaledWidth) {
+                if (mouseX + width > util.width) {
                     screenDrawing.translate(-width.toFloat(), 0f)
                 }
 

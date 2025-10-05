@@ -2,10 +2,10 @@ package net.bewis09.bewisclient.impl.widget
 
 import com.google.gson.JsonPrimitive
 import net.bewis09.bewisclient.api.APIEntrypointLoader
-import net.bewis09.bewisclient.core.BewisclientID
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.renderable.CustomWidgetLineRenderable
+import net.bewis09.bewisclient.logic.createIdentifier
 import net.bewis09.bewisclient.logic.string
 import net.bewis09.bewisclient.logic.toText
 import net.bewis09.bewisclient.settings.types.ListSetting
@@ -13,10 +13,9 @@ import net.bewis09.bewisclient.widget.Widget
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
-import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 
-object CustomWidget : LineWidget(BewisclientID("bewisclient", "custom_widget")) {
+object CustomWidget : LineWidget(createIdentifier("bewisclient", "custom_widget")) {
     val customWidgetParamInfo = createTranslation("param_info", "You can include live information in the Custom Widget using curly brackets, e.g. {biome_id}. Some data points can take parameters, which can be specified after a | character. For example, {real_time|seconds} will show the real time including seconds.")
 
     class WidgetStringData(val id: String, val name: Translation, val description: Translation, val func: (param: String?) -> Text, val param: Translation? = null) {
@@ -41,7 +40,7 @@ object CustomWidget : LineWidget(BewisclientID("bewisclient", "custom_widget")) 
 
     override fun getLines(): List<Text> = lines.get().map(::computeLine)
 
-    fun computeLine(line: String): MutableText {
+    fun computeLine(line: String): Text {
         return Regex("\\{\\w+(?:\\|\\w+)?}|.+?|").findAll(line).toList().map { a ->
             Regex("\\{(\\w+)(?:\\|(\\w+))?}|.+").findAll(a.value).map { b ->
                 val id = b.groupValues.getOrNull(1) ?: return@map b.value.toText()
@@ -49,7 +48,7 @@ object CustomWidget : LineWidget(BewisclientID("bewisclient", "custom_widget")) 
 
                 widgetStringDataPoints.find { a -> a.id == id }?.func(param)?.copy() ?: b.value.toText()
             }.toList()
-        }.flatten().reduceOrNull { a, b -> Text.empty().append(a.append(b)) } ?: Text.empty()
+        }.flatten().reduceOrNull { a, b -> "".toText().append(a.append(b)) } ?: "".toText()
     }
 
     override fun getMinimumWidth(): Int = minimumWidth.get().toInt()

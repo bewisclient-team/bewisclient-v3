@@ -1,6 +1,5 @@
 package net.bewis09.bewisclient.widget
 
-import net.bewis09.bewisclient.core.BewisclientID
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
@@ -8,12 +7,12 @@ import net.bewis09.bewisclient.drawable.screen_drawing.transform
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.widget.CustomWidget
 import net.bewis09.bewisclient.logic.catch
-import net.bewis09.bewisclient.screen.RenderableScreen
 import net.bewis09.bewisclient.settings.types.ObjectSetting
 import net.bewis09.bewisclient.settings.types.WidgetPositionSetting
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
+import net.minecraft.util.Identifier
 
-abstract class Widget(val id: BewisclientID) : ObjectSetting() {
+abstract class Widget(val id: Identifier) : ObjectSetting() {
     var position: WidgetPositionSetting = create("position", WidgetPositionSetting(defaultPosition()))
     var enabled = boolean("enabled", isEnabledByDefault())
 
@@ -30,7 +29,7 @@ abstract class Widget(val id: BewisclientID) : ObjectSetting() {
     open fun isHidden(): Boolean = false
 
     fun isShowing(): Boolean {
-        return isEnabled() && (!isHidden() || ((client.currentScreen as? RenderableScreen)?.renderable is HudEditScreen))
+        return isEnabled() && (!isHidden() || (util.getCurrentRenderableScreen()?.renderable is HudEditScreen))
     }
 
     fun isEnabled(): Boolean = enabled.get()
@@ -48,8 +47,8 @@ abstract class Widget(val id: BewisclientID) : ObjectSetting() {
 
     abstract fun render(screenDrawing: ScreenDrawing)
 
-    fun getScreenWidth(): Int = client.window.scaledWidth
-    fun getScreenHeight(): Int = client.window.scaledHeight
+    fun getScreenWidth(): Int = util.width
+    fun getScreenHeight(): Int = util.height
     fun getScaledWidth(): Float = getWidth() * getScale()
     fun getScaledHeight(): Float = getHeight() * getScale()
 

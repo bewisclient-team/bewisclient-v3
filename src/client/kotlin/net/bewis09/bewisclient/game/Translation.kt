@@ -1,6 +1,7 @@
 package net.bewis09.bewisclient.game
 
 import net.bewis09.bewisclient.logic.addTranslation
+import net.bewis09.bewisclient.logic.toText
 import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 
@@ -13,13 +14,13 @@ class Translation(private val namespace: String, private val key: String, @Suppr
 
     fun getTranslatedText(): MutableText {
         if (key.isEmpty()) {
-            return Text.literal(en_us)
+            return en_us.toText()
         }
         return Text.translatable("$namespace.$key")
     }
 
     fun getTranslatedText(vararg args: Any): MutableText {
-        return if (key.isEmpty()) Text.literal(en_us)
+        return if (key.isEmpty()) en_us.toText()
         else Text.translatable("$namespace.$key", *args)
     }
 

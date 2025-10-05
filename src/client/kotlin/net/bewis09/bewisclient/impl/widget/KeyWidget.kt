@@ -1,7 +1,6 @@
 package net.bewis09.bewisclient.impl.widget
 
-import net.bewis09.bewisclient.core.BewisclientID
-import net.bewis09.bewisclient.core.CoreUtil
+import net.bewis09.bewisclient.core.isKeyPressed
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
 import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSettingsRenderable
@@ -11,8 +10,8 @@ import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.bewis09.bewisclient.interfaces.KeyBindingAccessor
 import net.bewis09.bewisclient.logic.color.Color
 import net.bewis09.bewisclient.logic.color.StaticColorSaver
+import net.bewis09.bewisclient.logic.createIdentifier
 import net.bewis09.bewisclient.logic.staticFun
-import net.bewis09.bewisclient.screen.RenderableScreen
 import net.bewis09.bewisclient.settings.types.BooleanSetting
 import net.bewis09.bewisclient.settings.types.ColorSetting
 import net.bewis09.bewisclient.widget.logic.RelativePosition
@@ -22,7 +21,7 @@ import net.minecraft.client.option.KeyBinding
 import net.minecraft.client.util.InputUtil
 import org.lwjgl.glfw.GLFW
 
-object KeyWidget : ScalableWidget(BewisclientID("bewisclient", "key_widget")) {
+object KeyWidget : ScalableWidget(createIdentifier("bewisclient", "key_widget")) {
     val backgroundColor = create("background_color", DefaultWidgetSettings.backgroundColor.cloneWithDefault())
     val backgroundOpacity = create(
         "background_opacity", DefaultWidgetSettings.backgroundOpacity.cloneWithDefault()
@@ -104,12 +103,12 @@ object KeyWidget : ScalableWidget(BewisclientID("bewisclient", "key_widget")) {
     }
 
     fun isPressed(keyBinding: KeyBinding): Boolean {
-        val c = client.currentScreen as? RenderableScreen ?: return keyBinding.isPressed
+        val c = util.getCurrentRenderableScreen() ?: return keyBinding.isPressed
         val d = c.renderable as? HudEditScreen ?: return keyBinding.isPressed
 
         val key = (keyBinding as KeyBindingAccessor).getBoundKey()
 
-        if (key.category == InputUtil.Type.KEYSYM) return CoreUtil.isKeyPressed(key.code)
+        if (key.category == InputUtil.Type.KEYSYM) return client.isKeyPressed(key.code)
         if (key.category == InputUtil.Type.MOUSE) return d.mouseMap[key.code] == true
         return keyBinding.isPressed
     }

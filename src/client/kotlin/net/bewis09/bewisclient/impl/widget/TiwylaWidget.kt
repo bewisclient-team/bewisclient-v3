@@ -2,9 +2,7 @@ package net.bewis09.bewisclient.impl.widget
 
 import com.google.gson.*
 import net.bewis09.bewisclient.api.APIEntrypointLoader
-import net.bewis09.bewisclient.core.*
-import net.bewis09.bewisclient.core.wrapper.BlockStateWrapper
-import net.bewis09.bewisclient.core.wrapper.TextWrapper
+import net.bewis09.bewisclient.core.setFont
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
@@ -12,8 +10,8 @@ import net.bewis09.bewisclient.drawable.screen_drawing.transform
 import net.bewis09.bewisclient.impl.renderable.TiwylaInfoSettingsRenderable
 import net.bewis09.bewisclient.impl.renderable.TiwylaLinesSettingsRenderable
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
-import net.bewis09.bewisclient.logic.EventEntrypoint
-import net.bewis09.bewisclient.logic.catch
+import net.bewis09.bewisclient.interfaces.BreakingProgressAccessor
+import net.bewis09.bewisclient.logic.*
 import net.bewis09.bewisclient.logic.color.color
 import net.bewis09.bewisclient.settings.types.BooleanMapSetting
 import net.bewis09.bewisclient.settings.types.ListSetting
@@ -25,7 +23,6 @@ import net.minecraft.entity.*
 import net.minecraft.registry.Registries
 import net.minecraft.registry.tag.BlockTags
 import net.minecraft.state.property.Property
-import net.minecraft.text.Style
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
 import net.minecraft.util.hit.BlockHitResult
@@ -34,10 +31,10 @@ import net.minecraft.util.math.BlockPos
 import kotlin.jvm.optionals.getOrNull
 import kotlin.math.*
 
-object TiwylaWidget : ScalableWidget(BewisclientID("bewisclient", "tiwyla_widget")), EventEntrypoint {
+object TiwylaWidget : ScalableWidget(createIdentifier("bewisclient", "tiwyla_widget")), EventEntrypoint {
     private var lineWidth = 0
 
-    var heartStyle: Style = BewisclientID("bewisclient", "extra").toStyleFont()
+    var heartStyle: Identifier = createIdentifier("bewisclient", "extra")
 
     val topTextColor = create("top_text_color", DefaultWidgetSettings.textColor.cloneWithDefault())
     val bottomTextColor = create("bottom_text_color", DefaultWidgetSettings.textColor.cloneWithDefault())
@@ -144,18 +141,18 @@ object TiwylaWidget : ScalableWidget(BewisclientID("bewisclient", "tiwyla_widget
 
     override fun isHidden(): Boolean = getTiwylaTitle() == null
 
-    fun getTiwylaTitle(): TextWrapper? {
-        if (!core.isInWorld()) return Blocks.GRASS_BLOCK.getText()
+    fun getTiwylaTitle(): Text? {
+        if (!util.isInWorld()) return Blocks.GRASS_BLOCK.name
 
         return onHitResult({ data ->
-            data.state.getBlockTitle()
+            data.state.block.name
         }, { entity ->
-            entity.getText()
+            entity.name
         })
     }
 
     fun <T> onHitResult(block: (hitResult: BlockData) -> T, entity: (hitResult: Entity) -> T): T? {
-        val world = core.getWorld() ?: return null
+        val world = client.world ?: return null
 
         return when (val hitResult = client.crosshairTarget) {
             is BlockHitResult -> if (world.getBlockState(hitResult.blockPos).isAir) null else block(BlockData(world.getBlockState(hitResult.blockPos), hitResult.blockPos))
@@ -165,7 +162,7 @@ object TiwylaWidget : ScalableWidget(BewisclientID("bewisclient", "tiwyla_widget
     }
 
     fun getSublines(): List<Text> {
-        if (!core.isInWorld()) return getBlockSublines(BlockData(Blocks.GRASS_BLOCK.defaultState, BlockPos.ORIGIN))
+        if (!util.isInWorld()) return getBlockSublines(BlockData(Blocks.GRASS_BLOCK.defaultState, BlockPos.ORIGIN))
 
         return onHitResult(::getBlockSublines, ::getEntitySublines) ?: listOf()
     }
@@ -252,7 +249,7 @@ object TiwylaWidget : ScalableWidget(BewisclientID("bewisclient", "tiwyla_widget
         }
     }
 
-    data class BlockData(val state: BlockStateWrapper, val blockPos: BlockPos)
+    data class BlockData(val state: BlockState, val blockPos: BlockPos)
 
     val blockInformation = listOf<Information.Line<BlockData>>(
         Information.Line({ data ->
@@ -270,35 +267,33 @@ object TiwylaWidget : ScalableWidget(BewisclientID("bewisclient", "tiwyla_widget
             if (data.state.isToolRequired) return@Line miningLevel(woodLevelText.getTranslatedString())
             return@Line miningLevel(noneLevelText.getTranslatedString())
         }, "mining_level", 0), Information.Line({ data ->
-            if (!core.isInWorld()) return@Line secondsText(4.5)
+            if (!util.isInWorld()) return@Line secondsText(4.5)
 
-            val player = client.player ?: return@Line null
+            if (data.state.calcBlockBreakingDelta(client.player, client.world, data.blockPos) > 1) return@Line instantText()
 
-            if (data.state.calcBlockBreakingDelta(player, client.world, data.blockPos) > 1) return@Line instantText()
-
-            val secs = (1f / data.state.calcBlockBreakingDelta(player, client.world, data.blockPos) * 5F).roundToInt() / 100F
+            val secs = (1f / data.state.calcBlockBreakingDelta(client.player, client.world, data.blockPos) * 5F).roundToInt() / 100F
 
             if (secs > (3600 * 24)) return@Line daysText((secs / 36 / 24).roundToInt() / 100F)
             if (secs > 3600) return@Line hoursText((secs / 36).roundToInt() / 100F)
             if (secs > 60) return@Line minutesText((secs / 6 * 10).roundToInt() / 100F)
             return@Line secondsText((secs * 100).roundToInt() / 100F)
         }, "break_time", 0), Information.Line({ _ ->
-            val s = CoreUtil.getBreakingProgress() * 1000
+            val s = ((client.interactionManager as BreakingProgressAccessor?)?.getCurrentBreakingProgress() ?: 0f) * 1000
             if (s == 0F) {
                 return@Line null
             }
             return@Line progressText(round(s) / 10f)
         }, "progress", 2), Information.Line({ data ->
-            val id = Registries.BLOCK.getEntry(data.state.block).key.getOrNull()?.value?.toString() ?: return@Line null
+            val id = data.state.blockId().toString()
             if (blockSpecialInfoMap[id] == false) return@Line null
             val property = blockStateInfoMap[id] ?: return@Line null
-            return@Line Text.literal("${snake_toCamelCase(property.name)}: ${data.state.get(property)}")
+            return@Line "${snake_toCamelCase(property.name)}: ${data.state.get(property)}".toText()
         }, "block_property", 1)
     )
 
     val entityInformation = listOf<Information.Line<Entity>>(
         Information.Line({ entity ->
-            return@Line Text.literal(Registries.ENTITY_TYPE.getEntry(entity.type).key.get().value.toString())
+            return@Line entity.entityId().toString().toText()
         }, "entity_id", 0), Information.Line({ entity ->
             return@Line if (client.isInSingleplayer) (entity as? LivingEntity)?.let {
                 convertToHearths(
@@ -306,8 +301,8 @@ object TiwylaWidget : ScalableWidget(BewisclientID("bewisclient", "tiwyla_widget
                 )
             } else null
         }, "health", 1), Information.Line({ entity ->
-            if (Registries.ENTITY_TYPE.getEntry(entity.type).key.getOrNull()?.value?.let { blockSpecialInfoMap[it.toString()] } == false) return@Line null
-            return@Line provideEntityInfo(entity)?.let { Text.literal(it) }
+            if (entity.entityId().let { entitySpecialInfoMap[it.toString()] } == false) return@Line null
+            return@Line provideEntityInfo(entity)?.toText()
         }, "special_entity_info", 2)
     )
 
@@ -320,7 +315,7 @@ object TiwylaWidget : ScalableWidget(BewisclientID("bewisclient", "tiwyla_widget
             health = ((health * 10).toInt().toDouble()) / 10f
             absorption = ((absorption * 10).toInt().toDouble()) / 10f
             if (maxHealth > 13.0) {
-                return Text.literal((health.toString() + " / " + maxHealth * 2 + " HP"))
+                return (health.toString() + " / " + maxHealth * 2 + " HP").toText()
             }
             health = roundUpAndHalf(health)
             absorption = roundUpAndHalf(absorption)
@@ -328,14 +323,14 @@ object TiwylaWidget : ScalableWidget(BewisclientID("bewisclient", "tiwyla_widget
             val isAbsorptionHalf = absorption != absorption.toInt().toDouble()
             val isMaxHalf = maxHealth != (((maxHealth * 2).toInt().toDouble()) / 2).toInt().toDouble()
             val maxHealthLeft = (maxHealth - ((health.toInt()) + (if (isHalf) 1 else 0)) + (if (isMaxHalf) 1 else 0)).toInt()
-            return Text.literal("❤".repeat(health.toInt()))
-                .setStyle(Style.EMPTY.withColor(0xFF0000))
-                .append(Text.literal(if (isHalf) "\uE0aa" else "").setStyle(heartStyle.withColor(0xFFFFFF)))
-                .append(Text.literal("❤".repeat(maxHealthLeft)).setStyle(Style.EMPTY.withColor(0xFFFFFF)))
-                .append(Text.literal("❤".repeat(absorption.toInt())).setStyle(Style.EMPTY.withColor(0xFFFF00)))
-                .append(Text.literal(if (isAbsorptionHalf) "\uE0ab" else "").setStyle(heartStyle.withColor(0xFFFFFF)))
+            return ("❤".repeat(health.toInt())).toText()
+                .setColor(0xFF0000)
+                .append((if (isHalf) "\uE0aa" else "").toText().setFont(heartStyle).setColor(0xFFFFFF))
+                .append(("❤".repeat(maxHealthLeft)).toText().setColor(0xFFFFFF))
+                .append(("❤".repeat(absorption.toInt())).toText().setColor(0xFFFF00))
+                .append((if (isAbsorptionHalf) "\uE0ab" else "").toText().setFont(heartStyle).setColor(0xFFFF00))
         } catch (_: Exception) {
-            return Text.of("")
+            return "".toText()
         }
     }
 
@@ -365,7 +360,7 @@ object TiwylaWidget : ScalableWidget(BewisclientID("bewisclient", "tiwyla_widget
     override fun onResourcesReloaded() {
         blockStateInfoMap.clear()
 
-        val resources = client.resourceManager.findAllResources(
+        val resources = util.findAllResources(
             "bewisclient/block_information"
         ) { it.path.endsWith(".json") }
 

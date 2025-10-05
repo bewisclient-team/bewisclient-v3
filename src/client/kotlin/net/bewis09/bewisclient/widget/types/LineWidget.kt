@@ -1,17 +1,18 @@
 package net.bewis09.bewisclient.widget.types
 
-import net.bewis09.bewisclient.core.BewisclientID
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
+import net.bewis09.bewisclient.logic.MathHelper
+import net.bewis09.bewisclient.logic.toText
 import net.minecraft.text.Text
-import net.minecraft.util.math.MathHelper
+import net.minecraft.util.Identifier
 
-abstract class LineWidget(id: BewisclientID) : ScalableWidget(id) {
+abstract class LineWidget(id: Identifier) : ScalableWidget(id) {
     private var lineWidth = 0
 
     companion object {
-        private val EMPTY = Text.empty()
+        private val EMPTY = "".toText()
     }
 
     val backgroundColor = create("background_color", DefaultWidgetSettings.backgroundColor.cloneWithDefault())

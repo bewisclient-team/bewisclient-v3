@@ -1,9 +1,7 @@
 package net.bewis09.bewisclient.logic
 
-import net.bewis09.bewisclient.core.BewisclientID
-import net.bewis09.bewisclient.core.wrapper.TextWrapper
-import net.minecraft.text.MutableText
 import net.minecraft.text.Text
+import net.minecraft.util.Identifier
 
 inline fun <T> catch(block: () -> T, or: T) = catch(block) ?: or
 
@@ -15,18 +13,10 @@ inline fun <T> catch(block: () -> T) = try {
 
 fun <T> T.staticFun(): () -> T = { this }
 
-fun Int.toText(): MutableText = Text.literal(this.toString())
+fun Int.toText(): Text = this.toString().toText()
 
 infix fun <T> Boolean.then(other: T): T? = if (this) other else null
 
-fun BewisclientID.toTranslationKey(): String {
-    return this.namespace + "." + this.path
-}
+fun createIdentifier(namespace: String, path: String): Identifier = Identifier.of(namespace, path)
 
-fun BewisclientID.toTranslationKey(prefix: String): String {
-    return prefix + "." + this.toTranslationKey()
-}
-
-fun BewisclientID.toTranslationKey(prefix: String, suffix: String): String {
-    return prefix + "." + this.toTranslationKey() + "." + suffix
-}
+fun createIdentifier(path: String): Identifier = Identifier.of(path)
