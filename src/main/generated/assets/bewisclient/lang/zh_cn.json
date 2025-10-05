@@ -1,4 +1,6 @@
 ﻿{
+  "modmenu.descriptionTranslation.bewisclient": "Bewisclient 为 Minecraft 增添了一系列实用功能，以增强游戏体验。",
+   
   "bewisclient.color.aqua": "水色",
   "bewisclient.color.black": "黑色",
   "bewisclient.color.blue": "蓝色",
@@ -339,4 +341,5 @@
   "bewisclient.widget.tiwyla_widget.tool.pickaxe": "镐",
   "bewisclient.widget.tiwyla_widget.tool.shovel": "锹",
   "bewisclient.widget.tiwyla_widget.tool.sword": "剑"
+
 }
