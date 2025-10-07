@@ -13,4 +13,5 @@ object Translations {
     val CLICK_TO_ENABLE = Translation("menu.general.enable", "Click to Enable")
     val CLICK_TO_DISABLE = Translation("menu.general.disable", "Click to Disable")
     val MORE_LINES = Translation("menu.held_item_tooltip.more_lines", "and %s more...")
+    val SELECT = Translation("menu.general.select", "Select")
 }

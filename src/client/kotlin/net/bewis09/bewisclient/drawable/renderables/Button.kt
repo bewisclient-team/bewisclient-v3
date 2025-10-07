@@ -12,7 +12,7 @@ class Button(val text: Text, val onClick: (Button) -> Unit, tooltip: Translation
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
-        screenDrawing.fillWithBorderRounded(x, y, width, height, 5, OptionsMenuSettings.themeColor.get().getColor() alpha (hoverAnimation["hovering"] * 1 + 1) * if (dark) 0.05f else 0.15f, 0xAAAAAA alpha if (selected?.invoke() == true) 0.5f else 0f)
+        screenDrawing.fillWithBorderRounded(x, y, width, height, 5, OptionsMenuSettings.themeColor.get().getColor() alpha (hoverAnimation["hovering"] * 1 + 1) * if (dark) 0.05f else 0.15f, OptionsMenuSettings.themeColor.get().getColor() alpha if (selected?.invoke() == true) 0.5f else 0f)
         screenDrawing.translate(0f, height / 2f - screenDrawing.getTextHeight() / 2f) {
             screenDrawing.drawCenteredText(text, centerX, y, OptionsMenuSettings.themeColor.get().getColor())
         }

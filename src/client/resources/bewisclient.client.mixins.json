@@ -7,6 +7,7 @@
     "CameraMixin",
     "ClientPlayerInteractionManagerMixin",
     "ClientPlayNetworkHandlerMixin",
+    "EntityMixin",
     "GameMenuScreenMixin",
     "GameOptionsMixin",
     "GameRendererMixin",
@@ -15,7 +16,7 @@
     "LightmapTextureManagerMixin",
     "LivingEntityMixin",
     "MinecraftClientMixin",
-    "EntityMixin"
+    "WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
