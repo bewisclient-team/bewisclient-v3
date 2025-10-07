@@ -106,6 +106,7 @@
   "bewisclient.menu.category.block_highlight": "Block Highlight",
   "bewisclient.menu.category.contact": "Contact",
   "bewisclient.menu.category.cosmetics": "Cosmetics",
+  "bewisclient.menu.category.cosmetics.info": "Cosmetics are not yet available in this version of Bewisclient. We are working on making them available again with new features and online support in the new future.",
   "bewisclient.menu.category.entity_highlight": "Entity Highlight",
   "bewisclient.menu.category.extensions": "Extensions",
   "bewisclient.menu.category.fullbright": "Fullbright",

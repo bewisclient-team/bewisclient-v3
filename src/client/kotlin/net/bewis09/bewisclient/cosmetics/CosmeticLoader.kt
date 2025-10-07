@@ -75,40 +75,42 @@ object CosmeticLoader : BewisclientInterface, EventEntrypoint {
     }
 
     override fun onInitializeClient() {
-        Util.getIoWorkerExecutor().execute {
-            val connection = URI(Constants.DATA_URL).toURL().openConnection() as? HttpURLConnection ?: return@execute
-            connection.requestMethod = "POST"
-            connection.doOutput = true
-
-            val out: ByteArray = """{"uuid":"${MinecraftClient.getInstance().gameProfile.id}"}""".toByteArray()
-
-            connection.setFixedLengthStreamingMode(out.size)
-            connection.connect()
-            connection.outputStream.use { it.write(out) }
-
-            val result = connection.getInputStream().readAllBytes()
-            val data = Gson().fromJson(result.decodeToString(), CosmeticData::class.java)
-
-            data.cosmetics.forEach {
-                loadCosmetic(
-                    CosmeticType.fromId(it.type) ?: return@forEach,
-                    it.id,
-                    it.hash,
-                    it.frames
-                )
-            }
-        }
+        return
+//        Util.getIoWorkerExecutor().execute {
+//            val connection = URI(Constants.DATA_URL).toURL().openConnection() as? HttpURLConnection ?: return@execute
+//            connection.requestMethod = "POST"
+//            connection.doOutput = true
+//
+//            val out: ByteArray = """{"uuid":"${MinecraftClient.getInstance().gameProfile.id}"}""".toByteArray()
+//
+//            connection.setFixedLengthStreamingMode(out.size)
+//            connection.connect()
+//            connection.outputStream.use { it.write(out) }
+//
+//            val result = connection.getInputStream().readAllBytes()
+//            val data = Gson().fromJson(result.decodeToString(), CosmeticData::class.java)
+//
+//            data.cosmetics.forEach {
+//                loadCosmetic(
+//                    CosmeticType.fromId(it.type) ?: return@forEach,
+//                    it.id,
+//                    it.hash,
+//                    it.frames
+//                )
+//            }
+//        }
     }
 
     override fun onMinecraftClientInitFinished() {
-        byteData.forEach {
-            if (status[it.key] == DownloadStatus.LOADED) {
-                status[it.key] = DownloadStatus.REGISTER_IN_PROGRESS
-                val cosmetic = loadCosmeticFromByteArray(it.key, it.value.first, it.value.second) ?: return@forEach
-                cosmetics[it.key] = cosmetic
-                status[it.key] = DownloadStatus.COMPLETED
-            }
-        }
+        return
+//        byteData.forEach {
+//            if (status[it.key] == DownloadStatus.LOADED) {
+//                status[it.key] = DownloadStatus.REGISTER_IN_PROGRESS
+//                val cosmetic = loadCosmeticFromByteArray(it.key, it.value.first, it.value.second) ?: return@forEach
+//                cosmetics[it.key] = cosmetic
+//                status[it.key] = DownloadStatus.COMPLETED
+//            }
+//        }
     }
 
     @Suppress("PropertyName")
@@ -159,16 +161,17 @@ object CosmeticLoader : BewisclientInterface, EventEntrypoint {
     )
 
     fun getCosmeticForPlayer(player: PlayerListEntry, type: CosmeticType): Cosmetic? {
-        val id = Identifier.of("bewisclient", "cosmetics/${type.id}/golden_creeper")
-        if (cosmetics.containsKey(id)) return cosmetics[id]
-        if (status[id] == DownloadStatus.LOADED) {
-            status[id] = DownloadStatus.REGISTER_IN_PROGRESS
-            val data = byteData[id] ?: return null
-            val cosmetic = loadCosmeticFromByteArray(id, data.first, data.second) ?: return null
-            cosmetics[id] = cosmetic
-            status[id] = DownloadStatus.COMPLETED
-        }
         return null
+//        val id = Identifier.of("bewisclient", "cosmetics/${type.id}/golden_creeper")
+//        if (cosmetics.containsKey(id)) return cosmetics[id]
+//        if (status[id] == DownloadStatus.LOADED) {
+//            status[id] = DownloadStatus.REGISTER_IN_PROGRESS
+//            val data = byteData[id] ?: return null
+//            val cosmetic = loadCosmeticFromByteArray(id, data.first, data.second) ?: return null
+//            cosmetics[id] = cosmetic
+//            status[id] = DownloadStatus.COMPLETED
+//        }
+//        return null
     }
 
     enum class DownloadStatus {

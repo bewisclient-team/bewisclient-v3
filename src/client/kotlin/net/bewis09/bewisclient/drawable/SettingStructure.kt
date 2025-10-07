@@ -7,8 +7,10 @@ import net.bewis09.bewisclient.drawable.renderables.elements.ExtensionListRender
 import net.bewis09.bewisclient.drawable.renderables.options_structure.DescriptionSettingCategory
 import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCategory
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
+import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
+import net.bewis09.bewisclient.util.color.color
 import net.bewis09.bewisclient.util.logic.BewisclientInterface
 import net.bewis09.bewisclient.widget.WidgetLoader
 
@@ -30,11 +32,13 @@ class SettingStructure(val screen: OptionScreen) : BewisclientInterface {
         ), 1
     )
 
-    val cosmetics = Plane { x, y, _, _ ->
-        listOf(
-            SelectCapeElement().setPosition(x, y)
-        )
-    }
+    val cosmetics = InfoTextRenderable(Translation("menu.category.cosmetics.info", "Cosmetics are not yet available in this version of Bewisclient. We are working on making them available again with new features and online support in the new future.").getTranslatedString(), 0xAAAAAA.color, centered = true, selfResize = false)
+
+//    val cosmetics = Plane { x, y, _, _ ->
+//        listOf(
+//            SelectCapeElement().setPosition(x, y)
+//        )
+//    }
 
     val extensions = VerticalAlignScrollPlane(APIEntrypointLoader.mapContainer { ExtensionListRenderable(it.provider, it.entrypoint) }, 1)
 
