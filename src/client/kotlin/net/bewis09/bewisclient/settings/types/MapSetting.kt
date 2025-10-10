@@ -35,10 +35,10 @@ open class MapSetting<T>(val from: (JsonElement) -> T?, val to: (T) -> JsonEleme
     override fun convertFromElement(data: JsonElement?): HashMap<String, T>? = data?.jsonObject()?.asMap()?.mapValues { from(it.value) }?.filter { it.value != null }?.map { it.key to it.value!! }?.toTypedArray()?.let { hashMapOf(*it) }
 }
 
-class BooleanMapSetting : MapSetting<Boolean>(from = { it.boolean() }, to = { JsonPrimitive(it) })
+open class BooleanMapSetting : MapSetting<Boolean>(from = { it.boolean() }, to = { JsonPrimitive(it) })
 
-class IntegerMapSetting : MapSetting<Int>(from = { it.int() }, to = { JsonPrimitive(it) })
+open class IntegerMapSetting : MapSetting<Int>(from = { it.int() }, to = { JsonPrimitive(it) })
 
-class StringMapSetting : MapSetting<String>(from = { it.string() }, to = { JsonPrimitive(it) })
+open class StringMapSetting : MapSetting<String>(from = { it.string() }, to = { JsonPrimitive(it) })
 
-class FloatMapSetting : MapSetting<Float>(from = { it.float() }, to = { JsonPrimitive(it) })
+open class FloatMapSetting : MapSetting<Float>(from = { it.float() }, to = { JsonPrimitive(it) })

@@ -10,4 +10,6 @@ enum class CosmeticType(val id: String) {
             return entries.firstOrNull { it.id == id }
         }
     }
+
+    override fun toString() = id
 }

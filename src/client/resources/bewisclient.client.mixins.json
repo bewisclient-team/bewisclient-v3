@@ -15,8 +15,7 @@
     "KeyBindingMixin",
     "LightmapTextureManagerMixin",
     "LivingEntityMixin",
-    "MinecraftClientMixin",
-    "WorldRendererMixin"
+    "MinecraftClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1

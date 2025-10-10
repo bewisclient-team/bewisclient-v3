@@ -6,7 +6,7 @@ plugins {
     id "org.jetbrains.kotlin.jvm" version "2.2.0"
 }
 
-version = project.mod_version//+"-${project.property("like_version_"+project.minecraft_version.replace('.','_'))}"
+version = project.mod_version+"-${project.property("like_version_"+project.minecraft_version.replace('.','_'))}"
 group = project.maven_group
 minecraft_version = project.minecraft_version
 

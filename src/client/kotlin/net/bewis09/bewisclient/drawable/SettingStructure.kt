@@ -1,16 +1,16 @@
 package net.bewis09.bewisclient.drawable
 
 import net.bewis09.bewisclient.api.APIEntrypointLoader
+import net.bewis09.bewisclient.cosmetics.CosmeticLoader
+import net.bewis09.bewisclient.cosmetics.CosmeticType
 import net.bewis09.bewisclient.cosmetics.drawable.SelectCapeElement
 import net.bewis09.bewisclient.drawable.renderables.*
 import net.bewis09.bewisclient.drawable.renderables.elements.ExtensionListRenderable
 import net.bewis09.bewisclient.drawable.renderables.options_structure.DescriptionSettingCategory
 import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCategory
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
-import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
-import net.bewis09.bewisclient.util.color.color
 import net.bewis09.bewisclient.util.logic.BewisclientInterface
 import net.bewis09.bewisclient.widget.WidgetLoader
 
@@ -32,13 +32,16 @@ class SettingStructure(val screen: OptionScreen) : BewisclientInterface {
         ), 1
     )
 
-    val cosmetics = InfoTextRenderable(Translation("menu.category.cosmetics.info", "Cosmetics are not yet available in this version of Bewisclient. We are working on making them available again with new features and online support in the new future.").getTranslatedString(), 0xAAAAAA.color, centered = true, selfResize = false)
-
-//    val cosmetics = Plane { x, y, _, _ ->
-//        listOf(
-//            SelectCapeElement().setPosition(x, y)
-//        )
-//    }
+    val cosmetics = Plane { x, y, width, height ->
+        listOf(
+            CosmeticLoader.elytra.createRenderable("cosmetics.elytra", "Apply cape to elytra", "Some capes include a unique texture for the elytra, which can be disabled here if desired.")(x, y, width, 22),
+            VerticalScrollGrid({
+                CosmeticLoader.cosmetics.filter {
+                    it.key.type == CosmeticType.CAPE && CosmeticLoader.allowedCosmetics.contains(it.key)
+                }.map { a -> SelectCapeElement(a.key, a.value) }
+            }, 5, 65)(x, y + 27, width, height - 27)
+        )
+    }
 
     val extensions = VerticalAlignScrollPlane(APIEntrypointLoader.mapContainer { ExtensionListRenderable(it.provider, it.entrypoint) }, 1)
 

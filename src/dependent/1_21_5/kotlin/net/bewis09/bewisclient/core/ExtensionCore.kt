@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.core
 
+import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawingInterface
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.client.MinecraftClient
@@ -107,4 +108,8 @@ fun ItemStack.getItemFormattedName(): Text {
 
 fun DrawContext.translateToTopOptional() {
     this.matrices.translate(0f, 0f, 10000f)
+}
+
+fun ScreenDrawing.drawCape(identifier: Identifier, x: Int, y: Int, width: Int, height: Int) {
+    this.drawTextureRegion(identifier, x, y, 1f, 1f, width, height, 10, 16, 64, 32)
 }

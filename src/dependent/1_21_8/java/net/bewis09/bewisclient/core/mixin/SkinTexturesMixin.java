@@ -21,7 +21,7 @@ public abstract class SkinTexturesMixin {
     private void bewisclient$cape(CallbackInfoReturnable<Identifier> cir) {
         PlayerListEntry playerListEntry = CosmeticLoader.INSTANCE.getEntityBySkinTextures(this.hashCode());
         if (playerListEntry == null) return;
-        Cosmetic cosmetic = CosmeticLoader.INSTANCE.getCosmeticForPlayer(playerListEntry, CosmeticType.CAPE);
+        Cosmetic cosmetic = CosmeticLoader.INSTANCE.getCosmeticForPlayer(playerListEntry.getProfile(), CosmeticType.CAPE);
         if (cosmetic != null) {
             cir.setReturnValue(cosmetic.getIdentifier());
         }

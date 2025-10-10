@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.core
 
+import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawingInterface
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry
 import net.minecraft.client.MinecraftClient
@@ -7,7 +8,13 @@ import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gl.RenderPipelines
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.ingame.InventoryScreen
+import net.minecraft.client.model.ModelPart
+import net.minecraft.client.model.ModelPartData
 import net.minecraft.client.option.KeyBinding
+import net.minecraft.client.render.entity.EntityRendererFactory
+import net.minecraft.client.render.entity.model.EntityModelLayers
+import net.minecraft.client.render.entity.model.EntityModelPartNames
+import net.minecraft.client.render.entity.model.PlayerEntityModel
 import net.minecraft.client.texture.NativeImage
 import net.minecraft.client.texture.NativeImageBackedTexture
 import net.minecraft.client.util.InputUtil
@@ -110,4 +117,28 @@ fun ItemStack.getItemFormattedName(): Text {
     }
 
     return mutableText
+}
+
+val model by lazy {
+    PlayerEntityModel(
+        EntityRendererFactory.Context(
+            MinecraftClient.getInstance().entityRenderDispatcher,
+            MinecraftClient.getInstance().itemModelManager,
+            MinecraftClient.getInstance().mapRenderer,
+            MinecraftClient.getInstance().blockRenderManager,
+            MinecraftClient.getInstance().resourceManager,
+            MinecraftClient.getInstance().loadedEntityModels,
+            null,
+            MinecraftClient.getInstance().atlasManager,
+            MinecraftClient.getInstance().textRenderer,
+            null
+        ).getPart(EntityModelLayers.PLAYER_CAPE), false
+    )
+}
+
+fun ScreenDrawing.drawCape(identifier: Identifier, x: Int, y: Int, width: Int, height: Int) {
+    val xOffset = (width * (255 - this.getCurrentColorModifier().alpha)) / 127
+    this.enableScissors(x - 8, y - 8, width + 16, height + 16)
+    this.drawContext.addPlayerSkin(model, identifier, height.toFloat() * 0.9f, 18f, -195f, -10f, x - xOffset, y, x + (width * 1.13).toInt() - xOffset, y + (height * 1.13).toInt())
+    this.disableScissors()
 }

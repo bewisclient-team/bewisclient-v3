@@ -1,6 +1,7 @@
 package net.bewis09.bewisclient.cosmetics
 
 import net.bewis09.bewisclient.util.Bewisclient
+import net.bewis09.bewisclient.util.createIdentifier
 import net.minecraft.util.Identifier
 
 class StaticCosmetic(private val identifier: Identifier) : Cosmetic {
@@ -9,9 +10,9 @@ class StaticCosmetic(private val identifier: Identifier) : Cosmetic {
     }
 
     companion object {
-        fun create(identifier: Identifier, byteArray: ByteArray): StaticCosmetic {
-            Bewisclient.createTexture(identifier, byteArray)
-            return StaticCosmetic(identifier)
+        fun create(identifier: CosmeticIdentifier, byteArray: ByteArray): StaticCosmetic {
+            Bewisclient.createTexture(identifier.identifier, byteArray)
+            return StaticCosmetic(identifier.identifier)
         }
     }
 }
