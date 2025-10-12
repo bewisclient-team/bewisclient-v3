@@ -12,7 +12,8 @@
     "TitleScreenMixin",
     "WorldRendererMixin",
     "TooltipDisplayComponentMixin",
-    "SkinTexturesMixin"
+    "SkinTexturesMixin",
+    "ScreenshotRecorderMixin"
   ],
   "injectors": {
     "defaultRequire": 1

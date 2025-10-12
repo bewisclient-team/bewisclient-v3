@@ -50,14 +50,14 @@ object InventoryWidget : ScalableWidget(createIdentifier("bewisclient", "invento
 
     val identifier: Identifier = createIdentifier("bewisclient", "textures/gui/widget/inventory_widget.png")
 
-    override fun defaultPosition(): WidgetPosition = SidedPosition(5, 5, SidedPosition.START, SidedPosition.START)
+    override fun defaultPosition(): WidgetPosition = SidedPosition(5, 5, SidedPosition.END, SidedPosition.END)
 
     override fun render(screenDrawing: ScreenDrawing) {
         screenDrawing.drawTexture(identifier, 0, 0, getWidth(), getHeight())
 
         for (y in 0 until 3) {
             for (x in 0 until 9) {
-                val itemStack: ItemStack = client.player?.inventory?.getStack(x + y * 9 + 9) ?: (util.isInWorld() then ItemStack.EMPTY) ?: getSampleStack(x, y)
+                val itemStack: ItemStack = client.player?.inventory?.getStack(x + y * 9 + 9) ?: (util.isInWorld() then { ItemStack.EMPTY }) ?: getSampleStack(x, y)
                 drawSlot(screenDrawing, x * 20 + 2, y * 20 + 2, itemStack)
             }
         }

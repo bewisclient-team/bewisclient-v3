@@ -19,16 +19,16 @@ class ThemeButton : TooltipHoverable {
         this.onClick = onClick
     }
 
-    constructor(text: String, selectedButtonRef: AtomicRef<ThemeButton?>, onClick: (ThemeButton) -> Unit, tooltip: Translation? = null) : super(tooltip) {
+    constructor(id: String, text: String, selectedButtonRef: AtomicRef<String?>, onClick: (ThemeButton) -> Unit, tooltip: Translation? = null) : super(tooltip) {
         this.text = text
-        this.selected = { selectedButtonRef.value == this }
+        this.selected = { selectedButtonRef.value == id }
         this.onClick = {
-            selectedButtonRef.value = this
+            selectedButtonRef.value = id
             onClick(it)
         }
     }
 
-    constructor(text: String, clickButton: AtomicRef<ThemeButton?>, onClick: (ThemeButton) -> Unit) : this(text, clickButton, onClick, null)
+    constructor(id: String, text: String, clickButton: AtomicRef<String?>, onClick: (ThemeButton) -> Unit) : this(id, text, clickButton, onClick, null)
 
     constructor(text: String, onClick: (ThemeButton) -> Unit) {
         this.text = text

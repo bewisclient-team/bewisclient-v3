@@ -9,7 +9,7 @@ import net.bewis09.bewisclient.widget.Widget
 class SidedPosition(val x: Int, val y: Int, val xTransformer: TransformerType, val yTransformer: TransformerType) : WidgetPosition {
     companion object {
         val START = TransformerType("start") { pos: Int, _: Int, _: Float -> pos.toFloat() }
-        val CENTER = TransformerType("center") { _: Int, size: Int, widgetSize: Float -> size / 2 - widgetSize / 2 }
+        val CENTER = TransformerType("center") { pos: Int, size: Int, widgetSize: Float -> size / 2 - widgetSize / 2 + pos }
         val END = TransformerType("end") { pos: Int, size: Int, widgetSize: Float -> size - pos - widgetSize }
 
         val transformerTypes = listOf(START, CENTER, END)

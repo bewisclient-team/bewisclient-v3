@@ -105,16 +105,17 @@ interface TextDrawing : RectDrawing {
         return drawWrappedText(text.string, x, y, maxWidth, color, font)
     }
 
-    fun drawCenteredWrappedText(text: String, centerX: Int, y: Int, maxWidth: Int, color: Color, font: Identifier? = this.overwrittenFont): List<String> {
-        return wrapText(text, maxWidth, font).let { lines ->
-            val lineHeight = getTextHeight()
-            for (i in lines.indices) {
-                drawCenteredText(
-                    lines[i], centerX, y + i * lineHeight, color, font
-                )
-            }
-            lines
+    fun drawCenteredWrappedText(lines: List<String>, centerX: Int, y: Int, color: Color, font: Identifier? = this.overwrittenFont) {
+        val lineHeight = getTextHeight()
+        for (i in lines.indices) {
+            drawCenteredText(
+                lines[i], centerX, y + i * lineHeight, color, font
+            )
         }
+    }
+
+    fun drawCenteredWrappedText(text: String, centerX: Int, y: Int, maxWidth: Int, color: Color, font: Identifier? = this.overwrittenFont): List<String> {
+        return wrapText(text, maxWidth, font).also { drawCenteredWrappedText(it, centerX, y, color, font) }
     }
 
     fun drawCenteredWrappedText(text: Text, centerX: Int, y: Int, maxWidth: Int, color: Color, font: Identifier? = this.overwrittenFont): List<String> {

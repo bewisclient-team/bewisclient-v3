@@ -7,12 +7,14 @@ import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.util.color.Color
 import net.bewis09.bewisclient.util.color.within
+import net.minecraft.util.Identifier
 
-open class SidebarCategory(val name: Translation, val renderable: Renderable) {
-    constructor(name: Translation, settings: List<Renderable>) : this(name, VerticalScrollGrid({ settings.map { it.setHeight(90) } }, 5, 80))
+open class SidebarCategory(val id: Identifier, val name: Translation, val renderable: Renderable) {
+    constructor(id: Identifier, name: String, renderable: Renderable) : this(id, Translation(id.namespace, "menu.category."+id.path, name), renderable)
+    constructor(id: Identifier, name: String, settings: List<Renderable>) : this(id, name, VerticalScrollGrid({ settings.map { it.setHeight(90) } }, 5, 80))
 
     operator fun invoke(screen: OptionScreen): ThemeButton {
-        return ThemeButton(name.getTranslatedString(), screen.clickedButton) {
+        return ThemeButton(id.toString(), name.getTranslatedString(), screen.category) {
             screen.transformInside(
                 getHeader(), renderable
             )

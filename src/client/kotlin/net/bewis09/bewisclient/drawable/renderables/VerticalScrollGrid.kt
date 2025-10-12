@@ -4,7 +4,7 @@ import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import kotlin.math.floor
 
-class VerticalScrollGrid(val init: (Int) -> List<Renderable>, val gap: Int, val minWidth: Int) : Scrollable(Direction.VERTICAL) {
+open class VerticalScrollGrid(val init: (Int) -> List<Renderable>, val gap: Int, val minWidth: Int) : Scrollable(Direction.VERTICAL) {
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         if (renderables.isEmpty()) return
 
@@ -13,7 +13,7 @@ class VerticalScrollGrid(val init: (Int) -> List<Renderable>, val gap: Int, val 
         val columnHeights = Array(elementsInRow.toInt()) { 0 }
 
         screenDrawing.enableScissors(x, y, width, height)
-        for (it in renderables) {
+        for (it in ArrayList(renderables)) {
             val min = columnHeights.minOrNull() ?: 0
             val columnIndex = columnHeights.indexOf(min)
 

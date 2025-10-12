@@ -12,6 +12,7 @@
     "GameOptionsMixin",
     "GameRendererMixin",
     "InGameHudMixin",
+    "InGameOverlayRendererMixin",
     "KeyBindingMixin",
     "LightmapTextureManagerMixin",
     "LivingEntityMixin",

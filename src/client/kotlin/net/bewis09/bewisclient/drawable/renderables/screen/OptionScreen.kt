@@ -12,7 +12,7 @@ import net.bewis09.bewisclient.settings.types.Setting
 import org.lwjgl.glfw.GLFW
 
 class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvider {
-    val clickedButton = atomic<ThemeButton?>(null)
+    val category = atomic<String?>(null)
 
     val alphaMainAnimation = Animator({ OptionsMenuSettings.animationTime.get().toLong() }, Animator.EASE_IN_OUT, "alpha" to 0f, "inside" to 1f, "blur" to startBlur)
 
@@ -26,7 +26,7 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
 //            it.add(Rectangle(combineInt(OptionsMenuSettings.themeColor.get().net.bewis09.bewisclient.core.getColor(), 0.3f)).setHeight(1))
             it.addAll(settings.sidebarCategories)
             it.add(Rectangle { OptionsMenuSettings.themeColor.get().getColor() alpha 0.3f }.setHeight(1))
-            it.add(ThemeButton("Edit HUD", clickedButton) {
+            it.add(ThemeButton("bewisclient:edit_hud", "Edit HUD", category) {
                 alphaMainAnimation["alpha"] = 0f then {
                     client.setScreen(RenderableScreen(HudEditScreen()))
                 }

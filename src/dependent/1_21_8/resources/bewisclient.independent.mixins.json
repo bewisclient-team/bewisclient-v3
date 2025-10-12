@@ -13,7 +13,8 @@
     "OverlayTextureMixin",
     "LightmapTextureManagerMixin",
     "GameRendererMixin",
-    "SkinTexturesMixin"
+    "SkinTexturesMixin",
+    "ScreenshotRecorderMixin"
   ],
   "injectors": {
     "defaultRequire": 1

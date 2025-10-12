@@ -12,7 +12,7 @@ interface FileLogic {
      * @param path The relative path where the file should be saved.
      */
     fun saveRelativeFile(content: String, vararg path: String) {
-        val file = File(FabricLoader.getInstance().gameDir.toString() + "/${path.joinToString("/")}")
+        val file = createFile(*path)
 
         file.parentFile.mkdirs()
         file.writeText(content)
@@ -26,7 +26,7 @@ interface FileLogic {
      * @param path The relative path where the file should be saved.
      */
     fun saveRelativeFile(content: ByteArray, vararg path: String) {
-        val file = File(FabricLoader.getInstance().gameDir.toString() + "/${path.joinToString("/")}")
+        val file = createFile(*path)
 
         file.parentFile.mkdirs()
         file.writeBytes(content)
@@ -40,7 +40,7 @@ interface FileLogic {
      * @return The content of the file as a String, or null if the file does not exist.
      */
     fun readRelativeFile(vararg path: String): String? {
-        val file = File(FabricLoader.getInstance().gameDir.toString() + "/${path.joinToString("/")}")
+        val file = createFile(*path)
 
         if (!file.exists()) return null
 
@@ -55,10 +55,14 @@ interface FileLogic {
      * @return The content of the file as a String, or null if the file does not exist.
      */
     fun readRelativeFileBytes(vararg path: String): ByteArray? {
-        val file = File(FabricLoader.getInstance().gameDir.toString() + "/${path.joinToString("/")}")
+        val file = createFile(*path)
 
         if (!file.exists()) return null
 
         return file.readBytes()
     }
+
+    fun createFile(vararg path: String): File = File(FabricLoader.getInstance().gameDir.toString() + File.separator + path.joinToString(File.separator))
+
+    fun createBewisclientFile(vararg path: String): File = createFile("bewisclient", *path)
 }

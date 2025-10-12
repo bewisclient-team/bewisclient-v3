@@ -9,9 +9,10 @@
     "ItemStackMixin",
     "MouseMixin",
     "OverlayTextureMixin",
+    "SkinTexturesMixin",
     "TitleScreenMixin",
     "WorldRendererMixin",
-    "SkinTexturesMixin"
+    "ScreenshotRecorderMixin"
   ],
   "injectors": {
     "defaultRequire": 1

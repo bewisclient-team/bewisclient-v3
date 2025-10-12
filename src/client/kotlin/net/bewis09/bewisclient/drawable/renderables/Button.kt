@@ -6,7 +6,7 @@ import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.minecraft.text.Text
 
-class Button(val text: Text, val onClick: (Button) -> Unit, tooltip: Translation? = null, val selected: (() -> Boolean)? = null, var dark: Boolean = false) : TooltipHoverable(tooltip) {
+class Button(var text: Text, val onClick: (Button) -> Unit, tooltip: Translation? = null, val selected: (() -> Boolean)? = null, var dark: Boolean = false) : TooltipHoverable(tooltip) {
     constructor(text: Text, onClick: (Button) -> Unit) : this(text, onClick, null)
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {

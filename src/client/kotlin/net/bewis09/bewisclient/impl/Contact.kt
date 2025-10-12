@@ -17,7 +17,7 @@ import net.minecraft.util.Util
 import kotlin.math.roundToInt
 
 object Contact : SidebarCategory(
-    Translation("menu.category.contact", "Contact"), VerticalAlignScrollPlane(
+    createIdentifier("bewisclient","contact"), "Contact", VerticalAlignScrollPlane(
         listOf(
             ContactLinkElement("modrinth", Constants.MODRINTH_URL, "Modrinth", "The official download page of Bewisclient on Modrinth."),
             ContactLinkElement("github", Constants.GITHUB_URL, "GitHub", "The source code of Bewisclient is available on GitHub."),

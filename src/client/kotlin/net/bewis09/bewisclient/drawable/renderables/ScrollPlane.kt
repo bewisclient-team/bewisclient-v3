@@ -20,7 +20,7 @@ class ScrollPlane(direction: Direction, val init: (x: Int, y: Int, width: Int, h
     }
 
     override fun init() {
-        init.invoke(x, y, ((direction == Direction.HORIZONTAL) then innerSize.toInt()) ?: width, ((direction == Direction.VERTICAL) then innerSize.toInt()) ?: height, scrollAnimation["scrollY"]).forEach {
+        init.invoke(x, y, ((direction == Direction.HORIZONTAL) then { innerSize.toInt() }) ?: width, ((direction == Direction.VERTICAL) then { innerSize.toInt() }) ?: height, scrollAnimation["scrollY"]).forEach {
             addRenderable(it)
         }
     }

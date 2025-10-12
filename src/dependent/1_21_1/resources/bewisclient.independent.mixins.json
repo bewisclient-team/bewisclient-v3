@@ -11,7 +11,8 @@
     "OverlayTextureMixin",
     "TitleScreenMixin",
     "WorldRendererMixin",
-    "SkinTexturesMixin"
+    "SkinTexturesMixin",
+    "ScreenshotRecorderMixin"
   ],
   "injectors": {
     "defaultRequire": 1

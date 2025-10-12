@@ -4,7 +4,6 @@ import net.bewis09.bewisclient.core.isKeyPressed
 import net.bewis09.bewisclient.core.translateToTopOptional
 import net.bewis09.bewisclient.drawable.SettingStructure
 import net.bewis09.bewisclient.drawable.renderables.ImageButton
-import net.bewis09.bewisclient.drawable.renderables.ThemeButton
 import net.bewis09.bewisclient.drawable.renderables.popup.AddWidgetPopup
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
@@ -60,7 +59,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
                         a.optionsHeader = widgetsCategory.getHeader()
                         a.optionsPane = widgetsCategory.getPane()
                         a.optionsHeaderBooleanSetting = it.enabled
-                        a.clickedButton.value = a.settings.sidebarCategories[0] as? ThemeButton
+                        a.category.value = "bewisclient:widgets"
                     }))
 
                     return true
@@ -144,6 +143,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
                 val widgetsCategory = SettingStructure(it).widgetsCategory
                 it.optionsHeader = widgetsCategory.getHeader()
                 it.optionsPane = widgetsCategory.renderable
+                it.category.value = "bewisclient:widgets"
             }))
         }.setImagePadding(2)(width - 32, height - 16, 14, 14))
     }
@@ -230,6 +230,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
             }
 
             if (abs(wX + widget.getScaledWidth() / 2 - width / 2) < 10) {
+                x = 0.0
                 xTransform = SidedPosition.CENTER
             }
         }

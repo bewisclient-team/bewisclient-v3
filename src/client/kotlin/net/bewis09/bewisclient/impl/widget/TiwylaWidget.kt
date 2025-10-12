@@ -251,6 +251,8 @@ object TiwylaWidget : ScalableWidget(createIdentifier("bewisclient", "tiwyla_wid
 
     data class BlockData(val state: BlockState, val blockPos: BlockPos)
 
+    fun findBlockInformation(name: String) = blockInformation.firstOrNull { it.id == name }
+
     val blockInformation = listOf<Information.Line<BlockData>>(
         Information.Line({ data ->
             if (data.state.isIn(BlockTags.AXE_MINEABLE)) return@Line toolText(axeToolText.getTranslatedString())

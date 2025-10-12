@@ -40,7 +40,7 @@ class ThemeColorSaver : ColorSaver {
         private val description = Translation("color.theme.description", "A color that uses the client's theme color with the brightness set.")
 
         override fun createFromJson(jsonElement: JsonElement): ThemeColorSaver? {
-            return jsonElement.float()?.let { ThemeColorSaver((it != -1f) then it) }
+            return jsonElement.float()?.let { ThemeColorSaver((it != -1f) then { it }) }
         }
 
         override fun getType(): String = "theme"

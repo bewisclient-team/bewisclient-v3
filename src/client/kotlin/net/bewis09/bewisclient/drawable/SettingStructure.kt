@@ -11,6 +11,7 @@ import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCat
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
+import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.logic.BewisclientInterface
 import net.bewis09.bewisclient.widget.WidgetLoader
 
@@ -57,11 +58,11 @@ class SettingStructure(val screen: OptionScreen) : BewisclientInterface {
         )
     }
 
-    val widgetsCategory = SidebarCategory(Translation("menu.category.widgets", "Widgets"), this.widgetsPlane)
-    val utilitiesCategory = SidebarCategory(Translation("menu.category.utilities", "Utilities"), this.utilities)
-    val settingsCategory = SidebarCategory(Translation("menu.category.settings", "Settings"), this.settings)
-    val cosmeticsCategory = SidebarCategory(Translation("menu.category.cosmetics", "Cosmetics"), this.cosmetics)
-    val extensionsCategory = SidebarCategory(Translation("menu.category.extensions", "Extensions"), this.extensions)
+    val widgetsCategory = SidebarCategory(createIdentifier("bewisclient", "widgets"), "Widgets", this.widgetsPlane)
+    val utilitiesCategory = SidebarCategory(createIdentifier("bewisclient", "utilities"), "Utilities", this.utilities)
+    val settingsCategory = SidebarCategory(createIdentifier("bewisclient", "settings"), "Settings", this.settings)
+    val cosmeticsCategory = SidebarCategory(createIdentifier("bewisclient", "cosmetics"), "Cosmetics", this.cosmetics)
+    val extensionsCategory = SidebarCategory(createIdentifier("bewisclient", "extensions"), "Extensions", this.extensions)
 
     val sidebarCategories = arrayListOf<Renderable>(
         widgetsCategory(screen), utilitiesCategory(screen), settingsCategory(screen), cosmeticsCategory(screen), extensionsCategory(screen)

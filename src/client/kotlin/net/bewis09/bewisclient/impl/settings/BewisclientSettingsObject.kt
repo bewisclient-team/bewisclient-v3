@@ -19,5 +19,7 @@ object BewisclientSettingsObject : ObjectSetting() {
         create("perspective", PerspectiveSettings)
         create("shulker_box_tooltip", ShulkerBoxTooltipSettings)
         create("cosmetics", CosmeticLoader)
+        create("screenshot", ScreenshotSettings)
+        create("fire_height", FireHeightSettings)
     }
 }

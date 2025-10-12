@@ -5,11 +5,11 @@
   "name": "Bewisclient",
   "description": "Bewisclient adds many quality of life features to Minecraft.",
   "authors": [
-    "Me!"
+    "Bewis09", "Minkxxy"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "homepage": "https://modrinth.com/mod/bewisclient/",
+    "sources": "https://github.com/bewisclient-team/bewisclient-v3"
   },
   "license": "CC-BY 4.0",
   "icon": "assets/bewisclient/icon.png",
@@ -50,8 +50,5 @@
     "java": ">=21",
     "fabric-api": "*",
     "fabric-language-kotlin": "*"
-  },
-  "suggests": {
-    "another-mod": "*"
   }
 }
