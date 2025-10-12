@@ -1,9 +1,7 @@
 package net.bewis09.bewisclient.util
 
-import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.text.Text
 import net.minecraft.util.Identifier
-import java.io.File
 
 inline fun <T> catch(block: () -> T, or: T) = catch(block) ?: or
 
