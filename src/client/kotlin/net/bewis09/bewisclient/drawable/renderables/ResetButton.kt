@@ -6,7 +6,7 @@ import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.interfaces.Settable
 import net.bewis09.bewisclient.util.createIdentifier
 
-class ResetButton<T>(val setting: Settable<T?>) : TooltipHoverable(Translations.RESET) {
+class ResetButton<T>(val setting: Settable<T?>) : TooltipHoverable(Translations.RESET()) {
     init {
         internalWidth = 14
         internalHeight = 14

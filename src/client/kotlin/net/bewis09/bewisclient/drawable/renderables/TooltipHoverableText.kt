@@ -6,7 +6,7 @@ import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.util.color.Color
 import net.bewis09.bewisclient.util.color.within
 
-class TooltipHoverableText(val text: Translation, val color: Color, val hoverColor: Color = color, tooltip: Translation? = null, val centered: Boolean = false, val onClick: (() -> Unit)? = null) : TooltipHoverable(tooltip) {
+class TooltipHoverableText(val text: Translation, val color: Color, val hoverColor: Color = color, tooltip: Translation? = null, val centered: Boolean = false, val onClick: (() -> Unit)? = null) : TooltipHoverable(tooltip?.invoke()) {
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
         screenDrawing.translate(0f, height / 2f - screenDrawing.getTextHeight() / 2f) {

@@ -9,6 +9,8 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.util.number.Precision
 import net.bewis09.bewisclient.util.string
+import net.bewis09.bewisclient.util.toText
+import net.minecraft.text.Text
 
 open class StaticColorSaver : ColorSaver {
     private val color: Color
@@ -104,13 +106,13 @@ open class StaticColorSaver : ColorSaver {
                 )
             )
             addRenderable(Rectangle(0xAAAAAA.color alpha 0.5f)(x + height + 5, y + 30, width - height - 5, 1))
-            addRenderable(ColorButton(x + height + 5, y + 36, 27, 27, { get().getColor() }, String.format("#%06X", get().getColor().argb)))
+            addRenderable(ColorButton(x + height + 5, y + 36, 27, 27, { get().getColor() }, String.format("#%06X", get().getColor().argb).toText()))
             addRenderable(Rectangle(0xAAAAAA.color alpha 0.5f)(x + height + 37, y + 36, 1, 27))
 
             addRenderable(
                 HorizontalScrollGrid({
                     return@HorizontalScrollGrid colors.map { color ->
-                        ColorButton(0, 0, 12, 12, { color.color }, color.translation.getTranslatedString(), { newColor ->
+                        ColorButton(0, 0, 12, 12, { color.color }, color.translation(), { newColor ->
                             set(StaticColorSaver(newColor))
                         })
                     }
@@ -120,7 +122,7 @@ open class StaticColorSaver : ColorSaver {
             )
         }
 
-        class ColorButton(x: Int, y: Int, width: Int, height: Int, val color: () -> Color, tooltip: String? = null, val onClick: ((Color) -> Unit)? = null) : TooltipHoverable(tooltip?.let { Translation.literal(it) }) {
+        class ColorButton(x: Int, y: Int, width: Int, height: Int, val color: () -> Color, tooltip: Text? = null, val onClick: ((Color) -> Unit)? = null) : TooltipHoverable(tooltip) {
             init {
                 this.internalX = x
                 this.internalY = y

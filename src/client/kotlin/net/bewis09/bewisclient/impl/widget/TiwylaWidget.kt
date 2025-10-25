@@ -198,7 +198,7 @@ object TiwylaWidget : ScalableWidget(createIdentifier("bewisclient", "tiwyla_wid
             )
         )
         list.add(TiwylaLinesSettingsRenderable())
-        list.add(InfoTextRenderable(healthInfoText.getTranslatedString(), 0xAAAAAA.color, true))
+        list.add(InfoTextRenderable(healthInfoText(), 0xAAAAAA.color, true))
         list.add(
             backgroundColor.createRenderableWithFader(
                 "widget.background", "Background", "Set the color and opacity of the widget", backgroundOpacity

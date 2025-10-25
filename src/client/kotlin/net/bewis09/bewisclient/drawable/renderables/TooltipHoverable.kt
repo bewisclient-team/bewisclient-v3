@@ -5,9 +5,10 @@ import net.bewis09.bewisclient.drawable.animate
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.util.color.Color
+import net.minecraft.text.Text
 
-open class TooltipHoverable(val tooltip: () -> Translation?) : Hoverable() {
-    constructor(tooltip: Translation? = null) : this({ tooltip })
+open class TooltipHoverable(val tooltip: () -> Text?) : Hoverable() {
+    constructor(tooltip: Text? = null) : this({ tooltip })
 
     val tooltipAnimation = animate(200, Animator.EASE_IN_OUT, "tooltip" to 0f)
     var wasActuallyDrawn: Boolean? = null
@@ -39,7 +40,7 @@ open class TooltipHoverable(val tooltip: () -> Translation?) : Hoverable() {
                 screenDrawing.setBewisclientFont()
 
                 val textHeight = screenDrawing.getTextHeight()
-                val wrappedText = screenDrawing.wrapText(tooltip.getTranslatedString(), 200)
+                val wrappedText = screenDrawing.wrapText(tooltip.string, 200)
                 val tooltipHeight = wrappedText.size * textHeight + 10
 
                 val width = wrappedText.maxOfOrNull { screenDrawing.getTextWidth(it) }?.plus(10) ?: 210

@@ -7,6 +7,7 @@ import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.interfaces.SettingInterface
 import net.bewis09.bewisclient.util.color.*
+import net.minecraft.text.Text
 
 class MultipleBooleanSettingsRenderable(
     val title: Translation, tooltip: Translation? = null, val settings: () -> List<Part>
@@ -29,7 +30,7 @@ class MultipleBooleanSettingsRenderable(
     }
 
     class Part(
-        val name: Translation, tooltip: Translation? = null, val setting: SettingInterface<Boolean>
+        val name: Translation, tooltip: Text? = null, val setting: SettingInterface<Boolean>
     ) : TooltipHoverable(tooltip) {
         val switch = Switch(
             state = setting::get,

@@ -14,7 +14,7 @@ open class SidebarCategory(val id: Identifier, val name: Translation, val render
     constructor(id: Identifier, name: String, settings: List<Renderable>) : this(id, name, VerticalScrollGrid({ settings.map { it.setHeight(90) } }, 5, 80))
 
     operator fun invoke(screen: OptionScreen): ThemeButton {
-        return ThemeButton(id.toString(), name.getTranslatedString(), screen.category) {
+        return ThemeButton(id.toString(), name(), screen.category) {
             screen.transformInside(
                 getHeader(), renderable
             )

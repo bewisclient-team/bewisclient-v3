@@ -52,8 +52,8 @@ class AddWidgetPopup(val screen: HudEditScreen) : Renderable() {
     }
 
     class WidgetElement(val widget: Widget, val screen: HudEditScreen, val inner: Inner) : Hoverable() {
-        val title = widget.widgetTitle.getTranslatedString()
-        val description = widget.widgetDescription.getTranslatedString()
+        val title = widget.widgetTitle()
+        val description = widget.widgetDescription()
 
         override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
             widget.enabled.set(true)
@@ -68,8 +68,8 @@ class AddWidgetPopup(val screen: HudEditScreen) : Renderable() {
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             super.render(screenDrawing, mouseX, mouseY)
 
-            val textHeight = (screenDrawing.wrapText(title, width - 10).size - 1) * screenDrawing.getTextHeight()
-            val descriptionHeight = (screenDrawing.wrapText(description, width - 10).size - 1) * screenDrawing.getTextHeight()
+            val textHeight = (screenDrawing.wrapText(title.string, width - 10).size - 1) * screenDrawing.getTextHeight()
+            val descriptionHeight = (screenDrawing.wrapText(description.string, width - 10).size - 1) * screenDrawing.getTextHeight()
 
             screenDrawing.fillWithBorderRounded(x, y, width, height, 5, OptionsMenuSettings.themeColor.get().getColor() alpha hoverAnimation["hovering"] * 0.15f + 0.15f, OptionsMenuSettings.themeColor.get().getColor() alpha hoverAnimation["hovering"] * 0.15f + 0.15f)
             screenDrawing.drawCenteredWrappedText(title, centerX, y + 14 - textHeight / 2, width - 10, OptionsMenuSettings.themeColor.get().getColor())

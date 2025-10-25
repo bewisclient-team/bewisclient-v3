@@ -30,7 +30,7 @@ class ColorChangePopup(val state: Gettable<ColorSaver>, val onChange: (ColorSave
     inner class Inner : Renderable() {
         val buttons = types.map { type ->
             ColorSaver.getType(type)?.let {
-                ThemeButton(it.getTranslation().getTranslatedString(), {
+                ThemeButton(it.getTranslation()(), {
                     state.get().getType() == type
                 }, { _ ->
                     if (state.get().getType() != type) {
@@ -38,7 +38,7 @@ class ColorChangePopup(val state: Gettable<ColorSaver>, val onChange: (ColorSave
                         renderables.clear()
                         init()
                     }
-                }, it.getDescription())
+                }, it.getDescription()?.invoke())
             }
         }
 

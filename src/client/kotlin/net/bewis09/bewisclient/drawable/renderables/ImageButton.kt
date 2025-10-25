@@ -6,7 +6,7 @@ import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.util.color.Color
 import net.minecraft.util.Identifier
 
-open class ImageButton(val image: Identifier, val onClick: (ImageButton) -> Unit, tooltip: Translation?) : TooltipHoverable(tooltip) {
+open class ImageButton(val image: Identifier, val onClick: (ImageButton) -> Unit, tooltip: Translation?) : TooltipHoverable(tooltip?.invoke()) {
     constructor(image: Identifier, onClick: (ImageButton) -> Unit) : this(image, onClick, null)
 
     var imageColor: Color = Color.WHITE

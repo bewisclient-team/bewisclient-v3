@@ -9,7 +9,7 @@ import net.bewis09.bewisclient.interfaces.Gettable
 import net.bewis09.bewisclient.util.color.Color
 import net.bewis09.bewisclient.util.color.ColorSaver
 
-class ColorInfoButton(val state: Gettable<ColorSaver>, val onChange: (ColorSaver) -> Unit, val types: Array<String>) : TooltipHoverable(Translations.CHANGE_COLOR) {
+class ColorInfoButton(val state: Gettable<ColorSaver>, val onChange: (ColorSaver) -> Unit, val types: Array<String>) : TooltipHoverable(Translations.CHANGE_COLOR()) {
     init {
         internalWidth = 160
         internalHeight = 14

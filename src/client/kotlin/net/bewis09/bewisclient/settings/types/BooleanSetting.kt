@@ -31,7 +31,7 @@ class BooleanSetting : Setting<Boolean> {
     }
 
     fun createRenderablePart(id: String, title: String, description: String? = null): MultipleBooleanSettingsRenderable.Part {
-        return MultipleBooleanSettingsRenderable.Part(Translation("menu.$id", title), description?.let { Translation("menu.$id.description", it) }, this)
+        return MultipleBooleanSettingsRenderable.Part(Translation("menu.$id", title), description?.let { Translation("menu.$id.description", it) }(), this)
     }
 
     fun cloneWithDefault(): BooleanSetting {

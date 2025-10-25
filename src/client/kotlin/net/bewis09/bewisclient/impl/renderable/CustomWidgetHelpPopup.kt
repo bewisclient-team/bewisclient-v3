@@ -34,7 +34,7 @@ class CustomWidgetHelpPopup(val screen: PopupScreen) : Renderable() {
     class Inner : Renderable() {
         val plane = VerticalAlignScrollPlane(
             mutableListOf<Renderable>(
-            InfoTextRenderable(CustomWidget.customWidgetParamInfo().string, centered = true, padding = 0)
+            InfoTextRenderable(CustomWidget.customWidgetParamInfo(), centered = true, padding = 0)
         ).also {
             it.addAll(CustomWidget.widgetStringDataPoints.map { dataPoint ->
                 DataPointRenderable(dataPoint)

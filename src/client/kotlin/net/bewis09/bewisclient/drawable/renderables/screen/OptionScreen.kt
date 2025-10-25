@@ -4,6 +4,7 @@ import kotlinx.atomicfu.atomic
 import net.bewis09.bewisclient.drawable.*
 import net.bewis09.bewisclient.drawable.renderables.*
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
+import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.interfaces.BackgroundEffectProvider
 import net.bewis09.bewisclient.util.createIdentifier
@@ -12,6 +13,8 @@ import net.bewis09.bewisclient.settings.types.Setting
 import org.lwjgl.glfw.GLFW
 
 class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvider {
+    val editHudTranslation = Translation("bewisclient.options.edit_hud", "Edit HUD")
+
     val category = atomic<String?>(null)
 
     val alphaMainAnimation = Animator({ OptionsMenuSettings.animationTime.get().toLong() }, Animator.EASE_IN_OUT, "alpha" to 0f, "inside" to 1f, "blur" to startBlur)
@@ -26,7 +29,7 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
 //            it.add(Rectangle(combineInt(OptionsMenuSettings.themeColor.get().net.bewis09.bewisclient.core.getColor(), 0.3f)).setHeight(1))
             it.addAll(settings.sidebarCategories)
             it.add(Rectangle { OptionsMenuSettings.themeColor.get().getColor() alpha 0.3f }.setHeight(1))
-            it.add(ThemeButton("bewisclient:edit_hud", "Edit HUD", category) {
+            it.add(ThemeButton("bewisclient:edit_hud", editHudTranslation(), category) {
                 alphaMainAnimation["alpha"] = 0f then {
                     client.setScreen(RenderableScreen(HudEditScreen()))
                 }

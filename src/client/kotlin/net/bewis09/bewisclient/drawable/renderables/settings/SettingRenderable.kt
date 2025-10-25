@@ -8,7 +8,7 @@ import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.util.color.Color
 import net.bewis09.bewisclient.util.color.within
 
-abstract class SettingRenderable(tooltip: () -> Translation?, height: Int) : TooltipHoverable(tooltip) {
+abstract class SettingRenderable(tooltip: () -> Translation?, height: Int) : TooltipHoverable({ tooltip()?.invoke() }) {
     constructor(tooltip: Translation? = null, height: Int) : this({ tooltip }, height)
 
     init {

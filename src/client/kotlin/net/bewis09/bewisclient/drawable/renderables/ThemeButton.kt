@@ -3,23 +3,23 @@ package net.bewis09.bewisclient.drawable.renderables
 import kotlinx.atomicfu.AtomicRef
 import net.bewis09.bewisclient.drawable.*
 import net.bewis09.bewisclient.drawable.screen_drawing.*
-import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.util.color.Color
 import net.bewis09.bewisclient.util.color.within
+import net.minecraft.text.Text
 
 class ThemeButton : TooltipHoverable {
-    val text: String
+    val text: Text
     val selected: () -> Boolean
     val onClick: (ThemeButton) -> Unit
 
-    constructor(text: String, selected: () -> Boolean, onClick: (ThemeButton) -> Unit, tooltip: Translation? = null) : super(tooltip) {
+    constructor(text: Text, selected: () -> Boolean, onClick: (ThemeButton) -> Unit, tooltip: Text? = null) : super(tooltip) {
         this.text = text
         this.selected = selected
         this.onClick = onClick
     }
 
-    constructor(id: String, text: String, selectedButtonRef: AtomicRef<String?>, onClick: (ThemeButton) -> Unit, tooltip: Translation? = null) : super(tooltip) {
+    constructor(id: String, text: Text, selectedButtonRef: AtomicRef<String?>, onClick: (ThemeButton) -> Unit, tooltip: Text? = null) : super(tooltip) {
         this.text = text
         this.selected = { selectedButtonRef.value == id }
         this.onClick = {
@@ -28,9 +28,9 @@ class ThemeButton : TooltipHoverable {
         }
     }
 
-    constructor(id: String, text: String, clickButton: AtomicRef<String?>, onClick: (ThemeButton) -> Unit) : this(id, text, clickButton, onClick, null)
+    constructor(id: String, text: Text, clickButton: AtomicRef<String?>, onClick: (ThemeButton) -> Unit) : this(id, text, clickButton, onClick, null)
 
-    constructor(text: String, onClick: (ThemeButton) -> Unit) {
+    constructor(text: Text, onClick: (ThemeButton) -> Unit) {
         this.text = text
         this.selected = { clickAnimation["click"] < 1f && clickAnimation.getWithoutInterpolation("click") == 0f }
         this.onClick = onClick
