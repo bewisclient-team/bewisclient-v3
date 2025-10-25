@@ -23,7 +23,7 @@ object BewisclientCommand: EventEntrypoint {
                     }
                 )
             ).executes {
-                it.source.sendFeedback("Bewisclient v${FabricLoader.getInstance().allMods.first { a -> a.metadata.id == "bewisclient" }.metadata.version}".toText())
+                it.source.sendFeedback("Bewisclient v${FabricLoader.getInstance().allMods.firstOrNull { a -> a.metadata.id == "bewisclient" }?.metadata?.version ?: "Unknown Version"}".toText())
                 1
             })
         }

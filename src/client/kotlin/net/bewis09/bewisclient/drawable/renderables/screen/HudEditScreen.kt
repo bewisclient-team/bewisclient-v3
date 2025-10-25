@@ -55,7 +55,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
 
                 if (button == 1) {
                     client.setScreen(RenderableScreen(OptionScreen().also { a ->
-                        val widgetsCategory = a.settings.widgets.first { b -> b.enableSetting == it.enabled }
+                        val widgetsCategory = a.settings.widgets.firstOrNull { b -> b.enableSetting == it.enabled } ?: return@also
                         a.optionsHeader = widgetsCategory.getHeader()
                         a.optionsPane = widgetsCategory.getPane()
                         a.optionsHeaderBooleanSetting = it.enabled

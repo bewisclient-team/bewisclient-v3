@@ -193,7 +193,7 @@ object CosmeticLoader : ObjectSetting(), EventEntrypoint {
     }
 
     fun getCosmeticForPlayer(player: GameProfile, type: CosmeticType): Cosmetic? {
-        val elytraEquipped = client.world?.players?.first { it.gameProfile.id == player.id }?.inventory?.getStack(38)?.item == Items.ELYTRA && type == CosmeticType.CAPE
+        val elytraEquipped = client.world?.players?.firstOrNull { it.gameProfile.id == player.id }?.inventory?.getStack(38)?.item == Items.ELYTRA && type == CosmeticType.CAPE
         if (player.id != client.gameProfile.id || (elytraEquipped && !this.elytra.get())) return null
         val id = CosmeticIdentifier(type, this.selected[type.id] ?: return null)
         if (id !in allowedCosmetics || (elytraEquipped && !elytraCosmetics.contains(id))) return null
