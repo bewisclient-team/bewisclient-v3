@@ -93,7 +93,7 @@ abstract class SettingCategory(val text: Translation, val setting: Array<Rendera
         if (enableSetting == null) return
         addRenderable(
             TooltipHoverableText(
-                if (enableSetting.get()) Translations.ENABLED else Translations.DISABLED, 0xAAAAAA.color, Color.WHITE, if (enableSetting.get()) Translations.CLICK_TO_DISABLE else Translations.CLICK_TO_ENABLE, true
+                if (enableSetting.get()) Translations.ENABLED() else Translations.DISABLED(), 0xAAAAAA.color, Color.WHITE, if (enableSetting.get()) Translations.CLICK_TO_DISABLE() else Translations.CLICK_TO_ENABLE(), true
             ) { enableSetting.toggle(); resize() }(
                 x, y2 - 14, width, 14
             )

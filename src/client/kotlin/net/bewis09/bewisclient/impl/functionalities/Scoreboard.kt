@@ -6,6 +6,6 @@ import net.bewis09.bewisclient.impl.settings.functionalities.ScoreboardSettings
 
 object Scoreboard : ImageSettingCategory(
     "scoreboard", Translation("menu.category.scoreboard", "Scoreboard"), arrayOf(
-        ScoreboardSettings.scale.createRenderable("scoreboard.net.bewis09.bewisclient.core.scale", "Scale", "Adjust the size of the scoreboard")
+        ScoreboardSettings.scale.createRenderable("scoreboard.scale", "Scale", "Adjust the size of the scoreboard")
     ), ScoreboardSettings.enabled
 )
