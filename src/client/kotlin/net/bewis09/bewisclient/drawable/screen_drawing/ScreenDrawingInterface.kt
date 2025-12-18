@@ -7,9 +7,6 @@ import net.bewis09.bewisclient.util.logic.BewisclientInterface
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.cursor.Cursor
-import net.minecraft.client.realms.gui.screen.RealmsMainScreen.play
-import net.minecraft.client.sound.PositionedSoundInstance
-import net.minecraft.sound.SoundEvents
 import net.minecraft.util.Identifier
 
 interface ScreenDrawingInterface : BewisclientInterface {

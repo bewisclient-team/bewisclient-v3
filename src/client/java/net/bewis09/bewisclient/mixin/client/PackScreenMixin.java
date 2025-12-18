@@ -44,11 +44,9 @@ public class PackScreenMixin extends Screen {
     public void bewisclient$init(CallbackInfo ci) {
         if (!PackAdderSettings.INSTANCE.isEnabled()) return;
 
-        addResourcePackButton = addDrawableChild(new WorkingTexturedButtonWidget(width / 2 - 215, height - 49, 200, 18, BUTTON_TEXTURE, BUTTON_TEXTURE, (b) -> {
-            MinecraftClient.getInstance().setScreen(new RenderableScreen(new PackListScreen(
-                    file.endsWith(Path.of("resourcepacks")) ? Modrinth.Type.RESOURCE_PACK : Modrinth.Type.DATA_PACK, this, this.file
-            )));
-        }) {
+        addResourcePackButton = addDrawableChild(new WorkingTexturedButtonWidget(width / 2 - 215, height - 49, 200, 18, BUTTON_TEXTURE, BUTTON_TEXTURE, (b) -> MinecraftClient.getInstance().setScreen(new RenderableScreen(new PackListScreen(
+                file.endsWith(Path.of("resourcepacks")) ? Modrinth.Type.RESOURCE_PACK : Modrinth.Type.DATA_PACK, this, this.file
+        )))) {
             @Override
             protected void renderWidget(@NotNull DrawContext context, int mouseX, int mouseY, float deltaTicks) {
                 super.renderWidget(context, mouseX, mouseY, deltaTicks);

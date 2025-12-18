@@ -14,7 +14,6 @@ import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.toText
 import net.minecraft.SharedConstants
 import net.minecraft.client.gui.screen.Screen
-import net.minecraft.client.gui.widget.TextFieldWidget
 import net.minecraft.screen.ScreenTexts
 import net.minecraft.text.Text
 import org.lwjgl.glfw.GLFW

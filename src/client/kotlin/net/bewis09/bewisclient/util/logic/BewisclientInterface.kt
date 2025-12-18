@@ -1,6 +1,5 @@
 package net.bewis09.bewisclient.util.logic
 
-import net.bewis09.bewisclient.util.logic.BewisclientLogger
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.sound.PositionedSoundInstance
 import net.minecraft.sound.SoundEvents

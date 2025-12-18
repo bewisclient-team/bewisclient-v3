@@ -3,7 +3,6 @@ package net.bewis09.bewisclient.drawable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.util.color.alpha
 import net.bewis09.bewisclient.util.logic.BewisclientInterface
-import net.bewis09.bewisclient.util.color.color
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.widget.ButtonWidget
