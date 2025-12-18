@@ -21,4 +21,7 @@ object Translations {
     val OPEN_FOLDER = Translation("menu.screenshot.open_folder", "Open Folder")
     val DELETE = Translation("menu.screenshot.delete", "Delete")
     val CONFIRM_DELETE = Translation("menu.screenshot.confirm_delete", "Confirm Delete")
+    val ADD_RESOURCE_PACK = Translation("menu.resource_pack.add", "Add Resource Packs")
+    val ADD_DATA_PACK = Translation("menu.data_pack.add", "Add Data Packs")
+    val DOWNLOAD_FROM_MODRINTH = Translation("menu.pack.download_from_modrinth", "Select and download packs from Modrinth")
 }

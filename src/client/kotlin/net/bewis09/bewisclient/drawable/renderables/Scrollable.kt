@@ -9,7 +9,7 @@ abstract class Scrollable(val direction: Direction) : Renderable() {
     var innerSize = 0f
 
     override fun onMouseScroll(mouseX: Double, mouseY: Double, horizontalAmount: Double, verticalAmount: Double): Boolean {
-        scrollAnimation["scrollY"] = MathHelper.clamp(scrollAnimation.getWithoutInterpolation("scrollY") + (verticalAmount.toFloat() * 20f) + (horizontalAmount.toFloat() * 20f), 0f.coerceAtMost((if (direction == Direction.HORIZONTAL) width else height) - innerSize), 0f)
+        scrollAnimation["scrollY"] = MathHelper.clamp(scrollAnimation.getWithoutInterpolation("scrollY") + (verticalAmount.toFloat() * 30f) + (horizontalAmount.toFloat() * 30f), 0f.coerceAtMost((if (direction == Direction.HORIZONTAL) width else height) - innerSize), 0f)
         return true
     }
 

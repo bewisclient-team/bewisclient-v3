@@ -21,5 +21,6 @@ object BewisclientSettingsObject : ObjectSetting() {
         create("cosmetics", CosmeticLoader)
         create("screenshot", ScreenshotSettings)
         create("fire_height", FireHeightSettings)
+        create("pack_adder", PackAdderSettings)
     }
 }

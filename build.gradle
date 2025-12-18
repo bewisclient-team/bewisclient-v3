@@ -62,6 +62,9 @@ dependencies {
     modImplementation "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}"
 
 //    include "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}"
+
+    implementation 'com.twelvemonkeys.imageio:imageio-core:3.12.0'
+    implementation 'com.twelvemonkeys.imageio:imageio-webp:3.12.0'
 }
 
 processResources {

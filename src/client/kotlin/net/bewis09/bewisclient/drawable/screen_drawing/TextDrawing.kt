@@ -90,6 +90,16 @@ interface TextDrawing : RectDrawing {
         drawTextWithShadow(text, rightX - textWidth, y, color, font)
     }
 
+    fun drawRightAlignedText(text: Text, rightX: Int, y: Int, color: Color, font: Identifier? = this.overwrittenFont) {
+        val textWidth = getTextWidth(text, font)
+        drawText(text, rightX - textWidth, y, color, font)
+    }
+
+    fun drawRightAlignedTextWithShadow(text: Text, rightX: Int, y: Int, color: Color, font: Identifier? = this.overwrittenFont) {
+        val textWidth = getTextWidth(text)
+        drawTextWithShadow(text, rightX - textWidth, y, color, font)
+    }
+
     fun drawWrappedText(text: String, x: Int, y: Int, maxWidth: Int, color: Color, font: Identifier? = this.overwrittenFont): List<String> {
         return wrapText(text, maxWidth, font).also { drawWrappedText(it, x, y, color, font) }
     }

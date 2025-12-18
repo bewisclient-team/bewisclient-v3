@@ -11,7 +11,7 @@
     "homepage": "https://modrinth.com/mod/bewisclient/",
     "sources": "https://github.com/bewisclient-team/bewisclient-v3"
   },
-  "license": "CC-BY 4.0",
+  "license": "Bewisclient Licence 1.0",
   "icon": "assets/bewisclient/icon.png",
   "environment": "*",
   "entrypoints": {

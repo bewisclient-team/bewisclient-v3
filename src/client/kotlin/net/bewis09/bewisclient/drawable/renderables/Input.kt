@@ -4,6 +4,7 @@ import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.util.color.Color
 import net.bewis09.bewisclient.util.toText
+import net.minecraft.util.Identifier
 import org.lwjgl.glfw.GLFW
 
 class Input : Renderable {
@@ -16,13 +17,15 @@ class Input : Renderable {
     var scrollX = 0
 
     val onChange: ((String) -> Unit)?
+    val font: Identifier?
 
-    constructor(maxWidth: Int = 0, text: String = "", color: Color = Color.WHITE, onChange: ((String) -> Unit)? = null) : super() {
+    constructor(maxWidth: Int = 0, text: String = "", color: Color = Color.WHITE, font: Identifier? = null, onChange: ((String) -> Unit)? = null) : super() {
         this.maxWidth = maxWidth
         this.text = text
         this.color = color
         this.cursor = text.length
         this.onChange = onChange
+        this.font = font
     }
 
     init {
@@ -30,18 +33,18 @@ class Input : Renderable {
     }
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        if (screenDrawing.getTextWidth(text.substring(0, cursor), null) - scrollX > width - 5) {
-            scrollX = screenDrawing.getTextWidth(text.substring(0, cursor), null) - (width - 5)
-        } else if (screenDrawing.getTextWidth(text.substring(0, cursor), null) - scrollX < 0) {
-            scrollX = screenDrawing.getTextWidth(text.substring(0, cursor), null) - 5
+        if (screenDrawing.getTextWidth(text.substring(0, cursor), font) - scrollX > width - 5) {
+            scrollX = screenDrawing.getTextWidth(text.substring(0, cursor), font) - (width - 5)
+        } else if (screenDrawing.getTextWidth(text.substring(0, cursor), font) - scrollX < 0) {
+            scrollX = screenDrawing.getTextWidth(text.substring(0, cursor), font) - 5
             if (scrollX < 0) scrollX = 0
         }
-        if (cursor == text.length) scrollX = scrollX.coerceAtMost(screenDrawing.getTextWidth(text, null) - width + 5).coerceAtLeast(0)
+        if (cursor == text.length) scrollX = scrollX.coerceAtMost(screenDrawing.getTextWidth(text, font) - width + 5).coerceAtLeast(0)
         screenDrawing.enableScissors(x, y, width, height)
         val shouldShow = System.currentTimeMillis() % 1000 < 500 && util.getCurrentRenderableScreen()?.getSelectedRenderable() == this
-        screenDrawing.drawTextWithShadow((text + if (cursor == text.length && shouldShow) "_" else "").toText(), x - scrollX, y + 1, color, null)
+        screenDrawing.drawTextWithShadow((text + if (cursor == text.length && shouldShow) "_" else "").toText(), x - scrollX, y + 1, color, font)
         if (cursor != text.length && shouldShow)
-            screenDrawing.drawVerticalLine(screenDrawing.getTextWidth(text.substring(0, cursor), null) + x - scrollX, y - 1, 12, color)
+            screenDrawing.drawVerticalLine(screenDrawing.getTextWidth(text.substring(0, cursor), font) + x - scrollX, y - 1, 12, color)
         screenDrawing.disableScissors()
     }
 

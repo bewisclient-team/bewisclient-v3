@@ -1,69 +1,13 @@
-Attribution 4.0 International
-
-=======================================================================
-
-Creative Commons Corporation ("Creative Commons") is not a law firm and
-does not provide legal services or legal advice. Distribution of
-Creative Commons public licenses does not create a lawyer-client or
-other relationship. Creative Commons makes its licenses and related
-information available on an "as-is" basis. Creative Commons gives no
-warranties regarding its licenses, any material licensed under their
-terms and conditions, or any related information. Creative Commons
-disclaims all liability for damages resulting from their use to the
-fullest extent possible.
-
-Using Creative Commons Public Licenses
-
-Creative Commons public licenses provide a standard set of terms and
-conditions that creators and other rights holders may use to share
-original works of authorship and other material subject to copyright
-and certain other rights specified in the public license below. The
-following considerations are for informational purposes only, are not
-exhaustive, and do not form part of our licenses.
-
-     Considerations for licensors: Our public licenses are
-     intended for use by those authorized to give the public
-     permission to use material in ways otherwise restricted by
-     copyright and certain other rights. Our licenses are
-     irrevocable. Licensors should read and understand the terms
-     and conditions of the license they choose before applying it.
-     Licensors should also secure all rights necessary before
-     applying our licenses so that the public can reuse the
-     material as expected. Licensors should clearly mark any
-     material not subject to the license. This includes other CC-
-     licensed material, or material used under an exception or
-     limitation to copyright. More considerations for licensors:
-    wiki.creativecommons.org/Considerations_for_licensors
-
-     Considerations for the public: By using one of our public
-     licenses, a licensor grants the public permission to use the
-     licensed material under specified terms and conditions. If
-     the licensor's permission is not necessary for any reason--for
-     example, because of any applicable exception or limitation to
-     copyright--then that use is not regulated by the license. Our
-     licenses grant only permissions under copyright and certain
-     other rights that a licensor has authority to grant. Use of
-     the licensed material may still be restricted for other
-     reasons, including because others have copyright or other
-     rights in the material. A licensor may make special requests,
-     such as asking that all changes be marked or described.
-     Although not required by our licenses, you are encouraged to
-     respect those requests where reasonable. More considerations
-     for the public:
-    wiki.creativecommons.org/Considerations_for_licensees
-
-=======================================================================
-
-Creative Commons Attribution 4.0 International Public License
+Bewisclient 1.0 International Public License
 
 By exercising the Licensed Rights (defined below), You accept and agree
-to be bound by the terms and conditions of this Creative Commons
-Attribution 4.0 International Public License ("Public License"). To the
-extent this Public License may be interpreted as a contract, You are
-granted the Licensed Rights in consideration of Your acceptance of
-these terms and conditions, and the Licensor grants You such rights in
-consideration of benefits the Licensor receives from making the
-Licensed Material available under these terms and conditions.
+to be bound by the terms and conditions of this Bewisclient 1.0
+International Public License ("PublicLicense"). To the extent this Public
+License may be interpreted as a contract, You are granted the Licensed
+Rights in consideration of Your acceptance of these terms and conditions,
+and the Licensor grants You such rights in consideration of benefits the
+Licensor receives from making the Licensed Material available under these
+terms and conditions.
 
 
 Section 1 -- Definitions.
@@ -129,6 +73,31 @@ Section 1 -- Definitions.
   k. You means the individual or entity exercising the Licensed Rights
      under this Public License. Your has a corresponding meaning.
 
+  l. “Substantially Similar Product” means any software, project, or
+     digital product that:
+     a. Reproduces the overall structure, functionality, user interface,
+        gameplay, feature set, or audiovisual identity of the Licensed
+        Material in a manner that would lead a reasonable user to conclude
+        that the product is the same as, or a rebranded version of, the
+        Licensed Material; or
+     b. Uses the Licensed Material as a base and makes only minimal,
+        cosmetic, or superficial modifications (including but not limited
+        to simple texture changes, color swaps, or renaming) while
+        preserving the core behavior, look, and feel of the Licensed
+        Material.
+
+     A product is not considered a Substantially Similar Product if it:
+     a. Transforms the Licensed Material into a work with a clearly
+        distinct purpose, functionality, design, or identity; or
+     b. Incorporates portions of the Licensed Material into a broader,
+        different work, provided the resulting work cannot reasonably be
+        mistaken for the Licensed Material or a rebranded derivative of it.
+
+     Substantially Similar Products are for example, but not exclusively,
+     game mods, total conversions, or standalone games that closely mimic
+     the Licensed Material without significant changes to its core
+     elements.
+
 
 Section 2 -- Scope.
 
@@ -172,7 +141,13 @@ Section 2 -- Scope.
                Licensed Rights under the terms and conditions of this
                Public License.
 
-            b. No downstream restrictions. You may not offer or impose
+            b. Additional offer from the Licensor -- Adapted Material.
+               Every recipient of Adapted Material from You
+               automatically receives an offer from the Licensor to
+               exercise the Licensed Rights in the Adapted Material
+               under the conditions of the Adapter's License You apply.
+
+            c. No downstream restrictions. You may not offer or impose
                any additional or different terms or conditions on, or
                apply any Effective Technological Measures to, the
                Licensed Material if doing so restricts exercise of the
@@ -188,18 +163,10 @@ Section 2 -- Scope.
 
   b. Other rights.
 
-       1. Moral rights, such as the right of integrity, are not
-          licensed under this Public License, nor are publicity,
-          privacy, and/or other similar personality rights; however, to
-          the extent possible, the Licensor waives and/or agrees not to
-          assert any such rights held by the Licensor to the limited
-          extent necessary to allow You to exercise the Licensed
-          Rights, but not otherwise.
-
-       2. Patent and trademark rights are not licensed under this
+       1. Patent and trademark rights are not licensed under this
           Public License.
 
-       3. To the extent possible, the Licensor waives any right to
+       2. To the extent possible, the Licensor waives any right to
           collect royalties from You for the exercise of the Licensed
           Rights, whether directly or through a collecting society
           under any voluntary or waivable statutory or compulsory
@@ -254,34 +221,94 @@ following conditions.
           information required by Section 3(a)(1)(A) to the extent
           reasonably practicable.
 
-       4. If You Share Adapted Material You produce, the Adapter's
-          License You apply must not prevent recipients of the Adapted
-          Material from complying with this Public License.
+  b. ShareAlike.
+
+     In addition to the conditions in Section 3(a), if You Share
+     Adapted Material You produce, the following conditions also apply.
+
+       1. The Adapter's License You apply must either be this exact
+          Licence, a newer version of this License, distributed by the
+          bewisclient team in a github repository maintained by the
+          bewisclient team or another licence permitted under Section 3(d)
+
+       2. You must include the text of, or the URI or hyperlink to, the
+          Adapter's License You apply. You may satisfy this condition
+          in any reasonable manner based on the medium, means, and
+          context in which You Share Adapted Material.
+
+       3. You may not offer or impose any additional or different terms
+          or conditions on, or apply any Effective Technological
+          Measures to, Adapted Material that restrict exercise of the
+          rights granted under the Adapter's License You apply.
+
+  c. Prohibited Similarity.
+
+     You may not use the Licensed Material, in whole or in part, to
+     create, distribute, or contribute to any Substantially Similar Product.
+
+     This prohibition applies regardless of whether the Substantially
+     Similar Product is distributed for free, sold commercially, or
+     licensed under any terms.
+
+     For the avoidance of doubt, this Public License does not restrict the
+     creation of new works, projects, or products that merely use,
+     reference, or incorporate portions of the Licensed Material, provided
+     the resulting work is not a Substantially Similar Product as defined
+     in Section 1(l).
+
+  d. Alternative Licensing for Non-Clone Derivatives
+
+     If You create Adapted Material that is not a Substantially Similar
+     Product under Section 1(l), You may distribute that Adapted Material
+     under any license of Your choosing, including proprietary licenses,
+     provided that:
+
+     1. You comply with the Attribution requirements in Section 3(a); and
+
+     2. You do not prevent recipients of Your Adapted Material from
+        accessing or exercising the rights granted to them under this
+        Public License with respect to the portions of the Licensed
+        Material included in Your Adapted Material.
+
+     Section 3(d) operates as an exception to Section 3(b) for Adapted
+     Material that does not qualify as a Substantially Similar Product.
+
+  e. Contribution Forks.
+
+     Notwithstanding Sections 3(b)–3(d), You are permitted to create, use,
+     and Share forks or modified versions of the Licensed Material solely
+     for the purpose of submitting improvements, fixes, additions, or other
+     contributions back to the original project maintained by the Licensor,
+     including through mechanisms such as pull requests, merge requests,
+     patches, or other contribution workflows recognized by the Licensor.
+
+     This permission is subject to the following conditions:
+
+     1. No Independent Distribution.
+        You may not Share a Contribution Fork as a standalone product or
+        project, nor present it as an alternative version of the Licensed
+        Material. Contribution Forks may only be Shared in the context of
+        making a contribution to the Licensor or as otherwise explicitly
+        authorized by the Licensor.
+
+     2. No Circumvention of the Similarity Clause.
+        Contribution Forks that would otherwise qualify as a Substantially
+        Similar Product under Section 3(c) are permitted only when Shared
+        for the purpose of contributing back to the Licensor and not for
+        public distribution.
+
+     3. Attribution and Provenance.
+        You must clearly identify Your contribution and the fact that the
+        fork or modification is intended for contribution to the original
+        project.
+
+     4. Licensor Discretion.
+        The Licensor may accept, modify, or reject any contribution at their
+        sole discretion. Sharing a Contribution Fork does not imply that it
+        will be incorporated into the Licensed Material.
 
 
-Section 4 -- Sui Generis Database Rights.
-
-Where the Licensed Rights include Sui Generis Database Rights that
-apply to Your use of the Licensed Material:
-
-  a. for the avoidance of doubt, Section 2(a)(1) grants You the right
-     to extract, reuse, reproduce, and Share all or a substantial
-     portion of the contents of the database;
-
-  b. if You include all or a substantial portion of the database
-     contents in a database in which You have Sui Generis Database
-     Rights, then the database in which You have Sui Generis Database
-     Rights (but not its individual contents) is Adapted Material; and
-
-  c. You must comply with the conditions in Section 3(a) if You Share
-     all or a substantial portion of the contents of the database.
-
-For the avoidance of doubt, this Section 4 supplements and does not
-replace Your obligations under this Public License where the Licensed
-Rights include other Copyright and Similar Rights.
-
-
-Section 5 -- Disclaimer of Warranties and Limitation of Liability.
+Section 4 -- Disclaimer of Warranties and Limitation of Liability.
 
   a. UNLESS OTHERWISE SEPARATELY UNDERTAKEN BY THE LICENSOR, TO THE
      EXTENT POSSIBLE, THE LICENSOR OFFERS THE LICENSED MATERIAL AS-IS
@@ -310,7 +337,7 @@ Section 5 -- Disclaimer of Warranties and Limitation of Liability.
      waiver of all liability.
 
 
-Section 6 -- Term and Termination.
+Section 5 -- Term and Termination.
 
   a. This Public License applies for the term of the Copyright and
      Similar Rights licensed here. However, if You fail to comply with
@@ -318,7 +345,7 @@ Section 6 -- Term and Termination.
      terminate automatically.
 
   b. Where Your right to use the Licensed Material has terminated under
-     Section 6(a), it reinstates:
+     Section 5(a), it reinstates:
 
        1. automatically as of the date the violation is cured, provided
           it is cured within 30 days of Your discovery of the
@@ -335,11 +362,11 @@ Section 6 -- Term and Termination.
      distributing the Licensed Material at any time; however, doing so
      will not terminate this Public License.
 
-  d. Sections 1, 5, 6, 7, and 8 survive termination of this Public
+  d. Sections 1, 4, 5, 6, and 7 survive termination of this Public
      License.
 
 
-Section 7 -- Other Terms and Conditions.
+Section 6 -- Other Terms and Conditions.
 
   a. The Licensor shall not be bound by any additional or different
      terms or conditions communicated by You unless expressly agreed.
@@ -349,7 +376,7 @@ Section 7 -- Other Terms and Conditions.
      independent of the terms and conditions of this Public License.
 
 
-Section 8 -- Interpretation.
+Section 7 -- Interpretation.
 
   a. For the avoidance of doubt, this Public License does not, and
      shall not be interpreted to, reduce, limit, restrict, or impose
@@ -375,21 +402,13 @@ Section 8 -- Interpretation.
 
 =======================================================================
 
-Creative Commons is not a party to its public
-licenses. Notwithstanding, Creative Commons may elect to apply one of
-its public licenses to material it publishes and in those instances
-will be considered the “Licensor.” The text of the Creative Commons
-public licenses is dedicated to the public domain under the CC0 Public
-Domain Dedication. Except for the limited purpose of indicating that
-material is shared under a Creative Commons public license or as
-otherwise permitted by the Creative Commons policies published at
-creativecommons.org/policies, Creative Commons does not authorize the
-use of the trademark "Creative Commons" or any other trademark or logo
-of Creative Commons without its prior written consent including,
-without limitation, in connection with any unauthorized modifications
-to any of its public licenses or any other arrangements,
-understandings, or agreements concerning use of licensed material. For
-the avoidance of doubt, this paragraph does not form part of the
-public licenses.
+This License is based on the Creative Commons Attribution-ShareAlike 4.0
+International Public License, Version 4.0, available at
+https://creativecommons.org/licenses/by-sa/4.0/legalcode, and is
+not affiliated with Creative Commons. Only the terms and conditions above
+apply to the Licensed Material. No other terms or conditions of the Creative
+Commons Attribution-ShareAlike 4.0 International Public License apply to
+the Licensed Material.
 
-Creative Commons may be contacted at creativecommons.org.
+This license text is released under the Creative Commons
+Attribution–ShareAlike 4.0 license.
