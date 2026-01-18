@@ -16,7 +16,7 @@ public class WorldRendererMixin {
     private void drawOutline(MatrixStack matrixStack, VertexConsumer vertexConsumer, VoxelShape voxelShape, double x, double y, double z, int c) {
         var color = c;
 
-        if (BlockHighlightSettings.INSTANCE.getEnabled().get()) {
+        if (BlockHighlightSettings.INSTANCE.isEnabled()) {
             color = (BlockHighlightSettings.INSTANCE.getColor().get().getColorInt() & 0x00FFFFFF) | ((int) (BlockHighlightSettings.INSTANCE.getThickness().get() * 255f) << 24);
         }
 

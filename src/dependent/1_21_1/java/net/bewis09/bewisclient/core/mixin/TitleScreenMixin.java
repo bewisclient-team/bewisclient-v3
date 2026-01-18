@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.core.mixin;
 
-import net.bewis09.bewisclient.drawable.WorkingTexturedButtonWidget;
+import net.bewis09.bewisclient.core.WorkingTexturedButtonWidget;
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen;
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings;
 import net.bewis09.bewisclient.screen.RenderableScreen;

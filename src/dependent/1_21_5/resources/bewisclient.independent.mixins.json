@@ -9,11 +9,13 @@
     "ItemStackMixin",
     "MouseMixin",
     "OverlayTextureMixin",
-    "TitleScreenMixin",
-    "WorldRendererMixin",
-    "TooltipDisplayComponentMixin",
+    "PackListWidgetMixin",
+    "ScreenshotRecorderMixin",
     "SkinTexturesMixin",
-    "ScreenshotRecorderMixin"
+    "TitleScreenMixin",
+    "TooltipDisplayComponentMixin",
+    "WorldRendererMixin",
+    "PackScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.impl.pack
 
-import net.bewis09.bewisclient.core.registerTexture
+import net.bewis09.bewisclient.core.*
 import net.bewis09.bewisclient.drawable.Translations
 import net.bewis09.bewisclient.settings.Settings.Companion.gson
 import net.bewis09.bewisclient.util.createIdentifier
@@ -185,7 +185,7 @@ object Modrinth : BewisclientInterface {
 
         typeMaps[type to query]!!.first[page] = null to false
 
-        downloadFile("https://api.modrinth.com/v2/search?query=${URLEncoder.encode(query.replace(Regex("&\\?="), ""), "UTF-8")}&facets=%5B%5B%22project_type:${type.url}%22%5D,%5B%22versions:${SharedConstants.getGameVersion().name()}%22%5D%5D&limit=20&offset=${page * 20}") {
+        downloadFile("https://api.modrinth.com/v2/search?query=${URLEncoder.encode(query.replace(Regex("&\\?="), ""), "UTF-8")}&facets=%5B%5B%22project_type:${type.url}%22%5D,%5B%22versions:${SharedConstants.getGameVersion().name}%22%5D%5D&limit=20&offset=${page * 20}") {
             val json = gson.fromJson(String(it), ModrinthSearchResult::class.java)
             if (typeMaps[type to query]!!.second == null) {
                 typeMaps[type to query] = typeMaps[type to query]!!.first to json.total_hits

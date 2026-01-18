@@ -358,5 +358,9 @@
   "bewisclient.menu.screenshot.open": "打开",
   "bewisclient.menu.screenshot.open_folder": "打开文件夹",
   "bewisclient.menu.screenshot.redirect": "重定向截图聊天点击事件",
-  "bewisclient.menu.screenshot.redirect.description": "在聊天中点击截图名称时，截图将在游戏内打开，而不是使用外部程序。"
+  "bewisclient.menu.screenshot.redirect.description": "在聊天中点击截图名称时，截图将在游戏内打开，而不是使用外部程序。",
+  "bewisclient.menu.category.pack_adder": "资源包添加器",
+  "bewisclient.menu.data_pack.add": "添加数据包",
+  "bewisclient.menu.pack.download_from_modrinth": "从 Modrinth 选择并下载包",
+  "bewisclient.menu.resource_pack.add": "添加资源包"
 }

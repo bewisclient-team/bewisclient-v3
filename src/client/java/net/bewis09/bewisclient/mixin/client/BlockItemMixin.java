@@ -21,7 +21,7 @@ public class BlockItemMixin extends Item {
 
     @Override
     public Optional<TooltipData> getTooltipData(ItemStack stack) {
-        if (stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof ShulkerBoxBlock block && ShulkerBoxTooltipSettings.INSTANCE.getEnabled().get()) {
+        if (stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof ShulkerBoxBlock block && ShulkerBoxTooltipSettings.INSTANCE.isEnabled()) {
             ContainerComponent component = stack.get(DataComponentTypes.CONTAINER);
 
             assert component != null;

@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class EntityMixin {
     @Inject(method = "changeLookDirection",at=@At("HEAD"),cancellable = true)
     public void inject(double cursorDeltaX, double cursorDeltaY, CallbackInfo ci) {
-        if(!MinecraftClient.getInstance().options.getPerspective().isFirstPerson() && Perspective.EnablePerspective.INSTANCE.isPressed() && PerspectiveSettings.INSTANCE.getEnabled().get()) {
+        if(!MinecraftClient.getInstance().options.getPerspective().isFirstPerson() && Perspective.EnablePerspective.INSTANCE.isPressed() && PerspectiveSettings.INSTANCE.isEnabled()) {
             Perspective.cameraAddPitch += (float) (cursorDeltaY * 0.15f);
             Perspective.cameraAddYaw += (float) (cursorDeltaX * 0.15f);
             ci.cancel();

@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.impl.pack
 
+import net.bewis09.bewisclient.core.*
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.Translations
 import net.bewis09.bewisclient.drawable.renderables.Input
@@ -143,7 +144,7 @@ class PackListScreen(val type: Modrinth.Type, val parent: Screen, val folder: Pa
             if (isMouseOver(mouseX.toFloat(), mouseY.toFloat(), x + 4, y, 32, 32)) {
                 Modrinth.loadPack(pack.slug) { p ->
                     Modrinth.loadVersions(p) { map ->
-                        map.values.filter { it.game_versions.contains(SharedConstants.getGameVersion().name()) }.maxByOrNull { it.date_published }?.let { version ->
+                        map.values.filter { it.game_versions.contains(SharedConstants.getGameVersion().name) }.maxByOrNull { it.date_published }?.let { version ->
                             version.files.firstOrNull { it.primary }?.let { file ->
                                 downloadFile(URI(file.url).toURL()) {
                                     folder.resolve(file.filename).writeBytes(it)

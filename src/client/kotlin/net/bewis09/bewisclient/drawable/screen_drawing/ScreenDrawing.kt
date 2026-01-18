@@ -10,7 +10,7 @@ import net.minecraft.util.Identifier
  * the drawing context
  */
 @Suppress("Unused")
-class ScreenDrawing(override val drawContext: DrawContext, override val textRenderer: TextRenderer) : TextDrawing, RoundedDrawing, ItemDrawing, EntityDrawing {
+class ScreenDrawing(override val drawContext: DrawContext, override val textRenderer: TextRenderer) : TextDrawing, RoundedDrawing, ItemDrawing {
     override var overwrittenFont: Identifier = ScreenDrawingInterface.DEFAULT_FONT
     override val afterDrawStack: HashMap<String, ScreenDrawingInterface.AfterDraw> = hashMapOf()
     override val colorStack: MutableList<Color> = mutableListOf()

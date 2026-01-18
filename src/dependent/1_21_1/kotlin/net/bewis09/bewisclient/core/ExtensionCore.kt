@@ -64,10 +64,6 @@ fun DrawContext.drawTexture(
     RenderSystem.disableBlend()
 }
 
-fun DrawContext.drawEntity(x1: Int, y1: Int, x2: Int, y2: Int, scale: Float, translation: Vector3f?, rotation: Quaternionf?, overrideCameraAngle: Quaternionf?, entity: LivingEntity) = InventoryScreen.drawEntity(
-    this, (x1 + x2) / 2f, (y1 + y2) / 2f, scale, translation, rotation, overrideCameraAngle, entity
-)
-
 fun DrawContext.drawItemOverlay(textRenderer: TextRenderer, itemStack: ItemStack, x: Int, y: Int) {
     this.drawItemInSlot(textRenderer, itemStack, x, y)
 }
@@ -118,4 +114,23 @@ fun DrawContext.translateToTopOptional() {
 
 fun ScreenDrawing.drawCape(identifier: Identifier, x: Int, y: Int, width: Int, height: Int) {
     this.drawTextureRegion(identifier, x, y, 1f, 1f, width, height, 10, 16, 64, 32)
+}
+
+fun ScreenDrawing.setCursorPointer() {}
+
+fun ScreenDrawing.drawGuiTexture(
+    texture: Identifier,
+    x: Int,
+    y: Int,
+    width: Int,
+    height: Int
+) {
+    this.drawContext.drawGuiTexture(
+        texture,
+        x,
+        y,
+        0,
+        width,
+        height
+    )
 }

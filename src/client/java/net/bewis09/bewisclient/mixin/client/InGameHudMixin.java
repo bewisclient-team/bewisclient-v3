@@ -34,7 +34,7 @@ abstract class InGameHudMixin {
 
     @Inject(method = "renderHeldItemTooltip", at = @At("HEAD"), cancellable = true)
     private void bewisclient$renderHeldItemTooltip(DrawContext drawContext, CallbackInfo ci) {
-        if (HeldItemTooltipSettings.INSTANCE.getEnabled().get()) {
+        if (HeldItemTooltipSettings.INSTANCE.isEnabled()) {
             HeldItemTooltip.INSTANCE.render(new ScreenDrawing(drawContext, getTextRenderer()), heldItemTooltipFade, currentStack);
             ci.cancel();
         }
@@ -42,7 +42,7 @@ abstract class InGameHudMixin {
 
     @Inject(method = "renderScoreboardSidebar(Lnet/minecraft/client/gui/DrawContext;Lnet/minecraft/scoreboard/ScoreboardObjective;)V", at = @At("HEAD"))
     private void bewisclient$renderScoreboardSidebar(DrawContext context, ScoreboardObjective objective, CallbackInfo ci) {
-        float scale = ScoreboardSettings.INSTANCE.getEnabled().get() ? ScoreboardSettings.INSTANCE.getScale().get() : 1.0f;
+        float scale = ScoreboardSettings.INSTANCE.isEnabled() ? ScoreboardSettings.INSTANCE.getScale().get() : 1.0f;
 
         ScreenDrawing screenDrawing = new ScreenDrawing(context, client.textRenderer);
 

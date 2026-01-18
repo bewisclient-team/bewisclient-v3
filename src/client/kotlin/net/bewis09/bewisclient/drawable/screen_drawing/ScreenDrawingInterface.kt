@@ -6,7 +6,6 @@ import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.logic.BewisclientInterface
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.gui.cursor.Cursor
 import net.minecraft.util.Identifier
 
 interface ScreenDrawingInterface : BewisclientInterface {
@@ -109,8 +108,6 @@ interface ScreenDrawingInterface : BewisclientInterface {
     fun disableScissors() = drawContext.disableScissor()
 
     fun scissorContains(x: Int, y: Int) = drawContext.scissorContains(x, y)
-
-    fun setCursor(cursor: Cursor) = drawContext.setCursor(cursor)
 }
 
 inline fun ScreenDrawingInterface.onNewLayer(apply: () -> Unit, transform: () -> Unit) {

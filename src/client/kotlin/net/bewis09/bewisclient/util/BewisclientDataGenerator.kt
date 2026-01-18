@@ -22,10 +22,10 @@ object BewisclientDataGenerator : DataGeneratorEntrypoint {
         pack.addProvider(::BewisclientEnglishLangProvider)
     }
 
-    class BewisclientEnglishLangProvider(dataOutput: FabricDataOutput?, registryLookup: CompletableFuture<WrapperLookup?>?) : FabricLanguageProvider(dataOutput, "en_us", registryLookup) {
-        override fun generateTranslations(wrapperLookup: WrapperLookup?, translationBuilder: TranslationBuilder?) {
+    class BewisclientEnglishLangProvider(dataOutput: FabricDataOutput, registryLookup: CompletableFuture<WrapperLookup>) : FabricLanguageProvider(dataOutput, "en_us", registryLookup) {
+        override fun generateTranslations(wrapperLookup: WrapperLookup, translationBuilder: TranslationBuilder) {
             translations.forEach { (key, value) ->
-                translationBuilder?.add(key, value)
+                translationBuilder.add(key, value)
             }
         }
     }

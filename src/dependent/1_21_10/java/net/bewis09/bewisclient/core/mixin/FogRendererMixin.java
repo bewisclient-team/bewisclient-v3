@@ -1,6 +1,7 @@
 package net.bewis09.bewisclient.core.mixin;
 
 import net.bewis09.bewisclient.core.features.BetterVisibility;
+import net.bewis09.bewisclient.impl.settings.functionalities.BetterVisibilitySettings;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.client.render.fog.FogData;
 import net.minecraft.client.render.fog.FogModifier;
@@ -16,6 +17,9 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public class FogRendererMixin {
     @Redirect(method = "applyFog(Lnet/minecraft/client/render/Camera;IZLnet/minecraft/client/render/RenderTickCounter;FLnet/minecraft/client/world/ClientWorld;)Lorg/joml/Vector4f;", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/fog/FogModifier;applyStartEndModifier(Lnet/minecraft/client/render/fog/FogData;Lnet/minecraft/entity/Entity;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/client/world/ClientWorld;FLnet/minecraft/client/render/RenderTickCounter;)V"))
     private static void bewisclient$applyFog(FogModifier instance, FogData fogData, Entity entity, BlockPos blockPos, ClientWorld clientWorld, float v, RenderTickCounter renderTickCounter) {
-        BetterVisibility.INSTANCE.applyFogModifier(instance, fogData, entity, blockPos, clientWorld, v, renderTickCounter);
+        if (BetterVisibilitySettings.INSTANCE.isEnabled())
+            BetterVisibility.INSTANCE.applyFogModifier(instance, fogData, entity, blockPos, clientWorld, v, renderTickCounter);
+        else
+            instance.applyStartEndModifier(fogData, entity, blockPos, clientWorld, v, renderTickCounter);
     }
 }

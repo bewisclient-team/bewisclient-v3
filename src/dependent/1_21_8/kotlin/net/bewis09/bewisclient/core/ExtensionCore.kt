@@ -3,6 +3,7 @@ package net.bewis09.bewisclient.core
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawingInterface
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry
+import net.minecraft.GameVersion
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gl.RenderPipelines
@@ -67,10 +68,6 @@ fun DrawContext.drawTexture(
     texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, regionWidth: Int, regionHeight: Int, textureWidth: Int, textureHeight: Int, color: Int
 ) = this.drawTexture(RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, color)
 
-fun DrawContext.drawEntity(x1: Int, y1: Int, x2: Int, y2: Int, scale: Float, translation: Vector3f?, rotation: Quaternionf?, overrideCameraAngle: Quaternionf?, entity: LivingEntity) = InventoryScreen.drawEntity(
-    this, x1, y1, x2, y2, scale, translation, rotation, overrideCameraAngle, entity
-)
-
 fun DrawContext.translateToTopOptional() = Unit
 
 fun DrawContext.drawItemOverlay(textRenderer: TextRenderer, itemStack: ItemStack, x: Int, y: Int) {
@@ -117,3 +114,25 @@ fun ItemStack.getItemFormattedName(): Text {
 fun ScreenDrawing.drawCape(identifier: Identifier, x: Int, y: Int, width: Int, height: Int) {
     this.drawTextureRegion(identifier, x, y, 1f, 1f, width, height, 10, 16, 64, 32)
 }
+
+fun ScreenDrawing.setCursorPointer() {}
+
+fun ScreenDrawing.drawGuiTexture(
+    texture: Identifier,
+    x: Int,
+    y: Int,
+    width: Int,
+    height: Int
+) {
+    this.drawContext.drawGuiTexture(
+        RenderPipelines.GUI_TEXTURED,
+        texture,
+        x,
+        y,
+        width,
+        height
+    )
+}
+
+val GameVersion.name: String
+    get() = this.name()

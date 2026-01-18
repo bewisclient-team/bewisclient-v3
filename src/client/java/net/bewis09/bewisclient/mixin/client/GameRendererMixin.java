@@ -22,18 +22,18 @@ public abstract class GameRendererMixin implements GameRendererBuffersAccessor {
     @Unique
     int color = EntityHighlightSettings.INSTANCE.getColor().get().getColorInt();
     @Unique
-    boolean enabled = EntityHighlightSettings.INSTANCE.getEnabled().get();
+    boolean enabled = EntityHighlightSettings.INSTANCE.isEnabled();
 
     @Unique
     OverlayTexture overlayTexture = new OverlayTexture();
 
     @Inject(method = "getOverlayTexture", at = @At("HEAD"), cancellable = true)
     public void getOverlayTexture(CallbackInfoReturnable<OverlayTexture> cir) {
-        if (EntityHighlightSettings.INSTANCE.getEnabled().get()) {
-            if (enabled != EntityHighlightSettings.INSTANCE.getEnabled().get() || alpha != EntityHighlightSettings.INSTANCE.getAlpha().get() || color != (EntityHighlightSettings.INSTANCE.getColor().get().getColorInt())) {
+        if (EntityHighlightSettings.INSTANCE.isEnabled()) {
+            if (enabled != EntityHighlightSettings.INSTANCE.isEnabled() || alpha != EntityHighlightSettings.INSTANCE.getAlpha().get() || color != (EntityHighlightSettings.INSTANCE.getColor().get().getColorInt())) {
                 alpha = EntityHighlightSettings.INSTANCE.getAlpha().get();
                 color = EntityHighlightSettings.INSTANCE.getColor().get().getColorInt();
-                enabled = EntityHighlightSettings.INSTANCE.getEnabled().get();
+                enabled = EntityHighlightSettings.INSTANCE.isEnabled();
 
                 overlayTexture = new OverlayTexture();
             }
