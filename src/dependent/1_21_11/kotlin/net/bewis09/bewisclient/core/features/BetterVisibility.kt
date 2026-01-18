@@ -6,10 +6,7 @@ import net.minecraft.client.render.Camera
 import net.minecraft.client.render.RenderTickCounter
 import net.minecraft.client.render.fog.*
 import net.minecraft.client.world.ClientWorld
-import net.minecraft.entity.Entity
-import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.MathHelper
-import kotlin.jvm.java
 
 object BetterVisibility {
     class FogModifierConfig(val setting: BooleanSetting, val clazz: Class<out FogModifier>, val start: (Float) -> Float, val end: (Float) -> Float)

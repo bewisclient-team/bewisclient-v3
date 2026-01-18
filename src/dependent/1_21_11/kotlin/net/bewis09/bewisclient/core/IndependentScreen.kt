@@ -24,5 +24,6 @@ open class IndependentScreen(title: Text): Screen(title) {
     open fun onKeyRelease(keyCode: Int, scanCode: Int, modifiers: Int): Boolean = false
     open fun onCharTyped(chr: Char, modifiers: Int): Boolean = false
 
+    @Suppress("unused")
     fun renderIndependentBackground(context: DrawContext, mouseX: Int, mouseY: Int, deltaTicks: Float) {}
 }

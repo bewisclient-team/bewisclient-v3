@@ -1,10 +1,8 @@
 package net.bewis09.bewisclient.mixin.client;
 
-import net.bewis09.bewisclient.impl.functionalities.Zoom;
 import net.bewis09.bewisclient.impl.settings.functionalities.EntityHighlightSettings;
 import net.bewis09.bewisclient.interfaces.GameRendererBuffersAccessor;
 import net.minecraft.client.render.BufferBuilderStorage;
-import net.minecraft.client.render.Camera;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.OverlayTexture;
 import org.jetbrains.annotations.NotNull;

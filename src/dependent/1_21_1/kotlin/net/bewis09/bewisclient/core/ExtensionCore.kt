@@ -8,7 +8,6 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.gui.screen.ingame.InventoryScreen
 import net.minecraft.client.option.KeyBinding
 import net.minecraft.client.texture.NativeImage
 import net.minecraft.client.texture.NativeImageBackedTexture
@@ -25,7 +24,6 @@ import net.minecraft.util.Formatting
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.Vec3d
 import org.joml.Quaternionf
-import org.joml.Vector3f
 import java.util.function.Consumer
 
 fun LivingEntity.pos(): Vec3d = this.pos

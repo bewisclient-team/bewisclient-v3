@@ -29,9 +29,9 @@ class AnimatedCosmetic(val baseIdentifier: Identifier, val frames: Int) : Cosmet
             val stream = ImageIO.createImageInputStream(ByteArrayInputStream(input))
             reader.input = stream
 
-            val frames = Array<BufferedImage>(count, { index ->
+            val frames = Array<BufferedImage>(count) { index ->
                 reader.read(index)
-            })
+            }
 
             return frames.toList()
         }

@@ -1,6 +1,5 @@
 package net.bewis09.bewisclient.impl.pack
 
-import net.bewis09.bewisclient.core.*
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.Translations
 import net.bewis09.bewisclient.drawable.renderables.Input

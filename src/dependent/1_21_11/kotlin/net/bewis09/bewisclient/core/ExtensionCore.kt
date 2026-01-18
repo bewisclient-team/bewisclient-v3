@@ -8,15 +8,10 @@ import net.minecraft.client.MinecraftClient
 import net.minecraft.client.font.TextRenderer
 import net.minecraft.client.gl.RenderPipelines
 import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.gui.cursor.Cursor
 import net.minecraft.client.gui.cursor.StandardCursors
-import net.minecraft.client.gui.screen.ingame.InventoryScreen
-import net.minecraft.client.model.ModelPart
-import net.minecraft.client.model.ModelPartData
 import net.minecraft.client.option.KeyBinding
 import net.minecraft.client.render.entity.EntityRendererFactory
 import net.minecraft.client.render.entity.model.EntityModelLayers
-import net.minecraft.client.render.entity.model.EntityModelPartNames
 import net.minecraft.client.render.entity.model.PlayerEntityModel
 import net.minecraft.client.texture.NativeImage
 import net.minecraft.client.texture.NativeImageBackedTexture
@@ -28,13 +23,13 @@ import net.minecraft.entity.passive.HorseEntity
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.item.tooltip.TooltipType
-import net.minecraft.text.*
+import net.minecraft.text.MutableText
+import net.minecraft.text.StyleSpriteSource
+import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.Vec3d
 import net.minecraft.util.profiler.Profilers
-import org.joml.Quaternionf
-import org.joml.Vector3f
 import java.util.function.Consumer
 
 fun LivingEntity.pos(): Vec3d = this.entityPos
