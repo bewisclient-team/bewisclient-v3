@@ -88,7 +88,7 @@ fun MinecraftClient.isKeyPressed(key: Int): Boolean {
     return InputUtil.isKeyPressed(this.window.handle, key)
 }
 
-fun registerWidget(id: Identifier, widget: (context: DrawContext) -> Unit) = HudRenderCallback.EVENT.register { context, _ -> widget(context) }
+fun registerWidget(id: Identifier, widget: (context: DrawContext) -> Unit) = HudRenderCallback.EVENT.register { context, _ -> if(!MinecraftClient.getInstance().options.hudHidden) widget(context) }
 
 fun ItemStack.appendTooltip(textConsumer: Consumer<Text>) {
     for ((index, text) in this.getTooltip(Item.TooltipContext.DEFAULT, null, TooltipType.BASIC).withIndex()) {
