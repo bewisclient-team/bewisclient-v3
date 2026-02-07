@@ -362,5 +362,22 @@
   "bewisclient.menu.category.pack_adder": "资源包添加器",
   "bewisclient.menu.data_pack.add": "添加数据包",
   "bewisclient.menu.pack.download_from_modrinth": "从 Modrinth 选择并下载包",
-  "bewisclient.menu.resource_pack.add": "添加资源包"
+  "bewisclient.menu.resource_pack.add": "添加资源包",
+  "bewisclient.menu.widget.armor_widget.show_chest": "显示胸甲",
+  "bewisclient.menu.widget.armor_widget.show_feet": "显示靴子",
+  "bewisclient.menu.widget.armor_widget.show_head": "显示头盔",
+  "bewisclient.menu.widget.armor_widget.show_legs": "显示护腿",
+  "bewisclient.menu.widget.armor_widget.show_off_hand": "显示副手",
+  "bewisclient.menu.widget.color_code_text": "耐久度颜色编码",
+  "bewisclient.menu.widget.color_code_text.description": "切换是否对耐久度文本使用颜色编码",
+  "bewisclient.menu.widget.show_durability": "显示耐久度",
+  "bewisclient.menu.widget.show_durability.description": "切换是否显示护甲耐久度",
+  "bewisclient.menu.widget.show_empty_slots": "显示空槽位",
+  "bewisclient.menu.widget.show_empty_slots.description": "切换是否显示空的护甲槽位",
+  "bewisclient.menu.widget.show_percentage": "显示百分比",
+  "bewisclient.menu.widget.show_percentage.description": "切换是否以百分比显示耐久度",
+  "bewisclient.widget.armor_widget.armor_slots": "护甲槽位",
+  "bewisclient.widget.armor_widget.description": "显示你的护甲耐久度。",
+  "bewisclient.widget.armor_widget.name": "护甲组件",
+  "bewisclient.widget.tiwyla_widget.unbreakable": "不可破坏"
 }

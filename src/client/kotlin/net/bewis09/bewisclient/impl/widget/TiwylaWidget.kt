@@ -106,6 +106,7 @@ object TiwylaWidget : ScalableWidget(createIdentifier("bewisclient", "tiwyla_wid
     val diamondLevelText = createTranslation("mining_level.diamond", "Diamond")
 
     val instantText = createTranslation("instant", "Instant")
+    val unbreakableText = createTranslation("unbreakable", "Unbreakable")
     val secondsText = createTranslation("seconds", "%s seconds")
     val minutesText = createTranslation("minutes", "%s minutes")
     val hoursText = createTranslation("hours", "%s hours")
@@ -271,9 +272,13 @@ object TiwylaWidget : ScalableWidget(createIdentifier("bewisclient", "tiwyla_wid
         }, "mining_level", 0), Information.Line({ data ->
             if (!util.isInWorld()) return@Line secondsText(4.5)
 
-            if (data.state.calcBlockBreakingDelta(client.player, client.world, data.blockPos) > 1) return@Line instantText()
+            val delta = data.state.calcBlockBreakingDelta(client.player, client.world, data.blockPos)
 
-            val secs = (1f / data.state.calcBlockBreakingDelta(client.player, client.world, data.blockPos) * 5F).roundToInt() / 100F
+            if (delta > 1) return@Line instantText()
+
+            if ((1f / delta * 5F).roundToInt() == Int.MAX_VALUE) return@Line unbreakableText()
+
+            val secs = (1f / delta * 5F).roundToInt() / 100F
 
             if (secs > (3600 * 24)) return@Line daysText((secs / 36 / 24).roundToInt() / 100F)
             if (secs > 3600) return@Line hoursText((secs / 36).roundToInt() / 100F)
