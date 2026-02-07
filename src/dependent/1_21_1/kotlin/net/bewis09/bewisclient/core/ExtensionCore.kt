@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawingInterface
 import net.bewis09.bewisclient.util.color.color
+import net.bewis09.bewisclient.util.createIdentifier
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.font.TextRenderer
@@ -18,6 +19,7 @@ import net.minecraft.entity.passive.HorseEntity
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.item.tooltip.TooltipType
+import net.minecraft.screen.PlayerScreenHandler
 import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
@@ -32,7 +34,9 @@ fun HorseEntity.getColor(): String = this.variant.name.lowercase()
 
 var LivingEntity.beforeHeadYaw: Float
     get() = this.prevHeadYaw
-    set(value) { this.prevHeadYaw = value }
+    set(value) {
+        this.prevHeadYaw = value
+    }
 
 fun Text.setFont(id: Identifier?): Text {
     return (this as? MutableText ?: this.copy()).styled { it.withFont((id ?: ScreenDrawingInterface.BEWISCLIENT_FONT)) }
@@ -88,7 +92,7 @@ fun MinecraftClient.isKeyPressed(key: Int): Boolean {
     return InputUtil.isKeyPressed(this.window.handle, key)
 }
 
-fun registerWidget(id: Identifier, widget: (context: DrawContext) -> Unit) = HudRenderCallback.EVENT.register { context, _ -> if(!MinecraftClient.getInstance().options.hudHidden) widget(context) }
+fun registerWidget(id: Identifier, widget: (context: DrawContext) -> Unit) = HudRenderCallback.EVENT.register { context, _ -> if (!MinecraftClient.getInstance().options.hudHidden) widget(context) }
 
 fun ItemStack.appendTooltip(textConsumer: Consumer<Text>) {
     for ((index, text) in this.getTooltip(Item.TooltipContext.DEFAULT, null, TooltipType.BASIC).withIndex()) {
@@ -127,8 +131,13 @@ fun ScreenDrawing.drawGuiTexture(
         texture,
         x,
         y,
-        0,
         width,
         height
     )
 }
+
+val EMPTY_OFFHAND_ARMOR_SLOT: Identifier
+    get() = PlayerScreenHandler.EMPTY_OFFHAND_ARMOR_SLOT
+
+val Identifier.ofSpriteToNormal: Identifier
+    get() = createIdentifier(this.namespace, "textures/" + this.path + ".png")

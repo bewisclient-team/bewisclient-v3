@@ -2,6 +2,7 @@ package net.bewis09.bewisclient.core
 
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawingInterface
+import net.bewis09.bewisclient.util.createIdentifier
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.font.TextRenderer
@@ -17,6 +18,7 @@ import net.minecraft.entity.passive.HorseEntity
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.item.tooltip.TooltipType
+import net.minecraft.screen.PlayerScreenHandler
 import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
@@ -126,3 +128,9 @@ fun ScreenDrawing.drawGuiTexture(
         height
     )
 }
+
+val EMPTY_OFFHAND_ARMOR_SLOT: Identifier
+    get() = PlayerScreenHandler.EMPTY_OFF_HAND_SLOT_TEXTURE
+
+val Identifier.ofSpriteToNormal: Identifier
+    get() = createIdentifier(this.namespace, "textures/gui/sprites/" + this.path + ".png")
