@@ -16,7 +16,7 @@ open class SidebarCategory(val id: Identifier, val name: Translation, val render
     operator fun invoke(screen: OptionScreen): ThemeButton {
         return ThemeButton(id.toString(), name(), screen.category) {
             screen.transformInside(
-                getHeader(), renderable
+                getHeader(), renderable, null, true
             )
         }.setHeight(14) as ThemeButton
     }

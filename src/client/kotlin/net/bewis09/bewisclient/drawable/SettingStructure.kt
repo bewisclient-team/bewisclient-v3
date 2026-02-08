@@ -7,6 +7,7 @@ import net.bewis09.bewisclient.cosmetics.drawable.SelectCapeElement
 import net.bewis09.bewisclient.drawable.renderables.*
 import net.bewis09.bewisclient.drawable.renderables.elements.ExtensionListRenderable
 import net.bewis09.bewisclient.drawable.renderables.options_structure.DescriptionSettingCategory
+import net.bewis09.bewisclient.drawable.renderables.options_structure.HomePlane
 import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCategory
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.game.Translation
@@ -57,6 +58,10 @@ class SettingStructure(val screen: OptionScreen) : BewisclientInterface {
             }(x, y, width, 14), VerticalScrollGrid({ widgets.map { a -> a.setHeight(90) } }, 5, 80).invoke(x, y + 19, width, height - 19)
         )
     }
+
+    val homePlane = HomePlane()
+
+    val homeCategory = SidebarCategory(createIdentifier("bewisclient", "home"), "Home", this.homePlane)
 
     val widgetsCategory = SidebarCategory(createIdentifier("bewisclient", "widgets"), "Widgets", this.widgetsPlane)
     val utilitiesCategory = SidebarCategory(createIdentifier("bewisclient", "utilities"), "Utilities", this.utilities)

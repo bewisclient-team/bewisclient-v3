@@ -49,7 +49,7 @@ class RenderableScreen(val renderable: Renderable) : IndependentScreen("".toText
         return renderable.mouseClick(x, y, button)
     }
 
-    override fun onMouseRelease(x: Double, y: Double, button: Int): Boolean = renderable.mouseRelease(x, y, button)
+    override fun onMouseRelease(x: Double, y: Double, button: Int) = renderable.mouseRelease(x, y, button).let { true }
 
     override fun onMouseDrag(x: Double, y: Double, deltaX: Double, deltaY: Double, button: Int): Boolean = renderable.mouseDrag(x, y, startX, startY, button)
 

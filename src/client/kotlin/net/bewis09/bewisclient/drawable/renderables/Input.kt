@@ -74,10 +74,6 @@ class Input : Renderable {
         return true
     }
 
-    override fun onMouseRelease(mouseX: Double, mouseY: Double, button: Int): Boolean {
-        return true
-    }
-
     override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {
         return when (key) {
             GLFW.GLFW_KEY_BACKSPACE -> {

@@ -242,16 +242,14 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
         return 0f
     }
 
-    override fun onMouseRelease(mouseX: Double, mouseY: Double, button: Int): Boolean {
+    override fun onMouseRelease(mouseX: Double, mouseY: Double, button: Int) {
         mouseMap[button] = false
 
-        if (button != 0) return false
+        if (button != 0) return
 
         selectedWidget = null
         startOffsetX = null
         startOffsetY = null
-
-        return super.onMouseRelease(mouseX, mouseY, button)
     }
 
     override fun onMouseScroll(mouseX: Double, mouseY: Double, horizontalAmount: Double, verticalAmount: Double): Boolean {

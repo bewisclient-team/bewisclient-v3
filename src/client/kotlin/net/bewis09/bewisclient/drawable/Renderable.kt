@@ -152,12 +152,12 @@ abstract class Renderable : BewisclientInterface {
         return onMouseClick(mouseX, mouseY, button)
     }
 
-    fun mouseRelease(mouseX: Double, mouseY: Double, button: Int): Boolean {
-        if (!isMouseOver(mouseX, mouseY)) return false
+    fun mouseRelease(mouseX: Double, mouseY: Double, button: Int) {
+        if (!isMouseOver(mouseX, mouseY)) return
 
-        renderables.firstOrNull { it.isMouseOver(mouseX, mouseY) }?.mouseRelease(mouseX, mouseY, button)?.let { if (it) return true }
+        renderables.filter { it.isMouseOver(mouseX, mouseY) }.forEach { it.mouseRelease(mouseX, mouseY, button) }
 
-        return onMouseRelease(mouseX, mouseY, button)
+        onMouseRelease(mouseX, mouseY, button)
     }
 
     fun mouseDrag(mouseX: Double, mouseY: Double, startX: Double, startY: Double, button: Int): Boolean {
@@ -192,7 +192,7 @@ abstract class Renderable : BewisclientInterface {
     }
 
     open fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean = false
-    open fun onMouseRelease(mouseX: Double, mouseY: Double, button: Int): Boolean = false
+    open fun onMouseRelease(mouseX: Double, mouseY: Double, button: Int) {}
     open fun onMouseDrag(mouseX: Double, mouseY: Double, startX: Double, startY: Double, button: Int): Boolean = false
     open fun onMouseScroll(mouseX: Double, mouseY: Double, horizontalAmount: Double, verticalAmount: Double): Boolean = false
     open fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean = false

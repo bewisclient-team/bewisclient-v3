@@ -59,8 +59,6 @@ abstract class PopupScreen : Renderable() {
 
         override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int) = true
 
-        override fun onMouseRelease(mouseX: Double, mouseY: Double, button: Int) = true
-
         override fun onMouseDrag(mouseX: Double, mouseY: Double, startX: Double, startY: Double, button: Int) = true
 
         override fun onMouseScroll(mouseX: Double, mouseY: Double, horizontalAmount: Double, verticalAmount: Double) = true
