@@ -24,4 +24,5 @@ object Translations {
     val ADD_RESOURCE_PACK = Translation("menu.resource_pack.add", "Add Resource Packs")
     val ADD_DATA_PACK = Translation("menu.data_pack.add", "Add Data Packs")
     val DOWNLOAD_FROM_MODRINTH = Translation("menu.pack.download_from_modrinth", "Select and download packs from Modrinth")
+    val MODRINTH = Translation("menu.pack.modrinth", "Modrinth")
 }

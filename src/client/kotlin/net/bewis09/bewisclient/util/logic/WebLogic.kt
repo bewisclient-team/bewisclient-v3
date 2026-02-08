@@ -6,10 +6,18 @@ import java.net.URL
 
 interface WebLogic {
     fun downloadFile(url: String, onComplete: (success: ByteArray) -> Unit) {
-        downloadFile(URI(url), onComplete)
+        downloadFile(URI(url), onComplete, null)
+    }
+
+    fun downloadFile(url: String, onComplete: (success: ByteArray) -> Unit, onError: ((error: Exception) -> Unit)? = null) {
+        downloadFile(URI(url), onComplete, onError)
     }
 
     fun downloadFile(url: URI, onComplete: (success: ByteArray) -> Unit) {
+        downloadFile(url, onComplete, null)
+    }
+
+    fun downloadFile(url: URI, onComplete: (success: ByteArray) -> Unit, onError: ((error: Exception) -> Unit)? = null) {
         Util.getDownloadWorkerExecutor().execute {
             try {
                 val connection = url.toURL().openConnection()
@@ -18,12 +26,16 @@ interface WebLogic {
                     onComplete(bytes)
                 }
             } catch (e: Exception) {
-                error("Failed to download file from URL: ${url.path} \n  Error Message: ${e.message}")
+                onError?.apply { this(e) } ?: error("Failed to download file from URL: ${url.path} \n  Error Message: ${e.message}")
             }
         }
     }
 
     fun downloadFile(url: URL, onComplete: (success: ByteArray) -> Unit) {
+        downloadFile(url, onComplete, null)
+    }
+
+    fun downloadFile(url: URL, onComplete: (success: ByteArray) -> Unit, onError: ((error: Exception) -> Unit)? = null) {
         Util.getDownloadWorkerExecutor().execute {
             try {
                 val connection = url.openConnection()
@@ -32,7 +44,7 @@ interface WebLogic {
                     onComplete(bytes)
                 }
             } catch (e: Exception) {
-                error("Failed to download file from URL: ${url.path} \n  Error Message: ${e.message}")
+                onError?.apply { this(e) } ?: error("Failed to download file from URL: ${url.path} \n  Error Message: ${e.message}")
             }
         }
     }

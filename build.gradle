@@ -6,7 +6,7 @@ plugins {
     id "org.jetbrains.kotlin.jvm" version "2.2.0"
 }
 
-version = project.mod_version+"-${project.property("like_version_"+project.minecraft_version.replace('.','_'))}"
+version = project.mod_version + "-${project.property("like_version_" + project.minecraft_version.replace('.', '_'))}"
 group = project.maven_group
 minecraft_version = project.minecraft_version
 
@@ -20,6 +20,29 @@ repositories {
     // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html
     // for more information about repositories.
+}
+
+tasks.register("generateVersionInfo") {
+    def outputDir = layout.projectDirectory.dir("src/generated/kotlin")
+
+    def pkgDir = outputDir.file("net/bewis09/bewisclient/generated")
+    pkgDir.asFile.mkdirs()
+
+    def file = new File(pkgDir.asFile.absolutePath, "BuildInfo.kt")
+    file.write(
+            """
+package net.bewis09.bewisclient.generated
+
+object BuildInfo {
+    const val VERSION = "${project.version}"
+    const val TIMESTAMP = "${System.currentTimeMillis()}"
+}
+            """.strip()
+    )
+}
+
+tasks.named("compileKotlin") {
+    dependsOn("generateVersionInfo")
 }
 
 loom {
@@ -36,11 +59,12 @@ loom {
 sourceSets {
     client {
         java {
-            srcDir( 'src/dependent/'+project.property("like_version_"+project.minecraft_version.replace('.','_')).replace('.','_')+"/java" )
-            srcDir( 'src/dependent/'+project.property("like_version_"+project.minecraft_version.replace('.','_')).replace('.','_')+"/kotlin" )
+            srcDir('src/dependent/' + project.property("like_version_" + project.minecraft_version.replace('.', '_')).replace('.', '_') + "/java")
+            srcDir('src/dependent/' + project.property("like_version_" + project.minecraft_version.replace('.', '_')).replace('.', '_') + "/kotlin")
+            srcDir('src/generated/kotlin')
         }
         resources {
-            srcDir( 'src/dependent/'+project.property("like_version_"+project.minecraft_version.replace('.','_')).replace('.','_')+"/resources" )
+            srcDir('src/dependent/' + project.property("like_version_" + project.minecraft_version.replace('.', '_')).replace('.', '_') + "/resources")
         }
     }
 }
@@ -54,11 +78,11 @@ fabricApi {
 dependencies {
     // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
-    mappings "net.fabricmc:yarn:${project.property "mappings_"+minecraft_version.replace(".","_")}:v2"
+    mappings "net.fabricmc:yarn:${project.property "mappings_" + minecraft_version.replace(".", "_")}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     // Fabric API. This is technically optional, but you probably want it anyway.
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.property "fabric_api_"+minecraft_version.replace(".","_")}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.property "fabric_api_" + minecraft_version.replace(".", "_")}"
     modImplementation "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}"
 
 //    include "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}"
@@ -70,7 +94,7 @@ dependencies {
 processResources {
     inputs.property "version", project.version
     inputs.property "minecraft_version", project.minecraft_version
-    inputs.property "version_range", project.property("range_"+project.property("like_version_"+project.minecraft_version.replace('.','_')).replace('.','_'))
+    inputs.property "version_range", project.property("range_" + project.property("like_version_" + project.minecraft_version.replace('.', '_')).replace('.', '_'))
 
     filesMatching("fabric.mod.json") {
         expand "version": inputs.properties.version, "minecraft_version": inputs.properties.minecraft_version, "version_range": inputs.properties.version_range
@@ -124,5 +148,5 @@ publishing {
 }
 
 loom {
-    accessWidenerPath = file("src/dependent/"+project.property("like_version_"+project.minecraft_version.replace('.','_')).replace('.','_')+"/resources/bewisclient.accesswidener")
+    accessWidenerPath = file("src/dependent/" + project.property("like_version_" + project.minecraft_version.replace('.', '_')).replace('.', '_') + "/resources/bewisclient.accesswidener")
 }

@@ -163,6 +163,7 @@
   "bewisclient.menu.menu.settings.theme_color": "Theme Color",
   "bewisclient.menu.menu.settings.theme_color.description": "The theme color used throughout the client",
   "bewisclient.menu.pack.download_from_modrinth": "Select and download packs from Modrinth",
+  "bewisclient.menu.pack.modrinth": "Modrinth",
   "bewisclient.menu.resource_pack.add": "Add Resource Packs",
   "bewisclient.menu.scoreboard.scale": "Scale",
   "bewisclient.menu.scoreboard.scale.description": "Adjust the size of the scoreboard",

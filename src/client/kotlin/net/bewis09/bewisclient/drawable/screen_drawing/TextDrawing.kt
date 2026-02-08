@@ -115,21 +115,27 @@ interface TextDrawing : RectDrawing {
         return drawWrappedText(text.string, x, y, maxWidth, color, font)
     }
 
-    fun drawCenteredWrappedText(lines: List<String>, centerX: Int, y: Int, color: Color, font: Identifier? = this.overwrittenFont) {
+    fun drawCenteredWrappedText(lines: List<String>, centerX: Int, y: Int, color: Color, font: Identifier? = this.overwrittenFont, shadow: Boolean = false) {
         val lineHeight = getTextHeight()
         for (i in lines.indices) {
+            if (shadow) {
+                drawCenteredTextWithShadow(
+                    lines[i], centerX, y + i * lineHeight, color, font
+                )
+                continue
+            }
             drawCenteredText(
                 lines[i], centerX, y + i * lineHeight, color, font
             )
         }
     }
 
-    fun drawCenteredWrappedText(text: String, centerX: Int, y: Int, maxWidth: Int, color: Color, font: Identifier? = this.overwrittenFont): List<String> {
-        return wrapText(text, maxWidth, font).also { drawCenteredWrappedText(it, centerX, y, color, font) }
+    fun drawCenteredWrappedText(text: String, centerX: Int, y: Int, maxWidth: Int, color: Color, font: Identifier? = this.overwrittenFont, shadow: Boolean = false): List<String> {
+        return wrapText(text, maxWidth, font).also { drawCenteredWrappedText(it, centerX, y, color, font, shadow) }
     }
 
-    fun drawCenteredWrappedText(text: Text, centerX: Int, y: Int, maxWidth: Int, color: Color, font: Identifier? = this.overwrittenFont): List<String> {
-        return drawCenteredWrappedText(text.string, centerX, y, maxWidth, color, font)
+    fun drawCenteredWrappedText(text: Text, centerX: Int, y: Int, maxWidth: Int, color: Color, font: Identifier? = this.overwrittenFont, shadow: Boolean = false): List<String> {
+        return drawCenteredWrappedText(text.string, centerX, y, maxWidth, color, font, shadow)
     }
 
     /**
