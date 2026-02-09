@@ -61,7 +61,7 @@ class SettingStructure(val screen: OptionScreen) : BewisclientInterface {
 
     val homePlane = HomePlane()
 
-    val homeCategory = SidebarCategory(createIdentifier("bewisclient", "home"), "Home", this.homePlane)
+    val homeCategory = SidebarCategory(createIdentifier("bewisclient", "home"), "Bewisclient", this.homePlane)
 
     val widgetsCategory = SidebarCategory(createIdentifier("bewisclient", "widgets"), "Widgets", this.widgetsPlane)
     val utilitiesCategory = SidebarCategory(createIdentifier("bewisclient", "utilities"), "Utilities", this.utilities)

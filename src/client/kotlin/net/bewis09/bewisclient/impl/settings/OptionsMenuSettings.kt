@@ -10,8 +10,8 @@ object OptionsMenuSettings : ObjectSetting() {
     val buttonInTitleScreen = boolean("button_in_title_screen", true)
     val buttonInGameScreen = boolean("button_in_game_screen", true)
     val themeColor = color("theme_color", StaticColorSaver(0xFFFFFF.color), ColorSetting.STATIC)
-    val backgroundColor = color("background_color", StaticColorSaver(0x2B2B2B.color), ColorSetting.STATIC, ColorSetting.THEME)
-    val backgroundOpacity = float("background_opacity", 0.6f, 0f, 1f, 0.01f, 2)
+    val backgroundColor = color("background_color", ThemeColorSaver(0.2f), ColorSetting.STATIC, ColorSetting.THEME)
+    val backgroundOpacity = float("background_opacity", 0.8f, 0f, 1f, 0.01f, 2)
 
     fun getBackgroundColor(): Color = 0.3f within (Color.BLACK to backgroundColor.get().getColor()) alpha backgroundOpacity.get()
 }

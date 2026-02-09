@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier
 open class ImageButton(val image: Identifier, val onClick: (ImageButton) -> Unit, tooltip: Text?) : TooltipHoverable(tooltip) {
     constructor(image: Identifier, onClick: (ImageButton) -> Unit) : this(image, onClick, null)
 
-    var imageColor: Color = Color.WHITE
+    var imageColor: () -> Color = { Color.WHITE }
     var imagePadding: Int = 8
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
@@ -17,7 +17,7 @@ open class ImageButton(val image: Identifier, val onClick: (ImageButton) -> Unit
 
         screenDrawing.fillRounded(x, y, width, height, 5, OptionsMenuSettings.themeColor.get().getColor() alpha (hoverAnimation["hovering"] * 0.15f + 0.15f))
 
-        screenDrawing.drawTexture(image, x + imagePadding, y + imagePadding, width - imagePadding * 2, height - imagePadding * 2, imageColor)
+        screenDrawing.drawTexture(image, x + imagePadding, y + imagePadding, width - imagePadding * 2, height - imagePadding * 2, imageColor())
     }
 
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
@@ -25,7 +25,7 @@ open class ImageButton(val image: Identifier, val onClick: (ImageButton) -> Unit
         return true
     }
 
-    fun setImageColor(color: Color): ImageButton {
+    fun setImageColor(color: () -> Color): ImageButton {
         this.imageColor = color
         return this
     }

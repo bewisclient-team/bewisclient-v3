@@ -18,6 +18,7 @@ import net.bewis09.bewisclient.settings.types.Setting
 import net.bewis09.bewisclient.util.Bewisclient
 import net.bewis09.bewisclient.util.EventEntrypoint
 import net.bewis09.bewisclient.util.color.Color
+import net.bewis09.bewisclient.util.color.within
 import net.bewis09.bewisclient.util.createIdentifier
 import net.minecraft.screen.ScreenTexts
 import net.minecraft.util.Identifier
@@ -52,12 +53,12 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
                                 settings.homeCategory(this).onClick(button)
                             else
                                 settings.sidebarCategories.mapNotNull { a -> a as? ThemeButton }.firstOrNull { a -> a.selected() }?.let { a -> a.onClick(a) }
-                        }.setImagePadding(1)(x, y, 14, 14), button(x + 19, y, 82, 14), ImageButton(closeIdentifier) {
+                        }.setImagePadding(1).setImageColor({ 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()) })(x, y, 14, 14), button(x + 19, y, 82, 14), ImageButton(closeIdentifier) {
                             alphaMainAnimation["blur"] = 0f
                             alphaMainAnimation["alpha"] = 0f then {
                                 client.setScreen(null)
                             }
-                        }.setImagePadding(3)(x + 106, y, 14, 14)
+                        }.setImagePadding(3).setImageColor({ 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()) })(x + 106, y, 14, 14)
                     )
                 }.setHeight(14)
             })
@@ -142,8 +143,8 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
 
         screenDrawing.pushAlpha(alphaMainAnimation["alpha"])
         screenDrawing.setBewisclientFont()
-        screenDrawing.fillWithBorderRounded(30, 30, width - 60, height - 60, 10, OptionsMenuSettings.getBackgroundColor(), OptionsMenuSettings.themeColor.get().getColor() alpha 0.3f)
-        screenDrawing.fill(163, 31, 1, height - 62, OptionsMenuSettings.themeColor.get().getColor() alpha 0.3f)
+        screenDrawing.fillWithBorderRounded(30, 30, 134, height - 60, 5, OptionsMenuSettings.getBackgroundColor(), OptionsMenuSettings.themeColor.get().getColor() alpha 0.3f)
+        screenDrawing.fillWithBorderRounded(169, 30, width - 199, height - 60, 5, OptionsMenuSettings.getBackgroundColor(), OptionsMenuSettings.themeColor.get().getColor() alpha 0.3f)
         sidebarPlane.render(screenDrawing, mouseX, mouseY)
         image.render(screenDrawing, mouseX, mouseY)
         screenDrawing.transform(width - 5f, height - 11f, 0.7f) {
@@ -167,8 +168,8 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
         if (optionsHeaderBooleanSetting != null) {
             addRenderable(switch.setPosition(width - 37 - switch.width, 37))
         }
-        optionsHeader.setPosition(170, 37)?.setWidth(width - 207)?.let { addRenderable(it) }
-        addRenderable(optionsPane.invoke(170, 37 + (optionsHeader.let { it.height + 5 } ?: 0), width - 207, height - 74 - (optionsHeader.let { it.height + 5 } ?: 0)))
+        optionsHeader.setPosition(175, 37).setWidth(width - 211).let { addRenderable(it) }
+        addRenderable(optionsPane.invoke(175, 37 + (optionsHeader.height + 5), width - 211, height - 74 - (optionsHeader.height + 5)))
     }
 
     fun transformInside(afterHeader: Renderable, afterPane: Renderable, setting: Setting<Boolean>? = null, isCategoryStart: Boolean = false) {
