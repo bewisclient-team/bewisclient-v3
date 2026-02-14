@@ -3,7 +3,6 @@ package net.bewis09.bewisclient.drawable.renderables
 import net.bewis09.bewisclient.drawable.Translations
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
-import net.bewis09.bewisclient.impl.settings.functionalities.EntityHighlightSettings.alpha
 import net.bewis09.bewisclient.interfaces.Settable
 import net.bewis09.bewisclient.util.createIdentifier
 

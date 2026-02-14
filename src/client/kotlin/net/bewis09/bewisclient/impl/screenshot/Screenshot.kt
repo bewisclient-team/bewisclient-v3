@@ -19,7 +19,6 @@ import net.bewis09.bewisclient.process.ProcessCreator
 import net.bewis09.bewisclient.screen.RenderableScreen
 import net.bewis09.bewisclient.util.catch
 import net.bewis09.bewisclient.util.color.Color
-import net.bewis09.bewisclient.util.color.within
 import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.then
 import net.minecraft.client.MinecraftClient

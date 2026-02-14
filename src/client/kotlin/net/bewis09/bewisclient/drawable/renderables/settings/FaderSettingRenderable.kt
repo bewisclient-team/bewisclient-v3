@@ -7,8 +7,6 @@ import net.bewis09.bewisclient.drawable.screen_drawing.translate
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.interfaces.SettingInterface
-import net.bewis09.bewisclient.util.color.Color
-import net.bewis09.bewisclient.util.color.within
 import net.bewis09.bewisclient.util.number.Precision
 
 open class FaderSettingRenderable<T : Number>(val title: Translation, val description: Translation?, val setting: SettingInterface<T>, val precision: Precision, val parser: (original: Float) -> T) : SettingRenderable(description, 22) {
