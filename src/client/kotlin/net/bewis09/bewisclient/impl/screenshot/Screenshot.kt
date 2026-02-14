@@ -50,6 +50,7 @@ object ScreenshotElement : Renderable() {
     fun load() {
         Util.getIoWorkerExecutor().execute {
             val screenshotDir = client.runDirectory.toPath().resolve("screenshots").toFile()
+
             if (screenshotDir.exists() && screenshotDir.isDirectory) {
                 screenshotDir.listFiles()?.filter { it.isFile && (it.extension == "png") }?.sortedBy { it.name }?.apply {
                     this.forEach {

@@ -5,6 +5,7 @@ import net.bewis09.bewisclient.drawable.renderables.options_structure.SettingCat
 import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCategory
 import net.bewis09.bewisclient.game.Keybind
 import net.bewis09.bewisclient.impl.widget.TiwylaWidget
+import net.bewis09.bewisclient.game.BewisclientResourcePack
 import net.bewis09.bewisclient.util.*
 import net.bewis09.bewisclient.settings.Settings
 import net.bewis09.bewisclient.util.logic.BewisclientInterface
@@ -102,6 +103,13 @@ open class BewisclientAPIEntrypoint : BewisclientInterface {
      * Should return a list of extra [TiwylaWidget.EntityInfoProvider]s that provide extra information to be displayed in the Tiwyla widget for specific entities.
      */
     open fun getTiwylaEntityExtraInfoProviders(): List<TiwylaWidget.EntityInfoProvider<*>> {
+        return emptyList()
+    }
+
+    /**
+     * Should return a list of [BewisclientResourcePack.CustomResourceProvider]s that are used to provide custom resources for the Bewisclient.
+     */
+    open fun getCustomResourceProviders(): List<BewisclientResourcePack.CustomResourceProvider> {
         return emptyList()
     }
 }

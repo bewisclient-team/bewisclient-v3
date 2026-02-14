@@ -22,5 +22,6 @@ object BewisclientSettingsObject : ObjectSetting() {
         create("screenshot", ScreenshotSettings)
         create("fire_height", FireHeightSettings)
         create("pack_adder", PackAdderSettings)
+        create("panorama", PanoramaSettings)
     }
 }

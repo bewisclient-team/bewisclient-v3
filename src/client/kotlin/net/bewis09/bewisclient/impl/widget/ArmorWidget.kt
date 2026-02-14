@@ -1,7 +1,5 @@
 package net.bewis09.bewisclient.impl.widget
 
-import net.bewis09.bewisclient.core.EMPTY_OFFHAND_ARMOR_SLOT
-import net.bewis09.bewisclient.core.ofSpriteToNormal
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSettingsRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
@@ -18,7 +16,6 @@ import net.bewis09.bewisclient.widget.types.ScalableWidget
 import net.minecraft.component.DataComponentTypes
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
-import net.minecraft.screen.PlayerScreenHandler
 import net.minecraft.text.Text
 
 object ArmorWidget : ScalableWidget(createIdentifier("bewisclient", "armor_widget")) {
@@ -28,6 +25,7 @@ object ArmorWidget : ScalableWidget(createIdentifier("bewisclient", "armor_widge
     val showDurability = boolean("show_durability", true)
     val showPercentage = boolean("show_percentage", false)
     val showEmptySlots = boolean("show_empty_slots", true)
+    val showEmptySlotIcon = boolean("show_empty_slot_icon", true)
     val colorCodeText = boolean("color_code_text", true)
 
     val showHead = boolean("show_head", true)
@@ -46,12 +44,12 @@ object ArmorWidget : ScalableWidget(createIdentifier("bewisclient", "armor_widge
     val borderRadius = create("border_radius", DefaultWidgetSettings.borderRadius.cloneWithDefault())
 
     val icons = mapOf(
-        39 to PlayerScreenHandler.EMPTY_HELMET_SLOT_TEXTURE,
-        38 to PlayerScreenHandler.EMPTY_CHESTPLATE_SLOT_TEXTURE,
-        37 to PlayerScreenHandler.EMPTY_LEGGINGS_SLOT_TEXTURE,
-        36 to PlayerScreenHandler.EMPTY_BOOTS_SLOT_TEXTURE,
-        40 to EMPTY_OFFHAND_ARMOR_SLOT
-    ).mapValues { it.value.ofSpriteToNormal }
+        39 to createIdentifier("bewisclient", "textures/gui/sprites/helmet.png"),
+        38 to createIdentifier("bewisclient", "textures/gui/sprites/chestplate.png"),
+        37 to createIdentifier("bewisclient", "textures/gui/sprites/leggings.png"),
+        36 to createIdentifier("bewisclient", "textures/gui/sprites/boots.png"),
+        40 to createIdentifier("bewisclient", "textures/gui/sprites/shield.png")
+    )
 
     fun getStacks(): List<Int> {
         val stacks = mutableListOf<Int>()
@@ -70,6 +68,8 @@ object ArmorWidget : ScalableWidget(createIdentifier("bewisclient", "armor_widge
     override fun defaultPosition(): WidgetPosition = RelativePosition("bewisclient:inventory_widget", "top")
 
     override fun render(screenDrawing: ScreenDrawing) {
+        if (getHeight() == 0) return
+
         screenDrawing.fillWithBorderRounded(
             0, 0, getWidth(), getHeight(), borderRadius(), backgroundColor().getColor() alpha backgroundOpacity(), borderColor().getColor() alpha borderOpacity()
         )
@@ -80,8 +80,8 @@ object ArmorWidget : ScalableWidget(createIdentifier("bewisclient", "armor_widge
 
             if (stack != null && !stack.isEmpty) {
                 screenDrawing.drawItemStackWithOverlay(stack, paddingSize() + 1, y)
-            } else {
-                icons[slot]?.let { screenDrawing.drawTexture(it, paddingSize() + 1, y, 16, 16) }
+            } else if(showEmptySlotIcon.get()) {
+                icons[slot]?.let { screenDrawing.drawTexture(it, paddingSize() + 1, y, 16, 16, textColor().getColor() alpha 0.5f) }
             }
 
             screenDrawing.translate(0f, 0.5f) {
@@ -131,13 +131,13 @@ object ArmorWidget : ScalableWidget(createIdentifier("bewisclient", "armor_widge
         list.add(
             MultipleBooleanSettingsRenderable(
                 createTranslation("armor_slots", "Armor Slots"), null,
-                    listOf(
-                        showHead.createRenderablePart("widget.armor_widget.show_head", "Show Head"),
-                        showChest.createRenderablePart("widget.armor_widget.show_chest", "Show Chest"),
-                        showLegs.createRenderablePart("widget.armor_widget.show_legs", "Show Legs"),
-                        showFeet.createRenderablePart("widget.armor_widget.show_feet", "Show Feet"),
-                        showOffHand.createRenderablePart("widget.armor_widget.show_off_hand", "Show Off-Hand")
-                    ).staticFun()
+                listOf(
+                    showHead.createRenderablePart("widget.armor_widget.show_head", "Show Head"),
+                    showChest.createRenderablePart("widget.armor_widget.show_chest", "Show Chest"),
+                    showLegs.createRenderablePart("widget.armor_widget.show_legs", "Show Legs"),
+                    showFeet.createRenderablePart("widget.armor_widget.show_feet", "Show Feet"),
+                    showOffHand.createRenderablePart("widget.armor_widget.show_off_hand", "Show Off-Hand")
+                ).staticFun()
             )
         )
 
@@ -154,6 +154,11 @@ object ArmorWidget : ScalableWidget(createIdentifier("bewisclient", "armor_widge
         list.add(
             showEmptySlots.createRenderable(
                 "widget.show_empty_slots", "Show Empty Slots", "Toggle whether to show empty armor slots"
+            )
+        )
+        list.add(
+            showEmptySlotIcon.createRenderable(
+                "widget.show_empty_slot_icon", "Show Empty Slot Icon", "Toggle whether to show an icon for empty armor slots"
             )
         )
         list.add(
@@ -190,24 +195,24 @@ object ArmorWidget : ScalableWidget(createIdentifier("bewisclient", "armor_widge
         )
         super.appendSettingsRenderables(list)
     }
-}
 
-private fun getSampleStack(slot: Int): ItemStack? {
-    return when (slot) {
-        39 -> ItemStack(Items.NETHERITE_HELMET).apply {
-            this.damage = 100
+    private fun getSampleStack(slot: Int): ItemStack? {
+        return when (slot) {
+            39 -> ItemStack(Items.NETHERITE_HELMET).apply {
+                this.damage = 100
+            }
+
+            38 -> ItemStack(Items.ELYTRA).apply {
+                this.damage = 240
+                this.set(DataComponentTypes.CUSTOM_NAME, indicatorText)
+            }
+
+            37 -> ItemStack(Items.CHAINMAIL_LEGGINGS)
+            40 -> ItemStack(Items.SHIELD).apply {
+                this.damage = 24
+            }
+
+            else -> null
         }
-        38 -> ItemStack(Items.ELYTRA).apply {
-            this.damage = 240
-            this.set(DataComponentTypes.CUSTOM_NAME, indicatorText)
-        }
-        37 -> ItemStack(Items.CHAINMAIL_LEGGINGS)
-        36 -> ItemStack(Items.LEATHER_BOOTS).apply {
-            this.damage = 25
-        }
-        40 -> ItemStack(Items.SHIELD).apply {
-            this.damage = 24
-        }
-        else -> null
     }
 }

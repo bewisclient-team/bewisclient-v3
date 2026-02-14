@@ -79,7 +79,7 @@ abstract class SettingCategory(val text: Translation, val setting: Array<Rendera
         return Plane { x, y, width, height -> listOf(TextElement(text(), 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()), centered = true)(x, y, width, 13)) }.setHeight(14)
     }
 
-    fun getPane(): Renderable {
+    open fun getPane(): Renderable {
         return VerticalAlignScrollPlane(setting.toList(), 1)
     }
 

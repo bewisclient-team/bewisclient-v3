@@ -25,4 +25,6 @@ object Translations {
     val ADD_DATA_PACK = Translation("menu.data_pack.add", "Add Data Packs")
     val DOWNLOAD_FROM_MODRINTH = Translation("menu.pack.download_from_modrinth", "Select and download packs from Modrinth")
     val MODRINTH = Translation("menu.pack.modrinth", "Modrinth")
+    val BEWISCLIENT_RESOURCES = Translation("menu.resource_pack.bewisclient_resource", "Bewisclient Custom Resources")
+    val BEWISCLIENT_RESOURCES_DESCRIPTION = Translation("menu.resource_pack.bewisclient_resource_description", "Features can be enabled in the Bewisclient settings")
 }

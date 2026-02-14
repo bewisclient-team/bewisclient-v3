@@ -69,7 +69,7 @@ abstract class Setting<T>(val default: () -> T, val onChangeListener: (Setting<T
      * This method should be called after setting a value to ensure that the changes are persisted.
      */
     fun save() {
-        SettingsLoader.getAllSettings().forEach { it.save() }
+        SettingsLoader.getAllSettings().forEach { it.setDirty() }
     }
 
     /**

@@ -10,6 +10,12 @@ object SettingsLoader : EventEntrypoint {
         }
     }
 
+    override fun onClientTickStart() {
+        getAllSettings().forEach { settings ->
+            settings.save()
+        }
+    }
+
     fun getAllSettings(): List<Settings> {
         return APIEntrypointLoader.mapEntrypoint { it.getSettingsObjects() }.flatten()
     }

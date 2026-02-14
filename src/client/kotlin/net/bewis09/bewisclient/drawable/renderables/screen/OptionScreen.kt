@@ -53,12 +53,12 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
                                 settings.homeCategory(this).onClick(button)
                             else
                                 settings.sidebarCategories.mapNotNull { a -> a as? ThemeButton }.firstOrNull { a -> a.selected() }?.let { a -> a.onClick(a) }
-                        }.setImagePadding(1).setImageColor({ 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()) })(x, y, 14, 14), button(x + 19, y, 82, 14), ImageButton(closeIdentifier) {
+                        }.setImagePadding(1).setImageColor { 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()) }(x, y, 14, 14), button(x + 19, y, 82, 14), ImageButton(closeIdentifier) {
                             alphaMainAnimation["blur"] = 0f
                             alphaMainAnimation["alpha"] = 0f then {
                                 client.setScreen(null)
                             }
-                        }.setImagePadding(3).setImageColor({ 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()) })(x + 106, y, 14, 14)
+                        }.setImagePadding(3).setImageColor { 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()) }(x + 106, y, 14, 14)
                     )
                 }.setHeight(14)
             })

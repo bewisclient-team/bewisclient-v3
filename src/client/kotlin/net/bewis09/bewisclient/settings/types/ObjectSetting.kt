@@ -70,4 +70,8 @@ open class ObjectSetting() : Setting<JsonObject>(JsonObject()) {
     fun color(key: String, default: ColorSaver, vararg types: String): ColorSetting {
         return create(key, ColorSetting(default, *types))
     }
+
+    fun string(key: String, default: String): StringSetting {
+        return create(key, StringSetting(default))
+    }
 }

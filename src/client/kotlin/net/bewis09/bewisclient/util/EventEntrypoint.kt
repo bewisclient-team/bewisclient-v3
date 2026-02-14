@@ -59,4 +59,11 @@ interface EventEntrypoint : BewisclientInterface {
     fun onResourcesReloaded() {
 
     }
+
+    /**
+     * Called at the start of each client tick.
+     */
+    fun onClientTickStart() {
+
+    }
 }

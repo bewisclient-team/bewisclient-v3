@@ -3,7 +3,7 @@ package net.bewis09.bewisclient.impl.settings
 import net.bewis09.bewisclient.settings.Settings
 import net.bewis09.bewisclient.settings.Version2Migration
 
-object BewisclientSettings : Settings {
+object BewisclientSettings : Settings() {
     override fun getId(): String = "bewisclient"
     override fun getMainSetting() = BewisclientSettingsObject
 

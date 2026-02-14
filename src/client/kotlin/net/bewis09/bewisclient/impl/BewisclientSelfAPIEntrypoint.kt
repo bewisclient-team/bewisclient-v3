@@ -12,6 +12,7 @@ import net.bewis09.bewisclient.impl.screenshot.Screenshot
 import net.bewis09.bewisclient.impl.settings.BewisclientSettings
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.bewis09.bewisclient.impl.widget.*
+import net.bewis09.bewisclient.game.BewisclientResourcePack
 import net.bewis09.bewisclient.security.Security
 import net.bewis09.bewisclient.util.EventEntrypoint
 import net.bewis09.bewisclient.settings.Settings
@@ -23,7 +24,7 @@ import kotlin.jvm.optionals.getOrNull
 
 class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint() {
     override fun getEventEntrypoints(): List<EventEntrypoint> = listOf(
-        WidgetLoader, SettingsLoader, KeybindingImplementer, TranslationLoader, BiomeWidget, SpeedWidget, TiwylaWidget, ShulkerBoxTooltipComponent.Entrypoint, CosmeticLoader, BewisclientCommand, Security, OptionScreen.ImageIdentifier
+        WidgetLoader, SettingsLoader, KeybindingImplementer, TranslationLoader, BiomeWidget, SpeedWidget, TiwylaWidget, ShulkerBoxTooltipComponent.Entrypoint, CosmeticLoader, BewisclientCommand, Security, OptionScreen.ImageIdentifier, Panorama, Ticker
     )
 
     override fun getSettingsObjects(): List<Settings> = listOf(
@@ -31,7 +32,7 @@ class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint() {
     )
 
     override fun getKeybinds(): List<Keybind> = listOf(
-        OpenOptionScreen, Fullbright.ToggleNightVision, Fullbright.ToggleFullbright, Fullbright.IncreaseBrightness, Fullbright.DecreaseBrightness, Zoom.ZoomKeybind, Perspective.EnablePerspective
+        OpenOptionScreen, Fullbright.ToggleNightVision, Fullbright.ToggleFullbright, Fullbright.IncreaseBrightness, Fullbright.DecreaseBrightness, Zoom.ZoomKeybind, Perspective.EnablePerspective, Panorama.TakePanoramaScreenshot
     )
 
     override fun getWidgets(): List<Widget> = listOf(
@@ -41,7 +42,7 @@ class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint() {
     override fun getUtilities(): List<Renderable> = listOf(
         Fullbright, BlockHighlight, EntityHighlight, HeldItemTooltip, Zoom, PumpkinOverlay,
         // Crosshair,
-        BetterVisibility, Scoreboard, ShulkerBoxTooltip, Perspective, FireHeight, PackAdder
+        BetterVisibility, Scoreboard, ShulkerBoxTooltip, Perspective, FireHeight, Panorama, PackAdder
         // Chat Enhancements,
     )
 
@@ -69,5 +70,9 @@ class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint() {
         TiwylaWidget.EntityInfoProvider(EntityType.HORSE) { it.getColor() + ", " + it.marking.name.lowercase() },
         TiwylaWidget.EntityInfoProvider(EntityType.RABBIT) { it.variant.name.lowercase() },
         TiwylaWidget.EntityInfoProvider(EntityType.LLAMA) { it.variant.name.lowercase() },
+    )
+
+    override fun getCustomResourceProviders(): List<BewisclientResourcePack.CustomResourceProvider> = listOf(
+        Panorama
     )
 }

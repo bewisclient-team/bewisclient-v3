@@ -2,7 +2,6 @@ package net.bewis09.bewisclient.core
 
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawingInterface
-import net.bewis09.bewisclient.util.createIdentifier
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.font.TextRenderer
@@ -18,7 +17,6 @@ import net.minecraft.entity.passive.HorseEntity
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.item.tooltip.TooltipType
-import net.minecraft.screen.PlayerScreenHandler
 import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
@@ -34,7 +32,9 @@ fun HorseEntity.getColor(): String = this.horseColor.name.lowercase()
 
 var LivingEntity.beforeHeadYaw: Float
     get() = this.lastHeadYaw
-    set(value) { this.lastHeadYaw = value }
+    set(value) {
+        this.lastHeadYaw = value
+    }
 
 fun Text.setFont(id: Identifier?): Text {
     return (this as? MutableText ?: this.copy()).styled { it.withFont((id ?: ScreenDrawingInterface.BEWISCLIENT_FONT)) }
@@ -84,7 +84,7 @@ fun MinecraftClient.isKeyPressed(key: Int): Boolean {
     return InputUtil.isKeyPressed(this.window.handle, key)
 }
 
-fun registerWidget(id: Identifier, widget: (context: DrawContext) -> Unit) = HudRenderCallback.EVENT.register { context, _ -> if(!MinecraftClient.getInstance().options.hudHidden) widget(context) }
+fun registerWidget(id: Identifier, widget: (context: DrawContext) -> Unit) = HudRenderCallback.EVENT.register { context, _ -> if (!MinecraftClient.getInstance().options.hudHidden) widget(context) }
 
 fun ItemStack.appendTooltip(textConsumer: Consumer<Text>) {
     for ((index, text) in this.getTooltip(Item.TooltipContext.DEFAULT, null, TooltipType.BASIC).withIndex()) {
@@ -128,9 +128,3 @@ fun ScreenDrawing.drawGuiTexture(
         height
     )
 }
-
-val EMPTY_OFFHAND_ARMOR_SLOT: Identifier
-    get() = PlayerScreenHandler.EMPTY_OFF_HAND_SLOT_TEXTURE
-
-val Identifier.ofSpriteToNormal: Identifier
-    get() = createIdentifier(this.namespace, "textures/gui/sprites/" + this.path + ".png")

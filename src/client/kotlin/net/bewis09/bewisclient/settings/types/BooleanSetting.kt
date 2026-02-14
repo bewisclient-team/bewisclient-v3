@@ -37,4 +37,6 @@ class BooleanSetting : Setting<Boolean> {
     fun cloneWithDefault(): BooleanSetting {
         return BooleanSetting { get() }
     }
+
+    operator fun not(): Boolean = !get()
 }

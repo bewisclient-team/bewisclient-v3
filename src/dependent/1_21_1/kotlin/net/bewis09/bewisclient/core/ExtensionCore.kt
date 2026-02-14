@@ -4,7 +4,6 @@ import com.mojang.blaze3d.systems.RenderSystem
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawingInterface
 import net.bewis09.bewisclient.util.color.color
-import net.bewis09.bewisclient.util.createIdentifier
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.font.TextRenderer
@@ -19,7 +18,6 @@ import net.minecraft.entity.passive.HorseEntity
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.item.tooltip.TooltipType
-import net.minecraft.screen.PlayerScreenHandler
 import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
@@ -135,9 +133,3 @@ fun ScreenDrawing.drawGuiTexture(
         height
     )
 }
-
-val EMPTY_OFFHAND_ARMOR_SLOT: Identifier
-    get() = PlayerScreenHandler.EMPTY_OFFHAND_ARMOR_SLOT
-
-val Identifier.ofSpriteToNormal: Identifier
-    get() = createIdentifier(this.namespace, "textures/" + this.path + ".png")
