@@ -1,11 +1,13 @@
 package net.bewis09.bewisclient.drawable.renderables
 
 import kotlinx.atomicfu.AtomicRef
-import net.bewis09.bewisclient.drawable.*
-import net.bewis09.bewisclient.drawable.screen_drawing.*
+import net.bewis09.bewisclient.drawable.Animator
+import net.bewis09.bewisclient.drawable.animate
+import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
+import net.bewis09.bewisclient.drawable.screen_drawing.scale
+import net.bewis09.bewisclient.drawable.screen_drawing.translate
+import net.bewis09.bewisclient.drawable.then
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
-import net.bewis09.bewisclient.util.color.Color
-import net.bewis09.bewisclient.util.color.within
 import net.minecraft.text.Text
 
 class ThemeButton : TooltipHoverable {
@@ -44,13 +46,12 @@ class ThemeButton : TooltipHoverable {
         screenDrawing.translate(centerX.toFloat(), centerY.toFloat()) {
             screenDrawing.scale(0.9f + 0.1f * clickAnimation["click"], 0.9f + 0.1f * clickAnimation["click"]) {
                 screenDrawing.translate(-width / 2f, -height / 2f)
-                val color = OptionsMenuSettings.themeColor.get().getColor()
-                screenDrawing.fillWithBorderRounded(0, 0, width, height, 5, color alpha (hoverAnimation["hovering"].coerceAtLeast(clickAnimation["color"]) + 1) * 0.15f, color alpha clickAnimation["color"] * 0.5f)
+                screenDrawing.fillWithBorderRounded(0, 0, width, height, 5, OptionsMenuSettings.getThemeColor(alpha = (hoverAnimation["hovering"].coerceAtLeast(clickAnimation["color"]) + 1) * 0.15f), OptionsMenuSettings.getThemeColor(alpha = clickAnimation["color"] * 0.5f))
             }
 
             screenDrawing.scale(0.95f + 0.05f * clickAnimation["click"], 0.95f + 0.05f * clickAnimation["click"]) {
                 screenDrawing.translate(0f, -screenDrawing.getTextHeight() / 2f)
-                screenDrawing.drawCenteredText(text, 0, 0, 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()))
+                screenDrawing.drawCenteredText(text, 0, 0, OptionsMenuSettings.getTextThemeColor())
             }
         }
     }

@@ -52,7 +52,7 @@ class SettingStructure(val screen: OptionScreen) : BewisclientInterface {
     val widgetsPlane = Plane { x, y, width, height ->
         listOf(
             Button(Translation("menu.widgets.general_setting", "General Widget Settings")()) {
-                screen.transformInside(
+                screen.openPage(
                     TextElement(Translation("menu.widgets.general_setting", "General Widget Settings")(), centered = true).setHeight(12), VerticalAlignScrollPlane({ generalWidgetSettings }, 1)
                 )
             }(x, y, width, 14), VerticalScrollGrid({ widgets.map { a -> a.setHeight(90) } }, 5, 80).invoke(x, y + 19, width, height - 19)

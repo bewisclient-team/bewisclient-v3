@@ -22,7 +22,7 @@ class Fader(val value: Gettable<Float>, val precision: Precision, val onChange: 
 
         screenDrawing.transform(x + normalizedValue * (width - 8) + 4, y + 2f, 0.1f) {
             screenDrawing.fillRounded(
-                -20, 0, 40, 100, 20, (hoverAnimation["hovering"] within (0xCCCCCC.color to 0xFFFFFF.color)) * OptionsMenuSettings.themeColor.get().getColor()
+                -20, 0, 40, 100, 20, (hoverAnimation["hovering"] within (0xCCCCCC.color to 0xFFFFFF.color)) * OptionsMenuSettings.getThemeColor()
             )
         }
     }

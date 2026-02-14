@@ -42,8 +42,8 @@ class CustomWidgetLineRenderable : Renderable() {
 
     override fun init() {
         if (width < 15) return
-        addRenderable(Rectangle { OptionsMenuSettings.themeColor.get().getColor() alpha 0.5f }(x, y + 3, width, 1))
-        addRenderable(Rectangle { OptionsMenuSettings.themeColor.get().getColor() alpha 0.5f }(x, y + 27 + lines.size * 10 - if (CustomWidget.lines.isEmpty()) 1 else 0, width, 1))
+        addRenderable(Rectangle { OptionsMenuSettings.getThemeColor(alpha = 0.5f) }(x, y + 3, width, 1))
+        addRenderable(Rectangle { OptionsMenuSettings.getThemeColor(alpha = 0.5f) }(x, y + 27 + lines.size * 10 - if (CustomWidget.lines.isEmpty()) 1 else 0, width, 1))
         lines.forEachIndexed { index, input ->
             addRenderable(ImageButton(createIdentifier("bewisclient", "textures/gui/sprites/remove.png")) {
                 CustomWidget.lines.removeAt(index)

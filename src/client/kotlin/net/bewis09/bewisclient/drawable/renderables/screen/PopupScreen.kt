@@ -14,11 +14,11 @@ abstract class PopupScreen : Renderable() {
         val mx = if (popup != null) Integer.MIN_VALUE else mouseX
         val my = if (popup != null) Integer.MAX_VALUE else mouseY
 
-        render(screenDrawing, mx, my, popup != null)
+        renderScreen(screenDrawing, mx, my)
         popup?.render(screenDrawing, mouseX, mouseY)
     }
 
-    abstract fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int, popupShown: Boolean)
+    abstract fun renderScreen(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int)
 
     class Popup(val child: Renderable, val screen: PopupScreen) : Renderable() {
         val alphaAnimation = Animator(200, Animator.EASE_IN_OUT, "alpha" to 0f)

@@ -56,9 +56,11 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
                 if (button == 1) {
                     client.setScreen(RenderableScreen(OptionScreen().also { a ->
                         val widgetsCategory = a.settings.widgets.firstOrNull { b -> b.enableSetting == it.enabled } ?: return@also
-                        a.optionsHeader = widgetsCategory.getHeader()
-                        a.optionsPane = widgetsCategory.getPane()
-                        a.optionsHeaderBooleanSetting = it.enabled
+                        a.page = OptionScreen.Page(
+                            widgetsCategory.getHeader(),
+                            widgetsCategory.getPane(),
+                            it.enabled
+                        )
                         a.category.value = "bewisclient:widgets"
                     }))
 
@@ -75,7 +77,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
         return false
     }
 
-    override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int, popupShown: Boolean) {
+    override fun renderScreen(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         widgets.forEach {
             if (it.isEnabled()) {
                 it.renderScaled(screenDrawing.copy())
@@ -141,8 +143,11 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
         addRenderable(ImageButton(createIdentifier("bewisclient", "textures/gui/sprites/settings.png")) {
             client.setScreen(RenderableScreen(OptionScreen().also {
                 val widgetsCategory = SettingStructure(it).widgetsCategory
-                it.optionsHeader = widgetsCategory.getHeader()
-                it.optionsPane = widgetsCategory.renderable
+                it.page = OptionScreen.Page(
+                    widgetsCategory.getHeader(),
+                    widgetsCategory.renderable,
+                    null
+                )
                 it.category.value = "bewisclient:widgets"
             }))
         }.setImagePadding(2)(width - 32, height - 16, 14, 14))

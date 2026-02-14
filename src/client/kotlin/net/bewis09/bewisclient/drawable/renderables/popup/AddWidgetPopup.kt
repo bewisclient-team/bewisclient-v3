@@ -6,8 +6,6 @@ import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
-import net.bewis09.bewisclient.util.color.Color
-import net.bewis09.bewisclient.util.color.within
 import net.bewis09.bewisclient.widget.Widget
 import net.bewis09.bewisclient.widget.WidgetLoader
 
@@ -35,13 +33,13 @@ class AddWidgetPopup(val screen: HudEditScreen) : Renderable() {
     }
 
     inner class Inner : Renderable() {
-        val text = TextElement({ addText() }, 0.5f within (OptionsMenuSettings.themeColor.get().getColor() to Color.WHITE), centered = true)
+        val text = TextElement({ addText() }, OptionsMenuSettings.getTextThemeColor(), centered = true)
         var grid = VerticalScrollGrid({
             WidgetLoader.widgets.filter { !it.isEnabled() }.map { widget -> WidgetElement(widget, screen, this).setHeight(90) }
         }, 5, 80)
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-            screenDrawing.fillWithBorderRounded(x, y, width, height, 10, OptionsMenuSettings.getBackgroundColor(), OptionsMenuSettings.themeColor.get().getColor() alpha 0.15f)
+            screenDrawing.fillWithBorderRounded(x, y, width, height, 10, OptionsMenuSettings.getBackgroundColor(), OptionsMenuSettings.getThemeColor(alpha = 0.15f))
             renderRenderables(screenDrawing, mouseX, mouseY)
         }
 
@@ -71,9 +69,9 @@ class AddWidgetPopup(val screen: HudEditScreen) : Renderable() {
             val textHeight = (screenDrawing.wrapText(title.string, width - 10).size - 1) * screenDrawing.getTextHeight()
             val descriptionHeight = (screenDrawing.wrapText(description.string, width - 10).size - 1) * screenDrawing.getTextHeight()
 
-            screenDrawing.fillWithBorderRounded(x, y, width, height, 5, OptionsMenuSettings.themeColor.get().getColor() alpha hoverAnimation["hovering"] * 0.15f + 0.15f, OptionsMenuSettings.themeColor.get().getColor() alpha hoverAnimation["hovering"] * 0.15f + 0.15f)
-            screenDrawing.drawCenteredWrappedText(title, centerX, y + 14 - textHeight / 2, width - 10, OptionsMenuSettings.themeColor.get().getColor())
-            screenDrawing.drawCenteredWrappedText(description, centerX, y2 - 38 - descriptionHeight / 2, width - 10, OptionsMenuSettings.themeColor.get().getColor() * 0xAAAAAA alpha 0.65f)
+            screenDrawing.fillWithBorderRounded(x, y, width, height, 5, OptionsMenuSettings.getThemeColor(alpha = hoverAnimation["hovering"] * 0.15f + 0.15f), OptionsMenuSettings.getThemeColor(alpha = hoverAnimation["hovering"] * 0.15f + 0.15f))
+            screenDrawing.drawCenteredWrappedText(title, centerX, y + 14 - textHeight / 2, width - 10, OptionsMenuSettings.getThemeColor())
+            screenDrawing.drawCenteredWrappedText(description, centerX, y2 - 38 - descriptionHeight / 2, width - 10, OptionsMenuSettings.getThemeColor() * 0xAAAAAA alpha 0.65f)
 
             renderRenderables(screenDrawing, mouseX, mouseY)
         }

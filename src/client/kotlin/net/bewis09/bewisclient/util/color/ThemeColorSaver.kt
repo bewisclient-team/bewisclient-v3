@@ -24,7 +24,7 @@ class ThemeColorSaver : ColorSaver {
     }
 
     override fun getColor(): Color {
-        return OptionsMenuSettings.themeColor.get().getColor().withBrightness(getBrightness())
+        return OptionsMenuSettings.getThemeColor().withBrightness(getBrightness())
     }
 
     override fun getType(): String = "theme"
@@ -33,7 +33,7 @@ class ThemeColorSaver : ColorSaver {
         return if (brightness == null) JsonPrimitive(-1) else JsonPrimitive(brightness)
     }
 
-    fun getBrightness() = brightness ?: Precision(0f, 1f, 0.01f, 2).parse(OptionsMenuSettings.themeColor.get().getColor().brightness)
+    fun getBrightness() = brightness ?: Precision(0f, 1f, 0.01f, 2).parse(OptionsMenuSettings.getThemeColor().brightness)
 
     object Factory : ColorSaverFactory<ThemeColorSaver> {
         private val translation = Translation("color.theme", "Theme Color")

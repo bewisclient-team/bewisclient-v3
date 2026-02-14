@@ -11,9 +11,9 @@ class InfoTextRenderable(val text: Text, val color: Color = Color.WHITE, val cen
         val lines = screenDrawing.wrapText(text.string, width)
         lines.forEachIndexed { index, line ->
             if (centered) {
-                screenDrawing.drawCenteredText(line, centerX, y + index * screenDrawing.getTextHeight() + padding, color * OptionsMenuSettings.themeColor.get().getColor())
+                screenDrawing.drawCenteredText(line, centerX, y + index * screenDrawing.getTextHeight() + padding, color * OptionsMenuSettings.getThemeColor())
             } else {
-                screenDrawing.drawText(line, x, y + index * screenDrawing.getTextHeight() + padding, color * OptionsMenuSettings.themeColor.get().getColor())
+                screenDrawing.drawText(line, x, y + index * screenDrawing.getTextHeight() + padding, color * OptionsMenuSettings.getThemeColor())
             }
         }
         if (selfResize) setHeight(lines.size * screenDrawing.getTextHeight() + padding * 2)

@@ -24,12 +24,12 @@ class Switch(var state: Gettable<Boolean>, val onChange: (new: Boolean) -> Unit)
         stateAnimation["state"] = if (state.get()) 1f else 0f
 
         screenDrawing.fillWithBorderRounded(
-            x, y, width, height, 6, stateAnimation["state"] within (0x333333.color to OptionsMenuSettings.themeColor.get().getColor()) alpha hoverAnimation["hovering"].coerceAtLeast(stateAnimation["state"]) * 0.15f + 0.15f, stateAnimation["state"] within (0x888888.color to OptionsMenuSettings.themeColor.get().getColor()) alpha hoverAnimation["hovering"] * 0.5f + 0.5f
+            x, y, width, height, 6, stateAnimation["state"] within (0x333333.color to OptionsMenuSettings.getThemeColor()) alpha hoverAnimation["hovering"].coerceAtLeast(stateAnimation["state"]) * 0.15f + 0.15f, stateAnimation["state"] within (0x888888.color to OptionsMenuSettings.getThemeColor()) alpha hoverAnimation["hovering"] * 0.5f + 0.5f
         )
         val scaleFactor = 0.5f
         screenDrawing.transform(x + ((width - 12) * stateAnimation["state"]) + 6f, y + 6f, 1 - scaleFactor + abs(stateAnimation["state"] - 0.5f) * 2 * scaleFactor, 1f) {
             screenDrawing.fillRounded(
-                -4, -4, 8, 8, 4, stateAnimation["state"] within (0x888888.color to OptionsMenuSettings.themeColor.get().getColor()) alpha hoverAnimation["hovering"] * 0.5f + 0.5f
+                -4, -4, 8, 8, 4, stateAnimation["state"] within (0x888888.color to OptionsMenuSettings.getThemeColor()) alpha hoverAnimation["hovering"] * 0.5f + 0.5f
             )
         }
     }

@@ -114,11 +114,11 @@ object ScreenshotElement : Renderable() {
             contents.toSortedMap().map { ScreenshotViewElement(it.key) }.toList().let {
                 it.ifEmpty {
                     listOf(
-                        object: Renderable() {
+                        object : Renderable() {
                             override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-                                screenDrawing.fillWithBorder(x, y, width, height, (0.2f within (Color.BLACK to OptionsMenuSettings.themeColor.get().getColor())) alpha 0.7f, (OptionsMenuSettings.themeColor.get().getColor()) alpha 0.5f)
+                                screenDrawing.fillWithBorder(x, y, width, height, OptionsMenuSettings.getThemeColor(alpha = 0.7f, black = 0.2f), OptionsMenuSettings.getThemeColor(alpha = 0.5f))
                                 val lines = screenDrawing.wrapText(noScreenshotsYet().string, width - 8)
-                                screenDrawing.drawCenteredWrappedText(lines, x + width / 2, y + height / 2 - lines.size * screenDrawing.getTextHeight() / 2, (0.3f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor())) alpha 0.7f)
+                                screenDrawing.drawCenteredWrappedText(lines, x + width / 2, y + height / 2 - lines.size * screenDrawing.getTextHeight() / 2, OptionsMenuSettings.getThemeColor(white = 0.3f, alpha = 0.7f))
                             }
                         }.setHeight((width - 2) * 9 / 16 + 2)
                     )
@@ -154,7 +154,7 @@ class ScreenshotViewElement(val file: File) : Hoverable(100) {
         super.render(screenDrawing, mouseX, mouseY)
 
         screenDrawing.transform(x + width / 2f, y + height / 2f, 1f - hoverAnimation["hovering"] * 0.1f) {
-            screenDrawing.fillWithBorder(-width / 2, -height / 2, width, height, (0.2f within (Color.BLACK to OptionsMenuSettings.themeColor.get().getColor())) alpha 0.7f, ((1f - hoverAnimation["hovering"] * .5f) within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor())) alpha (0.5f + hoverAnimation["hovering"] * .5f))
+            screenDrawing.fillWithBorder(-width / 2, -height / 2, width, height, OptionsMenuSettings.getThemeColor(alpha = 0.7f, black = 0.2f), OptionsMenuSettings.getThemeColor(white = 1f - hoverAnimation["hovering"] * .5f, alpha = 0.5f + hoverAnimation["hovering"] * .5f))
             val data = contents.getOrDefault(file, null) ?: return
 
             data.identifier?.also {
@@ -201,19 +201,21 @@ fun openBigScreenshotNewScreen(file: File) {
     }
 
     MinecraftClient.getInstance().setScreen(RenderableScreen(OptionScreen().apply {
-        optionsHeader = Plane { x, y, width, _ -> listOf(TextElement(screenshotName(file.name), 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()), centered = true)(x, y, width, 13)) }.setHeight(14)
-        optionsPane = VerticalAlignScrollPlane({ w ->
-            listOf(
-                BigScreenshotViewElement(file).setWidth(w)
-            )
-        }, 5)
+        page = OptionScreen.Page(
+            Plane { x, y, width, _ -> listOf(TextElement(screenshotName(file.name), OptionsMenuSettings.getTextThemeColor(), centered = true)(x, y, width, 13)) }.setHeight(14), VerticalAlignScrollPlane({ w ->
+                listOf(
+                    BigScreenshotViewElement(file).setWidth(w)
+                )
+            }, 5),
+            null
+        )
         category.value = Screenshot.id.toString()
     }))
 }
 
 fun openBigScreenshot(file: File) {
-    OptionScreen.currentInstance?.transformInside(
-        Plane { x, y, width, _ -> listOf(TextElement(screenshotName(file.name), 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()), centered = true)(x, y, width, 13)) }.setHeight(14),
+    OptionScreen.currentInstance?.openPage(
+        Plane { x, y, width, _ -> listOf(TextElement(screenshotName(file.name), OptionsMenuSettings.getTextThemeColor(), centered = true)(x, y, width, 13)) }.setHeight(14),
         VerticalAlignScrollPlane({ w ->
             listOf(
                 BigScreenshotViewElement(file).setWidth(w)
@@ -239,7 +241,7 @@ class BigScreenshotViewElement(val file: File) : Renderable() {
     var deleteRequest = false
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        screenDrawing.fillWithBorder(x, y, width, height - 19, (0.2f within (Color.BLACK to OptionsMenuSettings.themeColor.get().getColor())) alpha 0.7f, OptionsMenuSettings.themeColor.get().getColor() alpha 0.5f)
+        screenDrawing.fillWithBorder(x, y, width, height - 19, OptionsMenuSettings.getThemeColor(black = 0.2f, alpha = 0.7f), OptionsMenuSettings.getThemeColor(alpha = 0.5f))
 
         val data = contents.getOrDefault(file, null) ?: return
 

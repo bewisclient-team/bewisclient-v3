@@ -18,7 +18,6 @@ import net.bewis09.bewisclient.settings.types.Setting
 import net.bewis09.bewisclient.util.Bewisclient
 import net.bewis09.bewisclient.util.EventEntrypoint
 import net.bewis09.bewisclient.util.color.Color
-import net.bewis09.bewisclient.util.color.within
 import net.bewis09.bewisclient.util.createIdentifier
 import net.minecraft.screen.ScreenTexts
 import net.minecraft.util.Identifier
@@ -53,18 +52,18 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
                                 settings.homeCategory(this).onClick(button)
                             else
                                 settings.sidebarCategories.mapNotNull { a -> a as? ThemeButton }.firstOrNull { a -> a.selected() }?.let { a -> a.onClick(a) }
-                        }.setImagePadding(1).setImageColor { 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()) }(x, y, 14, 14), button(x + 19, y, 82, 14), ImageButton(closeIdentifier) {
+                        }.setImagePadding(1).setImageColor { OptionsMenuSettings.getTextThemeColor() }(x, y, 14, 14), button(x + 19, y, 82, 14), ImageButton(closeIdentifier) {
                             alphaMainAnimation["blur"] = 0f
                             alphaMainAnimation["alpha"] = 0f then {
                                 client.setScreen(null)
                             }
-                        }.setImagePadding(3).setImageColor { 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()) }(x + 106, y, 14, 14)
+                        }.setImagePadding(3).setImageColor { OptionsMenuSettings.getTextThemeColor() }(x + 106, y, 14, 14)
                     )
                 }.setHeight(14)
             })
-            it.add(Rectangle { OptionsMenuSettings.themeColor.get().getColor() alpha 0.3f }.setHeight(1))
+            it.add(Rectangle { OptionsMenuSettings.getThemeColor(alpha = 0.3f) }.setHeight(1))
             it.addAll(settings.sidebarCategories)
-            it.add(Rectangle { OptionsMenuSettings.themeColor.get().getColor() alpha 0.3f }.setHeight(1))
+            it.add(Rectangle { OptionsMenuSettings.getThemeColor(alpha = 0.3f) }.setHeight(1))
             it.add(ThemeButton("bewisclient:edit_hud", editHudTranslation(), category) {
                 alphaMainAnimation["alpha"] = 0f then {
                     client.setScreen(RenderableScreen(HudEditScreen()))
@@ -89,19 +88,17 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
         val iconIdentifier: Identifier = createIdentifier("bewisclient", "native/icon_long")
     }
 
-    var optionsHeader: Renderable = settings.homeCategory.getHeader()
-    var optionsPane: Renderable = settings.homeCategory.renderable
-    var optionsHeaderBooleanSetting: Setting<Boolean>? = null
+    var page = Page(
+        settings.homeCategory.getHeader(),
+        settings.homeCategory.renderable,
+        null
+    )
 
     var isCategoryStart = true
 
-    var switch = Switch(state = { optionsHeaderBooleanSetting?.get() ?: false }, onChange = { optionsHeaderBooleanSetting?.set(it) })
+    var switch = Switch(state = { page.setting?.get() ?: false }, onChange = { page.setting?.set(it) })
 
     val image = RainbowImage(iconIdentifier, 0.5f)
-
-    val securityMessage = "Your version of Bewisclient could not be verified. This probably means that the file your are using was changed after downloading or the version you are using was removed from Modrinth due to a critical bug.\n\nPlease download the newest version from Modrinth to ensure you are using a safe version.\n\nIf you believe this is an error, please let us know on GitHub."
-
-    val downloadText = Translations.MODRINTH
 
     init {
         currentInstance = this
@@ -109,80 +106,108 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
         alphaMainAnimation["blur"] = 1f
     }
 
-    override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int, popupShown: Boolean) {
-        if (!Security.verificationState.allowed) client.setScreen(RenderableScreen(object : Renderable() {
-            override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-                screenDrawing.wrapText(securityMessage + "\n\nError message: ${(Security.verificationState as? Security.ILLEGAL)?.reason ?: "Unknown"}", 300).let {
-                    screenDrawing.drawCenteredWrappedText(it, width / 2, height / 2 - it.size * 9 / 2 - 30, Color.WHITE, DEFAULT_FONT, true)
-                }
-
-                screenDrawing.transform(width - 5f, height - 11f, 0.7f) {
-                    screenDrawing.drawRightAlignedText("Bewisclient ${BuildInfo.VERSION} by Bewis09", 0, 0, OptionsMenuSettings.themeColor.get().getColor() alpha 0.5f)
-                }
-
-                renderRenderables(screenDrawing, mouseX, mouseY)
-            }
-
-            override fun init() {
-                addRenderable(MinecraftButton(ScreenTexts.BACK) {
-                    client.setScreen(null)
-                }(width / 2 - 102, height / 2 + 50, 100, 20))
-                addRenderable(MinecraftButton(downloadText()) {
-                    Util.getOperatingSystem().open(Constants.MODRINTH_URL)
-                }(width / 2 + 2, height / 2 + 50, 100, 20))
-            }
-
-            override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {
-                if (key == GLFW.GLFW_KEY_ESCAPE) {
-                    client.setScreen(null)
-                    return true
-                }
-                return super.onKeyPress(key, scanCode, modifiers)
-            }
-        }))
+    override fun renderScreen(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+        checkValidVersion()
 
         screenDrawing.pushAlpha(alphaMainAnimation["alpha"])
         screenDrawing.setBewisclientFont()
-        screenDrawing.fillWithBorderRounded(30, 30, 134, height - 60, 5, OptionsMenuSettings.getBackgroundColor(), OptionsMenuSettings.themeColor.get().getColor() alpha 0.3f)
-        screenDrawing.fillWithBorderRounded(169, 30, width - 199, height - 60, 5, OptionsMenuSettings.getBackgroundColor(), OptionsMenuSettings.themeColor.get().getColor() alpha 0.3f)
-        sidebarPlane.render(screenDrawing, mouseX, mouseY)
-        image.render(screenDrawing, mouseX, mouseY)
-        screenDrawing.transform(width - 5f, height - 11f, 0.7f) {
-            screenDrawing.drawRightAlignedText("Bewisclient ${BuildInfo.VERSION} by Bewis09", 0, 0, OptionsMenuSettings.themeColor.get().getColor() alpha 0.5f)
-        }
-        screenDrawing.pushAlpha(alphaMainAnimation["inside"])
-        optionsHeader.render(screenDrawing, mouseX, mouseY)
-        optionsPane.render(screenDrawing, mouseX, mouseY)
-        if (optionsHeaderBooleanSetting != null) {
-            switch.render(screenDrawing, mouseX, mouseY)
-        }
-        screenDrawing.popColor()
+
+        renderBackground(screenDrawing)
+        renderSidebar(screenDrawing, mouseX, mouseY)
+        renderVersionText(screenDrawing)
+        renderInner(screenDrawing, mouseX, mouseY)
+
         screenDrawing.popColor()
         screenDrawing.defaultFont()
+    }
+
+    fun renderBackground(screenDrawing: ScreenDrawing) {
+        screenDrawing.fillWithBorderRounded(30, 30, 134, height - 60, 5, OptionsMenuSettings.getBackgroundColor(), OptionsMenuSettings.getThemeColor(alpha = 0.3f))
+        screenDrawing.fillWithBorderRounded(169, 30, width - 199, height - 60, 5, OptionsMenuSettings.getBackgroundColor(), OptionsMenuSettings.getThemeColor(alpha = 0.3f))
+    }
+
+    fun renderSidebar(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+        sidebarPlane.render(screenDrawing, mouseX, mouseY)
+        image.render(screenDrawing, mouseX, mouseY)
+    }
+
+    fun renderVersionText(screenDrawing: ScreenDrawing) {
+        screenDrawing.transform(width - 5f, height - 11f, 0.7f) {
+            screenDrawing.drawRightAlignedText("Bewisclient ${BuildInfo.VERSION} by Bewis09", 0, 0, OptionsMenuSettings.getThemeColor(alpha = 0.5f))
+        }
+    }
+
+    fun renderInner(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+        screenDrawing.pushAlpha(alphaMainAnimation["inside"])
+
+        page.header.render(screenDrawing, mouseX, mouseY)
+        page.pane.render(screenDrawing, mouseX, mouseY)
+        if (page.setting != null) {
+            switch.render(screenDrawing, mouseX, mouseY)
+        }
+
+        screenDrawing.popColor()
+    }
+
+    fun checkValidVersion() {
+        if (!Security.verificationState.allowed) client.setScreen(RenderableScreen(VersionInvalidScreen))
+    }
+
+    object VersionInvalidScreen : Renderable() {
+        const val SECURITY_MESSAGE = "Your version of Bewisclient could not be verified. This probably means that the file your are using was changed after downloading or the version you are using was removed from Modrinth due to a critical bug.\n\nPlease download the newest version from Modrinth to ensure you are using a safe version.\n\nIf you believe this is an error, please let us know on GitHub."
+
+        override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+            screenDrawing.wrapText(SECURITY_MESSAGE + "\n\nError message: ${(Security.verificationState as? Security.ILLEGAL)?.reason ?: "Unknown"}", 300).let {
+                screenDrawing.drawCenteredWrappedText(it, width / 2, height / 2 - it.size * 9 / 2 - 30, Color.WHITE, DEFAULT_FONT, true)
+            }
+
+            screenDrawing.transform(width - 5f, height - 11f, 0.7f) {
+                screenDrawing.drawRightAlignedText("Bewisclient ${BuildInfo.VERSION} by Bewis09", 0, 0, OptionsMenuSettings.getThemeColor(alpha = 0.5f))
+            }
+
+            renderRenderables(screenDrawing, mouseX, mouseY)
+        }
+
+        override fun init() {
+            addRenderable(MinecraftButton(ScreenTexts.BACK) {
+                client.setScreen(null)
+            }(width / 2 - 102, height / 2 + 50, 100, 20))
+            addRenderable(MinecraftButton(Translations.MODRINTH()) {
+                Util.getOperatingSystem().open(Constants.MODRINTH_URL)
+            }(width / 2 + 2, height / 2 + 50, 100, 20))
+        }
+
+        override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {
+            if (key == GLFW.GLFW_KEY_ESCAPE) {
+                client.setScreen(null)
+                return true
+            }
+            return super.onKeyPress(key, scanCode, modifiers)
+        }
     }
 
     override fun init() {
         super.init()
         addRenderable(sidebarPlane(37, 37, 120, height - 101))
         addRenderable(image(37, height - 59, 120, 22))
-        if (optionsHeaderBooleanSetting != null) {
+        if (page.setting != null) {
             addRenderable(switch.setPosition(width - 37 - switch.width, 37))
         }
-        optionsHeader.setPosition(175, 37).setWidth(width - 211).let { addRenderable(it) }
-        addRenderable(optionsPane.invoke(175, 37 + (optionsHeader.height + 5), width - 211, height - 74 - (optionsHeader.height + 5)))
+        page.header.setPosition(175, 37).setWidth(width - 211).let { addRenderable(it) }
+        addRenderable(page.pane.invoke(175, 37 + (page.header.height + 5), width - 211, height - 74 - (page.header.height + 5)))
     }
 
-    fun transformInside(afterHeader: Renderable, afterPane: Renderable, setting: Setting<Boolean>? = null, isCategoryStart: Boolean = false) {
+    fun openPage(afterHeader: Renderable, afterPane: Renderable, setting: Setting<Boolean>? = null, isCategoryStart: Boolean = false) {
         this.isCategoryStart = isCategoryStart
 
         alphaMainAnimation["inside"] = 0f then {
-            optionsPane = afterPane
-            optionsHeader = afterHeader
-            optionsHeaderBooleanSetting = setting
+            page = Page(afterHeader, afterPane, setting)
             resize()
             alphaMainAnimation["inside"] = 1f
         }
     }
+
+    class Page(val header: Renderable, val pane: Renderable, val setting: Setting<Boolean>? = null)
 
     override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {
         if (key == GLFW.GLFW_KEY_ESCAPE) {

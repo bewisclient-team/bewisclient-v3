@@ -14,4 +14,7 @@ object OptionsMenuSettings : ObjectSetting() {
     val backgroundOpacity = float("background_opacity", 0.8f, 0f, 1f, 0.01f, 2)
 
     fun getBackgroundColor(): Color = 0.3f within (Color.BLACK to backgroundColor.get().getColor()) alpha backgroundOpacity.get()
+
+    fun getThemeColor(white: Float = 1f, alpha: Float = 1f, black: Float = 1f) = (black within (Color.BLACK to (white within (Color.WHITE to themeColor.get().getColor())))) alpha alpha
+    fun getTextThemeColor() = (0.5f within (Color.WHITE to themeColor.get().getColor()))
 }

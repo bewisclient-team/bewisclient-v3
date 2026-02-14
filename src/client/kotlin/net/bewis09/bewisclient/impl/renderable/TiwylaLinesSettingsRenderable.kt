@@ -30,8 +30,8 @@ class TiwylaLinesSettingsRenderable : Renderable() {
         if (width < 12) return
 
         addRenderable(Rectangle(Color.WHITE alpha 0.25f)(centerX, y + 5, 1, height - 5))
-        addRenderable(TextElement(entityText(), 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()), true)(x, y + 6, (width - 11) / 2, 9))
-        addRenderable(TextElement(blockText(), 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()), true)(x2 - (width - 11) / 2, y + 6, (width - 11) / 2, 9))
+        addRenderable(TextElement(entityText(), OptionsMenuSettings.getTextThemeColor(), true)(x, y + 6, (width - 11) / 2, 9))
+        addRenderable(TextElement(blockText(), OptionsMenuSettings.getTextThemeColor(), true)(x2 - (width - 11) / 2, y + 6, (width - 11) / 2, 9))
 
         addForSide(TiwylaWidget.entityLines)
         addForSide(TiwylaWidget.blockLines, right = true)

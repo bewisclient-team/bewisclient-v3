@@ -25,7 +25,7 @@ open class FaderSettingRenderable<T : Number>(val title: Translation, val descri
         drawVerticalCenteredText(screenDrawing, title)
         renderRenderables(screenDrawing, mouseX, mouseY)
         screenDrawing.translate(0f, height / 2f - screenDrawing.getTextHeight() / 2f) {
-            screenDrawing.drawRightAlignedText(precision.roundToString(setting.get().toFloat()), x2 - fader.width - 12 - resetButton.width, y, 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()))
+            screenDrawing.drawRightAlignedText(precision.roundToString(setting.get().toFloat()), x2 - fader.width - 12 - resetButton.width, y, OptionsMenuSettings.getTextThemeColor())
         }
     }
 

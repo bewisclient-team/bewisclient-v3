@@ -29,7 +29,7 @@ class ColorFaderSettingRenderable(val title: Translation, val description: Trans
         super.render(screenDrawing, mouseX, mouseY)
         drawVerticalCenteredText(screenDrawing, title)
         screenDrawing.translate(0f, y + 22.5f) {
-            screenDrawing.drawRightAlignedText(title2.getTranslatedString() + ": " + setting2.get(), x2 - fader.width - 12 - resetButton.width, 0, 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()))
+            screenDrawing.drawRightAlignedText(title2.getTranslatedString() + ": " + setting2.get(), x2 - fader.width - 12 - resetButton.width, 0, OptionsMenuSettings.getTextThemeColor())
         }
         renderRenderables(screenDrawing, mouseX, mouseY)
     }

@@ -43,7 +43,7 @@ class CustomWidgetHelpPopup(val screen: PopupScreen) : Renderable() {
         )
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-            screenDrawing.fillWithBorderRounded(x, y, width, height, 10, OptionsMenuSettings.getBackgroundColor() alpha 0.9f, OptionsMenuSettings.themeColor.get().getColor() alpha 0.15f)
+            screenDrawing.fillWithBorderRounded(x, y, width, height, 10, OptionsMenuSettings.getBackgroundColor() alpha 0.9f, OptionsMenuSettings.getThemeColor(alpha = 0.15f))
             renderRenderables(screenDrawing, mouseX, mouseY)
         }
 
@@ -58,9 +58,9 @@ class CustomWidgetHelpPopup(val screen: PopupScreen) : Renderable() {
             }
 
             override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-                screenDrawing.drawText(dataPoint.name().append(" ".toText()).append(("{${dataPoint.id}}").toText().setColor((0.5f within (Color.BLACK to OptionsMenuSettings.themeColor.get().getColor())).argb)), x, y, OptionsMenuSettings.themeColor.get().getColor())
-                val texts = screenDrawing.drawWrappedText(dataPoint.description().string, x, y + 10, width, OptionsMenuSettings.themeColor.get().getColor() alpha 0.7f)
-                val paramTexts = dataPoint.param?.let { screenDrawing.drawWrappedText("Param: " + it().string, x, y + 10 + texts.size * 10, width, OptionsMenuSettings.themeColor.get().getColor() alpha 0.4f) } ?: emptyList()
+                screenDrawing.drawText(dataPoint.name().append(" ".toText()).append(("{${dataPoint.id}}").toText().setColor((OptionsMenuSettings.getThemeColor(black = 0.5f)).argb)), x, y, OptionsMenuSettings.getThemeColor())
+                val texts = screenDrawing.drawWrappedText(dataPoint.description().string, x, y + 10, width, OptionsMenuSettings.getThemeColor(alpha = 0.7f))
+                val paramTexts = dataPoint.param?.let { screenDrawing.drawWrappedText("Param: " + it().string, x, y + 10 + texts.size * 10, width, OptionsMenuSettings.getThemeColor(alpha = 0.4f)) } ?: emptyList()
                 internalHeight = 9 + texts.size * 10 + paramTexts.size * 10
             }
         }

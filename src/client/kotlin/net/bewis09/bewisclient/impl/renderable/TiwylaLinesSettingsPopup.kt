@@ -74,7 +74,7 @@ class TiwylaLinesSettingsPopup<T>(
         }
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-            screenDrawing.fillWithBorderRounded(x, y, width, height, 5, OptionsMenuSettings.themeColor.get().getColor() * 0x333333.color alpha 0.9f, OptionsMenuSettings.themeColor.get().getColor() * 0xAAAAAA.color alpha 0.5f)
+            screenDrawing.fillWithBorderRounded(x, y, width, height, 5, OptionsMenuSettings.getThemeColor() * 0x333333.color alpha 0.9f, OptionsMenuSettings.getThemeColor() * 0xAAAAAA.color alpha 0.5f)
             renderRenderables(screenDrawing, mouseX, mouseY)
         }
 

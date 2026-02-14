@@ -14,7 +14,7 @@ class MultipleBooleanSettingsRenderable(
 ) : SettingRenderable(tooltip, 22) {
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
-        screenDrawing.drawCenteredText(title.getTranslatedString(), centerX, y + 6, 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()))
+        screenDrawing.drawCenteredText(title.getTranslatedString(), centerX, y + 6, OptionsMenuSettings.getTextThemeColor())
         renderRenderables(screenDrawing, mouseX, mouseY)
     }
 
@@ -47,7 +47,7 @@ class MultipleBooleanSettingsRenderable(
             super.render(screenDrawing, mouseX, mouseY)
             screenDrawing.drawHorizontalLine(x + 5, y - 2, width - 10, 0xAAAAAA alpha 0.2F)
             screenDrawing.translate(0f, height / 2f - screenDrawing.getTextHeight() / 2f) {
-                screenDrawing.drawText(name.getTranslatedString(), x + 8, y, 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()))
+                screenDrawing.drawText(name.getTranslatedString(), x + 8, y, OptionsMenuSettings.getTextThemeColor())
             }
             renderRenderables(screenDrawing, mouseX, mouseY)
         }

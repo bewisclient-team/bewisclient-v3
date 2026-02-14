@@ -15,8 +15,6 @@ import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.impl.settings.functionalities.PanoramaSettings
 import net.bewis09.bewisclient.impl.settings.functionalities.PanoramaSettings.path
 import net.bewis09.bewisclient.util.EventEntrypoint
-import net.bewis09.bewisclient.util.color.Color
-import net.bewis09.bewisclient.util.color.within
 import net.bewis09.bewisclient.util.createIdentifier
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.MinecraftClient
@@ -53,11 +51,15 @@ object Panorama : ImageSettingCategory(
                 it.isDirectory && it.name.startsWith("panorama_") && it.resolve("screenshots").exists() && it.resolve("screenshots").listFiles().map { f -> f.name }.let { name ->
                     name.contains("panorama_0.png") && name.contains("panorama_1.png") && name.contains("panorama_2.png") && name.contains("panorama_3.png") && name.contains("panorama_4.png") && name.contains("panorama_5.png")
                 }
-            }.map { file -> PanoramaElement(file) })
+            }.mapIndexedWithSelf { index, file -> PanoramaElement(file, index, size) })
         }, 1)
     }
 
-    class PanoramaElement(val file: File) : Hoverable() {
+    inline fun <T, R> Array<T>.mapIndexedWithSelf(transform: Array<T>.(index: Int, element: T) -> R): List<R> {
+        return this.mapIndexed { index, element -> this.transform(index, element) }
+    }
+
+    class PanoramaElement(val file: File, val index: Int, val size: Int) : Hoverable() {
         init {
             internalHeight = 64
         }
@@ -72,10 +74,10 @@ object Panorama : ImageSettingCategory(
             super.render(screenDrawing, mouseX, mouseY)
 
             if (path.get() == file.absolutePath)
-                screenDrawing.fillWithBorderRounded(x, y, width, height, 5, OptionsMenuSettings.themeColor.get().getColor() alpha 0.25f, OptionsMenuSettings.themeColor.get().getColor() alpha 0.5f)
+                screenDrawing.fillWithBorderRounded(x, y, width, height, 5, OptionsMenuSettings.getThemeColor(alpha = 0.25f), OptionsMenuSettings.getThemeColor(alpha = 0.5f), topLeft = index == 0, topRight = index == 0, bottomLeft = index == size - 1, bottomRight = index == size - 1)
             else
-                screenDrawing.fillRounded(x, y, width, height, 5, OptionsMenuSettings.themeColor.get().getColor() alpha hoverAnimation["hovering"] * 0.15f + 0.1f)
-            screenDrawing.drawText(file.name, x + 8, y + 8, 0.5f within (Color.WHITE to OptionsMenuSettings.themeColor.get().getColor()))
+                screenDrawing.fillRounded(x, y, width, height, 5, OptionsMenuSettings.getThemeColor(alpha = hoverAnimation["hovering"] * 0.15f + 0.1f), topLeft = index == 0, topRight = index == 0, bottomLeft = index == size - 1, bottomRight = index == size - 1)
+            screenDrawing.drawText(file.name, x + 8, y + 8, OptionsMenuSettings.getTextThemeColor())
 
             images[file]?.identifiers?.forEachIndexed { index, identifier ->
                 if (identifier != null) {
