@@ -1,6 +1,7 @@
 package net.bewis09.bewisclient.game
 
 import net.bewis09.bewisclient.api.APIEntrypointLoader
+import net.bewis09.bewisclient.core.IndependentResourceMetadataSerializer
 import net.bewis09.bewisclient.drawable.Translations
 import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.logic.BewisclientInterface
@@ -12,7 +13,6 @@ import net.minecraft.resource.ResourcePackProfile
 import net.minecraft.resource.ResourcePackSource
 import net.minecraft.resource.ResourceType
 import net.minecraft.resource.featuretoggle.FeatureSet
-import net.minecraft.resource.metadata.ResourceMetadataSerializer
 import net.minecraft.util.Identifier
 import java.io.InputStream
 import java.util.Optional
@@ -56,7 +56,7 @@ object BewisclientResourcePack : ResourcePack, BewisclientInterface {
         return setOf("bewisclient", "minecraft")
     }
 
-    override fun <T> parseMetadata(metadataSerializer: ResourceMetadataSerializer<T>): T? {
+    override fun <T> parseMetadata(metadataSerializer: IndependentResourceMetadataSerializer<T>): T? {
         return null
     }
 

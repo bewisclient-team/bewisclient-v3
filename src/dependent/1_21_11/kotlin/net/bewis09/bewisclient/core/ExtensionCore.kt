@@ -23,6 +23,7 @@ import net.minecraft.entity.passive.HorseEntity
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.item.tooltip.TooltipType
+import net.minecraft.resource.metadata.ResourceMetadataSerializer
 import net.minecraft.text.MutableText
 import net.minecraft.text.StyleSpriteSource
 import net.minecraft.text.Text
@@ -30,6 +31,7 @@ import net.minecraft.util.Formatting
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.Vec3d
 import net.minecraft.util.profiler.Profilers
+import java.io.File
 import java.util.function.Consumer
 
 fun LivingEntity.pos(): Vec3d = this.entityPos
@@ -160,3 +162,7 @@ fun ScreenDrawing.drawGuiTexture(
 
 val GameVersion.name: String
     get() = this.name()
+
+typealias IndependentResourceMetadataSerializer<T> = ResourceMetadataSerializer<T>
+
+fun MinecraftClient.takePanoramaFull(file: File): Text = this.takePanorama(file)

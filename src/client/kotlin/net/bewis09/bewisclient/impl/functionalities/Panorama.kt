@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.impl.functionalities
 
-import net.bewis09.bewisclient.core.registerTexture
+import net.bewis09.bewisclient.core.*
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.Translations
 import net.bewis09.bewisclient.drawable.renderables.Hoverable
@@ -42,13 +42,12 @@ import kotlin.io.path.exists
 object Panorama : ImageSettingCategory(
     "panorama", Translation("menu.category.panorama", "Panorama"), arrayOf(
         InfoTextRenderable(
-            Translation("panorama.info_text", "The panorama functionality allows you to set a custom panorama background for the main menu. You can create the panorama by pressing the \"%s\" button [%s]. After taking the screenshot select the screenshot below.")(Text.translatable("bewisclient.key.screenshot.take_panorama"), Text.keybind("bewisclient.key.screenshot.take_panorama")),
-            centered = true
+            Translation("panorama.info_text", "The panorama functionality allows you to set a custom panorama background for the main menu. You can create the panorama by pressing the \"%s\" button [%s]. After taking the screenshot select the screenshot below.")(Text.translatable("bewisclient.key.screenshot.take_panorama"), Text.keybind("bewisclient.key.screenshot.take_panorama")), centered = true
         ),
     ), PanoramaSettings.enabled
 ), EventEntrypoint, BewisclientResourcePack.CustomResourceProvider {
     object TakePanoramaScreenshot : Keybind(-1, "screenshot.take_panorama", "Take Panorama Screenshot", {
-        MinecraftClient.getInstance().player?.sendMessage(MinecraftClient.getInstance().takePanorama(FabricLoader.getInstance().gameDir.resolve("screenshots/panorama_" + (LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH.mm.ss-S")))).toFile().apply {
+        MinecraftClient.getInstance().player?.sendMessage(client.takePanoramaFull(FabricLoader.getInstance().gameDir.resolve("screenshots/panorama_" + (LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH.mm.ss-S")))).toFile().apply {
             if (!exists()) mkdirs()
         }), false)
     })
@@ -83,10 +82,8 @@ object Panorama : ImageSettingCategory(
 
             super.render(screenDrawing, mouseX, mouseY)
 
-            if (path.get() == file.absolutePath)
-                screenDrawing.fillWithBorderRounded(x, y, width, height, 5, OptionsMenuSettings.getThemeColor(alpha = 0.25f), OptionsMenuSettings.getThemeColor(alpha = 0.5f), topLeft = index == 0, topRight = index == 0, bottomLeft = index == size - 1, bottomRight = index == size - 1)
-            else
-                screenDrawing.fillRounded(x, y, width, height, 5, OptionsMenuSettings.getThemeColor(alpha = hoverAnimation["hovering"] * 0.15f + 0.1f), topLeft = index == 0, topRight = index == 0, bottomLeft = index == size - 1, bottomRight = index == size - 1)
+            if (path.get() == file.absolutePath) screenDrawing.fillWithBorderRounded(x, y, width, height, 5, OptionsMenuSettings.getThemeColor(alpha = 0.25f), OptionsMenuSettings.getThemeColor(alpha = 0.5f), topLeft = index == 0, topRight = index == 0, bottomLeft = index == size - 1, bottomRight = index == size - 1)
+            else screenDrawing.fillRounded(x, y, width, height, 5, OptionsMenuSettings.getThemeColor(alpha = hoverAnimation["hovering"] * 0.15f + 0.1f), topLeft = index == 0, topRight = index == 0, bottomLeft = index == size - 1, bottomRight = index == size - 1)
             screenDrawing.drawText(file.name, x + 8, y + 8, OptionsMenuSettings.getTextThemeColor())
 
             images[file]?.identifiers?.forEachIndexed { index, identifier ->
@@ -104,8 +101,7 @@ object Panorama : ImageSettingCategory(
                 if (path.get() == file.absolutePath) return@ImageButton
 
                 path.set(file.absolutePath)
-                if (PanoramaSettings.enabled.get())
-                    client.reloadResources()
+                if (PanoramaSettings.enabled.get()) client.reloadResources()
             }.setImagePadding(2)(x + width - 21, y + 7, 14, 14))
             addRenderable(ImageButton(createIdentifier("bewisclient", "textures/gui/sprites/delete.png")) {
                 OptionScreen.currentInstance?.openPopup(
@@ -183,7 +179,7 @@ object Panorama : ImageSettingCategory(
             if (loaded) return
 
             for (i in 0..5) {
-                images[i] = NativeImage.read(directory.resolve("screenshots/panorama_$i.png").readBytes())
+                images[i] = NativeImage.read(directory.resolve("screenshots/panorama_$i.png").inputStream())
             }
 
             loaded = true

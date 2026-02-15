@@ -18,12 +18,14 @@ import net.minecraft.entity.passive.HorseEntity
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.item.tooltip.TooltipType
+import net.minecraft.resource.metadata.ResourceMetadataReader
 import net.minecraft.text.MutableText
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.Vec3d
 import org.joml.Quaternionf
+import java.io.File
 import java.util.function.Consumer
 
 fun LivingEntity.pos(): Vec3d = this.pos
@@ -133,3 +135,7 @@ fun ScreenDrawing.drawGuiTexture(
         height
     )
 }
+
+typealias IndependentResourceMetadataSerializer<T> = ResourceMetadataReader<T>
+
+fun MinecraftClient.takePanoramaFull(file: File): Text = this.takePanorama(file, 1024, 1024)

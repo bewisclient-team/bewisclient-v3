@@ -42,7 +42,7 @@ class Input : Renderable {
         if (cursor == text.length) scrollX = scrollX.coerceAtMost(screenDrawing.getTextWidth(text, font) - width + 5).coerceAtLeast(0)
         screenDrawing.enableScissors(x, y, width, height)
         val shouldShow = System.currentTimeMillis() % 1000 < 500 && util.getCurrentRenderableScreen()?.getSelectedRenderable() == this
-        screenDrawing.drawTextWithShadow((text + if (cursor == text.length && shouldShow) "_" else "").toText(), x - scrollX, y + 1, color, font)
+        screenDrawing.drawText((text + if (cursor == text.length && shouldShow) "_" else "").toText(), x - scrollX, y + 1, color, font)
         if (cursor != text.length && shouldShow)
             screenDrawing.drawVerticalLine(screenDrawing.getTextWidth(text.substring(0, cursor), font) + x - scrollX, y - 1, 12, color)
         screenDrawing.disableScissors()
