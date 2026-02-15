@@ -4,7 +4,6 @@ import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.util.color.Color
-import net.bewis09.bewisclient.util.color.alpha
 import net.bewis09.bewisclient.util.createIdentifier
 import net.minecraft.util.Identifier
 import net.minecraft.util.math.MathHelper
