@@ -65,6 +65,8 @@ object ArmorWidget : ScalableWidget(createIdentifier("bewisclient", "armor_widge
         }
     }
 
+    override fun isEnabledByDefault(): Boolean = false
+
     override fun defaultPosition(): WidgetPosition = RelativePosition("bewisclient:inventory_widget", "top")
 
     override fun render(screenDrawing: ScreenDrawing) {

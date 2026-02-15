@@ -4,7 +4,10 @@ import net.bewis09.bewisclient.core.registerTexture
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.Translations
 import net.bewis09.bewisclient.drawable.renderables.*
+import net.bewis09.bewisclient.drawable.renderables.notification.NotificationManager
+import net.bewis09.bewisclient.drawable.renderables.notification.SimpleTextNotification
 import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCategory
+import net.bewis09.bewisclient.drawable.renderables.popup.ConfirmPopup
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.transform
@@ -277,20 +280,23 @@ class BigScreenshotViewElement(val file: File) : Renderable() {
             ProcessCreator.create(CopyImage::class.java, file.path) {
                 if (it != 0) {
                     println("Failed to copy image to clipboard, exit code: $it")
-                    button.text = Translations.COPY_FAILED()
+                    NotificationManager.addNotification(SimpleTextNotification(Translations.COPY_FAILED(it)))
+                    button.text = Translations.COPY()
                 } else {
-                    button.text = Translations.COPIED()
+                    NotificationManager.addNotification(SimpleTextNotification(Translations.COPY_SUCCESS()))
+                    button.text = Translations.COPY()
                 }
             }
         }(x + width - 2 * (width - 15) / 4 - 5, y + height - 14, (width - 15) / 4, 14))
         addRenderable(Button(Translations.DELETE()) {
-            if (!deleteRequest) {
-                deleteRequest = true
-                it.text = Translations.CONFIRM_DELETE()
-            } else {
-                file.delete()
+            OptionScreen.currentInstance?.openPopup(ConfirmPopup(Translations.CONFIRM_DELETE(), {
+                if (catch { file.delete() } == true) {
+                    NotificationManager.addNotification(SimpleTextNotification(Translations.DELETE_SCREENSHOT_SUCCESS()))
+                } else {
+                    NotificationManager.addNotification(SimpleTextNotification(Translations.DELETE_FAILED()))
+                }
                 OptionScreen.currentInstance?.let { screen -> Screenshot.invoke(screen).apply { this.onClick(this) }; screen.category.value = Screenshot.id.toString() }
-            }
+            }))
         }(x + width - (width - 15) / 4, y + height - 14, (width - 15) / 4, 14))
     }
 }

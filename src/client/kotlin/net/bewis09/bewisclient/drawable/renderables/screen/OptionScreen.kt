@@ -118,7 +118,7 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
         renderInner(screenDrawing, mouseX, mouseY)
 
         screenDrawing.popColor()
-        screenDrawing.defaultFont()
+        screenDrawing.setDefaultFont()
     }
 
     fun renderBackground(screenDrawing: ScreenDrawing) {

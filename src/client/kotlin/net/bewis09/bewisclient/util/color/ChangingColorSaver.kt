@@ -4,11 +4,17 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonPrimitive
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.Translations
-import net.bewis09.bewisclient.drawable.renderables.*
+import net.bewis09.bewisclient.drawable.renderables.Fader
+import net.bewis09.bewisclient.drawable.renderables.ImageButton
+import net.bewis09.bewisclient.drawable.renderables.Rectangle
+import net.bewis09.bewisclient.drawable.renderables.TextElement
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.translate
 import net.bewis09.bewisclient.game.Translation
-import net.bewis09.bewisclient.util.*
+import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
+import net.bewis09.bewisclient.util.Bewisclient
+import net.bewis09.bewisclient.util.createIdentifier
+import net.bewis09.bewisclient.util.int
 import net.bewis09.bewisclient.util.number.Precision
 
 class ChangingColorSaver : ColorSaver {
@@ -104,7 +110,7 @@ class ChangingColorSaver : ColorSaver {
                 )
             )
             addRenderable(
-                Rectangle(0xAAAAAA.color alpha 0.5f)(
+                Rectangle { OptionsMenuSettings.getThemeColor(alpha = 0.3f) }(
                     x, y + 29, width, 1
                 )
             )
@@ -114,7 +120,7 @@ class ChangingColorSaver : ColorSaver {
                 )
             )
             addRenderable(
-                Rectangle(0xAAAAAA.color alpha 0.5f)(
+                Rectangle { OptionsMenuSettings.getThemeColor(alpha = 0.3f) }(
                     x, y + 49, width, 1
                 )
             )

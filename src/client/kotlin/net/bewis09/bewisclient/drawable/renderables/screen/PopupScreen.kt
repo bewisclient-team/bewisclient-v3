@@ -48,7 +48,7 @@ abstract class PopupScreen : Renderable() {
             screenDrawing.fill(0, 0, width, height, screen.backgroundColor)
             screenDrawing.setBewisclientFont()
             child.render(screenDrawing, mouseX, mouseY)
-            screenDrawing.defaultFont()
+            screenDrawing.setDefaultFont()
             screenDrawing.popColor()
             screenDrawing.pop()
         }

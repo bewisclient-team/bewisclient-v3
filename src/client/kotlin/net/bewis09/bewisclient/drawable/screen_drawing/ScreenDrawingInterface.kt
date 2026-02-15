@@ -87,7 +87,7 @@ interface ScreenDrawingInterface : BewisclientInterface {
         this.overwrittenFont = font
     }
 
-    fun defaultFont() {
+    fun setDefaultFont() {
         this.overwrittenFont = DEFAULT_FONT
     }
 

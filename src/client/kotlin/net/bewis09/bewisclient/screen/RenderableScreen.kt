@@ -2,6 +2,7 @@ package net.bewis09.bewisclient.screen
 
 import net.bewis09.bewisclient.core.IndependentScreen
 import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.drawable.renderables.notification.NotificationManager
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.interfaces.BackgroundEffectProvider
 import net.bewis09.bewisclient.util.toText
@@ -33,6 +34,7 @@ class RenderableScreen(val renderable: Renderable) : IndependentScreen("".toText
         val screenDrawing = ScreenDrawing(context, textRenderer)
         renderable.render(screenDrawing, mouseX, mouseY)
         screenDrawing.runAfterDraw()
+        NotificationManager.renderNotifications(screenDrawing, mouseX, mouseY)
     }
 
     override fun renderDarkening(context: DrawContext, x: Int, y: Int, width: Int, height: Int) {
