@@ -8,13 +8,13 @@ class HorizontalAlignScrollPlane(val init: (Int) -> List<Renderable>, val gap: I
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         screenDrawing.enableScissors(x, y, width, height)
-        var scrollY = scrollAnimation["scrollY"].toInt()
+        var scrollY = scrollAnimation.get().toInt()
         for (it in renderables) {
             it.setPosition(x + scrollY, y)
             it.setHeight(height)
             scrollY += it.width + gap
         }
-        innerSize = scrollY - scrollAnimation["scrollY"] - gap
+        innerSize = scrollY - scrollAnimation.get() - gap
         renderRenderables(screenDrawing, mouseX, mouseY)
         screenDrawing.disableScissors()
     }

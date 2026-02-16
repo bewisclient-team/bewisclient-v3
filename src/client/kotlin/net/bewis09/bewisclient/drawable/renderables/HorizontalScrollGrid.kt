@@ -16,7 +16,7 @@ class HorizontalScrollGrid(val init: (Int) -> List<Renderable>, val gap: Int, va
             val rowIndex = rowWidths.indexOf(min)
 
             it.setHeight(elementHeight.toInt())
-            it.setPosition(x + min + scrollAnimation["scrollY"].toInt(), y + (rowIndex * (elementHeight + gap)).toInt())
+            it.setPosition(x + min + scrollAnimation.get().toInt(), y + (rowIndex * (elementHeight + gap)).toInt())
             rowWidths[rowIndex] += it.width + gap
         }
         innerSize = (rowWidths.max() - gap).toFloat()

@@ -2,11 +2,16 @@ package net.bewis09.bewisclient.drawable.renderables.screen
 
 import kotlinx.atomicfu.atomic
 import net.bewis09.bewisclient.data.Constants
-import net.bewis09.bewisclient.drawable.*
+import net.bewis09.bewisclient.drawable.Animator
+import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.drawable.SettingStructure
+import net.bewis09.bewisclient.drawable.Translations
 import net.bewis09.bewisclient.drawable.renderables.*
+import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCategory
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen.ImageIdentifier.iconIdentifier
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawingInterface.Companion.DEFAULT_FONT
+import net.bewis09.bewisclient.drawable.screen_drawing.pushAlpha
 import net.bewis09.bewisclient.drawable.screen_drawing.transform
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.generated.BuildInfo
@@ -30,7 +35,9 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
 
     val category = atomic("bewisclient:home")
 
-    val alphaMainAnimation = Animator({ OptionsMenuSettings.animationTime.get().toLong() }, Animator.EASE_IN_OUT, "alpha" to 0f, "inside" to 1f, "blur" to startBlur)
+    val alphaMainAnimation = Animator({ OptionsMenuSettings.animationTime.get().toLong() }, Animator.EASE_IN_OUT, 0f)
+    val insideMainAnimation = Animator({ OptionsMenuSettings.animationTime.get().toLong() }, Animator.EASE_IN_OUT, 1f)
+    val blurMainAnimation = Animator({ OptionsMenuSettings.animationTime.get().toLong() }, Animator.EASE_IN_OUT, startBlur)
 
     val settings = SettingStructure(this)
 
@@ -43,20 +50,10 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
                 Plane { x, y, _, _ ->
                     listOf(
                         ImageButton(backIdentifier) {
-                            if (category.value == "bewisclient:home" && isCategoryStart) {
-                                alphaMainAnimation["blur"] = 0f
-                                alphaMainAnimation["alpha"] = 0f then {
-                                    client.setScreen(null)
-                                }
-                            } else if (category.value == "bewisclient:home" || isCategoryStart)
-                                settings.homeCategory(this).onClick(button)
-                            else
-                                settings.sidebarCategories.mapNotNull { a -> a as? ThemeButton }.firstOrNull { a -> a.selected() }?.let { a -> a.onClick(a) }
-                        }.setImagePadding(1).setImageColor { OptionsMenuSettings.getTextThemeColor() }(x, y, 14, 14), button(x + 19, y, 82, 14), ImageButton(closeIdentifier) {
-                            alphaMainAnimation["blur"] = 0f
-                            alphaMainAnimation["alpha"] = 0f then {
-                                client.setScreen(null)
-                            }
+                            goBack()
+                        }.setImagePadding(1).setImageColor { OptionsMenuSettings.getTextThemeColor() }(x, y, 14, 14), button(x + 19, y, 82, 14),
+                        ImageButton(closeIdentifier) {
+                            close()
                         }.setImagePadding(3).setImageColor { OptionsMenuSettings.getTextThemeColor() }(x + 106, y, 14, 14)
                     )
                 }.setHeight(14)
@@ -65,7 +62,7 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
             it.addAll(settings.sidebarCategories)
             it.add(Rectangle { OptionsMenuSettings.getThemeColor(alpha = 0.3f) }.setHeight(1))
             it.add(ThemeButton("bewisclient:edit_hud", editHudTranslation(), category) {
-                alphaMainAnimation["alpha"] = 0f then {
+                alphaMainAnimation.set(0f) {
                     client.setScreen(RenderableScreen(HudEditScreen()))
                 }
             }.setHeight(14))
@@ -88,36 +85,39 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
         val iconIdentifier: Identifier = createIdentifier("bewisclient", "native/icon_long")
     }
 
-    var page = Page(
-        settings.homeCategory.getHeader(),
-        settings.homeCategory.renderable,
-        null
+    val pageStack = mutableListOf(
+        Page(
+            settings.homeCategory.getHeader(),
+            settings.homeCategory.renderable,
+            null
+        )
     )
 
-    var isCategoryStart = true
+    val page
+        get() = pageStack.last()
 
     var switch = Switch(state = { page.setting?.get() ?: false }, onChange = { page.setting?.set(it) })
-
     val image = RainbowImage(iconIdentifier, 0.5f)
 
     init {
         currentInstance = this
-        alphaMainAnimation["alpha"] = 1f
-        alphaMainAnimation["blur"] = 1f
+        alphaMainAnimation.set(1f)
+        blurMainAnimation.set(1f)
+        internalWidth = screenWidth
+        internalHeight = screenHeight
+        resize()
     }
 
     override fun renderScreen(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         checkValidVersion()
 
-        screenDrawing.pushAlpha(alphaMainAnimation["alpha"])
         screenDrawing.setBewisclientFont()
-
-        renderBackground(screenDrawing)
-        renderSidebar(screenDrawing, mouseX, mouseY)
-        renderVersionText(screenDrawing)
-        renderInner(screenDrawing, mouseX, mouseY)
-
-        screenDrawing.popColor()
+        screenDrawing.pushAlpha(alphaMainAnimation.get()) {
+            renderBackground(screenDrawing)
+            renderSidebar(screenDrawing, mouseX, mouseY)
+            renderVersionText(screenDrawing)
+            renderInner(screenDrawing, mouseX, mouseY)
+        }
         screenDrawing.setDefaultFont()
     }
 
@@ -138,15 +138,13 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
     }
 
     fun renderInner(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        screenDrawing.pushAlpha(alphaMainAnimation["inside"])
-
-        page.header.render(screenDrawing, mouseX, mouseY)
-        page.pane.render(screenDrawing, mouseX, mouseY)
-        if (page.setting != null) {
-            switch.render(screenDrawing, mouseX, mouseY)
+        screenDrawing.pushAlpha(insideMainAnimation.get()) {
+            page.header.render(screenDrawing, mouseX, mouseY)
+            page.pane.render(screenDrawing, mouseX, mouseY)
+            if (page.setting != null) {
+                switch.render(screenDrawing, mouseX, mouseY)
+            }
         }
-
-        screenDrawing.popColor()
     }
 
     fun checkValidVersion() {
@@ -154,7 +152,8 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
     }
 
     object VersionInvalidScreen : Renderable() {
-        const val SECURITY_MESSAGE = "Your version of Bewisclient could not be verified. This probably means that the file your are using was changed after downloading or the version you are using was removed from Modrinth due to a critical bug.\n\nPlease download the newest version from Modrinth to ensure you are using a safe version.\n\nIf you believe this is an error, please let us know on GitHub."
+        const val SECURITY_MESSAGE =
+            "Your version of Bewisclient could not be verified. This probably means that the file your are using was changed after downloading or the version you are using was removed from Modrinth due to a critical bug.\n\nPlease download the newest version from Modrinth to ensure you are using a safe version.\n\nIf you believe this is an error, please let us know on GitHub."
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             screenDrawing.wrapText(SECURITY_MESSAGE + "\n\nError message: ${(Security.verificationState as? Security.ILLEGAL)?.reason ?: "Unknown"}", 300).let {
@@ -197,13 +196,56 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
         addRenderable(page.pane.invoke(175, 37 + (page.header.height + 5), width - 211, height - 74 - (page.header.height + 5)))
     }
 
-    fun openPage(afterHeader: Renderable, afterPane: Renderable, setting: Setting<Boolean>? = null, isCategoryStart: Boolean = false) {
-        this.isCategoryStart = isCategoryStart
+    fun changeCategory(category: SidebarCategory, instant: Boolean = false) {
+        this.category.value = category.id.toString()
 
-        alphaMainAnimation["inside"] = 0f then {
-            page = Page(afterHeader, afterPane, setting)
+        if (instant) {
+            pageStack.removeAll { pageStack[0] != it }
+            pageStack.add(Page(category.getHeader(), category.renderable))
+            return resize()
+        }
+
+        insideMainAnimation.set(0f) {
+            pageStack.removeAll { pageStack[0] != it }
+            pageStack.add(Page(category.getHeader(), category.renderable))
             resize()
-            alphaMainAnimation["inside"] = 1f
+            insideMainAnimation.set(1f)
+        }
+    }
+
+    fun openPage(afterHeader: Renderable, afterPane: Renderable, setting: Setting<Boolean>? = null, instant: Boolean = false) {
+        if (instant) {
+            pageStack.add(Page(afterHeader, afterPane, setting))
+            return resize()
+        }
+
+        insideMainAnimation.set(0f) {
+            pageStack.add(Page(afterHeader, afterPane, setting))
+            resize()
+            insideMainAnimation.set(1f)
+        }
+    }
+
+    fun goBack(instant: Boolean = false) {
+        if (pageStack.size == 1) return close()
+        if (pageStack.size == 2) category.value = "bewisclient:home"
+
+        if (instant) {
+            pageStack.removeLast()
+            return resize()
+        }
+
+        insideMainAnimation.set(0f) {
+            pageStack.removeLast()
+            resize()
+            insideMainAnimation.set(1f)
+        }
+    }
+
+    fun close() {
+        blurMainAnimation.set(0f)
+        alphaMainAnimation.set(0f) {
+            client.setScreen(null)
         }
     }
 
@@ -211,16 +253,13 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
 
     override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {
         if (key == GLFW.GLFW_KEY_ESCAPE) {
-            alphaMainAnimation["blur"] = 0f
-            alphaMainAnimation["alpha"] = 0f then {
-                client.setScreen(null)
-            }
+            close()
             return true
         }
         return super.onKeyPress(key, scanCode, modifiers)
     }
 
     override fun getBackgroundEffectFactor(): Float {
-        return alphaMainAnimation["blur"]
+        return blurMainAnimation.get()
     }
 }

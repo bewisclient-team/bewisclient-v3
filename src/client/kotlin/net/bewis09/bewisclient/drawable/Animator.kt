@@ -6,23 +6,17 @@ package net.bewis09.bewisclient.drawable
  * It supports different interpolation types to control the animation curve.
  * @param duration The total duration of the animation in milliseconds.
  * @param interpolationType A function that takes a delta value (0 to 1) and returns an interpolated value.
- * @param initial An optional initial map of values to start the animation from.
+ * @param value The starting value of the animation.
  */
-class Animator(val duration: () -> Long, val interpolationType: (delta: Float) -> Float = LINEAR, vararg initial: Pair<String, Float>) {
+class Animator(val duration: () -> Long, val interpolationType: (delta: Float) -> Float = LINEAR, private var value: Float) {
     constructor(
-        duration: Long, interpolationType: (delta: Float) -> Float = LINEAR, vararg initial: Pair<String, Float>
-    ) : this({ duration }, interpolationType, *initial)
+        duration: Long, interpolationType: (delta: Float) -> Float = LINEAR, value: Float
+    ) : this({ duration }, interpolationType, value)
 
-    private val map: HashMap<String, Float> = hashMapOf()
-    private val animationStartMap: HashMap<String, Long> = hashMapOf()
-    private val beforeAnimationMap: HashMap<String, Float> = hashMapOf()
-    private val finishMap: HashMap<String, () -> Unit> = hashMapOf()
-
-    private var pauseAnimation = arrayListOf<String>()
-
-    init {
-        initial.forEach { (key, value) -> map[key] = value }
-    }
+    private var startTime: Long = 0
+    private var beforeValue: Float = value
+    private var onFinish: (Animator.() -> Unit)? = null
+    private var paused = false
 
     companion object {
         val LINEAR = { delta: Float -> delta }
@@ -38,85 +32,62 @@ class Animator(val duration: () -> Long, val interpolationType: (delta: Float) -
     }
 
     fun pauseForOnce() {
-        pauseAnimation = arrayListOf(*map.keys.toTypedArray())
+        paused = true
     }
 
-    fun getWithoutInterpolation(key: String): Float {
-        return map[key] ?: throw IllegalStateException("Animation for key '$key' has not been initialized")
+    fun getWithoutInterpolation(): Float {
+        return value
     }
 
     /**
      * Returns the current animated value for a given key.
      */
-    operator fun get(key: String): Float {
-        if (key in pauseAnimation) pauseAnimation.remove(key)
+    fun get(): Float {
+        unpause()
 
-        val delta = (System.currentTimeMillis() - (animationStartMap[key] ?: 0)) / duration().toFloat()
+        val delta = (System.currentTimeMillis() - startTime) / duration().toFloat()
 
-        val value = map[key] ?: throw IllegalStateException("Animation for key '$key' has not been initialized")
-
-        if (delta >= 1) {
-            val finishAction = finishMap[key]
-            finishMap.remove(key)
-            finishAction?.invoke()
-
-            return value
-        }
-
-        val beforeValue = beforeAnimationMap[key] ?: return value
-
-        if (delta <= 0) {
-            return beforeValue
-        }
+        if (delta >= 1) return executeFinishAction()
+        if (delta <= 0) return beforeValue
 
         return beforeValue + (value - beforeValue) * interpolationType(delta)
     }
 
     /**
+     * Unpauses the animation if it was paused and returns whether it was paused before.
+     */
+    fun unpause(): Boolean {
+        val wasPaused = paused
+        paused = false
+        return wasPaused
+    }
+
+    fun executeFinishAction(): Float {
+        val value = value
+        val finishAction = onFinish
+        onFinish = null
+        finishAction?.invoke(this)
+        return value
+    }
+
+    /**
      * Sets a value in the animation map.
-     * @param key The key for the value.
      * @param value The value to set.
      */
-    operator fun set(key: String, value: Float) {
-        val paused = pauseAnimation.contains(key)
+    fun set(value: Float) {
+        val paused = unpause()
 
-        if (paused) {
-            pauseAnimation.remove(key)
-        }
+        if (this.value == value) return
 
-        if (map[key] == value) return
+        this.beforeValue = get()
+        this.value = value
+        this.startTime = if (paused) 0 else System.currentTimeMillis()
 
-        val old = if (map[key] != null) this[key] else value
-        map[key] = value
-
-        animationStartMap[key] = if (paused) 0 else System.currentTimeMillis()
-        beforeAnimationMap[key] = old
-
-        val finishAction = finishMap[key]
-        finishMap.remove(key)
-        finishAction?.invoke()
+        executeFinishAction()
     }
 
-    operator fun set(key: String, value: Pair<Float, () -> Unit>) = set(key, value.first, value.second)
-
-    fun set(key: String, value: Float, onFinish: () -> Unit) {
-        set(key, value)
-
-        finishMap[key] = onFinish
+    fun set(value: Float, onFinish: Animator.() -> Unit) {
+        set(value)
+        this.onFinish = onFinish
     }
 }
-
-/**
- * Creates a new Animator instance with the specified duration and interpolation type.
- * @param duration The total duration of the animation in milliseconds.
- * @param interpolationType A function that takes a delta value (0 to 1) and returns an interpolated value.
- * @param initial An optional initial map of values to start the animation from.
- * @return A new Animator instance.
- */
-fun animate(
-    duration: Long, interpolationType: (delta: Float) -> Float = Animator.LINEAR, vararg initial: Pair<String, Float>
-): Animator {
-    return Animator(duration, interpolationType, *initial)
-}
-
-infix fun Float.then(f: () -> Unit): Pair<Float, () -> Unit> = this to f

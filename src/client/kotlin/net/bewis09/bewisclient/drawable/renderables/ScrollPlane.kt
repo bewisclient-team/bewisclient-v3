@@ -5,13 +5,13 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.util.then
 
 class ScrollPlane(direction: Direction, val init: (x: Int, y: Int, width: Int, height: Int, scroll: Float) -> List<Renderable>) : Scrollable(direction) {
-    var lastScroll = scrollAnimation["scrollY"]
+    var lastScroll = scrollAnimation.get()
     var lastSize = innerSize
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        if (lastScroll != scrollAnimation["scrollY"] || lastSize != innerSize) {
+        if (lastScroll != scrollAnimation.get() || lastSize != innerSize) {
             resize()
-            lastScroll = scrollAnimation["scrollY"]
+            lastScroll = scrollAnimation.get()
             lastSize = innerSize
         }
         screenDrawing.enableScissors(x, y, width, height)
@@ -20,7 +20,7 @@ class ScrollPlane(direction: Direction, val init: (x: Int, y: Int, width: Int, h
     }
 
     override fun init() {
-        init.invoke(x, y, ((direction == Direction.HORIZONTAL) then { innerSize.toInt() }) ?: width, ((direction == Direction.VERTICAL) then { innerSize.toInt() }) ?: height, scrollAnimation["scrollY"]).forEach {
+        init.invoke(x, y, ((direction == Direction.HORIZONTAL) then { innerSize.toInt() }) ?: width, ((direction == Direction.VERTICAL) then { innerSize.toInt() }) ?: height, scrollAnimation.get()).forEach {
             addRenderable(it)
         }
     }

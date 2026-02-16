@@ -15,7 +15,7 @@ abstract class SettingRenderable(tooltip: () -> Translation?, height: Int) : Too
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
-        screenDrawing.fillRounded(x, y, width, height, 5, OptionsMenuSettings.getThemeColor(alpha = hoverAnimation["hovering"] * 0.15f + 0.1f))
+        screenDrawing.fillRounded(x, y, width, height, 5, OptionsMenuSettings.getThemeColor(alpha = hoverFactor * 0.15f + 0.1f))
     }
 
     fun drawVerticalCenteredText(screenDrawing: ScreenDrawing, title: Translation) {

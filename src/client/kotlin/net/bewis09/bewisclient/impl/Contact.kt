@@ -2,7 +2,6 @@ package net.bewis09.bewisclient.impl
 
 import net.bewis09.bewisclient.data.Constants
 import net.bewis09.bewisclient.drawable.Animator
-import net.bewis09.bewisclient.drawable.animate
 import net.bewis09.bewisclient.drawable.renderables.ThemeButton
 import net.bewis09.bewisclient.drawable.renderables.VerticalAlignScrollPlane
 import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCategory
@@ -39,7 +38,7 @@ class ContactLinkElement(val id: String, val url: String, val title: String, val
     val descriptionTranslation = Translation("contact.$id.description", description)
     val identifier = createIdentifier("bewisclient", "textures/gui/contact/$id.png")
 
-    val menuAnimation = animate(OptionsMenuSettings.animationTime.get().toLong(), Animator.EASE_IN_OUT, "menu" to 0f)
+    val menuAnimation = Animator(OptionsMenuSettings.animationTime.get().toLong(), Animator.EASE_IN_OUT, 0f)
 
     val copyButton = ThemeButton(COPY_TO_CLIPBOARD()) {
         client.keyboard.clipboard = this.url
@@ -61,7 +60,7 @@ class ContactLinkElement(val id: String, val url: String, val title: String, val
         screenDrawing.drawTexture(identifier, x + 8, y + height / 2 - 8, 0f, 0f, 16, 16, 16, 16)
         renderRenderables(screenDrawing, mouseX, mouseY)
         simpleHeight = 22 + lines.size * 9 + 1
-        setHeight(simpleHeight + (menuAnimation["menu"] * 19).roundToInt())
+        setHeight(simpleHeight + (menuAnimation.get() * 19).roundToInt())
         screenDrawing.disableScissors()
     }
 
@@ -72,8 +71,8 @@ class ContactLinkElement(val id: String, val url: String, val title: String, val
     }
 
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
-        menuAnimation["menu"] = 1f
-        Contact.hoveredElement?.let { it.menuAnimation["menu"] = 0f }
+        menuAnimation.set(1f)
+        Contact.hoveredElement?.menuAnimation?.set(0f)
         Contact.hoveredElement = if (Contact.hoveredElement != this) this else null
         return true
     }

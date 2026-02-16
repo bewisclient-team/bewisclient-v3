@@ -15,7 +15,7 @@ open class ImageButton(val image: Identifier, val onClick: (ImageButton) -> Unit
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
 
-        screenDrawing.fillRounded(x, y, width, height, 5, OptionsMenuSettings.getThemeColor(alpha = (hoverAnimation["hovering"] * 0.15f + 0.15f)))
+        screenDrawing.fillRounded(x, y, width, height, 5, OptionsMenuSettings.getThemeColor(alpha = (hoverFactor * 0.15f + 0.15f)))
 
         screenDrawing.drawTexture(image, x + imagePadding, y + imagePadding, width - imagePadding * 2, height - imagePadding * 2, imageColor())
     }

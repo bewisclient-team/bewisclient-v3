@@ -54,14 +54,17 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
                 }
 
                 if (button == 1) {
-                    client.setScreen(RenderableScreen(OptionScreen().also { a ->
-                        val widgetsCategory = a.settings.widgets.firstOrNull { b -> b.enableSetting == it.enabled } ?: return@also
-                        a.page = OptionScreen.Page(
+                    client.setScreen(RenderableScreen(OptionScreen().apply {
+                        val widgetsCategory = settings.widgets.firstOrNull { b -> b.enableSetting == it.enabled } ?: return@apply
+
+                        changeCategory(settings.widgetsCategory, instant = true)
+
+                        openPage(
                             widgetsCategory.getHeader(),
                             widgetsCategory.getPane(),
-                            it.enabled
+                            it.enabled,
+                            instant = true
                         )
-                        a.category.value = "bewisclient:widgets"
                     }))
 
                     return true
@@ -138,17 +141,11 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
 
     override fun init() {
         addRenderable(ImageButton(createIdentifier("bewisclient", "textures/gui/sprites/add.png")) {
-            openPopup(AddWidgetPopup(this), Color.BLACK alpha 0.625f)
+            openPopup(AddWidgetPopup(), Color.BLACK alpha 0.625f)
         }.setImagePadding(0)(width - 16, height - 16, 14, 14))
         addRenderable(ImageButton(createIdentifier("bewisclient", "textures/gui/sprites/settings.png")) {
             client.setScreen(RenderableScreen(OptionScreen().also {
-                val widgetsCategory = SettingStructure(it).widgetsCategory
-                it.page = OptionScreen.Page(
-                    widgetsCategory.getHeader(),
-                    widgetsCategory.renderable,
-                    null
-                )
-                it.category.value = "bewisclient:widgets"
+                it.changeCategory(it.settings.widgetsCategory, instant = true)
             }))
         }.setImagePadding(2)(width - 32, height - 16, 14, 14))
     }

@@ -18,7 +18,7 @@ open class VerticalScrollGrid(val init: (Int) -> List<Renderable>, val gap: Int,
             val columnIndex = columnHeights.indexOf(min)
 
             it.setWidth(elementWidth.toInt())
-            it.setPosition(x + (columnIndex * (elementWidth + gap)).toInt(), y + min + scrollAnimation["scrollY"].toInt())
+            it.setPosition(x + (columnIndex * (elementWidth + gap)).toInt(), y + min + scrollAnimation.get().toInt())
             columnHeights[columnIndex] += it.height + gap
         }
         innerSize = (columnHeights.max() - gap).toFloat()

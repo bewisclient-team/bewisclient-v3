@@ -2,7 +2,6 @@ package net.bewis09.bewisclient.drawable.renderables.elements
 
 import net.bewis09.bewisclient.api.BewisclientAPIEntrypoint
 import net.bewis09.bewisclient.drawable.Animator
-import net.bewis09.bewisclient.drawable.animate
 import net.bewis09.bewisclient.drawable.renderables.settings.SettingRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
@@ -18,7 +17,7 @@ import kotlin.math.roundToInt
 class ExtensionListRenderable(val modContainer: ModContainer, val entrypoint: BewisclientAPIEntrypoint) : SettingRenderable(null, 22) {
     val notFoundIdentifier: Identifier = createIdentifier("textures/misc/unknown_pack.png")
 
-    val menuAnimation = animate(OptionsMenuSettings.animationTime.get().toLong(), Animator.EASE_IN_OUT, "menu" to 0f)
+    val menuAnimation = Animator(OptionsMenuSettings.animationTime.get().toLong(), Animator.EASE_IN_OUT, 0f)
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
@@ -28,6 +27,6 @@ class ExtensionListRenderable(val modContainer: ModContainer, val entrypoint: Be
         val lines = screenDrawing.drawWrappedText(entrypoint.getExtensionDescription(modContainer), x + 32, y + 10, width - 40, 0xAAAAAA.color alpha 0.8f)
         screenDrawing.pop()
         screenDrawing.drawTexture(entrypoint.getIcon(modContainer) ?: notFoundIdentifier, x + 8, centerY - 8, 0f, 0f, 16, 16, 16, 16)
-        internalHeight = 22 + lines.size * 9 + 1 + (menuAnimation["menu"] * 19).roundToInt()
+        internalHeight = 22 + lines.size * 9 + 1 + (menuAnimation.get() * 19).roundToInt()
     }
 }

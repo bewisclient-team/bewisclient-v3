@@ -17,12 +17,12 @@ class Fader(val value: Gettable<Float>, val precision: Precision, val onChange: 
         super.render(screenDrawing, mouseX, mouseY)
         val normalizedValue = precision.normalize(value.get())
         screenDrawing.fillRounded(
-            x, y + 5, width, 4, 2, 0xAAAAAA alpha hoverAnimation["hovering"] * 0.15f + 0.15f
+            x, y + 5, width, 4, 2, 0xAAAAAA alpha hoverFactor * 0.15f + 0.15f
         )
 
         screenDrawing.transform(x + normalizedValue * (width - 8) + 4, y + 2f, 0.1f) {
             screenDrawing.fillRounded(
-                -20, 0, 40, 100, 20, (hoverAnimation["hovering"] within (0xCCCCCC.color to 0xFFFFFF.color)) * OptionsMenuSettings.getThemeColor()
+                -20, 0, 40, 100, 20, (hoverFactor within (0xCCCCCC.color to 0xFFFFFF.color)) * OptionsMenuSettings.getThemeColor()
             )
         }
     }

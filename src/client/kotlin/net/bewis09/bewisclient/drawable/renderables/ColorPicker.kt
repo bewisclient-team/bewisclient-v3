@@ -2,6 +2,7 @@ package net.bewis09.bewisclient.drawable.renderables
 
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
+import net.bewis09.bewisclient.drawable.screen_drawing.pushColor
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.util.color.Color
 import net.bewis09.bewisclient.util.createIdentifier
@@ -34,9 +35,11 @@ class ColorPicker(val get: () -> Color, val set: (hue: Float, sat: Float) -> Uni
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         screenDrawing.drawBorder(x, y, width, height, OptionsMenuSettings.getThemeColor(alpha = 0.3f))
-        get().brightness.let { screenDrawing.pushColor(it, it, it, 1f) }
-        screenDrawing.drawTexture(getColorPickerImage((width - 2).coerceAtMost((height - 2))), x + 1, y + 1, width - 2, height - 2)
-        screenDrawing.popColor()
+        get().brightness.let {
+            screenDrawing.pushColor(it, it, it, 1f) {
+                screenDrawing.drawTexture(getColorPickerImage((width - 2).coerceAtMost((height - 2))), x + 1, y + 1, width - 2, height - 2)
+            }
+        }
     }
 
     override fun onMouseDrag(mouseX: Double, mouseY: Double, startX: Double, startY: Double, button: Int): Boolean {

@@ -1,7 +1,6 @@
 package net.bewis09.bewisclient.drawable.renderables
 
 import net.bewis09.bewisclient.drawable.Animator
-import net.bewis09.bewisclient.drawable.animate
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.util.color.Color
 import net.minecraft.text.Text
@@ -9,7 +8,7 @@ import net.minecraft.text.Text
 open class TooltipHoverable(val tooltip: () -> Text?) : Hoverable() {
     constructor(tooltip: Text? = null) : this({ tooltip })
 
-    val tooltipAnimation = animate(200, Animator.EASE_IN_OUT, "tooltip" to 0f)
+    val tooltipAnimation = Animator(200, Animator.EASE_IN_OUT, 0f)
     var wasActuallyDrawn: Boolean? = null
     var isActuallyDrawn: Boolean? = null
 
@@ -21,12 +20,12 @@ open class TooltipHoverable(val tooltip: () -> Text?) : Hoverable() {
 
         val tooltip = tooltip()
 
-        if (tooltip != null && hoverAnimation["hovering"] > 0f) {
-            if (hoverAnimation["hovering"] == 1f && wasActuallyDrawn != false) tooltipAnimation["tooltip"] = 1f
+        if (tooltip != null && hoverFactor > 0f) {
+            if (hoverFactor == 1f && wasActuallyDrawn != false) tooltipAnimation.set(1f)
 
             if (wasActuallyDrawn == false) {
                 tooltipAnimation.pauseForOnce()
-                tooltipAnimation["tooltip"] = 0f
+                tooltipAnimation.set(0f)
             }
 
             isActuallyDrawn = false
@@ -34,7 +33,7 @@ open class TooltipHoverable(val tooltip: () -> Text?) : Hoverable() {
             screenDrawing.afterDraw("tooltip", {
                 isActuallyDrawn = true
 
-                if (hoverAnimation["hovering"] != 1f) return@afterDraw
+                if (hoverFactor != 1f) return@afterDraw
 
                 screenDrawing.setBewisclientFont()
 
@@ -48,18 +47,18 @@ open class TooltipHoverable(val tooltip: () -> Text?) : Hoverable() {
                     screenDrawing.translate(-width.toFloat(), 0f)
                 }
 
-                screenDrawing.fillRounded(mouseX, mouseY - tooltipHeight, width, tooltipHeight, 5, Color.BLACK alpha tooltipAnimation["tooltip"] * 0.8f)
-                screenDrawing.drawWrappedText(wrappedText, mouseX + 5, mouseY - tooltipHeight + 5, Color.WHITE alpha tooltipAnimation["tooltip"])
+                screenDrawing.fillRounded(mouseX, mouseY - tooltipHeight, width, tooltipHeight, 5, Color.BLACK alpha tooltipAnimation.get() * 0.8f)
+                screenDrawing.drawWrappedText(wrappedText, mouseX + 5, mouseY - tooltipHeight + 5, Color.WHITE alpha tooltipAnimation.get())
             })
         } else {
-            if (tooltipAnimation["tooltip"] != 0f) tooltipAnimation.pauseForOnce()
-            tooltipAnimation["tooltip"] = 0f
+            if (tooltipAnimation.get() != 0f) tooltipAnimation.pauseForOnce()
+            tooltipAnimation.set(0f)
         }
     }
 
     override fun init() {
         tooltipAnimation.pauseForOnce()
-        tooltipAnimation["tooltip"] = 0f
+        tooltipAnimation.set(0f)
         super.init()
     }
 }

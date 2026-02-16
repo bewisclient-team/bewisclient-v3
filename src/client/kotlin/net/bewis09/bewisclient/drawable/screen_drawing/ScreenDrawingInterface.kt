@@ -127,3 +127,11 @@ inline fun ScreenDrawingInterface.transform(translateX: Float, translateY: Float
 inline fun ScreenDrawingInterface.translate(x: Float, y: Float, func: () -> Unit) = onNewLayer(func) { translate(x, y) }
 
 inline fun ScreenDrawingInterface.scale(x: Float, y: Float, func: () -> Unit) = onNewLayer(func) { scale(x, y) }
+
+inline fun ScreenDrawingInterface.pushColor(r: Float, g: Float, b: Float, a: Float, func: () -> Unit) {
+    pushColor(r, g, b, a)
+    func()
+    popColor()
+}
+
+inline fun ScreenDrawingInterface.pushAlpha(a: Float, func: () -> Unit) = pushColor(1f, 1f, 1f, a, func)

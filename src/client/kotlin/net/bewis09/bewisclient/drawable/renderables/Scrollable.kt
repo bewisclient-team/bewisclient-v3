@@ -6,7 +6,7 @@ import net.bewis09.bewisclient.util.MathHelper
 import kotlin.math.abs
 
 abstract class Scrollable(val direction: Direction) : Renderable() {
-    var scrollAnimation = Animator(200, Animator.EASE_OUT, "scrollY" to 0f)
+    var scrollAnimation = Animator(200, Animator.EASE_OUT, 0f)
     var innerSize = 0f
 
     var lastDragX = null as Double?
@@ -16,7 +16,7 @@ abstract class Scrollable(val direction: Direction) : Renderable() {
     var hasScrollStartedHorizontal = false
 
     override fun onMouseScroll(mouseX: Double, mouseY: Double, horizontalAmount: Double, verticalAmount: Double): Boolean {
-        scrollAnimation["scrollY"] = MathHelper.clamp(scrollAnimation.getWithoutInterpolation("scrollY") + (verticalAmount.toFloat() * 30f) + (horizontalAmount.toFloat() * 30f), 0f.coerceAtMost((if (direction == Direction.HORIZONTAL) width else height) - innerSize), 0f)
+        scrollAnimation.set(MathHelper.clamp(scrollAnimation.getWithoutInterpolation() + (verticalAmount.toFloat() * 30f) + (horizontalAmount.toFloat() * 30f), 0f.coerceAtMost((if (direction == Direction.HORIZONTAL) width else height) - innerSize), 0f))
         return true
     }
 
@@ -54,9 +54,9 @@ abstract class Scrollable(val direction: Direction) : Renderable() {
         val deltaY = if(hasScrollStartedVertical) (lastDragY ?: startY) - mouseY else 0.0
 
         if (direction == Direction.VERTICAL) {
-            scrollAnimation["scrollY"] = MathHelper.clamp(scrollAnimation.getWithoutInterpolation("scrollY") - deltaY.toFloat(), 0f.coerceAtMost((height - innerSize)), 0f)
+            scrollAnimation.set(MathHelper.clamp(scrollAnimation.getWithoutInterpolation() - deltaY.toFloat(), 0f.coerceAtMost((height - innerSize)), 0f))
         } else {
-            scrollAnimation["scrollY"] = MathHelper.clamp(scrollAnimation.getWithoutInterpolation("scrollY") - deltaX.toFloat(), 0f.coerceAtMost((width - innerSize)), 0f)
+            scrollAnimation.set(MathHelper.clamp(scrollAnimation.getWithoutInterpolation() - deltaX.toFloat(), 0f.coerceAtMost((width - innerSize)), 0f))
         }
 
         lastDragX = mouseX

@@ -83,7 +83,7 @@ object Panorama : ImageSettingCategory(
             super.render(screenDrawing, mouseX, mouseY)
 
             if (path.get() == file.absolutePath) screenDrawing.fillWithBorderRounded(x, y, width, height, 5, OptionsMenuSettings.getThemeColor(alpha = 0.25f), OptionsMenuSettings.getThemeColor(alpha = 0.5f), topLeft = index == 0, topRight = index == 0, bottomLeft = index == size - 1, bottomRight = index == size - 1)
-            else screenDrawing.fillRounded(x, y, width, height, 5, OptionsMenuSettings.getThemeColor(alpha = hoverAnimation["hovering"] * 0.15f + 0.1f), topLeft = index == 0, topRight = index == 0, bottomLeft = index == size - 1, bottomRight = index == size - 1)
+            else screenDrawing.fillRounded(x, y, width, height, 5, OptionsMenuSettings.getThemeColor(alpha = hoverFactor * 0.15f + 0.1f), topLeft = index == 0, topRight = index == 0, bottomLeft = index == size - 1, bottomRight = index == size - 1)
             screenDrawing.drawText(file.name, x + 8, y + 8, OptionsMenuSettings.getTextThemeColor())
 
             images[file]?.identifiers?.forEachIndexed { index, identifier ->
@@ -111,10 +111,8 @@ object Panorama : ImageSettingCategory(
                         } else {
                             NotificationManager.addNotification(SimpleTextNotification(Translations.DELETE_FAILED()))
                         }
-                        OptionScreen.currentInstance?.page = OptionScreen.Page(
-                            getHeader(), getPane(), enableSetting
-                        )
-                        OptionScreen.currentInstance?.resize()
+                        OptionScreen.currentInstance?.goBack(instant = true)
+                        OptionScreen.currentInstance?.openPage(getHeader(), getPane(), enableSetting, true)
                     })
                 )
             }.setImagePadding(2)(x + width - 21, y + 25, 14, 14))
@@ -133,7 +131,8 @@ object Panorama : ImageSettingCategory(
                     }
 
                     if (catch { Files.move(file.toPath(), file.parentFile.resolve(newName).toPath(), StandardCopyOption.REPLACE_EXISTING) } != null) {
-                        OptionScreen.currentInstance?.page = OptionScreen.Page(getHeader(), getPane(), enableSetting)
+                        OptionScreen.currentInstance?.goBack(instant = true)
+                        OptionScreen.currentInstance?.openPage(getHeader(), getPane(), enableSetting, instant = true)
                         if (path.get() == file.absolutePath) {
                             path.set(file.parentFile.resolve(newName).absolutePath)
                         }

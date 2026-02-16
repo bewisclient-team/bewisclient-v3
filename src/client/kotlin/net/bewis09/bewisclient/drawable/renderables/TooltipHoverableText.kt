@@ -11,9 +11,9 @@ class TooltipHoverableText(val text: Text, val color: Color, val hoverColor: Col
         super.render(screenDrawing, mouseX, mouseY)
         screenDrawing.translate(0f, height / 2f - screenDrawing.getTextHeight() / 2f) {
             if (centered) {
-                screenDrawing.drawCenteredText(text, centerX, y, hoverAnimation["hovering"] within (color to hoverColor))
+                screenDrawing.drawCenteredText(text, centerX, y, hoverFactor within (color to hoverColor))
             } else {
-                screenDrawing.drawText(text, x, y, hoverAnimation["hovering"] within (color to hoverColor))
+                screenDrawing.drawText(text, x, y, hoverFactor within (color to hoverColor))
             }
         }
     }

@@ -15,7 +15,7 @@ class ResetButton<T>(val setting: Settable<T?>) : TooltipHoverable(Translations.
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
 
-        screenDrawing.fillRounded(x, y, width, height, 5, OptionsMenuSettings.getThemeColor(alpha = hoverAnimation["hovering"] * 0.15f + 0.15f))
+        screenDrawing.fillRounded(x, y, width, height, 5, OptionsMenuSettings.getThemeColor(alpha = hoverFactor * 0.15f + 0.15f))
 
         screenDrawing.drawTexture(createIdentifier("bewisclient", "textures/gui/sprites/reset.png"), x + 2, y + 2, width - 4, height - 4, OptionsMenuSettings.getThemeColor())
     }

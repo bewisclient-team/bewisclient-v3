@@ -10,6 +10,7 @@ import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCat
 import net.bewis09.bewisclient.drawable.renderables.popup.ConfirmPopup
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
+import net.bewis09.bewisclient.drawable.screen_drawing.pushColor
 import net.bewis09.bewisclient.drawable.screen_drawing.transform
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.screenshot.ScreenshotElement.loading
@@ -155,8 +156,8 @@ class ScreenshotViewElement(val file: File) : Hoverable(100) {
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
 
-        screenDrawing.transform(x + width / 2f, y + height / 2f, 1f - hoverAnimation["hovering"] * 0.1f) {
-            screenDrawing.fillWithBorder(-width / 2, -height / 2, width, height, OptionsMenuSettings.getThemeColor(alpha = 0.7f, black = 0.2f), OptionsMenuSettings.getThemeColor(white = 1f - hoverAnimation["hovering"] * .5f, alpha = 0.5f + hoverAnimation["hovering"] * .5f))
+        screenDrawing.transform(x + width / 2f, y + height / 2f, 1f - hoverFactor * 0.1f) {
+            screenDrawing.fillWithBorder(-width / 2, -height / 2, width, height, OptionsMenuSettings.getThemeColor(alpha = 0.7f, black = 0.2f), OptionsMenuSettings.getThemeColor(white = 1f - hoverFactor * .5f, alpha = 0.5f + hoverFactor * .5f))
             val data = contents.getOrDefault(file, null) ?: return
 
             data.identifier?.also {
@@ -167,9 +168,10 @@ class ScreenshotViewElement(val file: File) : Hoverable(100) {
                 val imgHeight = ((width - 2) * (1 / aspectRatio)).coerceAtMost(height - 2f)
                 val imgWidth = (imgHeight * aspectRatio).toInt()
 
-                screenDrawing.pushColor(1f - hoverAnimation["hovering"] * 0.4f, 1f - hoverAnimation["hovering"] * 0.4f, 1f - hoverAnimation["hovering"] * 0.4f, 1f - hoverAnimation["hovering"] * 0.4f)
-                screenDrawing.drawTexture(it, -imgWidth / 2, -imgHeight.toInt() / 2, imgWidth, imgHeight.toInt())
-                screenDrawing.popColor()
+                val value = 1f - hoverFactor * 0.4f
+                screenDrawing.pushColor(value, value, value, value) {
+                    screenDrawing.drawTexture(it, -imgWidth / 2, -imgHeight.toInt() / 2, imgWidth, imgHeight.toInt())
+                }
             } ?: run {
                 screenDrawing.drawCenteredText((data.failed then { loadingFailed() }) ?: loading(), 0, -5, Color.WHITE)
                 if (!data.failed && (data.nativeImage != null)) {
@@ -202,17 +204,20 @@ fun openBigScreenshotNewScreen(file: File) {
         }
     }
 
-    MinecraftClient.getInstance().setScreen(RenderableScreen(OptionScreen().apply {
-        page = OptionScreen.Page(
+    OptionScreen().apply {
+        changeCategory(Screenshot, instant = true)
+
+        openPage(
             Plane { x, y, width, _ -> listOf(TextElement(screenshotName(file.name), OptionsMenuSettings.getTextThemeColor(), centered = true)(x, y, width, 13)) }.setHeight(14), VerticalAlignScrollPlane({ w ->
                 listOf(
                     BigScreenshotViewElement(file).setWidth(w)
                 )
             }, 5),
-            null
+            instant = true
         )
-        category.value = Screenshot.id.toString()
-    }))
+
+        MinecraftClient.getInstance().setScreen(RenderableScreen(this))
+    }
 }
 
 fun openBigScreenshot(file: File) {
@@ -222,8 +227,7 @@ fun openBigScreenshot(file: File) {
             listOf(
                 BigScreenshotViewElement(file).setWidth(w)
             )
-        }, 5),
-        null
+        }, 5)
     )
 }
 
@@ -295,7 +299,7 @@ class BigScreenshotViewElement(val file: File) : Renderable() {
                 } else {
                     NotificationManager.addNotification(SimpleTextNotification(Translations.DELETE_FAILED()))
                 }
-                OptionScreen.currentInstance?.let { screen -> Screenshot.invoke(screen).apply { this.onClick(this) }; screen.category.value = Screenshot.id.toString() }
+                OptionScreen.currentInstance?.let { screen -> Screenshot.invoke(screen).apply { this.onClick(this) } }
             }))
         }(x + width - (width - 15) / 4, y + height - 14, (width - 15) / 4, 14))
     }

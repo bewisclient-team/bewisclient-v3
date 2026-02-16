@@ -18,14 +18,14 @@ object Zoom : ImageSettingCategory(
         setUsed(it)
     }
 
-    var factorAnimation = Animator({ if (ZoomSettings.instant.get()) 1 else 100 }, Animator.EASE_OUT, "factor" to 1f)
+    var factorAnimation = Animator({ if (ZoomSettings.instant.get()) 1 else 100 }, Animator.EASE_OUT, 1f)
 
     fun getFactor(): Float {
-        return if (ZoomSettings.enabled.get()) factorAnimation["factor"] else 1f
+        return if (ZoomSettings.enabled.get()) factorAnimation.get() else 1f
     }
 
     fun isUsed(): Boolean {
-        return factorAnimation.getWithoutInterpolation("factor") != 1f
+        return factorAnimation.getWithoutInterpolation() != 1f
     }
 
     fun setUsed(used: Boolean) {
@@ -34,12 +34,12 @@ object Zoom : ImageSettingCategory(
             if (ZoomSettings.smooth.get()) {
                 client.options.smoothCameraEnabled = true
             }
-            factorAnimation["factor"] = 0.23f
+            factorAnimation.set(0.23f)
         } else if (!used && isUsed()) {
             if (ZoomSettings.smooth.get()) {
                 client.options.smoothCameraEnabled = smoothCameraEnabledBefore ?: false
             }
-            factorAnimation["factor"] = 1f
+            factorAnimation.set(1f)
         }
     }
 }
