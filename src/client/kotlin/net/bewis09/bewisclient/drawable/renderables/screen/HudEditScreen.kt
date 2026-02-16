@@ -2,7 +2,6 @@ package net.bewis09.bewisclient.drawable.renderables.screen
 
 import net.bewis09.bewisclient.core.isKeyPressed
 import net.bewis09.bewisclient.core.translateToTopOptional
-import net.bewis09.bewisclient.drawable.SettingStructure
 import net.bewis09.bewisclient.drawable.renderables.ImageButton
 import net.bewis09.bewisclient.drawable.renderables.popup.AddWidgetPopup
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing

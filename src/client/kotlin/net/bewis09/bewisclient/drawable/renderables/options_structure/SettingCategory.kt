@@ -1,6 +1,5 @@
 package net.bewis09.bewisclient.drawable.renderables.options_structure
 
-import com.sun.beans.introspect.PropertyInfo
 import net.bewis09.bewisclient.drawable.*
 import net.bewis09.bewisclient.drawable.renderables.*
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen

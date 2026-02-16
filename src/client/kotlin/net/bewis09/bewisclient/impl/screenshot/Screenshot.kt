@@ -244,8 +244,6 @@ fun loadTexture(file: File, nativeImage: NativeImage) {
 }
 
 class BigScreenshotViewElement(val file: File) : Renderable() {
-    var deleteRequest = false
-
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         screenDrawing.fillWithBorder(x, y, width, height - 19, OptionsMenuSettings.getThemeColor(black = 0.2f, alpha = 0.7f), OptionsMenuSettings.getThemeColor(alpha = 0.5f))
 
