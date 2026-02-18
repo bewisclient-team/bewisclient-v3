@@ -7,6 +7,7 @@ import net.bewis09.bewisclient.drawable.renderables.*
 import net.bewis09.bewisclient.drawable.renderables.notification.NotificationManager
 import net.bewis09.bewisclient.drawable.renderables.notification.SimpleTextNotification
 import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCategory
+import net.bewis09.bewisclient.drawable.renderables.options_structure.addToQuickSettings
 import net.bewis09.bewisclient.drawable.renderables.popup.ConfirmPopup
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
@@ -46,7 +47,7 @@ object ScreenshotElement : Renderable() {
     val loadingFailed = Translation("menu.general.file_load_fail", "Failed to load file")
 
     val screenshotName = Translation("menu.general.screenshot_name", "Screenshot: %s")
-    val redirectElement = ScreenshotSettings.redirect.createRenderable("screenshot.redirect", "Redirect screenshot chat click event", "When clicking the screenshot name in chat, the screenshot opens in the in-game screen instead of an external program.")
+    val redirectElement = ScreenshotSettings.redirect.createRenderable("screenshot.redirect", "Redirect screenshot chat click event", "When clicking the screenshot name in chat, the screenshot opens in the in-game screen instead of an external program.").addToQuickSettings("menu.category.screenshot")
 
     val noScreenshotsYet = Translation("menu.screenshot.no_screenshots_yet", "Taken screenshots will appear here.")
 
@@ -297,7 +298,7 @@ class BigScreenshotViewElement(val file: File) : Renderable() {
                 } else {
                     NotificationManager.addNotification(SimpleTextNotification(Translations.DELETE_FAILED()))
                 }
-                OptionScreen.currentInstance?.let { screen -> Screenshot.invoke(screen).apply { this.onClick(this) } }
+                Screenshot.invoke()
             }))
         }(x + width - (width - 15) / 4, y + height - 14, (width - 15) / 4, 14))
     }

@@ -12,10 +12,8 @@ import net.bewis09.bewisclient.util.color.colors
 @Suppress("unusedExpression")
 object TranslationLoader : EventEntrypoint {
     override fun onDatagen() {
-        SettingStructure(OptionScreen()).let {
-            it.widgetsPlane.init(0, 0, 1000, 1000)
-            it.cosmetics.init(0, 0, 1000, 1000)
-        }
+        OptionScreen()
+        SettingStructure
         Fullbright
         colors
         AddWidgetPopup

@@ -2,6 +2,7 @@ package net.bewis09.bewisclient.impl.functionalities
 
 import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.renderables.options_structure.ImageSettingCategory
+import net.bewis09.bewisclient.drawable.renderables.options_structure.addToQuickSettings
 import net.bewis09.bewisclient.game.Keybind
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.functionalities.ZoomSettings
@@ -9,7 +10,8 @@ import org.lwjgl.glfw.GLFW
 
 object Zoom : ImageSettingCategory(
     "zoom", Translation("menu.category.zoom", "Zoom"), arrayOf(
-        ZoomSettings.smooth.createRenderable("zoom.smooth", "Smooth Zoom", "Enable or disable smooth zoom (Works as if smooth camera is enabled)"), ZoomSettings.instant.createRenderable("zoom.instant", "Instant Zoom", "Disables the transition animation when zooming in or out")
+        ZoomSettings.smooth.createRenderable("zoom.smooth", "Smooth Zoom", "Enable or disable smooth zoom (Works as if smooth camera is enabled)").addToQuickSettings("menu.category.zoom"),
+        ZoomSettings.instant.createRenderable("zoom.instant", "Instant Zoom", "Disables the transition animation when zooming in or out").addToQuickSettings("menu.category.zoom")
     ), ZoomSettings.enabled
 ) {
     var smoothCameraEnabledBefore: Boolean? = null

@@ -14,10 +14,10 @@ open class SidebarCategory(val id: Identifier, val name: Translation, val render
     constructor(id: Identifier, name: String, renderable: Renderable) : this(id, Translation(id.namespace, "menu.category."+id.path, name), renderable)
     constructor(id: Identifier, name: String, settings: List<Renderable>) : this(id, name, VerticalScrollGrid({ settings.map { it.setHeight(90) } }, 5, 80))
 
-    operator fun invoke(screen: OptionScreen): ThemeButton {
-        return ThemeButton(id.toString(), name(), screen.category) {
-            screen.changeCategory(this)
-        }.setHeight(14) as ThemeButton
+    operator fun invoke(): ThemeButton {
+        return ThemeButton(name(), { OptionScreen.currentInstance?.category?.value == id.toString() }, {
+            OptionScreen.currentInstance?.changeCategory(this)
+        }).setHeight(14) as ThemeButton
     }
 
     fun getHeader(): Renderable {

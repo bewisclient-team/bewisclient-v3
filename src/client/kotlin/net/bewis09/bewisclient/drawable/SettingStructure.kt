@@ -16,7 +16,7 @@ import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.logic.BewisclientInterface
 import net.bewis09.bewisclient.widget.WidgetLoader
 
-class SettingStructure(val screen: OptionScreen) : BewisclientInterface {
+object SettingStructure : BewisclientInterface {
     val widgets = WidgetLoader.widgets.map {
         DescriptionSettingCategory(it.widgetTitle, it.widgetDescription, arrayListOf<Renderable>().also { list -> it.appendSettingsRenderables(list) }.toTypedArray(), it.enabled)
     }
@@ -52,26 +52,18 @@ class SettingStructure(val screen: OptionScreen) : BewisclientInterface {
     val widgetsPlane = Plane { x, y, width, height ->
         listOf(
             Button(Translation("menu.widgets.general_setting", "General Widget Settings")()) {
-                screen.openPage(
+                OptionScreen.currentInstance?.openPage(
                     TextElement(Translation("menu.widgets.general_setting", "General Widget Settings")(), centered = true).setHeight(12), VerticalAlignScrollPlane({ generalWidgetSettings }, 1)
                 )
             }(x, y, width, 14), VerticalScrollGrid({ widgets.map { a -> a.setHeight(90) } }, 5, 80).invoke(x, y + 19, width, height - 19)
         )
     }
 
-    val homePlane = HomePlane()
-
-    val homeCategory = SidebarCategory(createIdentifier("bewisclient", "home"), "Bewisclient", this.homePlane)
+    val homeCategory = SidebarCategory(createIdentifier("bewisclient", "home"), "Bewisclient", HomePlane)
 
     val widgetsCategory = SidebarCategory(createIdentifier("bewisclient", "widgets"), "Widgets", this.widgetsPlane)
     val utilitiesCategory = SidebarCategory(createIdentifier("bewisclient", "utilities"), "Utilities", this.utilities)
     val settingsCategory = SidebarCategory(createIdentifier("bewisclient", "settings"), "Settings", this.settings)
     val cosmeticsCategory = SidebarCategory(createIdentifier("bewisclient", "cosmetics"), "Cosmetics", this.cosmetics)
     val extensionsCategory = SidebarCategory(createIdentifier("bewisclient", "extensions"), "Extensions", this.extensions)
-
-    val sidebarCategories = arrayListOf<Renderable>(
-        widgetsCategory(screen), utilitiesCategory(screen), settingsCategory(screen), cosmeticsCategory(screen), extensionsCategory(screen)
-    ).also {
-        APIEntrypointLoader.mapEntrypoint { a -> a.getSidebarCategories().forEach { b -> it.add(b(screen)) } }
-    }
 }

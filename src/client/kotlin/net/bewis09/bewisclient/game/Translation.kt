@@ -33,6 +33,8 @@ class Translation(private val namespace: String, private val key: String, @Suppr
         return "$namespace.$key"
     }
 
+    fun getKeyWithoutNamespace() = key
+
     operator fun invoke(): MutableText {
         return getTranslatedText()
     }

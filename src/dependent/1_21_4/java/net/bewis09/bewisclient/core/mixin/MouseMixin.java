@@ -22,7 +22,7 @@ public class MouseMixin {
     @Inject(method = "onMouseScroll", at = @At("HEAD"), cancellable = true)
     private void bewisclient$onMouseScroll(long window, double horizontal, double vertical, CallbackInfo ci) {
         if (Zoom.INSTANCE.isUsed()) {
-            Zoom.INSTANCE.getFactorAnimation().set("factor", MathHelper.clamp(Zoom.INSTANCE.getFactorAnimation().getWithoutInterpolation("factor") - (float) vertical * 0.02f, .009f, .4f));
+            Zoom.INSTANCE.getFactorAnimation().set(MathHelper.clamp(Zoom.INSTANCE.getFactorAnimation().getWithoutInterpolation() - (float) vertical * 0.02f, .009f, .4f));
 
             ci.cancel();
         }

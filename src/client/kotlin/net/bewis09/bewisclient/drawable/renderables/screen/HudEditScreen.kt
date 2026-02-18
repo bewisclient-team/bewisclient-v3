@@ -2,6 +2,7 @@ package net.bewis09.bewisclient.drawable.renderables.screen
 
 import net.bewis09.bewisclient.core.isKeyPressed
 import net.bewis09.bewisclient.core.translateToTopOptional
+import net.bewis09.bewisclient.drawable.SettingStructure
 import net.bewis09.bewisclient.drawable.renderables.ImageButton
 import net.bewis09.bewisclient.drawable.renderables.popup.AddWidgetPopup
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
@@ -54,9 +55,9 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
 
                 if (button == 1) {
                     client.setScreen(RenderableScreen(OptionScreen().apply {
-                        val widgetsCategory = settings.widgets.firstOrNull { b -> b.enableSetting == it.enabled } ?: return@apply
+                        val widgetsCategory = SettingStructure.widgets.firstOrNull { b -> b.enableSetting == it.enabled } ?: return@apply
 
-                        changeCategory(settings.widgetsCategory, instant = true)
+                        changeCategory(SettingStructure.widgetsCategory, instant = true)
 
                         openPage(
                             widgetsCategory.getHeader(),
@@ -143,8 +144,8 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
             openPopup(AddWidgetPopup(), Color.BLACK alpha 0.625f)
         }.setImagePadding(0)(width - 16, height - 16, 14, 14))
         addRenderable(ImageButton(createIdentifier("bewisclient", "textures/gui/sprites/settings.png")) {
-            client.setScreen(RenderableScreen(OptionScreen().also {
-                it.changeCategory(it.settings.widgetsCategory, instant = true)
+            client.setScreen(RenderableScreen(OptionScreen().apply {
+                changeCategory(SettingStructure.widgetsCategory, instant = true)
             }))
         }.setImagePadding(2)(width - 32, height - 16, 14, 14))
     }

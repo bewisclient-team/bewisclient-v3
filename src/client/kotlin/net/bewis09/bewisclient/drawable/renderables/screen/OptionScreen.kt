@@ -1,10 +1,12 @@
 package net.bewis09.bewisclient.drawable.renderables.screen
 
 import kotlinx.atomicfu.atomic
+import net.bewis09.bewisclient.api.APIEntrypointLoader
 import net.bewis09.bewisclient.data.Constants
 import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.SettingStructure
+import net.bewis09.bewisclient.drawable.SettingStructure.settings
 import net.bewis09.bewisclient.drawable.Translations
 import net.bewis09.bewisclient.drawable.renderables.*
 import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCategory
@@ -39,14 +41,12 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
     val insideMainAnimation = Animator({ OptionsMenuSettings.animationTime.get().toLong() }, Animator.EASE_IN_OUT, 1f)
     val blurMainAnimation = Animator({ OptionsMenuSettings.animationTime.get().toLong() }, Animator.EASE_IN_OUT, startBlur)
 
-    val settings = SettingStructure(this)
-
     val backIdentifier = createIdentifier("bewisclient", "textures/gui/sprites/back.png")
     val closeIdentifier = createIdentifier("bewisclient", "textures/gui/sprites/remove.png")
 
     val sidebarPlane = VerticalAlignScrollPlane(
         arrayListOf<Renderable>().also {
-            it.add(settings.homeCategory(this).let { button ->
+            it.add(SettingStructure.homeCategory().let { button ->
                 Plane { x, y, _, _ ->
                     listOf(
                         ImageButton(backIdentifier) {
@@ -59,7 +59,12 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
                 }.setHeight(14)
             })
             it.add(Rectangle { OptionsMenuSettings.getThemeColor(alpha = 0.3f) }.setHeight(1))
-            it.addAll(settings.sidebarCategories)
+            it.addAll(
+                arrayListOf<Renderable>(
+                    SettingStructure.widgetsCategory(), SettingStructure.utilitiesCategory(), SettingStructure.settingsCategory(), SettingStructure.cosmeticsCategory(), SettingStructure.extensionsCategory()
+                ).apply {
+                    APIEntrypointLoader.mapEntrypoint { a -> a.getSidebarCategories().forEach { b -> add(b()) } }
+                })
             it.add(Rectangle { OptionsMenuSettings.getThemeColor(alpha = 0.3f) }.setHeight(1))
             it.add(ThemeButton("bewisclient:edit_hud", editHudTranslation(), category) {
                 alphaMainAnimation.set(0f) {
@@ -87,8 +92,8 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
 
     val pageStack = mutableListOf(
         Page(
-            settings.homeCategory.getHeader(),
-            settings.homeCategory.renderable,
+            SettingStructure.homeCategory.getHeader(),
+            SettingStructure.homeCategory.renderable,
             null
         )
     )
@@ -124,6 +129,7 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
     fun renderBackground(screenDrawing: ScreenDrawing) {
         screenDrawing.fillWithBorderRounded(30, 30, 134, height - 60, 5, OptionsMenuSettings.getBackgroundColor(), OptionsMenuSettings.getThemeColor(alpha = 0.3f))
         screenDrawing.fillWithBorderRounded(169, 30, width - 199, height - 60, 5, OptionsMenuSettings.getBackgroundColor(), OptionsMenuSettings.getThemeColor(alpha = 0.3f))
+
     }
 
     fun renderSidebar(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {

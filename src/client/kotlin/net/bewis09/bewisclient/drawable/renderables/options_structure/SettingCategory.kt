@@ -3,6 +3,7 @@ package net.bewis09.bewisclient.drawable.renderables.options_structure
 import net.bewis09.bewisclient.drawable.*
 import net.bewis09.bewisclient.drawable.renderables.*
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
+import net.bewis09.bewisclient.drawable.renderables.settings.BooleanSettingRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.pushColor
 import net.bewis09.bewisclient.game.Translation
@@ -33,6 +34,10 @@ open class DescriptionSettingCategory(text: Translation, val description: Transl
 
 abstract class SettingCategory(val text: Translation, val setting: Array<Renderable>, val enableSetting: BooleanSetting?) : Hoverable() {
     val state = Animator(200, Animator.EASE_IN_OUT, if (enableSetting?.get() != false) 1f else 0f)
+
+    init {
+        enableSetting?.let { BooleanSettingRenderable(text, null, it).addToQuickSettings(text.getKeyWithoutNamespace()) }
+    }
 
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
         if (setting.isEmpty()) {
