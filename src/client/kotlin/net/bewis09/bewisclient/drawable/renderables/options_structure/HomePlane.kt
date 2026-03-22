@@ -2,7 +2,6 @@ package net.bewis09.bewisclient.drawable.renderables.options_structure
 
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.*
-import net.bewis09.bewisclient.drawable.renderables.options_structure.HomePlane.no_quick_settings
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
@@ -17,7 +16,6 @@ import net.bewis09.bewisclient.util.number.Precision
 import net.minecraft.text.Text
 
 object HomePlane : Renderable(), OptionScreen.CutoutProvider {
-    val quickSettings = Translation("menu.home.quickSettings", "Quick Settings")
     val editQuickSettings = Translation("menu.home.edit_quick_settings", "Edit Quick Settings")
     val widgetPresets = Translation("menu.home.widget_presets", "Widget Presets")
     val moreWidgetOptions = Translation("menu.home.more_widget_options", "More customization options can be found in the widgets tab")
