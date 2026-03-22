@@ -23,5 +23,6 @@ object BewisclientSettingsObject : ObjectSetting() {
         create("fire_height", FireHeightSettings)
         create("pack_adder", PackAdderSettings)
         create("panorama", PanoramaSettings)
+        create("home", HomePlaneSettings)
     }
 }

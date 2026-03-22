@@ -2,6 +2,7 @@ package net.bewis09.bewisclient.impl.widget
 
 import net.bewis09.bewisclient.core.isKeyPressed
 import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.drawable.renderables.options_structure.addToQuickSettings
 import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
 import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSettingsRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
@@ -169,11 +170,11 @@ object KeyWidget : ScalableWidget(createIdentifier("bewisclient", "key_widget"))
                 createTranslation("keys", "Select which keys should be shown"), null, listOf(
                     showMovementKeys.createRenderablePart("widget.key_widget.show_movement_keys", "Movement Keys"), showAttackUseKeys.createRenderablePart("widget.key_widget.show_attack_use_keys", "Attack/Use Keys"), showJumpKey.createRenderablePart("widget.key_widget.show_jump_key", "Jump Key")
                 ).staticFun()
-            )
+            ).addToQuickSettings("widget.key_widget.name", "shown_keys")
         )
 
         list.add(
-            showCPS.createRenderable("widget.key_widget.show_cps", "Show CPS", "Shows your clicks per second (CPS) for the attack/use keys")
+            showCPS.createRenderable("widget.key_widget.show_cps", "Show CPS", "Shows your clicks per second (CPS) for the attack/use keys").addToQuickSettings("widget.key_widget.name", "show_cps")
         )
 
         list.add(

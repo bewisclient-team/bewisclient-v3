@@ -30,6 +30,6 @@ open class FaderSettingRenderable<T : Number>(val title: Translation, val descri
     override fun init() {
         super.init()
         addRenderable(resetButton.setPosition(x2 - resetButton.width - 4, y + 4))
-        addRenderable(fader.setPosition(x2 - fader.width - 8 - resetButton.width, y + 4))
+        addRenderable(fader.setWidth(if (this.width > 200) 100 else 50).setPosition(x2 - fader.width - 8 - resetButton.width, y + 4))
     }
 }

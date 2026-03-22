@@ -8,7 +8,7 @@ open class VerticalScrollGrid(val init: (Int) -> List<Renderable>, val gap: Int,
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         if (renderables.isEmpty()) return
 
-        val elementsInRow = floor(((width + gap) / (minWidth + gap)).toDouble())
+        val elementsInRow = floor(((width + gap) / (minWidth + gap)).toDouble()).coerceAtLeast(1.0)
         val elementWidth = (width + gap) / elementsInRow - gap
         val columnHeights = Array(elementsInRow.toInt()) { 0 }
 

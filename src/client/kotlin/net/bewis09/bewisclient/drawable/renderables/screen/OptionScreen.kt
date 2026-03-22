@@ -112,6 +112,10 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
         resize()
     }
 
+    interface CutoutProvider {
+        fun getCutout(): Renderable?
+    }
+
     override fun renderScreen(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         checkValidVersion()
 
@@ -127,8 +131,24 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
 
     fun renderBackground(screenDrawing: ScreenDrawing) {
         screenDrawing.fillWithBorderRounded(30, 30, 134, height - 60, 5, OptionsMenuSettings.getBackgroundColor(), OptionsMenuSettings.getThemeColor(alpha = 0.3f))
-        screenDrawing.fillWithBorderRounded(169, 30, width - 199, height - 60, 5, OptionsMenuSettings.getBackgroundColor(), OptionsMenuSettings.getThemeColor(alpha = 0.3f))
 
+        val cutout = (page.pane as? CutoutProvider)?.getCutout()
+        if (cutout == null)
+            screenDrawing.fillWithBorderRounded(169, 30, width - 199, height - 60, 5, OptionsMenuSettings.getBackgroundColor(), OptionsMenuSettings.getThemeColor(alpha = 0.3f))
+        else {
+            screenDrawing.enableScissors(0, 0, width, cutout.y)
+            screenDrawing.fillWithBorderRounded(169, 30, width - 199, height - 60, 5, OptionsMenuSettings.getBackgroundColor(), OptionsMenuSettings.getThemeColor(alpha = 0.3f))
+            screenDrawing.disableScissors()
+            screenDrawing.enableScissors(0, cutout.y, cutout.x, cutout.height)
+            screenDrawing.fillWithBorderRounded(169, 30, width - 199, height - 60, 5, OptionsMenuSettings.getBackgroundColor(), OptionsMenuSettings.getThemeColor(alpha = 0.3f))
+            screenDrawing.disableScissors()
+            screenDrawing.enableScissors(cutout.x + cutout.width, cutout.y, width - cutout.x - cutout.width, cutout.height)
+            screenDrawing.fillWithBorderRounded(169, 30, width - 199, height - 60, 5, OptionsMenuSettings.getBackgroundColor(), OptionsMenuSettings.getThemeColor(alpha = 0.3f))
+            screenDrawing.disableScissors()
+            screenDrawing.enableScissors(0, cutout.y + cutout.height, width, height - cutout.y - cutout.height)
+            screenDrawing.fillWithBorderRounded(169, 30, width - 199, height - 60, 5, OptionsMenuSettings.getBackgroundColor(), OptionsMenuSettings.getThemeColor(alpha = 0.3f))
+            screenDrawing.disableScissors()
+        }
     }
 
     fun renderSidebar(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {

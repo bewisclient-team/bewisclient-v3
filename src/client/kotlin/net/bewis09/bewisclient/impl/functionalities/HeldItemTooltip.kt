@@ -23,7 +23,7 @@ import net.minecraft.text.Text
 
 object HeldItemTooltip : ImageSettingCategory(
     "held_item_tooltip", Translation("menu.category.held_item_tooltip", "Held Item Info"), arrayOf(
-        HeldItemTooltipSettings.maxShownLines.createRenderable("held_item_tooltip.max_shown_lines", "Max Shown Lines", "Maximum number of lines to show in the held item tooltip").addToQuickSettings("menu.category.held_item_tooltip"), MultipleBooleanSettingsRenderable.create(
+        HeldItemTooltipSettings.maxShownLines.createRenderable("held_item_tooltip.max_shown_lines", "Max Shown Lines", "Maximum number of lines to show in the held item tooltip").addToQuickSettings("menu.category.held_item_tooltip", "max_lines"), MultipleBooleanSettingsRenderable.create(
             "held_item_tooltip.multiple_boolean_settings", "Data Component Tooltips:", "Select which information to show in the held item tooltip"
         ) { HeldItemTooltip.componentRenderableParts }), HeldItemTooltipSettings.enabled
 ) {

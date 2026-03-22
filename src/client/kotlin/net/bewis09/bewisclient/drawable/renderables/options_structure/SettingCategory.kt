@@ -36,7 +36,7 @@ abstract class SettingCategory(val text: Translation, val setting: Array<Rendera
     val state = Animator(200, Animator.EASE_IN_OUT, if (enableSetting?.get() != false) 1f else 0f)
 
     init {
-        enableSetting?.let { BooleanSettingRenderable(text, null, it).addToQuickSettings(text.getKeyWithoutNamespace()) }
+        enableSetting?.let { BooleanSettingRenderable(Translations.ENABLED, null, it).addToQuickSettings(text.getKeyWithoutNamespace(), "enabled") }
     }
 
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {

@@ -1,6 +1,7 @@
 package net.bewis09.bewisclient.impl.widget
 
 import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.drawable.renderables.options_structure.addToQuickSettings
 import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.toText
 import net.bewis09.bewisclient.widget.logic.RelativePosition
@@ -47,7 +48,7 @@ object DaytimeWidget : LineWidget(createIdentifier("bewisclient", "daytime_widge
         list.add(
             format12Hours.createRenderable(
                 "widget.daytime_widget.format_12_hours", "Use 12-Hour Format"
-            )
+            ).addToQuickSettings("widget.daytime_widget.name", "format_12_hours")
         )
         super.appendSettingsRenderables(list)
     }

@@ -1,6 +1,7 @@
 package net.bewis09.bewisclient.impl.widget
 
 import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.drawable.renderables.options_structure.addToQuickSettings
 import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSettingsRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.translate
@@ -146,27 +147,27 @@ object ArmorWidget : ScalableWidget(createIdentifier("bewisclient", "armor_widge
         list.add(
             showDurability.createRenderable(
                 "widget.show_durability", "Show Durability", "Toggle whether to show armor durability"
-            )
+            ).addToQuickSettings("widget.armor_widget.name", "durability")
         )
         list.add(
             showPercentage.createRenderable(
                 "widget.show_percentage", "Show Percentage", "Toggle whether to show durability as a percentage"
-            )
+            ).addToQuickSettings("widget.armor_widget.name", "percentage")
         )
         list.add(
             showEmptySlots.createRenderable(
                 "widget.show_empty_slots", "Show Empty Slots", "Toggle whether to show empty armor slots"
-            )
+            ).addToQuickSettings("widget.armor_widget.name", "empty_slots")
         )
         list.add(
             showEmptySlotIcon.createRenderable(
                 "widget.show_empty_slot_icon", "Show Empty Slot Icon", "Toggle whether to show an icon for empty armor slots"
-            )
+            ).addToQuickSettings("widget.armor_widget.name", "empty_slot_icon")
         )
         list.add(
             colorCodeText.createRenderable(
                 "widget.color_code_text", "Color Code Text", "Toggle whether to color code the durability text"
-            )
+            ).addToQuickSettings("widget.armor_widget.name", "color_code_text")
         )
 
         list.add(

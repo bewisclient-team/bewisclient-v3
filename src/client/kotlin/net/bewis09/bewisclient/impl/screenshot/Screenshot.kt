@@ -47,7 +47,7 @@ object ScreenshotElement : Renderable() {
     val loadingFailed = Translation("menu.general.file_load_fail", "Failed to load file")
 
     val screenshotName = Translation("menu.general.screenshot_name", "Screenshot: %s")
-    val redirectElement = ScreenshotSettings.redirect.createRenderable("screenshot.redirect", "Redirect screenshot chat click event", "When clicking the screenshot name in chat, the screenshot opens in the in-game screen instead of an external program.").addToQuickSettings("menu.category.screenshot")
+    val redirectElement = ScreenshotSettings.redirect.createRenderable("screenshot.redirect", "Redirect screenshot chat click event", "When clicking the screenshot name in chat, the screenshot opens in the in-game screen instead of an external program.").addToQuickSettings("menu.category.screenshots", "click")
 
     val noScreenshotsYet = Translation("menu.screenshot.no_screenshots_yet", "Taken screenshots will appear here.")
 

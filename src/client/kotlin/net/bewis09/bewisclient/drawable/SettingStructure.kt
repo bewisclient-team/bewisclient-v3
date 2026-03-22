@@ -9,6 +9,7 @@ import net.bewis09.bewisclient.drawable.renderables.elements.ExtensionListRender
 import net.bewis09.bewisclient.drawable.renderables.options_structure.DescriptionSettingCategory
 import net.bewis09.bewisclient.drawable.renderables.options_structure.HomePlane
 import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCategory
+import net.bewis09.bewisclient.drawable.renderables.options_structure.addToQuickSettings
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
@@ -26,11 +27,11 @@ object SettingStructure : BewisclientInterface {
     val settings = VerticalAlignScrollPlane(
         listOf(
 //            OptionsMenuSettings.animationTime.createRenderable("menu.settings.animation_time", "Animation Time", "The time (in milliseconds) it takes for animations to complete"),
-            OptionsMenuSettings.blurBackground.createRenderable("menu.settings.blur_background", "Blur Background", "Whether to blur the background when opening menus"),
-            OptionsMenuSettings.buttonInTitleScreen.createRenderable("menu.settings.button_in_title_screen", "Button in Title Screen", "Whether to show the Bewisclient button in the title screen"),
-            OptionsMenuSettings.buttonInGameScreen.createRenderable("menu.settings.button_in_game_screen", "Button in Game Screen", "Whether to show the Bewisclient button in the in-game pause menu"),
-            OptionsMenuSettings.themeColor.createRenderable("menu.settings.theme_color", "Theme Color", "The theme color used throughout the client"),
-            OptionsMenuSettings.backgroundColor.createRenderableWithFader("menu.settings.background_color", "Background Color", "The background color used for menus. Reset to use the theme color.", OptionsMenuSettings.backgroundOpacity)
+            OptionsMenuSettings.blurBackground.createRenderable("menu.settings.blur_background", "Blur Background", "Whether to blur the background when opening menus").addToQuickSettings("menu.category.settings", "blur"),
+            OptionsMenuSettings.buttonInTitleScreen.createRenderable("menu.settings.button_in_title_screen", "Button in Title Screen", "Whether to show the Bewisclient button in the title screen").addToQuickSettings("menu.category.settings", "title"),
+            OptionsMenuSettings.buttonInGameScreen.createRenderable("menu.settings.button_in_game_screen", "Button in Game Screen", "Whether to show the Bewisclient button in the in-game pause menu").addToQuickSettings("menu.category.settings", "in-game"),
+            OptionsMenuSettings.themeColor.createRenderable("menu.settings.theme_color", "Theme Color", "The theme color used throughout the client").addToQuickSettings("menu.category.settings", "theme_color"),
+            OptionsMenuSettings.backgroundColor.createRenderableWithFader("menu.settings.background_color", "Background Color", "The background color used for menus. Reset to use the theme color.", OptionsMenuSettings.backgroundOpacity).addToQuickSettings("menu.category.settings", "background")
         ), 1
     )
 
@@ -55,7 +56,11 @@ object SettingStructure : BewisclientInterface {
                 OptionScreen.currentInstance?.openPage(
                     TextElement(Translation("menu.widgets.general_setting", "General Widget Settings")(), centered = true).setHeight(12), VerticalAlignScrollPlane({ generalWidgetSettings }, 1)
                 )
-            }(x, y, width, 14), VerticalScrollGrid({ widgets.map { a -> a.setHeight(90) } }, 5, 80).invoke(x, y + 19, width, height - 19)
+            }(x, y, width, 14),
+//            Button(Translation("menu.widgets.presets", "Presets")()) {
+//
+//            }(x + width - 55, 37, 55, 14),
+            VerticalScrollGrid({ widgets.map { a -> a.setHeight(90) } }, 5, 80).invoke(x, y + 19, width, height - 19)
         )
     }
 

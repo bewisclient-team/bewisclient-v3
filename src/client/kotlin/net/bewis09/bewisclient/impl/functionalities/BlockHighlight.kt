@@ -7,7 +7,7 @@ import net.bewis09.bewisclient.impl.settings.functionalities.BlockHighlightSetti
 
 object BlockHighlight : ImageSettingCategory(
     "block_highlight", Translation("menu.category.block_highlight", "Block Highlight"), arrayOf(
-        BlockHighlightSettings.color.createRenderable("block_highlight.color", "Color", "Change the color of the block highlight").addToQuickSettings("menu.category.block_highlight"),
-        BlockHighlightSettings.thickness.createRenderable("block_highlight.thickness", "Thickness", "Adjust the thickness of the block highlight").addToQuickSettings("menu.category.block_highlight"),
+        BlockHighlightSettings.color.createRenderable("block_highlight.color", "Color", "Change the color of the block highlight").addToQuickSettings("menu.category.block_highlight", "color"),
+        BlockHighlightSettings.thickness.createRenderable("block_highlight.thickness", "Thickness", "Adjust the thickness of the block highlight").addToQuickSettings("menu.category.block_highlight", "thickness"),
     ), BlockHighlightSettings.enabled
 )

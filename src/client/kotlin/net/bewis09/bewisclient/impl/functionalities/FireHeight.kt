@@ -9,6 +9,6 @@ object FireHeight: ImageSettingCategory(
     "fire_height", Translation("menu.category.fire_height", "Fire Height"), arrayOf(
         FireHeightSettings.height.createRenderable(
             "fire_height.height", "Fire Height", "Adjust the height of the fire overlay on your screen"
-        ).addToQuickSettings("menu.category.fire_height"),
+        ).addToQuickSettings("menu.category.fire_height", "height"),
     ), FireHeightSettings.enabled
 )

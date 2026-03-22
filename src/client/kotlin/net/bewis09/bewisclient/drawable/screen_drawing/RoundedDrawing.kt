@@ -84,6 +84,11 @@ interface RoundedDrawing : RectDrawing, TextureDrawing {
     }
 
     fun fillRounded(x: Int, y: Int, width: Int, height: Int, radius: Int, color: Color, topLeft: Boolean = true, topRight: Boolean = true, bottomLeft: Boolean = true, bottomRight: Boolean = true) {
+        if (radius == 0) {
+            fill(x, y, width, height, color)
+            return
+        }
+
         val adjustedRadius = min(radius, min(width / 2, height / 2))
 
         // Fill the main rectangle (without corners)
@@ -116,6 +121,11 @@ interface RoundedDrawing : RectDrawing, TextureDrawing {
     }
 
     fun drawBorderRounded(x: Int, y: Int, width: Int, height: Int, radius: Int, color: Color, topLeft: Boolean = true, topRight: Boolean = true, bottomLeft: Boolean = true, bottomRight: Boolean = true) {
+        if (radius == 0) {
+            drawBorder(x, y, width, height, color)
+            return
+        }
+
         val adjustedRadius = min(radius, min(width / 2, height / 2))
 
         // Draw the border lines (without corners)

@@ -10,8 +10,8 @@ import org.lwjgl.glfw.GLFW
 
 object Zoom : ImageSettingCategory(
     "zoom", Translation("menu.category.zoom", "Zoom"), arrayOf(
-        ZoomSettings.smooth.createRenderable("zoom.smooth", "Smooth Zoom", "Enable or disable smooth zoom (Works as if smooth camera is enabled)").addToQuickSettings("menu.category.zoom"),
-        ZoomSettings.instant.createRenderable("zoom.instant", "Instant Zoom", "Disables the transition animation when zooming in or out").addToQuickSettings("menu.category.zoom")
+        ZoomSettings.smooth.createRenderable("zoom.smooth", "Smooth Zoom", "Enable or disable smooth zoom (Works as if smooth camera is enabled)").addToQuickSettings("menu.category.zoom", "smooth"),
+        ZoomSettings.instant.createRenderable("zoom.instant", "Instant Zoom", "Disables the transition animation when zooming in or out").addToQuickSettings("menu.category.zoom", "instant")
     ), ZoomSettings.enabled
 ) {
     var smoothCameraEnabledBefore: Boolean? = null

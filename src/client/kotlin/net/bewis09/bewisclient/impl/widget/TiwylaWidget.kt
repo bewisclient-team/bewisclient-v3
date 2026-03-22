@@ -4,6 +4,7 @@ import com.google.gson.*
 import net.bewis09.bewisclient.api.APIEntrypointLoader
 import net.bewis09.bewisclient.core.setFont
 import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.drawable.renderables.options_structure.addToQuickSettings
 import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.transform
@@ -198,7 +199,7 @@ object TiwylaWidget : ScalableWidget(createIdentifier("bewisclient", "tiwyla_wid
                 "widget.bottom_text_color", "Bottom Text Color", "Set the color of the bottom text in the widget"
             )
         )
-        list.add(TiwylaLinesSettingsRenderable())
+        list.add(TiwylaLinesSettingsRenderable().addToQuickSettings("widget.tiwyla_widget.name", "lines"))
         list.add(InfoTextRenderable(healthInfoText(), 0xAAAAAA.color, true))
         list.add(
             backgroundColor.createRenderableWithFader(

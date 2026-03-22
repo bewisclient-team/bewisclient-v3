@@ -1,6 +1,7 @@
 package net.bewis09.bewisclient.impl.widget
 
 import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.drawable.renderables.options_structure.addToQuickSettings
 import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.toText
 import net.bewis09.bewisclient.settings.types.BooleanSetting
@@ -43,12 +44,12 @@ object CPSWidget : LineWidget(createIdentifier("bewisclient", "cps_widget")) {
         list.add(
             leftEnabled.createRenderable(
                 "widget.cps_widget.left_enabled", "Left Mouse Button CPS Shown"
-            )
+            ).addToQuickSettings("widget.cps_widget.name", "left_enabled")
         )
         list.add(
             rightEnabled.createRenderable(
                 "widget.cps_widget.right_enabled", "Right Mouse Button CPS Shown"
-            )
+            ).addToQuickSettings("widget.cps_widget.name", "right_enabled")
         )
         super.appendSettingsRenderables(list)
     }

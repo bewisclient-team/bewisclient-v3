@@ -3,6 +3,7 @@ package net.bewis09.bewisclient.impl.widget
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.drawable.renderables.options_structure.addToQuickSettings
 import net.bewis09.bewisclient.util.*
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
@@ -80,7 +81,9 @@ object BiomeWidget : LineWidget(createIdentifier("bewisclient", "biome_widget"))
     }
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
-        list.add(colorCodeBiome.createRenderable("widget.color_code_biome", "Color Code Biome"))
+        list.add(colorCodeBiome.createRenderable("widget.color_code_biome", "Color Code Biome").addToQuickSettings(
+            "widget.biome_widget.name", "color_code"
+        ))
         super.appendSettingsRenderables(list)
     }
 

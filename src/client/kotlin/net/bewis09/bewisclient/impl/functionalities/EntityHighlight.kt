@@ -7,7 +7,7 @@ import net.bewis09.bewisclient.impl.settings.functionalities.EntityHighlightSett
 
 object EntityHighlight : ImageSettingCategory(
     "entity_highlight", Translation("menu.category.entity_highlight", "Entity Highlight"), arrayOf(
-        EntityHighlightSettings.color.createRenderable("entity_highlight.color", "Color", "Change the color of the entity highlight").addToQuickSettings("menu.category.entity_highlight"),
-        EntityHighlightSettings.alpha.createRenderable("entity_highlight.alpha", "Alpha", "Adjust the alpha of the entity highlight").addToQuickSettings("menu.category.entity_highlight"),
+        EntityHighlightSettings.color.createRenderable("entity_highlight.color", "Color", "Change the color of the entity highlight").addToQuickSettings("menu.category.entity_highlight", "color"),
+        EntityHighlightSettings.alpha.createRenderable("entity_highlight.alpha", "Transparency", "Adjust the transparency of the entity highlight").addToQuickSettings("menu.category.entity_highlight", "alpha"),
     ), EntityHighlightSettings.enabled
 )

@@ -7,9 +7,9 @@ import net.bewis09.bewisclient.impl.settings.functionalities.BetterVisibilitySet
 
 object BetterVisibility : ImageSettingCategory(
     "better_visibility", Translation("menu.category.better_visibility", "Better Visibility"), arrayOf(
-        BetterVisibilitySettings.nether.createRenderable("better_visibility.nether", "Nether", "Improve visibility in the Nether dimension").addToQuickSettings("menu.category.better_visibility"),
-        BetterVisibilitySettings.water.createRenderable("better_visibility.water", "Water", "Enhance visibility underwater").addToQuickSettings("menu.category.better_visibility"),
-        BetterVisibilitySettings.lava.createRenderable("better_visibility.lava", "Lava", "Boost visibility in lava").addToQuickSettings("menu.category.better_visibility"),
-        BetterVisibilitySettings.powder_snow.createRenderable("better_visibility.powder_snow", "Powder Snow", "Increase visibility in powder snow").addToQuickSettings("menu.category.better_visibility")
+        BetterVisibilitySettings.nether.createRenderable("better_visibility.nether", "Nether", "Improve visibility in the Nether dimension").addToQuickSettings("menu.category.better_visibility", "nether"),
+        BetterVisibilitySettings.water.createRenderable("better_visibility.water", "Water", "Enhance visibility underwater").addToQuickSettings("menu.category.better_visibility", "water"),
+        BetterVisibilitySettings.lava.createRenderable("better_visibility.lava", "Lava", "Boost visibility in lava").addToQuickSettings("menu.category.better_visibility", "lava"),
+        BetterVisibilitySettings.powder_snow.createRenderable("better_visibility.powder_snow", "Powder Snow", "Increase visibility in powder snow").addToQuickSettings("menu.category.better_visibility", "snow")
     ), BetterVisibilitySettings.enabled
 )

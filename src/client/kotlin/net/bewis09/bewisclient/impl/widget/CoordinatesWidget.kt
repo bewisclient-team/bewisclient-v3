@@ -1,6 +1,7 @@
 package net.bewis09.bewisclient.impl.widget
 
 import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.drawable.renderables.options_structure.addToQuickSettings
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.toText
@@ -52,21 +53,25 @@ object CoordinatesWidget : LineWidget(createIdentifier("bewisclient", "coordinat
     override fun isCentered(): Boolean = false
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
-        list.add(showBiome.createRenderable("widget.coordinates_widget.show_biome", "Show Biome"))
+        list.add(
+            showBiome.createRenderable(
+                "widget.coordinates_widget.show_biome", "Show Biome"
+            ).addToQuickSettings("widget.coordinates_widget.name", "show_biome")
+        )
         list.add(
             colorCodeBiome.createRenderable(
                 "widget.coordinates_widget.color_code_biome", "Color Code Biome"
-            )
+            ).addToQuickSettings("widget.coordinates_widget.name", "color_code_biome")
         )
         list.add(
             showDirection.createRenderable(
                 "widget.coordinates_widget.show_direction", "Show Direction"
-            )
+            ).addToQuickSettings("widget.coordinates_widget.name", "show_direction")
         )
         list.add(
             showCoordinateChange.createRenderable(
                 "widget.coordinates_widget.show_coordinate_change", "Show Coordinate Change", "Shows how your coordinates will change if you move forward"
-            )
+            ).addToQuickSettings("widget.coordinates_widget.name", "show_coordinate_change")
         )
         super.appendSettingsRenderables(list)
     }

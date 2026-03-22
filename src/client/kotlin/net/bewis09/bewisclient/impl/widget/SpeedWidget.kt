@@ -1,6 +1,7 @@
 package net.bewis09.bewisclient.impl.widget
 
 import net.bewis09.bewisclient.core.pos
+import net.bewis09.bewisclient.drawable.renderables.options_structure.addToQuickSettings
 import net.bewis09.bewisclient.util.*
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
@@ -46,7 +47,7 @@ object SpeedWidget : LineWidget(createIdentifier("bewisclient", "speed_widget"))
         list.add(
             verticalSpeed.createRenderable(
                 "widget.speed_widget.vertical_speed", "Include Vertical Speed"
-            )
+            ).addToQuickSettings("widget.speed_widget.name", "vertical_speed")
         )
         super.appendSettingsRenderables(list)
     }
