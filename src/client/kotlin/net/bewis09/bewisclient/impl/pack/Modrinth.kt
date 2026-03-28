@@ -1,6 +1,5 @@
 package net.bewis09.bewisclient.impl.pack
 
-import com.mojang.authlib.minecraft.client.MinecraftClient
 import com.mojang.blaze3d.platform.NativeImage
 import net.bewis09.bewisclient.core.*
 import net.bewis09.bewisclient.drawable.Translations

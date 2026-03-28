@@ -1,6 +1,5 @@
 package net.bewis09.bewisclient.mixin.client;
 
-import com.mojang.authlib.minecraft.client.MinecraftClient;
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings;
 import net.bewis09.bewisclient.interfaces.BackgroundEffectProvider;
 import net.bewis09.bewisclient.screen.RenderableScreen;

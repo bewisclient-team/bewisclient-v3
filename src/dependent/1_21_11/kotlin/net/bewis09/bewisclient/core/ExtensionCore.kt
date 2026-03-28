@@ -18,7 +18,6 @@ import net.minecraft.client.player.LocalPlayerResolver
 import net.minecraft.client.renderer.PlayerSkinRenderCache
 import net.minecraft.client.renderer.RenderPipelines
 import net.minecraft.client.renderer.entity.EntityRendererProvider
-import net.minecraft.client.renderer.texture.AbstractTexture
 import net.minecraft.client.renderer.texture.DynamicTexture
 import net.minecraft.client.resources.model.EquipmentAssetManager
 import net.minecraft.core.component.DataComponents

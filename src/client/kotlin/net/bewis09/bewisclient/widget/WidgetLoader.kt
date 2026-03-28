@@ -1,6 +1,5 @@
 package net.bewis09.bewisclient.widget
 
-import com.mojang.authlib.minecraft.client.MinecraftClient
 import net.bewis09.bewisclient.api.APIEntrypointLoader
 import net.bewis09.bewisclient.core.Profiler
 import net.bewis09.bewisclient.core.registerWidget

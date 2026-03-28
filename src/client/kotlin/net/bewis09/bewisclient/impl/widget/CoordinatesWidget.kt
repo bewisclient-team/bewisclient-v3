@@ -19,12 +19,12 @@ object CoordinatesWidget : LineWidget(createIdentifier("bewisclient", "coordinat
     override val title = "Coordinates Widget"
     override val description = "Displays your current coordinates in the world"
 
-    override fun getLines(): List<Component> = listOf(
+    override fun getLines(): List<Component> = listOfNotNull(
         "X: ${client.cameraEntity?.onPos?.x ?: 137} ${getAdditionString(0)}".toText(),
         "Y: ${client.cameraEntity?.onPos?.y ?: 69}".toText(),
         "Z: ${client.cameraEntity?.onPos?.z ?: 420} ${getAdditionString(2)}".toText(),
         if (showBiome.get()) BiomeWidget.getText(colorCodeBiome.get()) else null,
-    ).filterNotNull()
+    )
 
     val dirAdditions = listOf(
         "", "(-)", "(--)", "(-)", "", "(+)", "(++)", "(+)"

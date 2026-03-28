@@ -1,6 +1,5 @@
 package net.bewis09.bewisclient.impl.widget
 
-import com.mojang.authlib.minecraft.client.MinecraftClient
 import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.toText
 import net.bewis09.bewisclient.mixin.client.ClientPlayNetworkHandlerMixin
