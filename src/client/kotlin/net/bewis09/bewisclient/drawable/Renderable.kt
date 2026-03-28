@@ -10,9 +10,9 @@ abstract class Renderable : BewisclientInterface {
     protected var internalHeight: Int
 
     val screenWidth
-        get() = client.window?.scaledWidth ?: 1000
+        get() = client.window.guiScaledWidth
     val screenHeight
-        get() = client.window?.scaledHeight ?: 1000
+        get() = client.window.guiScaledHeight
 
     val x: Int
         get() = internalX

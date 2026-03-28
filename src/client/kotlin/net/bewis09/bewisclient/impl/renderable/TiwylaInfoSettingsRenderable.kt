@@ -8,9 +8,9 @@ import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.widget.TiwylaWidget
 import net.bewis09.bewisclient.interfaces.SettingInterface
 import net.bewis09.bewisclient.util.color.alpha
+import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.staticFun
-import net.minecraft.registry.Registries
-import net.minecraft.util.Identifier
+import net.minecraft.core.registries.BuiltInRegistries
 import kotlin.jvm.optionals.getOrNull
 
 class TiwylaInfoSettingsRenderable : Renderable() {
@@ -19,7 +19,7 @@ class TiwylaInfoSettingsRenderable : Renderable() {
         null,
         TiwylaWidget.blockStateInfoMap.map {
             MultipleBooleanSettingsRenderable.Part(
-                Translation.literal(Registries.BLOCK.get(Identifier.of(it.key)).name.string + " -> " + it.value.name),
+                Translation.literal(BuiltInRegistries.BLOCK.get(createIdentifier(it.key)).getOrNull()?.value()?.name?.string + " -> " + it.value),
                 null,
                 object : SettingInterface<Boolean> {
                     override fun get(): Boolean {
@@ -39,15 +39,15 @@ class TiwylaInfoSettingsRenderable : Renderable() {
         null,
         TiwylaWidget.entityInfoProviders.map {
             MultipleBooleanSettingsRenderable.Part(
-                Translation.literal(it.second.entityType.name.string + " §0(${it.first.namespace})"),
+                Translation.literal(it.second.entityType.description.string + " §0(${it.first.namespace})"),
                 null,
                 object : SettingInterface<Boolean> {
                     override fun get(): Boolean {
-                        return TiwylaWidget.entitySpecialInfoMap[Registries.ENTITY_TYPE.getEntry(it.second.entityType).key.getOrNull()?.value?.toString() ?: return true] != false
+                        return TiwylaWidget.entitySpecialInfoMap[BuiltInRegistries.ENTITY_TYPE.getResourceKey(it.second.entityType).getOrNull()?.toString() ?: return true] != false
                     }
 
                     override fun set(value: Boolean?) {
-                        TiwylaWidget.entitySpecialInfoMap[Registries.ENTITY_TYPE.getEntry(it.second.entityType).key.getOrNull()?.value?.toString() ?: return] = value
+                        TiwylaWidget.entitySpecialInfoMap[BuiltInRegistries.ENTITY_TYPE.getResourceKey(it.second.entityType).getOrNull()?.toString() ?: return] = value
                     }
                 }
             )

@@ -7,7 +7,7 @@ import net.bewis09.bewisclient.util.toText
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
-import net.minecraft.text.Text
+import net.minecraft.network.chat.Component
 import java.text.DateFormat
 import java.time.Instant
 import java.util.*
@@ -20,8 +20,8 @@ object DaytimeWidget : LineWidget(createIdentifier("bewisclient", "daytime_widge
 
     override fun getLine() = getText(format12Hours.get())
 
-    fun getText(format12Hours: Boolean): Text {
-        val daytime = client.world?.timeOfDay ?: 15684L
+    fun getText(format12Hours: Boolean): Component {
+        val daytime = client.level?.dayTime ?: 15684L
         val hours = (daytime / 1000L + 6) % 24
         val minutes = ((daytime % 1000L) / 1000f * 60L).toInt()
 

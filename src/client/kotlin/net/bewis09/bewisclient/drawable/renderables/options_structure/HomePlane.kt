@@ -13,7 +13,7 @@ import net.bewis09.bewisclient.util.color.Color
 import net.bewis09.bewisclient.util.color.ThemeColorSaver
 import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.number.Precision
-import net.minecraft.text.Text
+import net.minecraft.network.chat.Component
 
 object HomePlane : Renderable(), OptionScreen.CutoutProvider {
     val editQuickSettings = Translation("menu.home.edit_quick_settings", "Edit Quick Settings")
@@ -47,7 +47,7 @@ object HomePlane : Renderable(), OptionScreen.CutoutProvider {
                     quickSettingsOptions.map {
                         listOf(
                             EmptyRenderable().setHeight(5),
-                            InfoTextRenderable(Text.translatable("bewisclient." + it.key), centered = true, color = OptionsMenuSettings.getTextThemeColor(), padding = 0),
+                            InfoTextRenderable(Component.translatable("bewisclient." + it.key), centered = true, color = OptionsMenuSettings.getTextThemeColor(), padding = 0),
                             EmptyRenderable().setHeight(3),
                         ) + it.value.map { a -> ConfigureRenderableVisibilityPlane(it.key, a.key, a.value).setWidth(width) }
                     }.flatten()
@@ -71,7 +71,7 @@ object HomePlane : Renderable(), OptionScreen.CutoutProvider {
                     VerticalAlignPlane(HomePlaneSettings.quickSettings.toSortedSet().filter { it.split("/").size >= 2 }.groupBy { it.split("/")[0] }.mapNotNull {
                         listOf(
                             EmptyRenderable().setHeight(5),
-                            InfoTextRenderable(Text.translatable("bewisclient." + it.key), centered = true, color = OptionsMenuSettings.getTextThemeColor(), padding = 0).setHeight(14),
+                            InfoTextRenderable(Component.translatable("bewisclient." + it.key), centered = true, color = OptionsMenuSettings.getTextThemeColor(), padding = 0).setHeight(14),
                             EmptyRenderable().setHeight(3),
                         ) + it.value.mapNotNull { a ->
                             quickSettingsOptions[it.key]?.get(a.split("/")[1])
@@ -129,8 +129,8 @@ object HomePlane : Renderable(), OptionScreen.CutoutProvider {
         val fader = Fader({ borderRadius }, Precision(0f, 10f, 1f, 0), { borderRadius = it })
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-            val textWidth = screenDrawing.getTextWidth(Text.translatable("bewisclient.menu.widget.border_radius"))
-            screenDrawing.drawText(Text.translatable("bewisclient.menu.widget.border_radius"), x, y + 3, OptionsMenuSettings.getTextThemeColor())
+            val textWidth = screenDrawing.getTextWidth(Component.translatable("bewisclient.menu.widget.border_radius"))
+            screenDrawing.drawText(Component.translatable("bewisclient.menu.widget.border_radius"), x, y + 3, OptionsMenuSettings.getTextThemeColor())
             fader(x + textWidth + 5, y, width - textWidth - 5, 14)
             renderRenderables(screenDrawing, mouseX, mouseY)
         }
@@ -212,7 +212,7 @@ object HomePlane : Renderable(), OptionScreen.CutoutProvider {
         }
 
         class WidgetPreviewElement(
-            val text: Text,
+            val text: Component,
             val backgroundColor: () -> Color,
             val borderColor: () -> Color,
             val paddingSize: () -> Int,

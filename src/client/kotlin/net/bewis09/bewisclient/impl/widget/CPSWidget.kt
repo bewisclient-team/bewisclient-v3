@@ -8,7 +8,7 @@ import net.bewis09.bewisclient.settings.types.BooleanSetting
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
-import net.minecraft.text.Text
+import net.minecraft.network.chat.Component
 
 object CPSWidget : LineWidget(createIdentifier("bewisclient", "cps_widget")) {
     val singleCPSText = createTranslation("singular_cps", "%s CPS")
@@ -23,7 +23,7 @@ object CPSWidget : LineWidget(createIdentifier("bewisclient", "cps_widget")) {
     override val title = "CPS Widget"
     override val description = "Displays your current clicks per second (CPS)."
 
-    override fun getLine(): Text {
+    override fun getLine(): Component {
         if (!rightEnabled.get()) return singleCPSText(getCPSCount(leftMouseList))
         if (!leftEnabled.get()) return singleCPSText(getCPSCount(rightMouseList))
 

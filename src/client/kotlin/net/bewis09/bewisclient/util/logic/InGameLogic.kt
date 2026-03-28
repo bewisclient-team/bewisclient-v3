@@ -1,10 +1,10 @@
 package net.bewis09.bewisclient.util.logic
 
-import net.minecraft.client.MinecraftClient
-import net.minecraft.text.Text
+import net.bewis09.bewisclient.util.Bewisclient
+import net.minecraft.network.chat.Component
 
 interface InGameLogic {
-    fun showTitle(title: Text) {
-        MinecraftClient.getInstance().player?.sendMessage(title, true)
+    fun showTitle(title: Component) {
+        Bewisclient.client.player?.displayClientMessage(title, true)
     }
 }

@@ -4,13 +4,13 @@ import net.bewis09.bewisclient.core.*
 import net.bewis09.bewisclient.util.color.Color
 import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.logic.BewisclientInterface
-import net.minecraft.client.font.TextRenderer
-import net.minecraft.client.gui.DrawContext
-import net.minecraft.util.Identifier
+import net.minecraft.client.gui.Font
+import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.resources.Identifier
 
 interface ScreenDrawingInterface : BewisclientInterface {
-    val drawContext: DrawContext
-    val textRenderer: TextRenderer
+    val guiGraphics: GuiGraphics
+    val textRenderer: Font
 
     /**
      * Translates the drawing context by the specified x and y offsets.
@@ -18,7 +18,7 @@ interface ScreenDrawingInterface : BewisclientInterface {
      * @param x The x offset to net.bewis09.bewisclient.core.translate the context by.
      * @param y The y offset to net.bewis09.bewisclient.core.translate the context by.
      */
-    fun translate(x: Float, y: Float) = drawContext.translate(x, y)
+    fun translate(x: Float, y: Float) = guiGraphics.translate(x, y)
 
     /**
      * Scales the drawing context by the specified x and y factors.
@@ -26,33 +26,33 @@ interface ScreenDrawingInterface : BewisclientInterface {
      * @param x The x factor to net.bewis09.bewisclient.core.scale the context by.
      * @param y The y factor to net.bewis09.bewisclient.core.scale the context by.
      */
-    fun scale(x: Float, y: Float) = drawContext.scale(x, y)
+    fun scale(x: Float, y: Float) = guiGraphics.scale(x, y)
 
     /**
      * Rotates the drawing context by the specified angle in degrees.
      *
      * @param angle The angle in degrees to net.bewis09.bewisclient.core.rotate the context by.
      */
-    fun rotateDegrees(angle: Float) = drawContext.rotate(Math.toRadians(angle.toDouble()).toFloat())
+    fun rotateDegrees(angle: Float) = guiGraphics.rotate(Math.toRadians(angle.toDouble()).toFloat())
 
     /**
      * Rotates the drawing context by the specified angle in radians.
      *
      * @param angle The angle in radians to net.bewis09.bewisclient.core.rotate the context by.
      */
-    fun rotate(angle: Float) = drawContext.rotate(angle)
+    fun rotate(angle: Float) = guiGraphics.rotate(angle)
 
     /**
      * Pushes a new matrix onto the drawing context's matrix stack. This is used to save the current
      * transformation state so that it can be restored later.
      */
-    fun push() = drawContext.push()
+    fun push() = guiGraphics.push()
 
     /**
      * Pops the last matrix from the drawing context's matrix stack. This restores the previous
      * transformation state that was saved by a net.bewis09.bewisclient.core.push operation.
      */
-    fun pop() = drawContext.pop()
+    fun pop() = guiGraphics.pop()
 
     fun applyAlpha(color: Color): Int = (getCurrentColorModifier() * color).argb
 
@@ -103,11 +103,11 @@ interface ScreenDrawingInterface : BewisclientInterface {
         }
     }
 
-    fun enableScissors(x: Int, y: Int, width: Int, height: Int) = drawContext.enableScissor(x, y, x + width, y + height)
+    fun enableScissors(x: Int, y: Int, width: Int, height: Int) = guiGraphics.enableScissor(x, y, x + width, y + height)
 
-    fun disableScissors() = drawContext.disableScissor()
+    fun disableScissors() = guiGraphics.disableScissor()
 
-    fun scissorContains(x: Int, y: Int) = drawContext.scissorContains(x, y)
+    fun scissorContains(x: Int, y: Int) = guiGraphics.containsPointInScissor(x, y)
 }
 
 inline fun ScreenDrawingInterface.onNewLayer(apply: () -> Unit, transform: () -> Unit) {

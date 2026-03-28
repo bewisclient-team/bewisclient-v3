@@ -5,13 +5,13 @@ import net.bewis09.bewisclient.drawable.renderables.Button
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
-import net.minecraft.screen.ScreenTexts
-import net.minecraft.text.Text
+import net.minecraft.network.chat.CommonComponents
+import net.minecraft.network.chat.Component
 
-class ConfirmPopup(val text: Text, val onConfirm: () -> Unit, confirmText: Text = ScreenTexts.CONTINUE, cancelText: Text = ScreenTexts.CANCEL) : Renderable() {
-    val cancelButton = Button(cancelText, {
+class ConfirmPopup(val text: Component, val onConfirm: () -> Unit, confirmText: Component = CommonComponents.GUI_CONTINUE, cancelText: Component = CommonComponents.GUI_CANCEL) : Renderable() {
+    val cancelButton = Button(cancelText) {
         OptionScreen.currentInstance?.closePopup()
-    })
+    }
     val confirmButton = Button(confirmText, selected = { true }, onClick = {
         onConfirm()
         OptionScreen.currentInstance?.closePopup()

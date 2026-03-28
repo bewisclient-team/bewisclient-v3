@@ -41,10 +41,10 @@ class ContactLinkElement(val id: String, val url: String, val title: String, val
     val menuAnimation = Animator(OptionsMenuSettings.animationTime.get().toLong(), Animator.EASE_IN_OUT, 0f)
 
     val copyButton = ThemeButton(COPY_TO_CLIPBOARD()) {
-        client.keyboard.clipboard = this.url
+        client.keyboardHandler.clipboard = this.url
     }.setSize(100, 14)
     val openButton = ThemeButton(OPEN_LINK()) {
-        Util.getOperatingSystem().open(url)
+        Util.getPlatform().openUri(url)
     }.setSize(100, 14)
 
     var simpleHeight = 22

@@ -6,8 +6,9 @@ import net.bewis09.bewisclient.util.EventEntrypoint
 import net.bewis09.bewisclient.util.color.Color
 import net.bewis09.bewisclient.util.createIdentifier
 import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback
-import net.minecraft.item.ItemStack
-import net.minecraft.item.tooltip.TooltipData
+import net.minecraft.world.inventory.tooltip.TooltipComponent
+import net.minecraft.world.item.ItemStack
+import kotlin.collections.all
 
 class ShulkerBoxTooltipComponent(val data: Data) : IndependentTooltipComponent {
     override fun getHeightDef(): Int {
@@ -38,7 +39,7 @@ class ShulkerBoxTooltipComponent(val data: Data) : IndependentTooltipComponent {
         screenDrawing.drawItemStackWithOverlay(itemStack, x + 1, y + 1)
     }
 
-    class Data(val color: Color, val container: Array<ItemStack>) : TooltipData
+    class Data(val color: Color, val container: Array<ItemStack>) : TooltipComponent
 
     companion object {
         fun of(color: Int?, array: Array<ItemStack>): Data? {

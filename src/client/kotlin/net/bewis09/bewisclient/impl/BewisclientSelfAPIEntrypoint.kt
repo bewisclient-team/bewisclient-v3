@@ -19,7 +19,7 @@ import net.bewis09.bewisclient.settings.Settings
 import net.bewis09.bewisclient.settings.SettingsLoader
 import net.bewis09.bewisclient.widget.Widget
 import net.bewis09.bewisclient.widget.WidgetLoader
-import net.minecraft.entity.EntityType
+import net.minecraft.world.entity.EntityType
 import kotlin.jvm.optionals.getOrNull
 
 class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint() {
@@ -64,10 +64,10 @@ class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint() {
     )
 
     override fun getTiwylaEntityExtraInfoProviders(): List<TiwylaWidget.EntityInfoProvider<*>> = listOf(
-        TiwylaWidget.EntityInfoProvider(EntityType.CAT) { it.variant?.key?.getOrNull()?.value?.toString() },
-        TiwylaWidget.EntityInfoProvider(EntityType.FROG) { it.variant?.key?.getOrNull()?.value?.toString() },
-        TiwylaWidget.EntityInfoProvider(EntityType.AXOLOTL) { it.variant?.name },
-        TiwylaWidget.EntityInfoProvider(EntityType.HORSE) { it.getColor() + ", " + it.marking.name.lowercase() },
+        TiwylaWidget.EntityInfoProvider(EntityType.CAT) { it.variant.unwrapKey().getOrNull()?.identifier()?.toString() },
+        TiwylaWidget.EntityInfoProvider(EntityType.FROG) { it.variant.unwrapKey().getOrNull()?.identifier()?.toString() },
+        TiwylaWidget.EntityInfoProvider(EntityType.AXOLOTL) { it.variant.name },
+        TiwylaWidget.EntityInfoProvider(EntityType.HORSE) { it.getColor() + ", " + it.variant.name.lowercase() },
         TiwylaWidget.EntityInfoProvider(EntityType.RABBIT) { it.variant.name.lowercase() },
         TiwylaWidget.EntityInfoProvider(EntityType.LLAMA) { it.variant.name.lowercase() },
     )

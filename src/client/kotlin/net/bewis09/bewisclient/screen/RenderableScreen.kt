@@ -6,7 +6,7 @@ import net.bewis09.bewisclient.drawable.renderables.notification.NotificationMan
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.interfaces.BackgroundEffectProvider
 import net.bewis09.bewisclient.util.toText
-import net.minecraft.client.gui.DrawContext
+import net.minecraft.client.gui.GuiGraphics
 
 class RenderableScreen(val renderable: Renderable) : IndependentScreen("".toText()) {
     var deltaTicks: Float = 0f
@@ -28,20 +28,20 @@ class RenderableScreen(val renderable: Renderable) : IndependentScreen("".toText
         renderable(0, 0, width, height)
     }
 
-    override fun render(context: DrawContext, mouseX: Int, mouseY: Int, deltaTicks: Float) {
+    override fun render(context: GuiGraphics, mouseX: Int, mouseY: Int, deltaTicks: Float) {
         renderIndependentBackground(context, mouseX, mouseY, deltaTicks)
         this.deltaTicks = deltaTicks
-        val screenDrawing = ScreenDrawing(context, textRenderer)
+        val screenDrawing = ScreenDrawing(context, font)
         renderable.render(screenDrawing, mouseX, mouseY)
         screenDrawing.runAfterDraw()
         NotificationManager.renderNotifications(screenDrawing, mouseX, mouseY)
     }
 
-    override fun renderDarkening(context: DrawContext, x: Int, y: Int, width: Int, height: Int) {
+    override fun renderMenuBackground(guiGraphics: GuiGraphics, x: Int, y: Int, width: Int, height: Int) {
         if (renderable is BackgroundEffectProvider) {
-            context.fill(x, y, x + width, y + height, 0x000000 or (renderable.getBackgroundEffectFactor() * 64).toInt() shl 24)
+            guiGraphics.fill(x, y, x + width, y + height, 0x000000 or (renderable.getBackgroundEffectFactor() * 64).toInt() shl 24)
         } else {
-            super.renderDarkening(context, x, y, width, height)
+            super.renderMenuBackground(guiGraphics, x, y, width, height)
         }
     }
 

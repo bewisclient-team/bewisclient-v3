@@ -5,7 +5,7 @@ import java.io.File
 
 object ProcessCreator {
     fun create(clazz: Class<*>, vararg args: String, onFinish: ((exitCode: Int) -> Unit)? = null) {
-        Util.getMainWorkerExecutor().execute {
+        Util.backgroundExecutor().execute {
             val javaHome = System.getProperty("java.home")
             val javaExe = javaHome + File.separator + "bin" + File.separator + "java"
             val processBuilder = ProcessBuilder(javaExe, "-cp", clazz.protectionDomain.codeSource.location.toURI().path, clazz.getName(), *args)

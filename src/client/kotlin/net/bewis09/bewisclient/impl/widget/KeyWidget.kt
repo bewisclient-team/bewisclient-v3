@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.impl.widget
 
+import com.mojang.blaze3d.platform.InputConstants
 import net.bewis09.bewisclient.core.isKeyPressed
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.options_structure.addToQuickSettings
@@ -18,8 +19,7 @@ import net.bewis09.bewisclient.settings.types.ColorSetting
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.ScalableWidget
-import net.minecraft.client.option.KeyBinding
-import net.minecraft.client.util.InputUtil
+import net.minecraft.client.KeyMapping
 import org.lwjgl.glfw.GLFW
 
 object KeyWidget : ScalableWidget(createIdentifier("bewisclient", "key_widget")) {
@@ -79,45 +79,45 @@ object KeyWidget : ScalableWidget(createIdentifier("bewisclient", "key_widget"))
         var y = 0
 
         if (showMovementKeys.get()) {
-            renderKey(screenDrawing, topSize + gap.get(), 0, topSize, topSize, client.options.forwardKey)
-            renderKey(screenDrawing, 0, topSize + gap.get(), topSize, topSize, client.options.leftKey)
-            renderKey(screenDrawing, topSize + gap.get(), topSize + gap.get(), topSize, topSize, client.options.backKey)
-            renderKey(screenDrawing, (topSize + gap.get()) * 2, topSize + gap.get(), topSize, topSize, client.options.rightKey)
+            renderKey(screenDrawing, topSize + gap.get(), 0, topSize, topSize, client.options.keyUp)
+            renderKey(screenDrawing, 0, topSize + gap.get(), topSize, topSize, client.options.keyLeft)
+            renderKey(screenDrawing, topSize + gap.get(), topSize + gap.get(), topSize, topSize, client.options.keyDown)
+            renderKey(screenDrawing, (topSize + gap.get()) * 2, topSize + gap.get(), topSize, topSize, client.options.keyRight)
             y += (topSize + gap.get()) * 2
         }
 
         if (showAttackUseKeys.get()) {
-            renderKey(screenDrawing, 0, y, middleWidth, bottomHeight, client.options.attackKey)
-            renderKey(screenDrawing, totalWidth - middleWidth, y, middleWidth, bottomHeight, client.options.useKey)
+            renderKey(screenDrawing, 0, y, middleWidth, bottomHeight, client.options.keyAttack)
+            renderKey(screenDrawing, totalWidth - middleWidth, y, middleWidth, bottomHeight, client.options.keyUse)
             y += bottomHeight + gap.get()
         }
 
-        if (showJumpKey.get()) renderKey(screenDrawing, 0, y, totalWidth, bottomHeight, client.options.jumpKey)
+        if (showJumpKey.get()) renderKey(screenDrawing, 0, y, totalWidth, bottomHeight, client.options.keyJump)
     }
 
     fun renderKey(
-        screenDrawing: ScreenDrawing, x: Int, y: Int, width: Int, height: Int, keyBinding: KeyBinding
+        screenDrawing: ScreenDrawing, x: Int, y: Int, width: Int, height: Int, keyBinding: KeyMapping
     ) {
         renderKey(
             screenDrawing, x, y, width, height, keyBinding.getKeyText(), isPressed(keyBinding)
         )
     }
 
-    fun isPressed(keyBinding: KeyBinding): Boolean {
-        val c = util.getCurrentRenderableScreen() ?: return keyBinding.isPressed
-        val d = c.renderable as? HudEditScreen ?: return keyBinding.isPressed
+    fun isPressed(keyBinding: KeyMapping): Boolean {
+        val c = util.getCurrentRenderableScreen() ?: return keyBinding.isDown
+        val d = c.renderable as? HudEditScreen ?: return keyBinding.isDown
 
-        val key = (keyBinding as KeyBindingAccessor).getBoundKey()
+        val key = (keyBinding as KeyBindingAccessor).getKey()
 
-        if (key.category == InputUtil.Type.KEYSYM) return client.isKeyPressed(key.code)
-        if (key.category == InputUtil.Type.MOUSE) return d.mouseMap[key.code] == true
-        return keyBinding.isPressed
+        if (key.type == InputConstants.Type.KEYSYM) return client.isKeyPressed(key.value)
+        if (key.type == InputConstants.Type.MOUSE) return d.mouseMap[key.value] == true
+        return keyBinding.isDown
     }
 
-    fun KeyBinding.getKeyText(): String = when ((this as KeyBindingAccessor).getBoundKey().code) {
+    fun KeyMapping.getKeyText(): String = when ((this as KeyBindingAccessor).getKey().value) {
         GLFW.GLFW_MOUSE_BUTTON_LEFT -> "LMB"
         GLFW.GLFW_MOUSE_BUTTON_RIGHT -> "RMB"
-        else -> this.boundKeyLocalizedText.string
+        else -> this.translatedKeyMessage.string
     }
 
     fun renderKey(

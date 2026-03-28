@@ -14,9 +14,9 @@ import net.bewis09.bewisclient.util.color.color
 import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.toText
 import net.minecraft.SharedConstants
-import net.minecraft.client.gui.screen.Screen
-import net.minecraft.screen.ScreenTexts
-import net.minecraft.text.Text
+import net.minecraft.client.gui.screens.Screen
+import net.minecraft.network.chat.CommonComponents
+import net.minecraft.network.chat.Component
 import org.lwjgl.glfw.GLFW
 import java.net.URI
 import java.nio.file.Path
@@ -55,7 +55,7 @@ class PackListScreen(val type: Modrinth.Type, val parent: Screen, val folder: Pa
             }
         }
 
-        screenDrawing.drawCenteredTextWithShadow(Text.literal("${index + 1}/${Modrinth.typeMaps[type to query]?.second?.div(20)?.plus(1)?.toString() ?: "..."}"), centerX + 108, 34, Color.WHITE)
+        screenDrawing.drawCenteredTextWithShadow(Component.literal("${index + 1}/${Modrinth.typeMaps[type to query]?.second?.div(20)?.plus(1)?.toString() ?: "..."}"), centerX + 108, 34, Color.WHITE)
 
         if (System.currentTimeMillis() - lastTyped > 500) {
             hasLoaded = false
@@ -77,11 +77,11 @@ class PackListScreen(val type: Modrinth.Type, val parent: Screen, val folder: Pa
             } ?: emptyList()
         }, 4)(width / 2 - 150, 49, 300, height - 49 - 33))
 
-        addRenderable(MinecraftButton(ScreenTexts.DONE) {
+        addRenderable(MinecraftButton(CommonComponents.GUI_DONE) {
             client.setScreen(parent)
         }(centerX - 100, y2 - 26, 200, 20))
 
-        addRenderable(MinecraftButton(Text.literal(">")) {
+        addRenderable(MinecraftButton(Component.literal(">")) {
             if (index < (Modrinth.typeMaps[type to query]?.second ?: 0) / 20) {
                 index++
                 hasLoaded = false
@@ -89,7 +89,7 @@ class PackListScreen(val type: Modrinth.Type, val parent: Screen, val folder: Pa
             }
         }(centerX + 136, 31, 14, 14))
 
-        addRenderable(MinecraftButton(Text.literal("<")) {
+        addRenderable(MinecraftButton(Component.literal("<")) {
             if (index > 0) {
                 index--
                 hasLoaded = false
@@ -144,7 +144,7 @@ class PackListScreen(val type: Modrinth.Type, val parent: Screen, val folder: Pa
             if (isMouseOver(mouseX.toFloat(), mouseY.toFloat(), x + 4, y, 32, 32)) {
                 Modrinth.loadPack(pack.slug) { p ->
                     Modrinth.loadVersions(p) { map ->
-                        map.values.filter { it.game_versions.contains(SharedConstants.getGameVersion().name) }.maxByOrNull { it.date_published }?.let { version ->
+                        map.values.filter { it.game_versions.contains(SharedConstants.getCurrentVersion().name) }.maxByOrNull { it.date_published }?.let { version ->
                             version.files.firstOrNull { it.primary }?.let { file ->
                                 downloadFile(URI(file.url).toURL()) {
                                     folder.resolve(file.filename).writeBytes(it)

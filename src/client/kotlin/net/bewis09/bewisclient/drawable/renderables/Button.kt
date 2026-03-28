@@ -3,10 +3,10 @@ package net.bewis09.bewisclient.drawable.renderables
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.translate
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
-import net.minecraft.text.Text
+import net.minecraft.network.chat.Component
 
-class Button(var text: Text, val onClick: (Button) -> Unit, tooltip: Text? = null, val selected: (() -> Boolean)? = null, var dark: Boolean = false) : TooltipHoverable(tooltip) {
-    constructor(text: Text, onClick: (Button) -> Unit) : this(text, onClick, null)
+class Button(var text: Component, val onClick: (Button) -> Unit, tooltip: Component? = null, val selected: (() -> Boolean)? = null, var dark: Boolean = false) : TooltipHoverable(tooltip) {
+    constructor(text: Component, onClick: (Button) -> Unit) : this(text, onClick, null)
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)

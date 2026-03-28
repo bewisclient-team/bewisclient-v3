@@ -5,9 +5,9 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.translate
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.util.color.Color
-import net.minecraft.text.Text
+import net.minecraft.network.chat.Component
 
-class SimpleTextNotification(val text: Text, val duration: Long = 5000): Renderable() {
+class SimpleTextNotification(val text: Component, val duration: Long = 5000): Renderable() {
     val start = System.currentTimeMillis()
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {

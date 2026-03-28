@@ -12,13 +12,13 @@ object FPSWidget : LineWidget(createIdentifier("bewisclient", "fps_widget")) {
 
     val fpsText = createTranslation("fps", "%s FPS")
 
-    override fun getLine() = fpsText(client.currentFps.toString())
+    override fun getLine() = fpsText(client.fps.toString())
 
     override fun defaultPosition(): WidgetPosition = RelativePosition("bewisclient:coordinates_widget", "bottom")
 
     override fun getMinimumWidth(): Int = 80
 
     override fun getCustomWidgetDataPoints(): List<CustomWidget.WidgetStringData> = listOf(
-        CustomWidget.WidgetStringData("fps", "Frames Per Second", "Your current frames per second", { client.currentFps.toText() }),
+        CustomWidget.WidgetStringData("fps", "Frames Per Second", "Your current frames per second", { client.fps.toText() }),
     )
 }

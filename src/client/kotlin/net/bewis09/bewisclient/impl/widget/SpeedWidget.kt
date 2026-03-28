@@ -6,13 +6,13 @@ import net.bewis09.bewisclient.util.*
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
-import net.minecraft.util.math.Vec3d
+import net.minecraft.world.phys.Vec3
 import java.util.*
 
 object SpeedWidget : LineWidget(createIdentifier("bewisclient", "speed_widget")), EventEntrypoint {
     val verticalSpeed = boolean("vertical_speed", false)
 
-    var oldPos: Vec3d = Vec3d.ZERO
+    var oldPos: Vec3 = Vec3.ZERO
     var horizontalSpeed = 0f
     var totalSpeed = 0f
 
@@ -33,7 +33,7 @@ object SpeedWidget : LineWidget(createIdentifier("bewisclient", "speed_widget"))
                 override fun run() {
                     client.player?.pos()?.let {
                         totalSpeed = it.distanceTo(oldPos).toFloat() * 20f
-                        horizontalSpeed = it.subtract(oldPos).horizontalLength().toFloat() * 20
+                        horizontalSpeed = it.subtract(oldPos).horizontalDistance().toFloat() * 20
                         oldPos = it
                     }
                 }

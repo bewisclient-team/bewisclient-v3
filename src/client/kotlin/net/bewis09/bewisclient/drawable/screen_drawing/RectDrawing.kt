@@ -4,7 +4,7 @@ import net.bewis09.bewisclient.util.color.Color
 
 interface RectDrawing : ScreenDrawingInterface {
     fun fill(x: Int, y: Int, width: Int, height: Int, color: Color) {
-        drawContext.fill(x, y, x + width, y + height, applyAlpha(color))
+        guiGraphics.fill(x, y, x + width, y + height, applyAlpha(color))
     }
 
     fun drawBorder(x: Int, y: Int, width: Int, height: Int, color: Color) {
@@ -30,7 +30,7 @@ interface RectDrawing : ScreenDrawingInterface {
     fun drawHorizontalGradient(
         x: Int, y: Int, width: Int, height: Int, startColor: Color, endColor: Color
     ) {
-        drawContext.fillGradient(x, y, x + width, y + height, applyAlpha(startColor), applyAlpha(endColor))
+        guiGraphics.fillGradient(x, y, x + width, y + height, applyAlpha(startColor), applyAlpha(endColor))
     }
 
     fun drawVerticalGradient(

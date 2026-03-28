@@ -2,23 +2,23 @@ package net.bewis09.bewisclient.core.mixin;
 
 import net.bewis09.bewisclient.core.features.BetterVisibility;
 import net.bewis09.bewisclient.impl.settings.functionalities.BetterVisibilitySettings;
-import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.RenderTickCounter;
-import net.minecraft.client.render.fog.FogData;
-import net.minecraft.client.render.fog.FogModifier;
-import net.minecraft.client.render.fog.FogRenderer;
-import net.minecraft.client.world.ClientWorld;
+import net.minecraft.client.Camera;
+import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.multiplayer.ClientLevel;
+import net.minecraft.client.renderer.fog.FogData;
+import net.minecraft.client.renderer.fog.FogRenderer;
+import net.minecraft.client.renderer.fog.environment.FogEnvironment;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(FogRenderer.class)
 public class FogRendererMixin {
-    @Redirect(method = "applyFog(Lnet/minecraft/client/render/Camera;ILnet/minecraft/client/render/RenderTickCounter;FLnet/minecraft/client/world/ClientWorld;)Lorg/joml/Vector4f;", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/fog/FogModifier;applyStartEndModifier(Lnet/minecraft/client/render/fog/FogData;Lnet/minecraft/client/render/Camera;Lnet/minecraft/client/world/ClientWorld;FLnet/minecraft/client/render/RenderTickCounter;)V"))
-    private static void bewisclient$applyFog(FogModifier instance, FogData fogData, Camera camera, ClientWorld clientWorld, float v, RenderTickCounter renderTickCounter) {
+    @Redirect(method = "setupFog", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/fog/environment/FogEnvironment;setupFog(Lnet/minecraft/client/renderer/fog/FogData;Lnet/minecraft/client/Camera;Lnet/minecraft/client/multiplayer/ClientLevel;FLnet/minecraft/client/DeltaTracker;)V"))
+    private static void bewisclient$applyFog(FogEnvironment instance, FogData fogData, Camera camera, ClientLevel clientWorld, float v, DeltaTracker renderTickCounter) {
         if (BetterVisibilitySettings.INSTANCE.isEnabled())
             BetterVisibility.INSTANCE.applyFogModifier(instance, fogData, camera, clientWorld, v, renderTickCounter);
         else
-            instance.applyStartEndModifier(fogData, camera, clientWorld, v, renderTickCounter);
+            instance.setupFog(fogData, camera, clientWorld, v, renderTickCounter);
     }
 }

@@ -10,7 +10,7 @@ import net.bewis09.bewisclient.util.catch
 import net.bewis09.bewisclient.settings.types.ObjectSetting
 import net.bewis09.bewisclient.settings.types.WidgetPositionSetting
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
-import net.minecraft.util.Identifier
+import net.minecraft.resources.Identifier
 
 abstract class Widget(val id: Identifier) : ObjectSetting() {
     var position: WidgetPositionSetting = create("position", WidgetPositionSetting(defaultPosition()))

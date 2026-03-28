@@ -10,8 +10,8 @@ import net.bewis09.bewisclient.impl.settings.functionalities.FullbrightSettings
 import net.bewis09.bewisclient.util.color.color
 import net.bewis09.bewisclient.util.color.within
 import net.bewis09.bewisclient.util.setColor
-import net.minecraft.entity.effect.StatusEffectInstance
-import net.minecraft.entity.effect.StatusEffects
+import net.minecraft.world.effect.MobEffectInstance
+import net.minecraft.world.effect.MobEffects
 import org.lwjgl.glfw.GLFW
 
 object Fullbright : ImageSettingCategory(
@@ -72,9 +72,9 @@ object Fullbright : ImageSettingCategory(
         showTitle(brightnessTranslation((value * 100).toString() + "%").setColor(((value / 15) within (0xFF0000.color to 0xFFFF00.color)).argb))
     }
 
-    private val nightVisionInstance = StatusEffectInstance(StatusEffects.NIGHT_VISION, -1, 255, false, false, false)
+    private val nightVisionInstance = MobEffectInstance(MobEffects.NIGHT_VISION, -1, 255, false, false, false)
 
-    fun getNightVisionInstance(): StatusEffectInstance? {
+    fun getNightVisionInstance(): MobEffectInstance? {
         return if (hasNightVision()) nightVisionInstance else null
     }
 

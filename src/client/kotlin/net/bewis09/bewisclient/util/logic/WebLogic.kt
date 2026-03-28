@@ -18,7 +18,7 @@ interface WebLogic {
     }
 
     fun downloadFile(url: URI, onComplete: (success: ByteArray) -> Unit, onError: ((error: Exception) -> Unit)? = null) {
-        Util.getDownloadWorkerExecutor().execute {
+        Util.nonCriticalIoPool().execute {
             try {
                 val connection = url.toURL().openConnection()
                 connection.getInputStream().use { input ->
@@ -36,7 +36,7 @@ interface WebLogic {
     }
 
     fun downloadFile(url: URL, onComplete: (success: ByteArray) -> Unit, onError: ((error: Exception) -> Unit)? = null) {
-        Util.getDownloadWorkerExecutor().execute {
+        Util.nonCriticalIoPool().execute {
             try {
                 val connection = url.openConnection()
                 connection.getInputStream().use { input ->

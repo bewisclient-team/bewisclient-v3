@@ -4,28 +4,28 @@ import net.bewis09.bewisclient.core.setFont
 import net.bewis09.bewisclient.util.color.Color
 import net.bewis09.bewisclient.util.color.color
 import net.bewis09.bewisclient.util.toText
-import net.minecraft.text.Text
-import net.minecraft.util.Identifier
+import net.minecraft.network.chat.Component
+import net.minecraft.resources.Identifier
 
 interface TextDrawing : RectDrawing {
     fun drawText(text: String, x: Int, y: Int, color: Color, font: Identifier? = this.overwrittenFont) {
         drawText(text.toText(), x, y, color, font)
     }
 
-    fun drawText(text: Text, x: Int, y: Int, color: Color, font: Identifier? = this.overwrittenFont) {
+    fun drawText(text: Component, x: Int, y: Int, color: Color, font: Identifier? = this.overwrittenFont) {
         val color = applyAlpha(color)
         if (color.toLong().color.alpha < 4) return
-        drawContext.drawText(textRenderer, text.copy().setFont(font), x, y, color, false)
+        guiGraphics.drawString(textRenderer, text.copy().setFont(font), x, y, color, false)
     }
 
     fun drawTextWithShadow(text: String, x: Int, y: Int, color: Color, font: Identifier? = this.overwrittenFont) {
         drawTextWithShadow(text.toText(), x, y, color, font)
     }
 
-    fun drawTextWithShadow(text: Text, x: Int, y: Int, color: Color, font: Identifier? = this.overwrittenFont) {
+    fun drawTextWithShadow(text: Component, x: Int, y: Int, color: Color, font: Identifier? = this.overwrittenFont) {
         val color = applyAlpha(color)
         if (color.toLong().color.alpha < 4) return
-        drawContext.drawText(textRenderer, text.copy().setFont(font), x, y, color, true)
+        guiGraphics.drawString(textRenderer, text.copy().setFont(font), x, y, color, true)
     }
 
     fun drawText(text: String, x: Int, y: Int, color: Color, shadow: Boolean, font: Identifier? = this.overwrittenFont) {
@@ -36,7 +36,7 @@ interface TextDrawing : RectDrawing {
         }
     }
 
-    fun drawText(text: Text, x: Int, y: Int, color: Color, shadow: Boolean, font: Identifier? = this.overwrittenFont) {
+    fun drawText(text: Component, x: Int, y: Int, color: Color, shadow: Boolean, font: Identifier? = this.overwrittenFont) {
         if (shadow) {
             drawTextWithShadow(text, x, y, color, font)
         } else {
@@ -52,7 +52,7 @@ interface TextDrawing : RectDrawing {
         }
     }
 
-    fun drawCenteredText(text: Text, centerX: Int, y: Int, color: Color, shadow: Boolean, font: Identifier? = this.overwrittenFont) {
+    fun drawCenteredText(text: Component, centerX: Int, y: Int, color: Color, shadow: Boolean, font: Identifier? = this.overwrittenFont) {
         if (shadow) {
             drawCenteredTextWithShadow(text, centerX, y, color, font)
         } else {
@@ -64,14 +64,14 @@ interface TextDrawing : RectDrawing {
         drawCenteredText(text.toText(), centerX, y, color, font)
     }
 
-    fun drawCenteredText(text: Text, centerX: Int, y: Int, color: Color, font: Identifier? = this.overwrittenFont) {
+    fun drawCenteredText(text: Component, centerX: Int, y: Int, color: Color, font: Identifier? = this.overwrittenFont) {
         val textWidth = getTextWidth(text, font)
         translate(-textWidth / 2f, 0f) {
             drawText(text.copy().setFont(font), centerX, y, color, font)
         }
     }
 
-    fun drawCenteredTextWithShadow(text: Text, centerX: Int, y: Int, color: Color, font: Identifier? = this.overwrittenFont) {
+    fun drawCenteredTextWithShadow(text: Component, centerX: Int, y: Int, color: Color, font: Identifier? = this.overwrittenFont) {
         val textWidth = getTextWidth(text.copy().setFont(font), font)
         drawTextWithShadow(text.copy().setFont(font), centerX - textWidth / 2, y, color, font)
     }
@@ -90,12 +90,12 @@ interface TextDrawing : RectDrawing {
         drawTextWithShadow(text, rightX - textWidth, y, color, font)
     }
 
-    fun drawRightAlignedText(text: Text, rightX: Int, y: Int, color: Color, font: Identifier? = this.overwrittenFont) {
+    fun drawRightAlignedText(text: Component, rightX: Int, y: Int, color: Color, font: Identifier? = this.overwrittenFont) {
         val textWidth = getTextWidth(text, font)
         drawText(text, rightX - textWidth, y, color, font)
     }
 
-    fun drawRightAlignedTextWithShadow(text: Text, rightX: Int, y: Int, color: Color, font: Identifier? = this.overwrittenFont) {
+    fun drawRightAlignedTextWithShadow(text: Component, rightX: Int, y: Int, color: Color, font: Identifier? = this.overwrittenFont) {
         val textWidth = getTextWidth(text)
         drawTextWithShadow(text, rightX - textWidth, y, color, font)
     }
@@ -111,7 +111,7 @@ interface TextDrawing : RectDrawing {
         }
     }
 
-    fun drawWrappedText(text: Text, x: Int, y: Int, maxWidth: Int, color: Color, font: Identifier? = this.overwrittenFont): List<String> {
+    fun drawWrappedText(text: Component, x: Int, y: Int, maxWidth: Int, color: Color, font: Identifier? = this.overwrittenFont): List<String> {
         return drawWrappedText(text.string, x, y, maxWidth, color, font)
     }
 
@@ -134,7 +134,7 @@ interface TextDrawing : RectDrawing {
         return wrapText(text, maxWidth, font).also { drawCenteredWrappedText(it, centerX, y, color, font, shadow) }
     }
 
-    fun drawCenteredWrappedText(text: Text, centerX: Int, y: Int, maxWidth: Int, color: Color, font: Identifier? = this.overwrittenFont, shadow: Boolean = false): List<String> {
+    fun drawCenteredWrappedText(text: Component, centerX: Int, y: Int, maxWidth: Int, color: Color, font: Identifier? = this.overwrittenFont, shadow: Boolean = false): List<String> {
         return drawCenteredWrappedText(text.string, centerX, y, maxWidth, color, font, shadow)
     }
 
@@ -199,8 +199,8 @@ interface TextDrawing : RectDrawing {
      *
      * @return The width of the text in pixels.
      */
-    fun getTextWidth(text: Text, font: Identifier? = this.overwrittenFont): Int {
-        return textRenderer.getWidth(text.setFont(font))
+    fun getTextWidth(text: Component, font: Identifier? = this.overwrittenFont): Int {
+        return textRenderer.width(text.setFont(font))
     }
 
     /**
@@ -209,8 +209,8 @@ interface TextDrawing : RectDrawing {
      * @return The height of a line of text in pixels.
      */
     fun getTextHeight(): Int {
-        return textRenderer.fontHeight
+        return textRenderer.lineHeight
     }
 
-    fun literalWithStyle(text: String, font: Identifier? = this.overwrittenFont): Text = text.toText().setFont(font)
+    fun literalWithStyle(text: String, font: Identifier? = this.overwrittenFont): Component = text.toText().setFont(font)
 }

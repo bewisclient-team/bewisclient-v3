@@ -11,7 +11,7 @@ import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.setColor
 import net.bewis09.bewisclient.util.toText
 import net.fabricmc.loader.api.ModContainer
-import net.minecraft.util.Identifier
+import net.minecraft.resources.Identifier
 import kotlin.math.roundToInt
 
 class ExtensionListRenderable(val modContainer: ModContainer, val entrypoint: BewisclientAPIEntrypoint) : SettingRenderable(null, 22) {

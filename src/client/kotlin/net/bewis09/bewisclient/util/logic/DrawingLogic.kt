@@ -1,9 +1,9 @@
 package net.bewis09.bewisclient.util.logic
 
+import com.mojang.blaze3d.platform.NativeImage
 import net.bewis09.bewisclient.core.registerTexture
-import net.minecraft.client.MinecraftClient
-import net.minecraft.client.texture.NativeImage
-import net.minecraft.util.Identifier
+import net.minecraft.client.Minecraft
+import net.minecraft.resources.Identifier
 import java.awt.image.BufferedImage
 import java.io.*
 import java.net.URL
@@ -21,7 +21,7 @@ interface DrawingLogic : InGameLogic {
     fun createTexture(identifier: Identifier, byteArray: ByteArray): Identifier {
         val fis: InputStream = ByteArrayInputStream(byteArray)
 
-        MinecraftClient.getInstance().registerTexture(identifier, NativeImage.read(fis))
+        Minecraft.getInstance().registerTexture(identifier, NativeImage.read(fis))
 
         return identifier
     }
@@ -34,7 +34,7 @@ interface DrawingLogic : InGameLogic {
     }
 
     fun createTexture(identifier: Identifier, fileURL: URL): Identifier {
-        MinecraftClient.getInstance().registerTexture(identifier, NativeImage.read(fileURL.openStream()))
+        Minecraft.getInstance().registerTexture(identifier, NativeImage.read(fileURL.openStream()))
 
         return identifier
     }

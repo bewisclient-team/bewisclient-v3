@@ -5,7 +5,7 @@ import net.bewis09.bewisclient.impl.functionalities.Perspective
 import net.bewis09.bewisclient.util.EventEntrypoint
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper
-import net.minecraft.client.MinecraftClient
+import net.minecraft.client.Minecraft
 
 object KeybindingImplementer : EventEntrypoint {
     override fun onInitializeClient() {
@@ -15,18 +15,18 @@ object KeybindingImplementer : EventEntrypoint {
             KeyBindingHelper.registerKeyBinding(it.keyBinding)
         }
 
-        ClientTickEvents.END_CLIENT_TICK.register(ClientTickEvents.EndTick { client: MinecraftClient ->
+        ClientTickEvents.END_CLIENT_TICK.register(ClientTickEvents.EndTick { client: Minecraft ->
             keybinds.forEach {
-                while (it.keyBinding.wasPressed()) {
+                while (it.keyBinding.consumeClick()) {
                     it.action?.invoke()
                 }
 
                 it.tick?.let { a ->
-                    a(it.keyBinding.isPressed)
+                    a(it.keyBinding.isDown)
                 }
             }
 
-            if (client.options.togglePerspectiveKey.isPressed) {
+            if (client.options.keyTogglePerspective.isDown) {
                 Perspective.cameraAddPitch = 0f
                 Perspective.cameraAddYaw = 0f
             }

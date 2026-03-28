@@ -1,8 +1,8 @@
 package net.bewis09.bewisclient.util.logic
 
-import net.minecraft.client.MinecraftClient
-import net.minecraft.client.sound.PositionedSoundInstance
-import net.minecraft.sound.SoundEvents
+import net.minecraft.client.Minecraft
+import net.minecraft.client.resources.sounds.SimpleSoundInstance
+import net.minecraft.sounds.SoundEvents
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -20,10 +20,10 @@ interface BewisclientInterface : BewisclientLogger, FileLogic, InGameLogic, Draw
     val util: UtilLogic
         get() = UtilLogic
 
-    val client: MinecraftClient
-        get() = MinecraftClient.getInstance()
+    val client: Minecraft
+        get() = Minecraft.getInstance()
 
     fun playClickSound() {
-        client.soundManager.play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0f))
+        client.soundManager.play(SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK, 1.0f))
     }
 }

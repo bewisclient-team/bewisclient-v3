@@ -1,26 +1,25 @@
 package net.bewis09.bewisclient.util.logic
 
 import net.bewis09.bewisclient.screen.RenderableScreen
-import net.minecraft.client.MinecraftClient
-import net.minecraft.resource.Resource
-import net.minecraft.util.Identifier
+import net.minecraft.resources.Identifier
+import net.minecraft.server.packs.resources.Resource
 import java.util.function.Predicate
 
-object UtilLogic {
+object UtilLogic: BewisclientInterface {
     val width
-        get() = MinecraftClient.getInstance().window.scaledWidth
+        get() = client.window.guiScaledWidth
 
     val height
-        get() = MinecraftClient.getInstance().window.scaledHeight
+        get() = client.window.guiScaledHeight
 
     val scaleFactor
-        get() = MinecraftClient.getInstance().window.scaleFactor.toFloat().toInt()
+        get() = client.window.guiScale.toFloat().toInt()
 
-    fun isInWorld() = MinecraftClient.getInstance().world != null
+    fun isInWorld() = client.level != null
 
-    fun getCurrentRenderableScreen() = (MinecraftClient.getInstance().currentScreen as? RenderableScreen)
+    fun getCurrentRenderableScreen() = (client.screen as? RenderableScreen)
 
     fun findAllResources(path: String, filter: Predicate<Identifier>): Map<Identifier, List<Resource>> {
-        return MinecraftClient.getInstance().resourceManager.findAllResources(path) { filter.test(it) }.mapKeys { it.key }
+        return client.resourceManager.listResourceStacks(path) { filter.test(it) }.mapKeys { it.key }
     }
 }

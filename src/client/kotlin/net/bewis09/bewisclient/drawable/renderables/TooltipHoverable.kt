@@ -3,10 +3,10 @@ package net.bewis09.bewisclient.drawable.renderables
 import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.util.color.Color
-import net.minecraft.text.Text
+import net.minecraft.network.chat.Component
 
-open class TooltipHoverable(val tooltip: () -> Text?) : Hoverable() {
-    constructor(tooltip: Text? = null) : this({ tooltip })
+open class TooltipHoverable(val tooltip: () -> Component?) : Hoverable() {
+    constructor(tooltip: Component? = null) : this({ tooltip })
 
     val tooltipAnimation = Animator(200, Animator.EASE_IN_OUT, 0f)
     var wasActuallyDrawn: Boolean? = null

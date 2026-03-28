@@ -8,7 +8,7 @@ import net.bewis09.bewisclient.util.toText
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
-import net.minecraft.text.Text
+import net.minecraft.network.chat.Component
 
 object CoordinatesWidget : LineWidget(createIdentifier("bewisclient", "coordinates_widget")) {
     val colorCodeBiome = boolean("color_code_biome", true)
@@ -19,12 +19,12 @@ object CoordinatesWidget : LineWidget(createIdentifier("bewisclient", "coordinat
     override val title = "Coordinates Widget"
     override val description = "Displays your current coordinates in the world"
 
-    override fun getLines(): List<Text> = listOf(
-        "X: ${client.cameraEntity?.blockPos?.x ?: 137} ${getAdditionString(0)}".toText(),
-        "Y: ${client.cameraEntity?.blockPos?.y ?: 69}".toText(),
-        "Z: ${client.cameraEntity?.blockPos?.z ?: 420} ${getAdditionString(2)}".toText(),
+    override fun getLines(): List<Component> = listOf(
+        "X: ${client.cameraEntity?.onPos?.x ?: 137} ${getAdditionString(0)}".toText(),
+        "Y: ${client.cameraEntity?.onPos?.y ?: 69}".toText(),
+        "Z: ${client.cameraEntity?.onPos?.z ?: 420} ${getAdditionString(2)}".toText(),
         if (showBiome.get()) BiomeWidget.getText(colorCodeBiome.get()) else null,
-    ).filter { it != null }.map { it!! }
+    ).filterNotNull()
 
     val dirAdditions = listOf(
         "", "(-)", "(--)", "(-)", "", "(+)", "(++)", "(+)"
@@ -36,7 +36,7 @@ object CoordinatesWidget : LineWidget(createIdentifier("bewisclient", "coordinat
         return dirAdditions.getOrElse((getYawPart() - correct + 8) % 8) { "" }
     }
 
-    fun getYawPart(): Int = client.cameraEntity?.yaw?.let { a ->
+    fun getYawPart(): Int = client.cameraEntity?.yRot?.let { a ->
         (((a / 45 - 112.5).toInt()) % 8).let {
             if (it < 0) 8 + it else it
         }
@@ -105,9 +105,9 @@ object CoordinatesWidget : LineWidget(createIdentifier("bewisclient", "coordinat
     }
 
     override fun getCustomWidgetDataPoints(): List<CustomWidget.WidgetStringData> = listOf(
-        CustomWidget.WidgetStringData("x", "X-Coordinate", "The current x coordinate of the player", { (client.cameraEntity?.blockPos?.x ?: 137).toText() }),
-        CustomWidget.WidgetStringData("y", "Y-Coordinate", "The current y coordinate of the player", { (client.cameraEntity?.blockPos?.y ?: 69).toText() }),
-        CustomWidget.WidgetStringData("z", "Z-Coordinate", "The current z coordinate of the player", { (client.cameraEntity?.blockPos?.z ?: 420).toText() }),
+        CustomWidget.WidgetStringData("x", "X-Coordinate", "The current x coordinate of the player", { (client.cameraEntity?.onPos?.x ?: 137).toText() }),
+        CustomWidget.WidgetStringData("y", "Y-Coordinate", "The current y coordinate of the player", { (client.cameraEntity?.onPos?.y ?: 69).toText() }),
+        CustomWidget.WidgetStringData("z", "Z-Coordinate", "The current z coordinate of the player", { (client.cameraEntity?.onPos?.z ?: 420).toText() }),
         CustomWidget.WidgetStringData("direction", "Direction", "The cardinal direction the player is facing", { (getCardinalDirection(it == "long")).toText() }, "\"long\" for full cardinal direction name"),
     )
 }

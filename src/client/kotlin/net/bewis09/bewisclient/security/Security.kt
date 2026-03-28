@@ -26,7 +26,7 @@ object Security : BewisclientInterface, EventEntrypoint {
     class ILLEGAL(val reason: String) : VerificationState(false)
 
     override fun onInitializeClient() {
-        Util.getIoWorkerExecutor().execute {
+        Util.ioPool().execute {
             verify()
         }
     }

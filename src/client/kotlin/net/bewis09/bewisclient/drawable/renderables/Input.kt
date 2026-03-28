@@ -4,7 +4,7 @@ import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.util.color.Color
 import net.bewis09.bewisclient.util.toText
-import net.minecraft.util.Identifier
+import net.minecraft.resources.Identifier
 import org.lwjgl.glfw.GLFW
 
 class Input : Renderable {
@@ -63,7 +63,7 @@ class Input : Renderable {
     }
 
     override fun onCharTyped(character: Char, modifiers: Int): Boolean {
-        if (maxWidth == 0 || client.textRenderer.getWidth(text + character) < maxWidth) {
+        if (maxWidth == 0 || client.font.width(text + character) < maxWidth) {
             insertChar(character)
             onChange?.invoke(text)
         }

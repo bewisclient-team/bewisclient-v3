@@ -2,7 +2,7 @@ package net.bewis09.bewisclient.drawable.screen_drawing
 
 import net.bewis09.bewisclient.core.drawTexture
 import net.bewis09.bewisclient.util.color.Color
-import net.minecraft.util.Identifier
+import net.minecraft.resources.Identifier
 
 interface TextureDrawing : ScreenDrawingInterface {
     fun drawTexture(texture: Identifier, x: Int, y: Int, width: Int, height: Int) {
@@ -40,7 +40,7 @@ interface TextureDrawing : ScreenDrawingInterface {
     fun drawTextureRegion(
         texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, regionWidth: Int, regionHeight: Int, textureWidth: Int, textureHeight: Int, color: Color
     ) {
-        drawContext.drawTexture(
+        guiGraphics.drawTexture(
             texture, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, applyAlpha(color)
         )
     }

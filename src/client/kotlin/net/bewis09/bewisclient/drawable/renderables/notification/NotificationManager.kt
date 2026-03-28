@@ -25,7 +25,7 @@ object NotificationManager : EventEntrypoint {
     fun renderNotifications(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         var yOffset = 0
         getNotifications().forEach {
-            it.setPosition(client.window.scaledWidth - it.width, 4 + yOffset)
+            it.setPosition(client.window.guiScaledWidth - it.width, 4 + yOffset)
             it.render(screenDrawing, mouseX, mouseY)
             yOffset += it.height + 4
         }

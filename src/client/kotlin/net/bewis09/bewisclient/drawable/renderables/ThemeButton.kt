@@ -6,20 +6,20 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.scale
 import net.bewis09.bewisclient.drawable.screen_drawing.translate
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
-import net.minecraft.text.Text
+import net.minecraft.network.chat.Component
 
 class ThemeButton : TooltipHoverable {
-    val text: Text
+    val text: Component
     val selected: () -> Boolean
     val onClick: (ThemeButton) -> Unit
 
-    constructor(text: Text, selected: () -> Boolean, onClick: (ThemeButton) -> Unit, tooltip: Text? = null) : super(tooltip) {
+    constructor(text: Component, selected: () -> Boolean, onClick: (ThemeButton) -> Unit, tooltip: Component? = null) : super(tooltip) {
         this.text = text
         this.selected = selected
         this.onClick = onClick
     }
 
-    constructor(id: String, text: Text, selectedButtonRef: AtomicRef<String>, onClick: (ThemeButton) -> Unit, tooltip: Text? = null) : super(tooltip) {
+    constructor(id: String, text: Component, selectedButtonRef: AtomicRef<String>, onClick: (ThemeButton) -> Unit, tooltip: Component? = null) : super(tooltip) {
         this.text = text
         this.selected = { selectedButtonRef.value == id }
         this.onClick = {
@@ -28,9 +28,9 @@ class ThemeButton : TooltipHoverable {
         }
     }
 
-    constructor(id: String, text: Text, clickButton: AtomicRef<String>, onClick: (ThemeButton) -> Unit) : this(id, text, clickButton, onClick, null)
+    constructor(id: String, text: Component, clickButton: AtomicRef<String>, onClick: (ThemeButton) -> Unit) : this(id, text, clickButton, onClick, null)
 
-    constructor(text: Text, onClick: (ThemeButton) -> Unit) {
+    constructor(text: Component, onClick: (ThemeButton) -> Unit) {
         this.text = text
         this.selected = { clickAnimation.get() < 1f && clickAnimation.getWithoutInterpolation() == 0f }
         this.onClick = onClick

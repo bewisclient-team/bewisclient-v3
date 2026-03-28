@@ -17,7 +17,7 @@ object DayWidget : LineWidget(createIdentifier("bewisclient", "day_widget")) {
 
     override fun getLine() = dayText(getText())
 
-    fun getText(): Int = client.world?.timeOfDay?.div(24000L)?.toInt() ?: ((System.currentTimeMillis() - 1679875200000L) / 86400000L).toInt()
+    fun getText(): Int = client.level?.dayTime?.div(24000L)?.toInt() ?: ((System.currentTimeMillis() - 1679875200000L) / 86400000L).toInt()
 
     override fun defaultPosition(): WidgetPosition {
         return RelativePosition("bewisclient:fps_widget", "bottom")

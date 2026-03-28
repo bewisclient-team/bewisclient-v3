@@ -1,16 +1,11 @@
 package net.bewis09.bewisclient.interfaces
 
-import net.minecraft.client.render.BufferBuilderStorage
-import net.minecraft.client.util.InputUtil
+import com.mojang.blaze3d.platform.InputConstants
 
 interface KeyBindingAccessor {
-    fun getBoundKey(): InputUtil.Key
+    fun getKey(): InputConstants.Key
 }
 
 interface BreakingProgressAccessor {
-    fun getCurrentBreakingProgress(): Float
-}
-
-interface GameRendererBuffersAccessor {
-    fun getBuffers(): BufferBuilderStorage
+    fun getDestroyProgress(): Float
 }

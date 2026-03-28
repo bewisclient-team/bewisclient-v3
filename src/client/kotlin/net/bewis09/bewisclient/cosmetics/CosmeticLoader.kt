@@ -7,10 +7,9 @@ import net.bewis09.bewisclient.settings.types.ObjectSetting
 import net.bewis09.bewisclient.settings.types.StringMapSetting
 import net.bewis09.bewisclient.util.EventEntrypoint
 import net.bewis09.bewisclient.util.catch
-import net.minecraft.client.MinecraftClient
-import net.minecraft.client.network.PlayerListEntry
-import net.minecraft.item.Items
+import net.minecraft.client.multiplayer.PlayerInfo
 import net.minecraft.util.Util
+import net.minecraft.world.item.Items
 import java.net.HttpURLConnection
 import java.net.URI
 import java.security.MessageDigest.getInstance
@@ -90,13 +89,13 @@ object CosmeticLoader : ObjectSetting(), EventEntrypoint {
     }
 
     override fun onInitializeClient() {
-        Util.getIoWorkerExecutor().execute {
+        Util.ioPool().execute {
             val result: ByteArray = catch {
                 val connection = URI(Constants.DATA_URL).toURL().openConnection() as? HttpURLConnection ?: return@execute
                 connection.requestMethod = "POST"
                 connection.doOutput = true
 
-                val out: ByteArray = """{"uuid":"${MinecraftClient.getInstance().gameProfile.id}"}""".toByteArray()
+                val out: ByteArray = """{"uuid":"${client.gameProfile.id}"}""".toByteArray()
 
                 connection.setFixedLengthStreamingMode(out.size)
                 connection.connect()
@@ -168,10 +167,9 @@ object CosmeticLoader : ObjectSetting(), EventEntrypoint {
         }
     }
 
-    fun getEntityBySkinTextures(hashCode: Int): PlayerListEntry? {
-        val client = MinecraftClient.getInstance()
-        val playerList = client.networkHandler?.playerList ?: return null
-        return playerList.firstOrNull { it.skinTextures.hashCode() == hashCode }
+    fun getEntityBySkinTextures(hashCode: Int): PlayerInfo? {
+        val playerList = client.connection?.listedOnlinePlayers ?: return null
+        return playerList.firstOrNull { it.skin.hashCode() == hashCode }
     }
 
     data class SpecialEntry(
@@ -193,7 +191,7 @@ object CosmeticLoader : ObjectSetting(), EventEntrypoint {
     }
 
     fun getCosmeticForPlayer(player: GameProfile, type: CosmeticType): Cosmetic? {
-        val elytraEquipped = client.world?.players?.firstOrNull { it.gameProfile.id == player.id }?.inventory?.getStack(38)?.item == Items.ELYTRA && type == CosmeticType.CAPE
+        val elytraEquipped = client.level?.players()?.firstOrNull { it.gameProfile.id == player.id }?.inventory?.getItem(38)?.item == Items.ELYTRA && type == CosmeticType.CAPE
         if (player.id != client.gameProfile.id || (elytraEquipped && !this.elytra.get())) return null
         val id = CosmeticIdentifier(type, this.selected[type.id] ?: return null)
         if (id !in allowedCosmetics || (elytraEquipped && !elytraCosmetics.contains(id))) return null

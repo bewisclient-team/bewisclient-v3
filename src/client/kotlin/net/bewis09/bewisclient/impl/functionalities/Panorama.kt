@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.impl.functionalities
 
+import com.mojang.blaze3d.platform.NativeImage
 import net.bewis09.bewisclient.core.*
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.Translations
@@ -24,11 +25,9 @@ import net.bewis09.bewisclient.util.EventEntrypoint
 import net.bewis09.bewisclient.util.catch
 import net.bewis09.bewisclient.util.createIdentifier
 import net.fabricmc.loader.api.FabricLoader
-import net.minecraft.client.MinecraftClient
-import net.minecraft.client.texture.NativeImage
-import net.minecraft.resource.InputSupplier
-import net.minecraft.text.Text
-import net.minecraft.util.Identifier
+import net.minecraft.network.chat.Component
+import net.minecraft.resources.Identifier
+import net.minecraft.server.packs.resources.IoSupplier
 import net.minecraft.util.Util
 import java.io.File
 import java.io.InputStream
@@ -42,12 +41,12 @@ import kotlin.io.path.exists
 object Panorama : ImageSettingCategory(
     "panorama", Translation("menu.category.panorama", "Panorama"), arrayOf(
         InfoTextRenderable(
-            Translation("panorama.info_text", "The panorama functionality allows you to set a custom panorama background for the main menu. You can create the panorama by pressing the \"%s\" button [%s]. After taking the screenshot select the screenshot below.")(Text.translatable("bewisclient.key.screenshot.take_panorama"), Text.keybind("bewisclient.key.screenshot.take_panorama")), centered = true
+            Translation("panorama.info_text", "The panorama functionality allows you to set a custom panorama background for the main menu. You can create the panorama by pressing the \"%s\" button [%s]. After taking the screenshot select the screenshot below.")(Component.translatable("bewisclient.key.screenshot.take_panorama"), Component.keybind("bewisclient.key.screenshot.take_panorama")), centered = true
         ),
     ), PanoramaSettings.enabled
 ), EventEntrypoint, BewisclientResourcePack.CustomResourceProvider {
     object TakePanoramaScreenshot : Keybind(-1, "screenshot.take_panorama", "Take Panorama Screenshot", {
-        MinecraftClient.getInstance().player?.sendMessage(client.takePanoramaFull(FabricLoader.getInstance().gameDir.resolve("screenshots/panorama_" + (LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH.mm.ss-S")))).toFile().apply {
+        client.player?.displayClientMessage(client.takePanoramaFull(FabricLoader.getInstance().gameDir.resolve("screenshots/panorama_" + (LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH.mm.ss-S")))).toFile().apply {
             if (!exists()) mkdirs()
         }), false)
     })
@@ -75,7 +74,7 @@ object Panorama : ImageSettingCategory(
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             if (!images.containsKey(file)) {
-                images[file] = PanoramaScreenshots(file).apply { Util.getIoWorkerExecutor().execute(::loadAll) }
+                images[file] = PanoramaScreenshots(file).apply { Util.ioPool().execute(::loadAll) }
             }
 
             images[file]?.registerAll()
@@ -101,7 +100,7 @@ object Panorama : ImageSettingCategory(
                 if (path.get() == file.absolutePath) return@ImageButton
 
                 path.set(file.absolutePath)
-                if (PanoramaSettings.enabled.get()) client.reloadResources()
+                if (PanoramaSettings.enabled.get()) client.reloadResourcePacks()
             }.setImagePadding(2)(x + width - 21, y + 7, 14, 14))
             addRenderable(ImageButton(createIdentifier("bewisclient", "textures/gui/sprites/delete.png")) {
                 OptionScreen.currentInstance?.openPopup(
@@ -146,7 +145,7 @@ object Panorama : ImageSettingCategory(
         }
     }
 
-    override fun provideResources(id: Identifier): InputSupplier<InputStream?>? {
+    override fun provideResources(id: Identifier): IoSupplier<InputStream>? {
         if (id.namespace != "minecraft" || path.get().isEmpty() || !PanoramaSettings.enabled) return null
 
         if (id.path == "textures/gui/title/background/panorama") return null
@@ -161,7 +160,7 @@ object Panorama : ImageSettingCategory(
             } catch (_: Exception) {
                 return null
             }
-            return InputSupplier { file.inputStream() }
+            return IoSupplier { file.inputStream() }
         }
 
         return null
@@ -190,7 +189,7 @@ object Panorama : ImageSettingCategory(
             registered = true
 
             for (i in 0..5) {
-                val identifier = createIdentifier("bewisclient", directory.name.filter(Identifier::isCharValid) + "_" + i)
+                val identifier = createIdentifier("bewisclient", directory.name.filter(Identifier::isAllowedInIdentifier) + "_" + i)
                 identifiers[i] = identifier
                 client.registerTexture(identifier, images[i]!!)
             }

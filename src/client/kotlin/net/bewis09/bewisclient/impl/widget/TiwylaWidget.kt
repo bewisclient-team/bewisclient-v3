@@ -19,17 +19,21 @@ import net.bewis09.bewisclient.settings.types.ListSetting
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.ScalableWidget
-import net.minecraft.block.*
-import net.minecraft.entity.*
-import net.minecraft.registry.Registries
-import net.minecraft.registry.tag.BlockTags
-import net.minecraft.state.property.Property
-import net.minecraft.text.Text
-import net.minecraft.util.Identifier
-import net.minecraft.util.hit.BlockHitResult
-import net.minecraft.util.hit.EntityHitResult
-import net.minecraft.util.math.BlockPos
-import kotlin.jvm.optionals.getOrNull
+import net.minecraft.core.BlockPos
+import net.minecraft.core.registries.BuiltInRegistries
+import net.minecraft.network.chat.Component
+import net.minecraft.resources.Identifier
+import net.minecraft.server.packs.resources.Resource
+import net.minecraft.tags.BlockTags
+import net.minecraft.world.entity.Entity
+import net.minecraft.world.entity.EntityType
+import net.minecraft.world.entity.LivingEntity
+import net.minecraft.world.level.block.Block
+import net.minecraft.world.level.block.Blocks
+import net.minecraft.world.level.block.state.BlockState
+import net.minecraft.world.level.block.state.properties.Property
+import net.minecraft.world.phys.BlockHitResult
+import net.minecraft.world.phys.EntityHitResult
 import kotlin.math.*
 
 object TiwylaWidget : ScalableWidget(createIdentifier("bewisclient", "tiwyla_widget")), EventEntrypoint {
@@ -87,7 +91,7 @@ object TiwylaWidget : ScalableWidget(createIdentifier("bewisclient", "tiwyla_wid
         }.let { l -> if (l.isEmpty) null else l }
     })
 
-    val entityInfoProviders = APIEntrypointLoader.mapContainer { it.entrypoint.getTiwylaEntityExtraInfoProviders().map { provider -> Identifier.of(it.provider.metadata.id, Registries.ENTITY_TYPE.getId(provider.entityType).toString().replace(":", "/")) to provider } }.flatten()
+    val entityInfoProviders = APIEntrypointLoader.mapContainer { it.entrypoint.getTiwylaEntityExtraInfoProviders().map { provider -> createIdentifier(it.provider.metadata.id, BuiltInRegistries.ENTITY_TYPE.getId(provider.entityType).toString().replace(":", "/")) to provider } }.flatten()
 
     val progressText = createTranslation("progress", "Progress: %s%%")
     val toolText = createTranslation("tool", "Tool: %s")
@@ -143,7 +147,7 @@ object TiwylaWidget : ScalableWidget(createIdentifier("bewisclient", "tiwyla_wid
 
     override fun isHidden(): Boolean = getTiwylaTitle() == null
 
-    fun getTiwylaTitle(): Text? {
+    fun getTiwylaTitle(): Component? {
         if (!util.isInWorld()) return Blocks.GRASS_BLOCK.name
 
         return onHitResult({ data ->
@@ -154,28 +158,28 @@ object TiwylaWidget : ScalableWidget(createIdentifier("bewisclient", "tiwyla_wid
     }
 
     fun <T> onHitResult(block: (hitResult: BlockData) -> T, entity: (hitResult: Entity) -> T): T? {
-        val world = client.world ?: return null
+        val world = client.level ?: return null
 
-        return when (val hitResult = client.crosshairTarget) {
+        return when (val hitResult = client.hitResult) {
             is BlockHitResult -> if (world.getBlockState(hitResult.blockPos).isAir) null else block(BlockData(world.getBlockState(hitResult.blockPos), hitResult.blockPos))
             is EntityHitResult -> entity(hitResult.entity)
             else -> null
         }
     }
 
-    fun getSublines(): List<Text> {
-        if (!util.isInWorld()) return getBlockSublines(BlockData(Blocks.GRASS_BLOCK.defaultState, BlockPos.ORIGIN))
+    fun getSublines(): List<Component> {
+        if (!util.isInWorld()) return getBlockSublines(BlockData(Blocks.GRASS_BLOCK.defaultBlockState(), BlockPos.ZERO))
 
         return onHitResult(::getBlockSublines, ::getEntitySublines) ?: listOf()
     }
 
-    fun getBlockSublines(data: BlockData): List<Text> {
+    fun getBlockSublines(data: BlockData): List<Component> {
         return blockLines.mapNotNull {
             arrayOf(it.second, it.first).filterNotNull().sortedBy { a -> -a.priority }.firstNotNullOfOrNull { a -> a(data) }
         }
     }
 
-    fun getEntitySublines(entity: Entity): List<Text> {
+    fun getEntitySublines(entity: Entity): List<Component> {
         return entityLines.mapNotNull {
             arrayOf(it.second, it.first).filterNotNull().sortedBy { a -> -a.priority }.firstNotNullOfOrNull { a -> a(entity) }
         }
@@ -244,10 +248,10 @@ object TiwylaWidget : ScalableWidget(createIdentifier("bewisclient", "tiwyla_wid
     data class Information<T>(
         val first: Line<T>?, val second: Line<T>?
     ) {
-        data class Line<T>(val fn: (data: T) -> Text?, val id: String, val priority: Int) {
+        data class Line<T>(val fn: (data: T) -> Component?, val id: String, val priority: Int) {
             val translation = createTranslation("information.$id", `snake_toWord With Spaces`(id))
 
-            operator fun invoke(data: T): Text? = fn(data)
+            operator fun invoke(data: T): Component? = fn(data)
         }
     }
 
@@ -257,23 +261,23 @@ object TiwylaWidget : ScalableWidget(createIdentifier("bewisclient", "tiwyla_wid
 
     val blockInformation = listOf<Information.Line<BlockData>>(
         Information.Line({ data ->
-            if (data.state.isIn(BlockTags.AXE_MINEABLE)) return@Line toolText(axeToolText.getTranslatedString())
-            if (data.state.isIn(BlockTags.PICKAXE_MINEABLE)) return@Line toolText(pickaxeToolText.getTranslatedString())
-            if (data.state.isIn(BlockTags.HOE_MINEABLE)) return@Line toolText(hoeToolText.getTranslatedString())
-            if (data.state.isIn(BlockTags.SHOVEL_MINEABLE)) return@Line toolText(shovelToolText.getTranslatedString())
-            if (data.state.isIn(BlockTags.SWORD_EFFICIENT)) return@Line toolText(swordToolText.getTranslatedString())
+            if (data.state.`is`(BlockTags.MINEABLE_WITH_AXE)) return@Line toolText(axeToolText.getTranslatedString())
+            if (data.state.`is`(BlockTags.MINEABLE_WITH_PICKAXE)) return@Line toolText(pickaxeToolText.getTranslatedString())
+            if (data.state.`is`(BlockTags.MINEABLE_WITH_HOE)) return@Line toolText(hoeToolText.getTranslatedString())
+            if (data.state.`is`(BlockTags.MINEABLE_WITH_HOE)) return@Line toolText(shovelToolText.getTranslatedString())
+            if (data.state.`is`(BlockTags.SWORD_EFFICIENT)) return@Line toolText(swordToolText.getTranslatedString())
             return@Line toolText(noneToolText.getTranslatedString())
         }, "tool", 0), Information.Line({ data ->
-            if (data.state.isIn(BlockTags.NEEDS_DIAMOND_TOOL)) return@Line miningLevel(diamondLevelText.getTranslatedString())
-            if (data.state.isIn(BlockTags.NEEDS_IRON_TOOL)) return@Line miningLevel(ironLevelText.getTranslatedString())
-            if (data.state.isIn(BlockTags.NEEDS_STONE_TOOL)) return@Line miningLevel(stoneLevelText.getTranslatedString())
+            if (data.state.`is`(BlockTags.NEEDS_DIAMOND_TOOL)) return@Line miningLevel(diamondLevelText.getTranslatedString())
+            if (data.state.`is`(BlockTags.NEEDS_IRON_TOOL)) return@Line miningLevel(ironLevelText.getTranslatedString())
+            if (data.state.`is`(BlockTags.NEEDS_STONE_TOOL)) return@Line miningLevel(stoneLevelText.getTranslatedString())
 
-            if (data.state.isToolRequired) return@Line miningLevel(woodLevelText.getTranslatedString())
+            if (data.state.requiresCorrectToolForDrops()) return@Line miningLevel(woodLevelText.getTranslatedString())
             return@Line miningLevel(noneLevelText.getTranslatedString())
         }, "mining_level", 0), Information.Line({ data ->
             if (!util.isInWorld()) return@Line secondsText(4.5)
 
-            val delta = data.state.calcBlockBreakingDelta(client.player, client.world, data.blockPos)
+            val delta = client.player?.let { client.level?.let { blockGetter -> data.state.getDestroyProgress(it, blockGetter, data.blockPos) } } ?: return@Line null
 
             if (delta > 1) return@Line instantText()
 
@@ -286,7 +290,7 @@ object TiwylaWidget : ScalableWidget(createIdentifier("bewisclient", "tiwyla_wid
             if (secs > 60) return@Line minutesText((secs / 6 * 10).roundToInt() / 100F)
             return@Line secondsText((secs * 100).roundToInt() / 100F)
         }, "break_time", 0), Information.Line({ _ ->
-            val s = ((client.interactionManager as BreakingProgressAccessor?)?.getCurrentBreakingProgress() ?: 0f) * 1000
+            val s = ((client.gameMode as BreakingProgressAccessor?)?.getDestroyProgress() ?: 0f) * 1000
             if (s == 0F) {
                 return@Line null
             }
@@ -295,7 +299,7 @@ object TiwylaWidget : ScalableWidget(createIdentifier("bewisclient", "tiwyla_wid
             val id = data.state.blockId().toString()
             if (blockSpecialInfoMap[id] == false) return@Line null
             val property = blockStateInfoMap[id] ?: return@Line null
-            return@Line "${snake_toCamelCase(property.name)}: ${data.state.get(property)}".toText()
+            return@Line "${snake_toCamelCase(property.name)}: ${data.state.getValue(property)}".toText()
         }, "block_property", 1)
     )
 
@@ -303,7 +307,7 @@ object TiwylaWidget : ScalableWidget(createIdentifier("bewisclient", "tiwyla_wid
         Information.Line({ entity ->
             return@Line entity.entityId().toString().toText()
         }, "entity_id", 0), Information.Line({ entity ->
-            return@Line if (client.isInSingleplayer) (entity as? LivingEntity)?.let {
+            return@Line if (client.isSingleplayer) (entity as? LivingEntity)?.let {
                 convertToHearths(
                     it.health.toDouble(), it.maxHealth.toDouble(), it.absorptionAmount.toDouble()
                 )
@@ -314,7 +318,7 @@ object TiwylaWidget : ScalableWidget(createIdentifier("bewisclient", "tiwyla_wid
         }, "special_entity_info", 2)
     )
 
-    fun convertToHearths(h: Double, mH: Double, a: Double): Text {
+    fun convertToHearths(h: Double, mH: Double, a: Double): Component {
         var health = h
         var maxHealth = mH
         var absorption = a
@@ -373,8 +377,8 @@ object TiwylaWidget : ScalableWidget(createIdentifier("bewisclient", "tiwyla_wid
         ) { it.path.endsWith(".json") }
 
         resources.entries.forEach {
-            it.value.forEach { resource ->
-                val jsonElement = Gson().fromJson(resource.reader, JsonElement::class.java)
+            it.value.forEach { resource: Resource ->
+                val jsonElement = Gson().fromJson(resource.openAsReader(), JsonElement::class.java)
 
                 if (jsonElement?.isJsonObject == true) {
                     val jsonObject = jsonElement.asJsonObject
@@ -384,10 +388,10 @@ object TiwylaWidget : ScalableWidget(createIdentifier("bewisclient", "tiwyla_wid
 
                         if (property.isJsonPrimitive) {
                             val propertyId = property.asString
-                            val b: Block = Registries.BLOCK.get(Identifier.of(block))
-                            if (b == Registries.BLOCK.defaultEntry.getOrNull()) return@forEach
-                            blockStateInfoMap[block] = b.stateManager.properties.firstOrNull { a -> a.name == propertyId } ?: run {
-                                warn("Unknown block property: $propertyId for block $block in pack ${resource.packId}")
+                            val b: Block = BuiltInRegistries.BLOCK.getValue(createIdentifier(block))
+                            if (b == BuiltInRegistries.BLOCK.getValue(createIdentifier("hehe"))) return@forEach
+                            blockStateInfoMap[block] = b.stateDefinition.properties.firstOrNull { a -> a.name == propertyId } ?: run {
+                                warn("Unknown block property: $propertyId for block $block in pack ${resource.sourcePackId()}")
                                 return@forEach
                             }
                         } else {

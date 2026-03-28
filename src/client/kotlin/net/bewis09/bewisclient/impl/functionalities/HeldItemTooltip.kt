@@ -13,13 +13,12 @@ import net.bewis09.bewisclient.impl.settings.functionalities.HeldItemTooltipSett
 import net.bewis09.bewisclient.interfaces.SettingInterface
 import net.bewis09.bewisclient.util.color.Color
 import net.bewis09.bewisclient.util.setColor
-import net.minecraft.client.MinecraftClient
-import net.minecraft.component.ComponentType
-import net.minecraft.component.DataComponentTypes
-import net.minecraft.item.ItemStack
-import net.minecraft.registry.Registries
-import net.minecraft.text.Style
-import net.minecraft.text.Text
+import net.minecraft.core.component.DataComponentType
+import net.minecraft.core.component.DataComponents
+import net.minecraft.core.registries.BuiltInRegistries
+import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.Style
+import net.minecraft.world.item.ItemStack
 
 object HeldItemTooltip : ImageSettingCategory(
     "held_item_tooltip", Translation("menu.category.held_item_tooltip", "Held Item Info"), arrayOf(
@@ -38,8 +37,8 @@ object HeldItemTooltip : ImageSettingCategory(
     var isLookup = false
     var isRendering = false
 
-    val componentSet = mutableSetOf<ComponentType<*>>(
-        DataComponentTypes.ATTRIBUTE_MODIFIERS, DataComponentTypes.UNBREAKABLE, DataComponentTypes.BLOCK_ENTITY_DATA, DataComponentTypes.CAN_BREAK, DataComponentTypes.CAN_PLACE_ON, DataComponentTypes.DAMAGE
+    val componentSet = mutableSetOf<DataComponentType<*>>(
+        DataComponents.ATTRIBUTE_MODIFIERS, DataComponents.UNBREAKABLE, DataComponents.BLOCK_ENTITY_DATA, DataComponents.CAN_BREAK, DataComponents.CAN_PLACE_ON, DataComponents.DAMAGE
     )
 
     val componentRenderableParts by lazy {
@@ -48,8 +47,8 @@ object HeldItemTooltip : ImageSettingCategory(
         val parts = arrayListOf<MultipleBooleanSettingsRenderable.Part>()
 
         for (componentType in componentSet.sortedWith { a, b ->
-            val id1 = Registries.DATA_COMPONENT_TYPE.getEntry(a).idAsString
-            val id2 = Registries.DATA_COMPONENT_TYPE.getEntry(b).idAsString
+            val id1 = BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(a).toString()
+            val id2 = BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(b).toString()
 
             if (id1.startsWith("minecraft:")) {
                 return@sortedWith if (id2.startsWith("minecraft:")) id1.compareTo(id2) else -1
@@ -59,7 +58,7 @@ object HeldItemTooltip : ImageSettingCategory(
 
             id1.compareTo(id2)
         }) {
-            val id = Registries.DATA_COMPONENT_TYPE.getEntry(componentType).idAsString
+            val id = BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(componentType).toString()
             parts.add(
                 MultipleBooleanSettingsRenderable.Part(
                     Translation.literal(toReadableString(id)), null, object : SettingInterface<Boolean> {
@@ -76,19 +75,19 @@ object HeldItemTooltip : ImageSettingCategory(
         parts
     }
 
-    val defaultOff = arrayOf(DataComponentTypes.DAMAGE, DataComponentTypes.ATTRIBUTE_MODIFIERS)
+    val defaultOff = arrayOf(DataComponents.DAMAGE, DataComponents.ATTRIBUTE_MODIFIERS)
 
     fun render(screenDrawing: ScreenDrawing, heldItemTooltipFade: Int, stack: ItemStack) {
         Profiler.push("heldItemTooltip")
         if (heldItemTooltipFade > 0 && !stack.isEmpty) {
             isRendering = true
 
-            val mutableText: Text = stack.getItemFormattedName()
+            val mutableText: Component = stack.getItemFormattedName()
 
-            var texts: MutableList<Text> = mutableListOf(mutableText)
+            var texts: MutableList<Component> = mutableListOf(mutableText)
 
-            if (stack.contains(DataComponentTypes.DAMAGE) && HeldItemTooltipSettings.showMap["minecraft:damage", false]) {
-                texts.add(Text.translatable("item.durability", stack.maxDamage - stack.damage, stack.maxDamage))
+            if (stack.has(DataComponents.DAMAGE) && HeldItemTooltipSettings.showMap["minecraft:damage", false]) {
+                texts.add(Component.translatable("item.durability", stack.maxDamage - stack.damageValue, stack.maxDamage))
             }
 
             stack.appendTooltip {
@@ -97,7 +96,7 @@ object HeldItemTooltip : ImageSettingCategory(
 
             if (texts.size > 1) {
                 for (it in texts.subList(1, texts.size)) {
-                    if (it.style.color?.rgb == -1 || it.style == Style.EMPTY) it.setColor(0xAAAAAA)
+                    if (it.style.color?.value == -1 || it.style == Style.EMPTY) it.setColor(0xAAAAAA)
                 }
             }
 
@@ -115,7 +114,7 @@ object HeldItemTooltip : ImageSettingCategory(
             }
 
             var y: Int = util.height - 59
-            if (MinecraftClient.getInstance().interactionManager?.hasStatusBars() == false) {
+            if (client.gameMode?.hasExperience() == false) {
                 y += 14
             }
 

@@ -1,12 +1,12 @@
 package net.bewis09.bewisclient.widget
 
+import com.mojang.authlib.minecraft.client.MinecraftClient
 import net.bewis09.bewisclient.api.APIEntrypointLoader
 import net.bewis09.bewisclient.core.Profiler
 import net.bewis09.bewisclient.core.registerWidget
 import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.util.EventEntrypoint
-import net.minecraft.client.MinecraftClient
 
 /**
  * The entrypoint for the Bewisclient widget events.
@@ -26,7 +26,7 @@ object WidgetLoader : EventEntrypoint {
             ) { context ->
                 Profiler.push("widget_"+it.id.toString().replace(":", "_"))
                 if (it.isShowing() && util.getCurrentRenderableScreen()?.renderable !is HudEditScreen) {
-                    it.renderScaled(ScreenDrawing(context, MinecraftClient.getInstance().textRenderer))
+                    it.renderScaled(ScreenDrawing(context, client.font))
                 }
                 Profiler.pop()
             }

@@ -6,10 +6,10 @@ import net.bewis09.bewisclient.drawable.renderables.Input
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
-import net.minecraft.screen.ScreenTexts
-import net.minecraft.text.Text
+import net.minecraft.network.chat.CommonComponents
+import net.minecraft.network.chat.Component
 
-class InputTextPopup(val text: Text, val onConfirm: (text: String) -> Unit, val default: String = "", confirmText: Text = ScreenTexts.CONTINUE, cancelText: Text = ScreenTexts.CANCEL) : Renderable() {
+class InputTextPopup(val text: Component, val onConfirm: (text: String) -> Unit, val default: String = "", confirmText: Component = CommonComponents.GUI_CONTINUE, cancelText: Component = CommonComponents.GUI_CANCEL) : Renderable() {
     val input = Input(text = default)
     val cancelButton = Button(cancelText) {
         OptionScreen.currentInstance?.closePopup()

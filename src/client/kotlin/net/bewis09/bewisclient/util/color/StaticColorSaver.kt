@@ -11,7 +11,7 @@ import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.util.number.Precision
 import net.bewis09.bewisclient.util.string
 import net.bewis09.bewisclient.util.toText
-import net.minecraft.text.Text
+import net.minecraft.network.chat.Component
 
 open class StaticColorSaver : ColorSaver {
     private val color: Color
@@ -123,7 +123,7 @@ open class StaticColorSaver : ColorSaver {
             )
         }
 
-        class ColorButton(x: Int, y: Int, width: Int, height: Int, val color: () -> Color, tooltip: Text? = null, val onClick: ((Color) -> Unit)? = null) : TooltipHoverable(tooltip) {
+        class ColorButton(x: Int, y: Int, width: Int, height: Int, val color: () -> Color, tooltip: Component? = null, val onClick: ((Color) -> Unit)? = null) : TooltipHoverable(tooltip) {
             init {
                 this.internalX = x
                 this.internalY = y

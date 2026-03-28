@@ -2,7 +2,7 @@ package net.bewis09.bewisclient.util
 
 import net.fabricmc.fabric.api.datagen.v1.*
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricLanguageProvider
-import net.minecraft.registry.RegistryWrapper.WrapperLookup
+import net.minecraft.core.HolderLookup
 import java.util.concurrent.CompletableFuture
 
 /**
@@ -22,8 +22,8 @@ object BewisclientDataGenerator : DataGeneratorEntrypoint {
         pack.addProvider(::BewisclientEnglishLangProvider)
     }
 
-    class BewisclientEnglishLangProvider(dataOutput: FabricDataOutput, registryLookup: CompletableFuture<WrapperLookup>) : FabricLanguageProvider(dataOutput, "en_us", registryLookup) {
-        override fun generateTranslations(wrapperLookup: WrapperLookup, translationBuilder: TranslationBuilder) {
+    class BewisclientEnglishLangProvider(dataOutput: FabricDataOutput, registryLookup: CompletableFuture<HolderLookup.Provider>) : FabricLanguageProvider(dataOutput, "en_us", registryLookup) {
+        override fun generateTranslations(wrapperLookup: HolderLookup.Provider, translationBuilder: TranslationBuilder) {
             translations.forEach { (key, value) ->
                 translationBuilder.add(key, value)
             }

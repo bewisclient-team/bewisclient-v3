@@ -5,8 +5,8 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.bewis09.bewisclient.util.MathHelper
 import net.bewis09.bewisclient.util.toText
-import net.minecraft.text.Text
-import net.minecraft.util.Identifier
+import net.minecraft.network.chat.Component
+import net.minecraft.resources.Identifier
 
 abstract class LineWidget(id: Identifier) : ScalableWidget(id) {
     private var lineWidth = 0
@@ -28,7 +28,7 @@ abstract class LineWidget(id: Identifier) : ScalableWidget(id) {
     open fun hasMultipleLines(): Boolean = getLine() === EMPTY
 
     open fun getLines() = listOf(getLine())
-    open fun getLine(): Text = EMPTY
+    open fun getLine(): Component = EMPTY
 
     open fun isCentered(): Boolean = true
 

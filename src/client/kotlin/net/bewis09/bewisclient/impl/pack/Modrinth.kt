@@ -1,15 +1,15 @@
 package net.bewis09.bewisclient.impl.pack
 
+import com.mojang.authlib.minecraft.client.MinecraftClient
+import com.mojang.blaze3d.platform.NativeImage
 import net.bewis09.bewisclient.core.*
 import net.bewis09.bewisclient.drawable.Translations
 import net.bewis09.bewisclient.settings.Settings.Companion.gson
 import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.logic.BewisclientInterface
 import net.minecraft.SharedConstants
-import net.minecraft.client.MinecraftClient
-import net.minecraft.client.texture.NativeImage
-import net.minecraft.text.Text
-import net.minecraft.util.Identifier
+import net.minecraft.network.chat.Component
+import net.minecraft.resources.Identifier
 import org.apache.commons.io.output.ByteArrayOutputStream
 import java.io.ByteArrayInputStream
 import java.net.URI
@@ -163,7 +163,7 @@ object Modrinth : BewisclientInterface {
         val total_hits: Int
     )
 
-    enum class Type(val url: String, val text: Text) {
+    enum class Type(val url: String, val text: Component) {
         RESOURCE_PACK("resourcepack", Translations.ADD_RESOURCE_PACK()),
         DATA_PACK("datapack", Translations.ADD_DATA_PACK()),
 //        SHADER("shader")
@@ -185,7 +185,7 @@ object Modrinth : BewisclientInterface {
 
         typeMaps[type to query]!!.first[page] = null to false
 
-        downloadFile("https://api.modrinth.com/v2/search?query=${URLEncoder.encode(query.replace(Regex("&\\?="), ""), "UTF-8")}&facets=%5B%5B%22project_type:${type.url}%22%5D,%5B%22versions:${SharedConstants.getGameVersion().name}%22%5D%5D&limit=20&offset=${page * 20}") {
+        downloadFile("https://api.modrinth.com/v2/search?query=${URLEncoder.encode(query.replace(Regex("&\\?="), ""), "UTF-8")}&facets=%5B%5B%22project_type:${type.url}%22%5D,%5B%22versions:${SharedConstants.getCurrentVersion().name}%22%5D%5D&limit=20&offset=${page * 20}") {
             val json = gson.fromJson(String(it), ModrinthSearchResult::class.java)
             if (typeMaps[type to query]!!.second == null) {
                 typeMaps[type to query] = typeMaps[type to query]!!.first to json.total_hits
@@ -228,7 +228,7 @@ object Modrinth : BewisclientInterface {
         if (imageCache.containsKey(uri)) {
             return imageCache[uri]?.let {
                 if (it.third) it.second else {
-                    MinecraftClient.getInstance().registerTexture(it.second, it.first)
+                    client.registerTexture(it.second, it.first)
                     imageCache[uri] = Triple(it.first, it.second, true)
                     it.second
                 }

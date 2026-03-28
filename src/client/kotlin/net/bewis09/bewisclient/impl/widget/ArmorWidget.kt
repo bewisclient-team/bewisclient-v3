@@ -14,10 +14,10 @@ import net.bewis09.bewisclient.util.toText
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.ScalableWidget
-import net.minecraft.component.DataComponentTypes
-import net.minecraft.item.ItemStack
-import net.minecraft.item.Items
-import net.minecraft.text.Text
+import net.minecraft.core.component.DataComponents
+import net.minecraft.network.chat.Component
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.Items
 
 object ArmorWidget : ScalableWidget(createIdentifier("bewisclient", "armor_widget")) {
     override val title = "Armor Widget"
@@ -61,7 +61,7 @@ object ArmorWidget : ScalableWidget(createIdentifier("bewisclient", "armor_widge
         if (showOffHand.get()) stacks.add(40)
 
         return stacks.filter {
-            val stack = client.player?.inventory?.getStack(it) ?: getSampleStack(it)
+            val stack = client.player?.inventory?.getItem(it) ?: getSampleStack(it)
             showEmptySlots.get() || (stack != null && !stack.isEmpty)
         }
     }
@@ -79,7 +79,7 @@ object ArmorWidget : ScalableWidget(createIdentifier("bewisclient", "armor_widge
 
         getStacks().forEachIndexed { i, slot ->
             val y = (i * 18) + paddingSize() + 1
-            val stack = client.player?.inventory?.getStack(slot) ?: getSampleStack(slot)
+            val stack = client.player?.inventory?.getItem(slot) ?: getSampleStack(slot)
 
             if (stack != null && !stack.isEmpty) {
                 screenDrawing.drawItemStackWithOverlay(stack, paddingSize() + 1, y)
@@ -104,14 +104,14 @@ object ArmorWidget : ScalableWidget(createIdentifier("bewisclient", "armor_widge
         return lines.size * 18 + 2 * paddingSize
     }
 
-    fun getTextForArmor(slot: Int): Text {
-        val armorStack = client.player?.inventory?.getStack(slot) ?: getSampleStack(slot)
+    fun getTextForArmor(slot: Int): Component {
+        val armorStack = client.player?.inventory?.getItem(slot) ?: getSampleStack(slot)
 
         if (armorStack == null || armorStack.isEmpty || armorStack.maxDamage == 0) {
-            return Text.empty()
+            return Component.empty()
         }
 
-        val durability = armorStack.maxDamage - armorStack.damage
+        val durability = armorStack.maxDamage - armorStack.damageValue
         val durabilityText = if (showPercentage.get()) {
             val percentage = (durability.toFloat() / armorStack.maxDamage.toFloat() * 100).toInt()
             "$percentage%"
@@ -122,7 +122,7 @@ object ArmorWidget : ScalableWidget(createIdentifier("bewisclient", "armor_widge
         return if (showDurability.get()) {
             durabilityText.toText().apply { if (colorCodeText.get()) withColor(getColorForDurability(durability, armorStack.maxDamage)) }
         } else {
-            Text.empty()
+            Component.empty()
         }
     }
 
@@ -202,17 +202,17 @@ object ArmorWidget : ScalableWidget(createIdentifier("bewisclient", "armor_widge
     private fun getSampleStack(slot: Int): ItemStack? {
         return when (slot) {
             39 -> ItemStack(Items.NETHERITE_HELMET).apply {
-                this.damage = 100
+                this.damageValue = 100
             }
 
             38 -> ItemStack(Items.ELYTRA).apply {
-                this.damage = 240
-                this.set(DataComponentTypes.CUSTOM_NAME, indicatorText)
+                this.damageValue = 240
+                this.set(DataComponents.CUSTOM_NAME, indicatorText)
             }
 
             37 -> ItemStack(Items.CHAINMAIL_LEGGINGS)
             40 -> ItemStack(Items.SHIELD).apply {
-                this.damage = 24
+                this.damageValue = 24
             }
 
             else -> null

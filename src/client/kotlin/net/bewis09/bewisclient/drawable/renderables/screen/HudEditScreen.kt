@@ -21,7 +21,7 @@ import net.bewis09.bewisclient.widget.WidgetLoader.widgets
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.types.ScalableWidget
-import net.minecraft.util.Identifier
+import net.minecraft.resources.Identifier
 import org.lwjgl.glfw.GLFW
 import kotlin.math.abs
 
@@ -130,7 +130,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
 
                 screenDrawing.afterDraw("tooltip", {
                     screenDrawing.push()
-                    screenDrawing.drawContext.translateToTopOptional()
+                    screenDrawing.guiGraphics.translateToTopOptional()
                     screenDrawing.fillRounded(drawX, drawY, width, tooltipHeight, 5, 0x000000 alpha 0.8f)
                     screenDrawing.drawWrappedText(lines, drawX + 5, drawY + 5, Color.WHITE)
                     screenDrawing.pop()

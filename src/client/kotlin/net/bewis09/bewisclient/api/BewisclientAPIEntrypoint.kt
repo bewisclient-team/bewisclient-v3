@@ -11,7 +11,7 @@ import net.bewis09.bewisclient.settings.Settings
 import net.bewis09.bewisclient.util.logic.BewisclientInterface
 import net.bewis09.bewisclient.widget.Widget
 import net.fabricmc.loader.api.ModContainer
-import net.minecraft.util.Identifier
+import net.minecraft.resources.Identifier
 import kotlin.jvm.optionals.getOrNull
 
 /**

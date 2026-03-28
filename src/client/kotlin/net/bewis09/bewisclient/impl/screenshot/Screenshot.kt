@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.impl.screenshot
 
+import com.mojang.blaze3d.platform.NativeImage
 import net.bewis09.bewisclient.core.registerTexture
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.Translations
@@ -26,9 +27,8 @@ import net.bewis09.bewisclient.util.catch
 import net.bewis09.bewisclient.util.color.Color
 import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.then
-import net.minecraft.client.MinecraftClient
-import net.minecraft.client.texture.NativeImage
-import net.minecraft.util.Identifier
+import net.minecraft.client.Minecraft
+import net.minecraft.resources.Identifier
 import net.minecraft.util.Util
 import java.io.ByteArrayInputStream
 import java.io.File
@@ -52,8 +52,8 @@ object ScreenshotElement : Renderable() {
     val noScreenshotsYet = Translation("menu.screenshot.no_screenshots_yet", "Taken screenshots will appear here.")
 
     fun load() {
-        Util.getIoWorkerExecutor().execute {
-            val screenshotDir = client.runDirectory.toPath().resolve("screenshots").toFile()
+        Util.ioPool().execute {
+            val screenshotDir = client.gameDirectory.toPath().resolve("screenshots").toFile()
 
             if (screenshotDir.exists() && screenshotDir.isDirectory) {
                 screenshotDir.listFiles()?.filter { it.isFile && (it.extension == "png") }?.sortedBy { it.name }?.apply {
@@ -69,7 +69,7 @@ object ScreenshotElement : Renderable() {
                 catch {
                     val service = FileSystems.getDefault().newWatchService()
 
-                    client.runDirectory.toPath().resolve("screenshots").register(
+                    client.gameDirectory.toPath().resolve("screenshots").register(
                         service,
                         StandardWatchEventKinds.ENTRY_CREATE,
                         StandardWatchEventKinds.ENTRY_MODIFY,
@@ -199,7 +199,7 @@ fun openBigScreenshotNewScreen(file: File) {
     if (!file.exists()) return
 
     if (!contents.containsKey(file)) {
-        Util.getIoWorkerExecutor().execute {
+        Util.ioPool().execute {
             contents[file] = ScreenshotFileData(null, null, false)
             ScreenshotElement.loadFileData(file)
         }
@@ -217,7 +217,7 @@ fun openBigScreenshotNewScreen(file: File) {
             instant = true
         )
 
-        MinecraftClient.getInstance().setScreen(RenderableScreen(this))
+        client.setScreen(RenderableScreen(this))
     }
 }
 
@@ -235,7 +235,7 @@ fun openBigScreenshot(file: File) {
 fun loadTexture(file: File, nativeImage: NativeImage) {
     createIdentifier("bewisclient", "screenshot/${file.nameWithoutExtension}_" + (Math.random() * 0x10000).toInt().toString(16)).also {
         try {
-            MinecraftClient.getInstance().registerTexture(it, nativeImage)
+            Minecraft.getInstance().registerTexture(it, nativeImage)
             contents[file] = ScreenshotFileData(nativeImage, it, false)
         } catch (e: Exception) {
             contents[file] = ScreenshotFileData(null, null, true)
@@ -273,10 +273,10 @@ class BigScreenshotViewElement(val file: File) : Renderable() {
         internalHeight = (width - 2) * 9 / 16 + 21
 
         addRenderable(Button(Translations.OPEN()) {
-            Util.getOperatingSystem().open(file)
+            Util.getPlatform().openFile(file)
         }(x, y + height - 14, (width - 15) / 4, 14))
         addRenderable(Button(Translations.OPEN_FOLDER()) {
-            Util.getOperatingSystem().open(file.parentFile)
+            Util.getPlatform().openFile(file.parentFile)
         }(x + (width - 15) / 4 + 5, y + height - 14, (width - 15) / 4, 14))
         addRenderable(Button(Translations.COPY()) { button ->
             button.text = Translations.COPYING()

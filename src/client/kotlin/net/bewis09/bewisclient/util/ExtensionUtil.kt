@@ -1,16 +1,16 @@
 package net.bewis09.bewisclient.util
 
-import net.minecraft.block.BlockState
-import net.minecraft.entity.Entity
-import net.minecraft.registry.Registries
-import net.minecraft.text.MutableText
-import net.minecraft.text.Text
-import net.minecraft.util.Identifier
+import net.minecraft.core.registries.BuiltInRegistries
+import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.MutableComponent
+import net.minecraft.resources.Identifier
+import net.minecraft.world.entity.Entity
+import net.minecraft.world.level.block.state.BlockState
 
-fun Entity.entityId(): Identifier = Registries.ENTITY_TYPE.getEntry(this.type).key.get().value
+fun Entity.entityId(): Identifier = BuiltInRegistries.ENTITY_TYPE.getKey(this.type)
 
-fun BlockState.blockId(): Identifier = Registries.BLOCK.getEntry(this.block).key.get().value
+fun BlockState.blockId(): Identifier = BuiltInRegistries.BLOCK.getKey(this.block)
 
-fun Text.setColor(color: Int): MutableText = (this as? MutableText ?: this.copy()).styled { it.withColor(color) }
+fun Component.setColor(color: Int): MutableComponent = (this as? MutableComponent ?: this.copy()).withStyle { it.withColor(color) }
 
-fun String.toText(): MutableText = Text.literal(this)
+fun String.toText(): MutableComponent = Component.literal(this)

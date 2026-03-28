@@ -45,7 +45,7 @@ abstract class PopupScreen : Renderable() {
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             screenDrawing.push()
-            screenDrawing.drawContext.translateToTopOptional()
+            screenDrawing.guiGraphics.translateToTopOptional()
             screenDrawing.pushAlpha(alphaAnimation.get()) {
                 screenDrawing.fill(0, 0, width, height, screen.backgroundColor)
                 screenDrawing.setBewisclientFont()

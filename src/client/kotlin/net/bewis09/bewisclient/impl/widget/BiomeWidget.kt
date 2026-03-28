@@ -8,13 +8,11 @@ import net.bewis09.bewisclient.util.*
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
-import net.minecraft.client.MinecraftClient
-import net.minecraft.registry.RegistryKey
-import net.minecraft.text.Text
-import net.minecraft.text.TextColor
-import net.minecraft.util.Identifier
-import net.minecraft.util.math.BlockPos
-import net.minecraft.world.biome.Biome
+import net.minecraft.core.BlockPos
+import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.TextColor
+import net.minecraft.resources.Identifier
+import net.minecraft.server.packs.resources.Resource
 import java.util.*
 
 object BiomeWidget : LineWidget(createIdentifier("bewisclient", "biome_widget")), EventEntrypoint {
@@ -32,11 +30,11 @@ object BiomeWidget : LineWidget(createIdentifier("bewisclient", "biome_widget"))
         ) { it.path.endsWith(".json") }
 
         resources.entries.forEach {
-            it.value.forEach { resource ->
+            it.value.forEach { resource: Resource ->
                 catch {
-                    (Gson().fromJson(resource.reader, JsonElement::class.java).asJsonObject)?.let { jsonObject ->
+                    (Gson().fromJson(resource.openAsReader(), JsonElement::class.java).asJsonObject)?.let { jsonObject ->
                         jsonObject.keySet().forEach { key ->
-                            val biomeCode = jsonObject.get(key)
+                            val biomeCode = jsonObject[key]
                             if (biomeCode.isJsonPrimitive) {
                                 biomeCodes[createIdentifier(key)] = biomeCode.asString
                             } else {
@@ -59,14 +57,14 @@ object BiomeWidget : LineWidget(createIdentifier("bewisclient", "biome_widget"))
 
     override fun getMaximumWidth(): Int = 200
 
-    fun getText(colorCoded: Boolean) = applyColor(Text.translatable(getBiomeID().toTranslationKey("biome")), colorCoded)
+    fun getText(colorCoded: Boolean) = applyColor(Component.translatable(getBiomeID().toLanguageKey("biome")), colorCoded)
 
-    fun applyColor(text: Text, colorCoded: Boolean): Text {
+    fun applyColor(text: Component, colorCoded: Boolean): Component {
         if (!colorCoded) return text
 
         val biome = getBiomeID()
-        val color = TextColor.parse(biomeCodes[biome] ?: return text)
-        if (color.isSuccess) return text.setColor(color.getOrThrow().rgb)
+        val color = TextColor.parseColor(biomeCodes[biome] ?: return text)
+        if (color.isSuccess) return text.setColor(color.getOrThrow().value)
         return text
     }
 
@@ -75,9 +73,9 @@ object BiomeWidget : LineWidget(createIdentifier("bewisclient", "biome_widget"))
     }
 
     fun getBiomeString(): String? {
-        return (MinecraftClient.getInstance().world?.getBiome(
-            MinecraftClient.getInstance().cameraEntity?.blockPos ?: BlockPos(0, 0, 0)
-        ))?.keyOrValue?.map({ biomeKey: RegistryKey<Biome> -> biomeKey.value.toString() }, null)
+        return (client.level?.getBiome(
+            client.cameraEntity?.onPos ?: BlockPos(0, 0, 0)
+        ))?.unwrap()?.map({ biomeKey -> biomeKey.identifier().toString() }, null)
     }
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {

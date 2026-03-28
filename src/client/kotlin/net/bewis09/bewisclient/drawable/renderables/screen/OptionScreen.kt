@@ -25,8 +25,8 @@ import net.bewis09.bewisclient.util.Bewisclient
 import net.bewis09.bewisclient.util.EventEntrypoint
 import net.bewis09.bewisclient.util.color.Color
 import net.bewis09.bewisclient.util.createIdentifier
-import net.minecraft.screen.ScreenTexts
-import net.minecraft.util.Identifier
+import net.minecraft.network.chat.CommonComponents
+import net.minecraft.resources.Identifier
 import net.minecraft.util.Util
 import org.lwjgl.glfw.GLFW
 import kotlin.io.encoding.Base64
@@ -193,11 +193,11 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
         }
 
         override fun init() {
-            addRenderable(MinecraftButton(ScreenTexts.BACK) {
+            addRenderable(MinecraftButton(CommonComponents.GUI_BACK) {
                 client.setScreen(null)
             }(width / 2 - 102, height / 2 + 50, 100, 20))
             addRenderable(MinecraftButton(Translations.MODRINTH()) {
-                Util.getOperatingSystem().open(Constants.MODRINTH_URL)
+                Util.getPlatform().openUri(Constants.MODRINTH_URL)
             }(width / 2 + 2, height / 2 + 50, 100, 20))
         }
 

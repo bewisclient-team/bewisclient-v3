@@ -11,7 +11,7 @@ import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.util.color.*
 import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.settings.types.BooleanSetting
-import net.minecraft.util.Identifier
+import net.minecraft.resources.Identifier
 
 open class ImageSettingCategory(val image: Identifier, text: Translation, setting: Array<Renderable>, enableSetting: BooleanSetting? = null) : SettingCategory(text, setting, enableSetting) {
     constructor(image: String, text: Translation, setting: Array<Renderable>, enableSetting: BooleanSetting? = null) : this(createIdentifier("bewisclient", "textures/gui/functionalities/$image.png"), text, setting, enableSetting)

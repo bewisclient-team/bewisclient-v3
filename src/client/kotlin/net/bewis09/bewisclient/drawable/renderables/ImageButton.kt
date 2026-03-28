@@ -3,10 +3,10 @@ package net.bewis09.bewisclient.drawable.renderables
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.util.color.Color
-import net.minecraft.text.Text
-import net.minecraft.util.Identifier
+import net.minecraft.network.chat.Component
+import net.minecraft.resources.Identifier
 
-open class ImageButton(val image: Identifier, val onClick: (ImageButton) -> Unit, tooltip: Text?) : TooltipHoverable(tooltip) {
+open class ImageButton(val image: Identifier, val onClick: (ImageButton) -> Unit, tooltip: Component?) : TooltipHoverable(tooltip) {
     constructor(image: Identifier, onClick: (ImageButton) -> Unit) : this(image, onClick, null)
 
     var imageColor: () -> Color = { Color.WHITE }

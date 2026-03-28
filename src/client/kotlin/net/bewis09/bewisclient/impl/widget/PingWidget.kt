@@ -1,13 +1,13 @@
 package net.bewis09.bewisclient.impl.widget
 
+import com.mojang.authlib.minecraft.client.MinecraftClient
 import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.toText
 import net.bewis09.bewisclient.mixin.client.ClientPlayNetworkHandlerMixin
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
-import net.minecraft.client.MinecraftClient
-import net.minecraft.text.Text
+import net.minecraft.network.chat.Component
 
 object PingWidget : LineWidget(createIdentifier("bewisclient", "ping_widget")) {
     var lastLatency = 0
@@ -19,8 +19,8 @@ object PingWidget : LineWidget(createIdentifier("bewisclient", "ping_widget")) {
     override val title = "Ping Widget"
     override val description = "Displays your current ping in milliseconds (ms)."
 
-    override fun getLine(): Text {
-        if ((client.isInSingleplayer || !util.isInWorld()) && util.getCurrentRenderableScreen() != null) return pingText(99.toString())
+    override fun getLine(): Component {
+        if ((client.isSingleplayer || !util.isInWorld()) && util.getCurrentRenderableScreen() != null) return pingText(99.toString())
         if (getLatency() < 0) return loadingText()
         return pingText(getLatency().toString())
     }
@@ -29,22 +29,22 @@ object PingWidget : LineWidget(createIdentifier("bewisclient", "ping_widget")) {
 
     override fun getMinimumWidth(): Int = 80
 
-    override fun isHidden(): Boolean = client.isInSingleplayer
+    override fun isHidden(): Boolean = client.isSingleplayer
 
     private fun getLatency(): Int {
         try {
-            if (client.isInSingleplayer || MinecraftClient.getInstance().networkHandler == null) return -1
+            if (client.isSingleplayer || client.connection == null) return -1
 
             if (lastRequest + 100 < System.currentTimeMillis()) {
-                if (!MinecraftClient.getInstance().debugHud.shouldShowPacketSizeAndPingCharts()) {
-                    (MinecraftClient.getInstance().networkHandler as ClientPlayNetworkHandlerMixin).pingMeasurer.ping()
+                if (!client.debugOverlay.showNetworkCharts()) {
+                    (client.connection as ClientPlayNetworkHandlerMixin).pingDebugMonitor.tick()
                 }
 
                 var l = 0
                 var o = 0
-                val log = client.debugHud.pingLog
+                val log = client.debugOverlay.pingLogger
 
-                for (i in 0..19.coerceAtMost(log.length - 1)) {
+                for (i in 0..19.coerceAtMost(log.size() - 1)) {
                     o++
                     l += log[i].toInt()
                 }

@@ -32,14 +32,14 @@ object Zoom : ImageSettingCategory(
 
     fun setUsed(used: Boolean) {
         if (!isUsed() && used) {
-            smoothCameraEnabledBefore = client.options.smoothCameraEnabled
+            smoothCameraEnabledBefore = client.options.smoothCamera
             if (ZoomSettings.smooth.get()) {
-                client.options.smoothCameraEnabled = true
+                client.options.smoothCamera = true
             }
             factorAnimation.set(0.23f)
         } else if (!used && isUsed()) {
             if (ZoomSettings.smooth.get()) {
-                client.options.smoothCameraEnabled = smoothCameraEnabledBefore ?: false
+                client.options.smoothCamera = smoothCameraEnabledBefore ?: false
             }
             factorAnimation.set(1f)
         }
