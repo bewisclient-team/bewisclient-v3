@@ -23,16 +23,14 @@ public abstract class GameRendererMixin {
 
     @Inject(method = "overlayTexture", at = @At("HEAD"), cancellable = true)
     public void getOverlayTexture(CallbackInfoReturnable<OverlayTexture> cir) {
-        if (EntityHighlightSettings.INSTANCE.isEnabled()) {
-            if (enabled != EntityHighlightSettings.INSTANCE.isEnabled() || alpha != EntityHighlightSettings.INSTANCE.getAlpha().get() || color != (EntityHighlightSettings.INSTANCE.getColor().get().getColorInt())) {
-                alpha = EntityHighlightSettings.INSTANCE.getAlpha().get();
-                color = EntityHighlightSettings.INSTANCE.getColor().get().getColorInt();
-                enabled = EntityHighlightSettings.INSTANCE.isEnabled();
+        if (enabled != EntityHighlightSettings.INSTANCE.isEnabled() || (enabled && (alpha != EntityHighlightSettings.INSTANCE.getAlpha().get() || color != (EntityHighlightSettings.INSTANCE.getColor().get().getColorInt())))) {
+            alpha = EntityHighlightSettings.INSTANCE.getAlpha().get();
+            color = EntityHighlightSettings.INSTANCE.getColor().get().getColorInt();
+            enabled = EntityHighlightSettings.INSTANCE.isEnabled();
 
-                overlayTexture = new OverlayTexture();
-            }
-
-            cir.setReturnValue(overlayTexture);
+            overlayTexture = new OverlayTexture();
         }
+
+        cir.setReturnValue(overlayTexture);
     }
 }

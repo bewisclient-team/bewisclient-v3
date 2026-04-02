@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.impl.widget
 
+import net.bewis09.bewisclient.core.name
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.options_structure.addToQuickSettings
 import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSettingsRenderable
@@ -14,6 +15,8 @@ import net.bewis09.bewisclient.util.toText
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.ScalableWidget
+import net.minecraft.SharedConstants
+import net.minecraft.commands.arguments.SlotArgument.slot
 import net.minecraft.core.component.DataComponents
 import net.minecraft.network.chat.Component
 import net.minecraft.world.item.ItemStack
@@ -52,6 +55,8 @@ object ArmorWidget : ScalableWidget(createIdentifier("bewisclient", "armor_widge
         40 to createIdentifier("bewisclient", "textures/gui/sprites/shield.png")
     )
 
+    var componentsLoaded = SharedConstants.getCurrentVersion().name.startsWith("1.")
+
     fun getStacks(): List<Int> {
         val stacks = mutableListOf<Int>()
         if (showHead.get()) stacks.add(39)
@@ -61,9 +66,13 @@ object ArmorWidget : ScalableWidget(createIdentifier("bewisclient", "armor_widge
         if (showOffHand.get()) stacks.add(40)
 
         return stacks.filter {
-            val stack = client.player?.inventory?.getItem(it) ?: getSampleStack(it)
+            val stack = getSlotForStack(it)
             showEmptySlots.get() || (stack != null && !stack.isEmpty)
         }
+    }
+
+    fun getSlotForStack(slot: Int): ItemStack? {
+        return client.player?.inventory?.getItem(slot)?.apply { componentsLoaded = true } ?: if(componentsLoaded) getSampleStack(slot) else null
     }
 
     override fun isEnabledByDefault(): Boolean = false
@@ -79,7 +88,7 @@ object ArmorWidget : ScalableWidget(createIdentifier("bewisclient", "armor_widge
 
         getStacks().forEachIndexed { i, slot ->
             val y = (i * 18) + paddingSize() + 1
-            val stack = client.player?.inventory?.getItem(slot) ?: getSampleStack(slot)
+            val stack = getSlotForStack(slot)
 
             if (stack != null && !stack.isEmpty) {
                 screenDrawing.drawItemStackWithOverlay(stack, paddingSize() + 1, y)
@@ -105,7 +114,7 @@ object ArmorWidget : ScalableWidget(createIdentifier("bewisclient", "armor_widge
     }
 
     fun getTextForArmor(slot: Int): Component {
-        val armorStack = client.player?.inventory?.getItem(slot) ?: getSampleStack(slot)
+        val armorStack = getSlotForStack(slot)
 
         if (armorStack == null || armorStack.isEmpty || armorStack.maxDamage == 0) {
             return Component.empty()

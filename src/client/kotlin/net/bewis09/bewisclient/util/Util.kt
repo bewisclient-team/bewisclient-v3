@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.util
 
+import net.bewis09.bewisclient.core.Identifier
 import net.minecraft.network.chat.Component
-import net.minecraft.resources.Identifier
 
 inline fun <T> catch(block: () -> T, or: T) = catch(block) ?: or
 

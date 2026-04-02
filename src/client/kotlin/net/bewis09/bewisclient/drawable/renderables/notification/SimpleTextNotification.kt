@@ -1,14 +1,16 @@
 package net.bewis09.bewisclient.drawable.renderables.notification
 
-import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.translate
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.util.color.Color
 import net.minecraft.network.chat.Component
 
-class SimpleTextNotification(val text: Component, val duration: Long = 5000): Renderable() {
+class SimpleTextNotification(val text: Component, val duration: Long = 5000): Notification() {
     val start = System.currentTimeMillis()
+
+    override val progress: Float
+        get() = ((System.currentTimeMillis() - start).toFloat() / duration).coerceIn(0f, 1f)
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         screenDrawing.translate(0L.coerceAtLeast(System.currentTimeMillis() + 500L - start - duration) / 400f * 120,0f) {

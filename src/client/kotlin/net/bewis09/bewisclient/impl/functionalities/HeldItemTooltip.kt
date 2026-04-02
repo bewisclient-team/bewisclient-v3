@@ -61,7 +61,7 @@ object HeldItemTooltip : ImageSettingCategory(
             val id = BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(componentType).toString()
             parts.add(
                 MultipleBooleanSettingsRenderable.Part(
-                    Translation.literal(toReadableString(id)), null, object : SettingInterface<Boolean> {
+                    Component.literal(toReadableString(id)), null, object : SettingInterface<Boolean> {
                         override fun get(): Boolean {
                             return HeldItemTooltipSettings.showMap[id, !defaultOff.contains(componentType)]
                         }
@@ -113,14 +113,14 @@ object HeldItemTooltip : ImageSettingCategory(
                 l = 255
             }
 
-            var y: Int = util.height - 59
+            var y: Int = screenHeight - 59
             if (client.gameMode?.hasExperience() == false) {
                 y += 14
             }
 
             if (l > 0) {
                 for ((index, text) in texts.withIndex()) {
-                    screenDrawing.drawCenteredTextWithShadow(text, util.width / 2, y + (index - texts.size + 1) * 10, Color.WHITE alpha (l / 255f))
+                    screenDrawing.drawCenteredTextWithShadow(text, screenWidth / 2, y + (index - texts.size + 1) * 10, Color.WHITE alpha (l / 255f))
                 }
             }
             isRendering = false

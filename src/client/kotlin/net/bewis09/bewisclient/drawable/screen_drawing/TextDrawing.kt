@@ -5,17 +5,18 @@ import net.bewis09.bewisclient.util.color.Color
 import net.bewis09.bewisclient.util.color.color
 import net.bewis09.bewisclient.util.toText
 import net.minecraft.network.chat.Component
-import net.minecraft.resources.Identifier
+import net.bewis09.bewisclient.core.Identifier
+import net.bewis09.bewisclient.core.string
 
 interface TextDrawing : RectDrawing {
     fun drawText(text: String, x: Int, y: Int, color: Color, font: Identifier? = this.overwrittenFont) {
         drawText(text.toText(), x, y, color, font)
     }
 
-    fun drawText(text: Component, x: Int, y: Int, color: Color, font: Identifier? = this.overwrittenFont) {
+    fun drawText(text: Component, x: Int, y: Int, color: Color, font: Identifier? = this.overwrittenFont, shadow: Boolean = false) {
         val color = applyAlpha(color)
         if (color.toLong().color.alpha < 4) return
-        guiGraphics.drawString(textRenderer, text.copy().setFont(font), x, y, color, false)
+        guiGraphics.string(textRenderer, text.copy().setFont(font), x, y, color, shadow)
     }
 
     fun drawTextWithShadow(text: String, x: Int, y: Int, color: Color, font: Identifier? = this.overwrittenFont) {
@@ -23,9 +24,7 @@ interface TextDrawing : RectDrawing {
     }
 
     fun drawTextWithShadow(text: Component, x: Int, y: Int, color: Color, font: Identifier? = this.overwrittenFont) {
-        val color = applyAlpha(color)
-        if (color.toLong().color.alpha < 4) return
-        guiGraphics.drawString(textRenderer, text.copy().setFont(font), x, y, color, true)
+        drawText(text, x, y, color, font, shadow = true)
     }
 
     fun drawText(text: String, x: Int, y: Int, color: Color, shadow: Boolean, font: Identifier? = this.overwrittenFont) {

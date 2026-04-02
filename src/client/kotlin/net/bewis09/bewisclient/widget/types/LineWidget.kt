@@ -1,12 +1,12 @@
 package net.bewis09.bewisclient.widget.types
 
+import net.bewis09.bewisclient.core.Identifier
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
 import net.bewis09.bewisclient.util.MathHelper
 import net.bewis09.bewisclient.util.toText
 import net.minecraft.network.chat.Component
-import net.minecraft.resources.Identifier
 
 abstract class LineWidget(id: Identifier) : ScalableWidget(id) {
     private var lineWidth = 0

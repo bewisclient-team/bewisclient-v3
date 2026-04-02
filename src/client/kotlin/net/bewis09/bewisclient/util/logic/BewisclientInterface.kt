@@ -14,6 +14,12 @@ interface BewisclientInterface : BewisclientLogger, FileLogic, InGameLogic, Draw
         private val logger = LoggerFactory.getLogger("Bewisclient")
     }
 
+    val screenWidth
+        get() = client.window?.guiScaledWidth ?: 1000
+
+    val screenHeight
+        get() = client.window?.guiScaledHeight ?: 1000
+
     override val logger: Logger
         get() = BewisclientInterface.logger
 

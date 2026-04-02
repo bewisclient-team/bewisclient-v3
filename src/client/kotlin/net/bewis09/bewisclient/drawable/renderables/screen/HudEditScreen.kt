@@ -21,7 +21,7 @@ import net.bewis09.bewisclient.widget.WidgetLoader.widgets
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.types.ScalableWidget
-import net.minecraft.resources.Identifier
+import net.bewis09.bewisclient.core.Identifier
 import org.lwjgl.glfw.GLFW
 import kotlin.math.abs
 
@@ -121,7 +121,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
                 var drawX = mouseX
                 var drawY = mouseY - tooltipHeight
 
-                if (drawX + width > util.width) {
+                if (drawX + width > screenWidth) {
                     drawX -= width
                 }
                 if (drawY < 0) {
@@ -140,6 +140,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
     }
 
     override fun init() {
+        super.init()
         addRenderable(ImageButton(createIdentifier("bewisclient", "textures/gui/sprites/add.png")) {
             openPopup(AddWidgetPopup(), Color.BLACK alpha 0.625f)
         }.setImagePadding(0)(width - 16, height - 16, 14, 14))

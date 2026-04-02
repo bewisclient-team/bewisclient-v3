@@ -7,8 +7,15 @@ import net.bewis09.bewisclient.drawable.renderables.Input
 import net.bewis09.bewisclient.drawable.renderables.MinecraftButton
 import net.bewis09.bewisclient.drawable.renderables.Plane
 import net.bewis09.bewisclient.drawable.renderables.VerticalAlignScrollPlane
+import net.bewis09.bewisclient.drawable.renderables.notification.NotificationManager
+import net.bewis09.bewisclient.drawable.renderables.notification.ProgressNotification
+import net.bewis09.bewisclient.drawable.renderables.notification.SimpleTextNotification
+import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawingInterface
+import net.bewis09.bewisclient.game.Translation
+import net.bewis09.bewisclient.impl.pack.Modrinth.downloadFailed
+import net.bewis09.bewisclient.impl.pack.Modrinth.downloadFailedReason
 import net.bewis09.bewisclient.util.color.Color
 import net.bewis09.bewisclient.util.color.color
 import net.bewis09.bewisclient.util.createIdentifier
@@ -144,12 +151,22 @@ class PackListScreen(val type: Modrinth.Type, val parent: Screen, val folder: Pa
             if (isMouseOver(mouseX.toFloat(), mouseY.toFloat(), x + 4, y, 32, 32)) {
                 Modrinth.loadPack(pack.slug) { p ->
                     Modrinth.loadVersions(p) { map ->
-                        map.values.filter { it.game_versions.contains(SharedConstants.getCurrentVersion().name) }.maxByOrNull { it.date_published }?.let { version ->
-                            version.files.firstOrNull { it.primary }?.let { file ->
-                                downloadFile(URI(file.url).toURL()) {
+                        map.values.filter { it.loaders.contains(type.loader) && it.game_versions.contains(SharedConstants.getCurrentVersion().name) }.maxByOrNull { it.date_published }?.let { version ->
+                            version.files.firstOrNull { it.primary }?.also { file ->
+                                val progressNotification = ProgressNotification(Modrinth.downloading(pack.title))
+                                NotificationManager.addNotification(progressNotification)
+                                downloadFileWithProgress(URI(file.url), {
+                                    progressNotification.progress = it
+                                }, {
                                     folder.resolve(file.filename).writeBytes(it)
+                                }) {
+                                    NotificationManager.addNotification(SimpleTextNotification(downloadFailedReason(it.message ?: "Unknown error")))
                                 }
+                            } ?: run {
+                                NotificationManager.addNotification(SimpleTextNotification(downloadFailed()))
                             }
+                        } ?: run {
+                            NotificationManager.addNotification(SimpleTextNotification(downloadFailed()))
                         }
                     }
                 }

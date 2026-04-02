@@ -16,4 +16,12 @@ abstract class LightmapTextureManagerMixin {
         }
         return 1.0f;
     }
+
+    @Redirect(method = "updateLightTexture", at = @At(value = "INVOKE", target = "Ljava/lang/Double;floatValue()F", ordinal = 1))
+    private float invokeGamma(Double instance) {
+        if (!FullbrightSettings.INSTANCE.isEnabled()) {
+            return instance.floatValue();
+        }
+        return FullbrightSettings.INSTANCE.getBrightness().get();
+    }
 }

@@ -1,9 +1,9 @@
 package net.bewis09.bewisclient.util
 
+import net.bewis09.bewisclient.core.Identifier
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.MutableComponent
-import net.minecraft.resources.Identifier
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.level.block.state.BlockState
 

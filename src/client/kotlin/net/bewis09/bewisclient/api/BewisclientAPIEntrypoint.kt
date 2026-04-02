@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.api
 
+import net.bewis09.bewisclient.core.Identifier
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.options_structure.SettingCategory
 import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCategory
@@ -11,7 +12,6 @@ import net.bewis09.bewisclient.settings.Settings
 import net.bewis09.bewisclient.util.logic.BewisclientInterface
 import net.bewis09.bewisclient.widget.Widget
 import net.fabricmc.loader.api.ModContainer
-import net.minecraft.resources.Identifier
 import kotlin.jvm.optionals.getOrNull
 
 /**

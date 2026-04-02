@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.cosmetics
 
+import net.bewis09.bewisclient.core.Identifier
 import net.bewis09.bewisclient.util.Bewisclient
-import net.minecraft.resources.Identifier
 import java.awt.image.BufferedImage
 import java.io.ByteArrayInputStream
 import java.io.IOException
@@ -16,7 +16,7 @@ class AnimatedCosmetic(val baseIdentifier: Identifier, val frames: Int) : Cosmet
         fun create(baseIdentifier: CosmeticIdentifier, byteArray: ByteArray, frames: Int): AnimatedCosmetic {
             val frameArray = getFrames(byteArray, frames)
 
-            frameArray.mapIndexed { index, image ->
+            frameArray.forEachIndexed { index: Int, image: BufferedImage ->
                 Bewisclient.createTexture(baseIdentifier.identifier.withSuffix("_$index"), image)
             }
 

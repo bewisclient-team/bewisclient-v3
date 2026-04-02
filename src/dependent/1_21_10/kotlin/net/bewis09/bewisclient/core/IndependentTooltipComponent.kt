@@ -1,23 +1,23 @@
 package net.bewis09.bewisclient.core
 
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.minecraft.client.font.TextRenderer
-import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.gui.tooltip.TooltipComponent
+import net.minecraft.client.gui.Font
+import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
 
-interface IndependentTooltipComponent : TooltipComponent {
+interface IndependentTooltipComponent : ClientTooltipComponent {
     fun getWidthDef(): Int
     fun getHeightDef(): Int
 
-    override fun getWidth(textRenderer: TextRenderer?): Int {
+    override fun getWidth(textRenderer: Font): Int {
         return getWidthDef()
     }
 
-    override fun getHeight(textRenderer: TextRenderer?): Int {
+    override fun getHeight(textRenderer: Font): Int {
         return getHeightDef()
     }
 
-    override fun drawItems(textRenderer: TextRenderer, x: Int, y: Int, width: Int, height: Int, context: DrawContext) {
+    override fun renderImage(textRenderer: Font, x: Int, y: Int, width: Int, height: Int, context: GuiGraphics) {
         drawItems(x, y, ScreenDrawing(context, textRenderer))
     }
 

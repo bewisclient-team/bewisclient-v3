@@ -2,13 +2,13 @@ package net.bewis09.bewisclient.cosmetics
 
 import com.google.gson.Gson
 import com.mojang.authlib.GameProfile
+import net.bewis09.bewisclient.core.Util
 import net.bewis09.bewisclient.data.Constants
 import net.bewis09.bewisclient.settings.types.ObjectSetting
 import net.bewis09.bewisclient.settings.types.StringMapSetting
 import net.bewis09.bewisclient.util.EventEntrypoint
 import net.bewis09.bewisclient.util.catch
 import net.minecraft.client.multiplayer.PlayerInfo
-import net.minecraft.util.Util
 import net.minecraft.world.item.Items
 import java.net.HttpURLConnection
 import java.net.URI

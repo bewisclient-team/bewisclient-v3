@@ -5,7 +5,8 @@ import net.bewis09.bewisclient.drawable.renderables.popup.AddWidgetPopup
 import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.impl.functionalities.Fullbright
-import net.bewis09.bewisclient.impl.renderable.TiwylaLinesSettingsPopup
+import net.bewis09.bewisclient.impl.pack.Modrinth
+import net.bewis09.bewisclient.impl.renderable.popup.TiwylaLinesSettingsPopup
 import net.bewis09.bewisclient.util.EventEntrypoint
 import net.bewis09.bewisclient.util.color.colors
 
@@ -19,5 +20,6 @@ object TranslationLoader : EventEntrypoint {
         AddWidgetPopup
         HudEditScreen
         TiwylaLinesSettingsPopup
+        Modrinth
     }
 }

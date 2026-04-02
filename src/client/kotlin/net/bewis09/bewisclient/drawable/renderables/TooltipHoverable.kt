@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.drawable.renderables
 
+import net.bewis09.bewisclient.core.translateToTopOptional
 import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.util.color.Color
@@ -43,12 +44,15 @@ open class TooltipHoverable(val tooltip: () -> Component?) : Hoverable() {
 
                 val width = wrappedText.maxOfOrNull { screenDrawing.getTextWidth(it) }?.plus(10) ?: 210
 
-                if (mouseX + width > util.width) {
+                if (mouseX + width > screenWidth) {
                     screenDrawing.translate(-width.toFloat(), 0f)
                 }
 
+                screenDrawing.push()
+                screenDrawing.guiGraphics.translateToTopOptional()
                 screenDrawing.fillRounded(mouseX, mouseY - tooltipHeight, width, tooltipHeight, 5, Color.BLACK alpha tooltipAnimation.get() * 0.8f)
                 screenDrawing.drawWrappedText(wrappedText, mouseX + 5, mouseY - tooltipHeight + 5, Color.WHITE alpha tooltipAnimation.get())
+                screenDrawing.pop()
             })
         } else {
             if (tooltipAnimation.get() != 0f) tooltipAnimation.pauseForOnce()

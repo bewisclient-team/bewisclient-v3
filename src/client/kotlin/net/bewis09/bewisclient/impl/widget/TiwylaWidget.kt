@@ -2,6 +2,8 @@ package net.bewis09.bewisclient.impl.widget
 
 import com.google.gson.*
 import net.bewis09.bewisclient.api.APIEntrypointLoader
+import net.bewis09.bewisclient.core.Identifier
+import net.bewis09.bewisclient.core.getOrNull
 import net.bewis09.bewisclient.core.setFont
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.options_structure.addToQuickSettings
@@ -22,7 +24,6 @@ import net.bewis09.bewisclient.widget.types.ScalableWidget
 import net.minecraft.core.BlockPos
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
-import net.minecraft.resources.Identifier
 import net.minecraft.server.packs.resources.Resource
 import net.minecraft.tags.BlockTags
 import net.minecraft.world.entity.Entity
@@ -356,16 +357,16 @@ object TiwylaWidget : ScalableWidget(createIdentifier("bewisclient", "tiwyla_wid
     }
 
     @Suppress("FunctionName")
-    private fun `snake_toWord With Spaces`(str: String): String {
+    fun `snake_toWord With Spaces`(str: String): String {
         return str.split("_".toRegex()).filter { it.isNotEmpty() }.joinToString(" ") {
             it.replaceFirstChar(Char::uppercaseChar)
         }
     }
 
     @Suppress("FunctionName")
-    private fun snake_toCamelCase(str: String): String {
+    fun snake_toCamelCase(str: String): String {
         return str.split("_".toRegex()).filter { it.isNotEmpty() }.mapIndexed { i, it ->
-            if (i == 0) it.lowercase() else it.replaceFirstChar(Char::uppercaseChar)
+            it.replaceFirstChar(Char::uppercaseChar)
         }.joinToString("")
     }
 
@@ -388,8 +389,8 @@ object TiwylaWidget : ScalableWidget(createIdentifier("bewisclient", "tiwyla_wid
 
                         if (property.isJsonPrimitive) {
                             val propertyId = property.asString
-                            val b: Block = BuiltInRegistries.BLOCK.getValue(createIdentifier(block))
-                            if (b == BuiltInRegistries.BLOCK.getValue(createIdentifier("hehe"))) return@forEach
+                            val b: Block = BuiltInRegistries.BLOCK.getOrNull(createIdentifier(block)) ?: return@forEach
+                            if (b == BuiltInRegistries.BLOCK.getOrNull(createIdentifier("hehe"))) return@forEach
                             blockStateInfoMap[block] = b.stateDefinition.properties.firstOrNull { a -> a.name == propertyId } ?: run {
                                 warn("Unknown block property: $propertyId for block $block in pack ${resource.sourcePackId()}")
                                 return@forEach

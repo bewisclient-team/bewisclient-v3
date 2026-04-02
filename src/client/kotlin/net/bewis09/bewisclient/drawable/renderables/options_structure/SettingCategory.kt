@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.drawable.renderables.options_structure
 
+import net.bewis09.bewisclient.core.Identifier
 import net.bewis09.bewisclient.drawable.*
 import net.bewis09.bewisclient.drawable.renderables.*
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
@@ -11,7 +12,6 @@ import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.util.color.*
 import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.settings.types.BooleanSetting
-import net.minecraft.resources.Identifier
 
 open class ImageSettingCategory(val image: Identifier, text: Translation, setting: Array<Renderable>, enableSetting: BooleanSetting? = null) : SettingCategory(text, setting, enableSetting) {
     constructor(image: String, text: Translation, setting: Array<Renderable>, enableSetting: BooleanSetting? = null) : this(createIdentifier("bewisclient", "textures/gui/functionalities/$image.png"), text, setting, enableSetting)

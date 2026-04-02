@@ -2,7 +2,6 @@ package net.bewis09.bewisclient.core
 
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.minecraft.client.gui.Font
-import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
 
 interface IndependentTooltipComponent : ClientTooltipComponent {
@@ -17,7 +16,7 @@ interface IndependentTooltipComponent : ClientTooltipComponent {
         return getHeightDef()
     }
 
-    override fun renderImage(textRenderer: Font, x: Int, y: Int, width: Int, height: Int, context: GuiGraphics) {
+    override fun extractImage(textRenderer: Font, x: Int, y: Int, width: Int, height: Int, context: GuiGraphics) {
         drawItems(x, y, ScreenDrawing(context, textRenderer))
     }
 

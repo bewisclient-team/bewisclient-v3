@@ -1,12 +1,12 @@
 package net.bewis09.bewisclient.screen
 
+import net.bewis09.bewisclient.core.GuiGraphics
 import net.bewis09.bewisclient.core.IndependentScreen
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.notification.NotificationManager
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.interfaces.BackgroundEffectProvider
 import net.bewis09.bewisclient.util.toText
-import net.minecraft.client.gui.GuiGraphics
 
 class RenderableScreen(val renderable: Renderable) : IndependentScreen("".toText()) {
     var deltaTicks: Float = 0f

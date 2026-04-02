@@ -7,25 +7,19 @@ import net.bewis09.bewisclient.util.EventEntrypoint
 object NotificationManager : EventEntrypoint {
     private val notifications = mutableListOf<Notification>()
 
-    fun addNotification(renderable: Renderable, duration: Long = 5000) {
-        notifications.add(Notification(renderable, System.currentTimeMillis(), duration))
-    }
-
-    fun Renderable.removeNotification() {
-        notifications.removeIf { it.renderable == this }
+    fun addNotification(renderable: Notification, duration: Long = 5000) {
+        notifications.add(renderable)
     }
 
     fun getNotifications(): List<Renderable> {
-        notifications.removeIf { System.currentTimeMillis() - it.startTime > it.duration }
-        return notifications.map { it.renderable }
+        notifications.removeIf { it.progress >= 1f }
+        return notifications
     }
-
-    private class Notification(val renderable: Renderable, val startTime: Long, val duration: Long)
 
     fun renderNotifications(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         var yOffset = 0
         getNotifications().forEach {
-            it.setPosition(client.window.guiScaledWidth - it.width, 4 + yOffset)
+            it.setPosition(screenWidth - it.width, 4 + yOffset)
             it.render(screenDrawing, mouseX, mouseY)
             yOffset += it.height + 4
         }

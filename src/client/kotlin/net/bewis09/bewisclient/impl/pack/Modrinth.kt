@@ -3,12 +3,14 @@ package net.bewis09.bewisclient.impl.pack
 import com.mojang.blaze3d.platform.NativeImage
 import net.bewis09.bewisclient.core.*
 import net.bewis09.bewisclient.drawable.Translations
+import net.bewis09.bewisclient.drawable.renderables.notification.NotificationManager
+import net.bewis09.bewisclient.drawable.renderables.notification.SimpleTextNotification
+import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.settings.Settings.Companion.gson
 import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.logic.BewisclientInterface
 import net.minecraft.SharedConstants
 import net.minecraft.network.chat.Component
-import net.minecraft.resources.Identifier
 import org.apache.commons.io.output.ByteArrayOutputStream
 import java.io.ByteArrayInputStream
 import java.net.URI
@@ -162,11 +164,16 @@ object Modrinth : BewisclientInterface {
         val total_hits: Int
     )
 
-    enum class Type(val url: String, val text: Component) {
-        RESOURCE_PACK("resourcepack", Translations.ADD_RESOURCE_PACK()),
-        DATA_PACK("datapack", Translations.ADD_DATA_PACK()),
+    enum class Type(val url: String, val text: Component, val loader: String) {
+        RESOURCE_PACK("resourcepack", Translations.ADD_RESOURCE_PACK(), "minecraft"),
+        DATA_PACK("datapack", Translations.ADD_DATA_PACK(), "datapack"),
 //        SHADER("shader")
     }
+
+    val downloadFailed = Translation("pack.download_failed", "Failed to download pack. Please try again later.")
+    val downloadFailedReason = Translation("pack.download_failed_reason", "Failed to download pack. Reason: %reason%")
+    val searchFailedReason = Translation("pack.search_failed", "Failed to search for packs. %reason%")
+    val downloading = Translation("pack.downloading", "Downloading %s...")
 
     fun getPageOfType(type: Type, page: Int, query: String): List<ListPack>? {
         loadPage(type, page, query)
@@ -184,12 +191,14 @@ object Modrinth : BewisclientInterface {
 
         typeMaps[type to query]!!.first[page] = null to false
 
-        downloadFile("https://api.modrinth.com/v2/search?query=${URLEncoder.encode(query.replace(Regex("&\\?="), ""), "UTF-8")}&facets=%5B%5B%22project_type:${type.url}%22%5D,%5B%22versions:${SharedConstants.getCurrentVersion().name}%22%5D%5D&limit=20&offset=${page * 20}") {
+        downloadFile("https://api.modrinth.com/v2/search?query=${URLEncoder.encode(query.replace(Regex("&\\?="), ""), "UTF-8")}&facets=%5B%5B%22project_type:${type.url}%22%5D,%5B%22versions:${SharedConstants.getCurrentVersion().name}%22%5D%5D&limit=20&offset=${page * 20}", {
             val json = gson.fromJson(String(it), ModrinthSearchResult::class.java)
             if (typeMaps[type to query]!!.second == null) {
                 typeMaps[type to query] = typeMaps[type to query]!!.first to json.total_hits
             }
             typeMaps[type to query]!!.first[page] = json.hits to true
+        }) {
+            NotificationManager.addNotification(SimpleTextNotification(searchFailedReason(it.message ?: "Unknown Error")))
         }
     }
 
@@ -216,10 +225,12 @@ object Modrinth : BewisclientInterface {
 
         packCache.putIfAbsent(slug, null)
 
-        downloadFile("https://api.modrinth.com/v2/project/$slug") {
+        downloadFile("https://api.modrinth.com/v2/project/$slug", {
             val json = gson.fromJson(String(it), Pack::class.java)
             packCache[slug] = json
             onFinish?.invoke(json)
+        }) {
+            NotificationManager.addNotification(SimpleTextNotification(downloadFailedReason(it.message ?: "Unknown Error")))
         }
     }
 

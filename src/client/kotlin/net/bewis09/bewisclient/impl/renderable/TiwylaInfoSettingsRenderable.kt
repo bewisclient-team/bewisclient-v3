@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.impl.renderable
 
+import net.bewis09.bewisclient.core.getOrNull
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.Rectangle
 import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSettingsRenderable
@@ -7,10 +8,12 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.widget.TiwylaWidget
 import net.bewis09.bewisclient.interfaces.SettingInterface
+import net.bewis09.bewisclient.util.color.Color
 import net.bewis09.bewisclient.util.color.alpha
 import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.staticFun
 import net.minecraft.core.registries.BuiltInRegistries
+import net.minecraft.network.chat.Component
 import kotlin.jvm.optionals.getOrNull
 
 class TiwylaInfoSettingsRenderable : Renderable() {
@@ -19,7 +22,7 @@ class TiwylaInfoSettingsRenderable : Renderable() {
         null,
         TiwylaWidget.blockStateInfoMap.map {
             MultipleBooleanSettingsRenderable.Part(
-                Translation.literal(BuiltInRegistries.BLOCK.get(createIdentifier(it.key)).getOrNull()?.value()?.name?.string + " -> " + it.value),
+                Component.literal(BuiltInRegistries.BLOCK.getOrNull(createIdentifier(it.key))?.name?.string + " -> " + TiwylaWidget.snake_toCamelCase(it.value.name)),
                 null,
                 object : SettingInterface<Boolean> {
                     override fun get(): Boolean {
@@ -39,15 +42,15 @@ class TiwylaInfoSettingsRenderable : Renderable() {
         null,
         TiwylaWidget.entityInfoProviders.map {
             MultipleBooleanSettingsRenderable.Part(
-                Translation.literal(it.second.entityType.description.string + " §0(${it.first.namespace})"),
+                Component.literal(it.second.entityType.description.string).append(Component.literal(" "+it.first.namespace).withColor(Color.LIGHT_GRAY.argb)),
                 null,
                 object : SettingInterface<Boolean> {
                     override fun get(): Boolean {
-                        return TiwylaWidget.entitySpecialInfoMap[BuiltInRegistries.ENTITY_TYPE.getResourceKey(it.second.entityType).getOrNull()?.toString() ?: return true] != false
+                        return TiwylaWidget.entitySpecialInfoMap[BuiltInRegistries.ENTITY_TYPE.getKey(it.second.entityType).toString()] != false
                     }
 
                     override fun set(value: Boolean?) {
-                        TiwylaWidget.entitySpecialInfoMap[BuiltInRegistries.ENTITY_TYPE.getResourceKey(it.second.entityType).getOrNull()?.toString() ?: return] = value
+                        TiwylaWidget.entitySpecialInfoMap[BuiltInRegistries.ENTITY_TYPE.getKey(it.second.entityType).toString()] = value
                     }
                 }
             )

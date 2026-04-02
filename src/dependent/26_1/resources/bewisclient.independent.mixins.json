@@ -15,7 +15,9 @@
     "SkinTexturesMixin",
     "TitleScreenMixin",
     "TooltipDisplayComponentMixin",
-    "WorldRendererMixin"
+    "WorldRendererMixin",
+    "InGameHudMixin",
+    "BlockItemMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,9 +1,10 @@
 package net.bewis09.bewisclient.widget.logic
 
 import com.google.gson.JsonElement
+import net.bewis09.bewisclient.util.logic.BewisclientInterface
 import net.bewis09.bewisclient.widget.Widget
 
-interface WidgetPosition {
+interface WidgetPosition: BewisclientInterface {
     fun getX(widget: Widget): Float
     fun getY(widget: Widget): Float
 

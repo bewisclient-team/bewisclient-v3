@@ -1,11 +1,11 @@
 package net.bewis09.bewisclient.drawable.renderables
 
+import net.bewis09.bewisclient.core.Identifier
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.translate
 import net.bewis09.bewisclient.util.color.Color
 import net.minecraft.network.chat.Component
-import net.minecraft.resources.Identifier
 
 class TextElement(val text: () -> Component, val color: () -> Color, val centered: Boolean = false, val font: Identifier? = null) : Renderable() {
     constructor(text: Component, color: () -> Color, centered: Boolean = false, font: Identifier? = null) : this({ text }, color, centered, font)

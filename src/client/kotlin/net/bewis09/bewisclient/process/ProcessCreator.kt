@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.process
 
-import net.minecraft.util.Util
+import net.bewis09.bewisclient.core.Util
 import java.io.File
 
 object ProcessCreator {

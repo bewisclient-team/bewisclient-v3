@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.drawable.renderables.options_structure
 
+import net.bewis09.bewisclient.core.Identifier
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.Plane
 import net.bewis09.bewisclient.drawable.renderables.TextElement
@@ -8,7 +9,6 @@ import net.bewis09.bewisclient.drawable.renderables.VerticalScrollGrid
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
-import net.minecraft.resources.Identifier
 
 open class SidebarCategory(val id: Identifier, val name: Translation, val renderable: Renderable) {
     constructor(id: Identifier, name: String, renderable: Renderable) : this(id, Translation(id.namespace, "menu.category."+id.path, name), renderable)

@@ -30,7 +30,7 @@ class MultipleBooleanSettingsRenderable(
     }
 
     class Part(
-        val name: Translation, tooltip: Component? = null, val setting: SettingInterface<Boolean>
+        val name: Component, tooltip: Component? = null, val setting: SettingInterface<Boolean>
     ) : TooltipHoverable(tooltip) {
         val switch = Switch(
             state = setting::get,
@@ -47,7 +47,7 @@ class MultipleBooleanSettingsRenderable(
             super.render(screenDrawing, mouseX, mouseY)
             screenDrawing.drawHorizontalLine(x + 5, y - 2, width - 10, 0xAAAAAA alpha 0.2F)
             screenDrawing.translate(0f, height / 2f - screenDrawing.getTextHeight() / 2f) {
-                screenDrawing.drawText(name.getTranslatedString(), x + 8, y, OptionsMenuSettings.getTextThemeColor())
+                screenDrawing.drawText(name, x + 8, y, OptionsMenuSettings.getTextThemeColor())
             }
             renderRenderables(screenDrawing, mouseX, mouseY)
         }

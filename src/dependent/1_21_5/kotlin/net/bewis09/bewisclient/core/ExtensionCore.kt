@@ -1,117 +1,130 @@
 package net.bewis09.bewisclient.core
 
+import com.mojang.blaze3d.platform.InputConstants
+import com.mojang.blaze3d.platform.NativeImage
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawingInterface
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
-import net.minecraft.client.MinecraftClient
-import net.minecraft.client.font.TextRenderer
-import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.option.KeyBinding
-import net.minecraft.client.render.RenderLayer
-import net.minecraft.client.texture.NativeImage
-import net.minecraft.client.texture.NativeImageBackedTexture
-import net.minecraft.client.util.InputUtil
-import net.minecraft.component.DataComponentTypes
-import net.minecraft.entity.LivingEntity
-import net.minecraft.entity.passive.HorseEntity
-import net.minecraft.item.Item
-import net.minecraft.item.ItemStack
-import net.minecraft.item.tooltip.TooltipType
-import net.minecraft.resource.metadata.ResourceMetadataSerializer
-import net.minecraft.text.MutableText
-import net.minecraft.text.Text
-import net.minecraft.util.Formatting
-import net.minecraft.util.Identifier
-import net.minecraft.util.math.Vec3d
-import net.minecraft.util.profiler.Profilers
+import net.minecraft.ChatFormatting
+import net.minecraft.Util
+import net.minecraft.WorldVersion
+import net.minecraft.client.KeyMapping
+import net.minecraft.client.Minecraft
+import net.minecraft.client.gui.Font
+import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.client.renderer.RenderType
+import net.minecraft.client.renderer.texture.DynamicTexture
+import net.minecraft.core.DefaultedRegistry
+import net.minecraft.core.component.DataComponents
+import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.MutableComponent
+import net.minecraft.resources.ResourceKey
+import net.minecraft.resources.ResourceLocation
+import net.minecraft.server.packs.metadata.MetadataSectionType
+import net.minecraft.util.profiling.Profiler
+import net.minecraft.world.entity.LivingEntity
+import net.minecraft.world.entity.animal.horse.Horse
+import net.minecraft.world.item.Item
+import net.minecraft.world.item.ItemStack
+import net.minecraft.world.item.TooltipFlag
+import net.minecraft.world.item.component.TooltipDisplay
+import net.minecraft.world.phys.Vec3
 import org.joml.Quaternionf
 import java.io.File
 import java.util.function.Consumer
 
-fun LivingEntity.pos(): Vec3d = this.pos
+fun LivingEntity.pos(): Vec3 = this.position()
 
-fun HorseEntity.getColor(): String = this.horseColor.name.lowercase()
+fun Horse.getColor(): String = this.variant.name.lowercase()
 
 var LivingEntity.beforeHeadYaw: Float
-    get() = this.lastHeadYaw
+    get() = this.yHeadRotO
     set(value) {
-        this.lastHeadYaw = value
+        this.yHeadRotO = value
     }
 
-fun Text.setFont(id: Identifier?): Text {
-    return (this as? MutableText ?: this.copy()).styled { it.withFont((id ?: ScreenDrawingInterface.BEWISCLIENT_FONT)) }
+fun Component.setFont(id: Identifier?): MutableComponent {
+    return (this as? MutableComponent ?: this.copy()).withStyle { it.withFont(id ?: ScreenDrawingInterface.BEWISCLIENT_FONT) }
 }
 
-fun DrawContext.pop() = this.matrices.pop()
-
-fun DrawContext.push() = this.matrices.push()
-
-fun DrawContext.translate(x: Float, y: Float) {
-    this.matrices.translate(x.toDouble(), y.toDouble(), 0.0)
+fun GuiGraphics.pop() {
+    this.pose().popPose()
 }
 
-fun DrawContext.scale(x: Float, y: Float) {
-    this.matrices.scale(x, y, 1f)
+fun GuiGraphics.push() {
+    this.pose().pushPose()
 }
 
-fun DrawContext.rotate(angle: Float) = this.matrices.multiply(Quaternionf().rotateZ(angle))
+fun GuiGraphics.translate(x: Float, y: Float) {
+    this.pose().translate(x, y, 0f)
+}
 
-fun DrawContext.drawTexture(
+fun GuiGraphics.scale(x: Float, y: Float) {
+    this.pose().scale(x, y, 1f)
+}
+
+fun GuiGraphics.rotate(angle: Float) = this.pose().mulPose(Quaternionf().rotateZ(angle))
+
+fun GuiGraphics.drawTexture(
     texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, regionWidth: Int, regionHeight: Int, textureWidth: Int, textureHeight: Int, color: Int
-) = this.drawTexture({ texture: Identifier? -> RenderLayer.getGuiTextured(texture) }, texture, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, color)
+) = this.blit({ texture: Identifier -> RenderType.guiTextured(texture) }, texture, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, color)
 
-fun DrawContext.drawItemOverlay(textRenderer: TextRenderer, itemStack: ItemStack, x: Int, y: Int) {
-    this.drawStackOverlay(textRenderer, itemStack, x, y)
+fun GuiGraphics.translateToTopOptional() {
+    this.pose().translate(0f, 0f, 10000f)
 }
 
-fun MinecraftClient.registerTexture(identifier: Identifier, image: NativeImage) {
-    this.textureManager.registerTexture(
-        identifier, NativeImageBackedTexture({ identifier.toString() }, image)
+fun GuiGraphics.drawItemOverlay(textRenderer: Font, itemStack: ItemStack, x: Int, y: Int) {
+    this.renderItemDecorations(textRenderer, itemStack, x, y)
+}
+
+fun Minecraft.registerTexture(identifier: Identifier, image: NativeImage) {
+    this.textureManager.register(
+        identifier, DynamicTexture({ identifier.toString() }, image)
     )
 }
 
 object Profiler {
-    fun push(name: String) = Profilers.get().push(name)
+    fun push(name: String) = Profiler.get().push(name)
 
-    fun pop() = Profilers.get().pop()
+    fun pop() = Profiler.get().pop()
 }
 
-fun registerKeybind(translation: String, type: InputUtil.Type, default: Int): KeyBinding {
-    return KeyBinding(
-        translation, type, default, KeyBinding.MISC_CATEGORY
+fun registerKeybind(translation: String, type: InputConstants.Type, default: Int): KeyMapping {
+    return KeyMapping(
+        translation, type, default, KeyMapping.CATEGORY_MISC
     )
 }
 
-fun MinecraftClient.isKeyPressed(key: Int): Boolean {
-    return InputUtil.isKeyPressed(this.window.handle, key)
+fun Minecraft.isKeyPressed(key: Int): Boolean {
+    return InputConstants.isKeyDown(this.window.window, key)
 }
 
-fun registerWidget(id: Identifier, widget: (context: DrawContext) -> Unit) = HudRenderCallback.EVENT.register { context, _ -> if (!MinecraftClient.getInstance().options.hudHidden) widget(context) }
+fun registerWidget(id: Identifier, widget: (context: GuiGraphics) -> Unit) = HudRenderCallback.EVENT.register { context, _ -> if (!Minecraft.getInstance().options.hideGui) widget(context) }
 
-fun ItemStack.appendTooltip(textConsumer: Consumer<Text>) {
-    for ((index, text) in this.getTooltip(Item.TooltipContext.DEFAULT, null, TooltipType.BASIC).withIndex()) {
-        if (index == 0) continue
-        textConsumer.accept(text)
-    }
+fun ItemStack.appendTooltip(textConsumer: Consumer<Component>) {
+    this.addDetailsToTooltip(
+        Item.TooltipContext.EMPTY,
+        TooltipDisplay.DEFAULT,
+        null,
+        TooltipFlag.NORMAL,
+        textConsumer
+    )
 }
 
-fun ItemStack.getItemFormattedName(): Text {
-    val mutableText: MutableText = Text.empty().append(this.name).formatted(this.rarity.formatting)
-    if (this.contains(DataComponentTypes.CUSTOM_NAME)) {
-        mutableText.formatted(Formatting.ITALIC)
+fun ItemStack.getItemFormattedName(): Component {
+    val mutableText: MutableComponent = Component.empty().append(this.itemName).withStyle(this.rarity.color())
+    if (this.has(DataComponents.CUSTOM_NAME)) {
+        mutableText.withStyle(ChatFormatting.ITALIC)
     }
 
     return mutableText
-}
-
-fun DrawContext.translateToTopOptional() {
-    this.matrices.translate(0f, 0f, 10000f)
 }
 
 fun ScreenDrawing.drawCape(identifier: Identifier, x: Int, y: Int, width: Int, height: Int) {
     this.drawTextureRegion(identifier, x, y, 1f, 1f, width, height, 10, 16, 64, 32)
 }
 
+@Suppress("UnusedReceiverParameter")
 fun ScreenDrawing.setCursorPointer() {}
 
 fun ScreenDrawing.drawGuiTexture(
@@ -121,8 +134,8 @@ fun ScreenDrawing.drawGuiTexture(
     width: Int,
     height: Int
 ) {
-    this.drawContext.drawGuiTexture(
-        { texture: Identifier? -> RenderLayer.getGuiTextured(texture) },
+    this.guiGraphics.blitSprite(
+        { texture: Identifier -> RenderType.guiTextured(texture) },
         texture,
         x,
         y,
@@ -131,6 +144,19 @@ fun ScreenDrawing.drawGuiTexture(
     )
 }
 
-typealias IndependentResourceMetadataSerializer<T> = ResourceMetadataSerializer<T>
+val WorldVersion.name: String
+    get() = this.name
 
-fun MinecraftClient.takePanoramaFull(file: File): Text = this.takePanorama(file, 1024, 1024)
+fun Minecraft.takePanoramaFull(file: File): Component = this.grabPanoramixScreenshot(file, 1024, 1024)
+
+fun isAllowedInIdentifier(char: Char) = Identifier.isAllowedInResourceLocation(char)
+
+typealias Identifier = ResourceLocation
+
+typealias Util = Util
+
+fun <T> ResourceKey<T>.id(): Identifier = this.location()
+
+fun <T> DefaultedRegistry<T>.getOrNull(id: Identifier): T? = this.getOptional(id).orElse(null)
+
+typealias IndependentResourceMetadataSerializer<T> = MetadataSectionType<T>

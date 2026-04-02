@@ -1,6 +1,8 @@
 package net.bewis09.bewisclient.impl.widget
 
+import net.bewis09.bewisclient.core.Identifier
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
+import net.bewis09.bewisclient.impl.widget.ArmorWidget.componentsLoaded
 import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.then
 import net.bewis09.bewisclient.widget.logic.SidedPosition
@@ -9,7 +11,6 @@ import net.bewis09.bewisclient.widget.types.ScalableWidget
 import net.minecraft.core.component.DataComponentMap
 import net.minecraft.core.component.DataComponents
 import net.minecraft.network.chat.Component
-import net.minecraft.resources.Identifier
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.Items
 
@@ -57,7 +58,7 @@ object InventoryWidget : ScalableWidget(createIdentifier("bewisclient", "invento
 
         for (y in 0 until 3) {
             for (x in 0 until 9) {
-                val itemStack: ItemStack = client.player?.inventory?.getItem(x + y * 9 + 9) ?: (util.isInWorld() then { ItemStack.EMPTY }) ?: getSampleStack(x, y)
+                val itemStack: ItemStack = client.player?.inventory?.getItem(x + y * 9 + 9)?.apply { componentsLoaded = true } ?: (util.isInWorld() then { ItemStack.EMPTY }) ?: (if(componentsLoaded) getSampleStack(x, y) else ItemStack.EMPTY)
                 drawSlot(screenDrawing, x * 20 + 2, y * 20 + 2, itemStack)
             }
         }

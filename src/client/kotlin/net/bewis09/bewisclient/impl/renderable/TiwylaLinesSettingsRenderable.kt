@@ -5,6 +5,7 @@ import net.bewis09.bewisclient.drawable.renderables.*
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.Translation
+import net.bewis09.bewisclient.impl.renderable.popup.TiwylaLinesSettingsPopup
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.impl.widget.TiwylaWidget
 import net.bewis09.bewisclient.util.color.Color

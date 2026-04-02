@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.impl
 
 import net.bewis09.bewisclient.api.BewisclientAPIEntrypoint
-import net.bewis09.bewisclient.core.getColor
+import net.bewis09.bewisclient.core.id
 import net.bewis09.bewisclient.cosmetics.CosmeticLoader
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCategory
@@ -56,7 +56,7 @@ class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint() {
         DefaultWidgetSettings.shadow.createRenderable("widget.default_text_shadow", "Default Text Shadow", "Set whether text in a widget has a shadow by default"),
         DefaultWidgetSettings.textColor.createRenderable("widget.default_text_color", "Default Text Color", "Set the default color of the text in a widget"),
         DefaultWidgetSettings.borderRadius.createRenderable("widget.default_border_radius", "Default Border Radius", "Set the default radius of a widget's border corners"),
-        DefaultWidgetSettings.scale.createRenderable("widget.default_scale", "Default Scale", "Set the default net.bewis09.bewisclient.core.scale of a widget"),
+        DefaultWidgetSettings.scale.createRenderable("widget.default_scale", "Default Scale", "Set the default scale of a widget"),
     )
 
     override fun getSidebarCategories(): List<SidebarCategory> = listOf(
@@ -64,10 +64,10 @@ class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint() {
     )
 
     override fun getTiwylaEntityExtraInfoProviders(): List<TiwylaWidget.EntityInfoProvider<*>> = listOf(
-        TiwylaWidget.EntityInfoProvider(EntityType.CAT) { it.variant.unwrapKey().getOrNull()?.identifier()?.toString() },
-        TiwylaWidget.EntityInfoProvider(EntityType.FROG) { it.variant.unwrapKey().getOrNull()?.identifier()?.toString() },
+        TiwylaWidget.EntityInfoProvider(EntityType.CAT) { it.variant.unwrapKey().getOrNull()?.id()?.toString() },
+        TiwylaWidget.EntityInfoProvider(EntityType.FROG) { it.variant.unwrapKey().getOrNull()?.id()?.toString() },
         TiwylaWidget.EntityInfoProvider(EntityType.AXOLOTL) { it.variant.name },
-        TiwylaWidget.EntityInfoProvider(EntityType.HORSE) { it.getColor() + ", " + it.variant.name.lowercase() },
+        TiwylaWidget.EntityInfoProvider(EntityType.HORSE) { it.markings.name.lowercase() + ", " + it.variant.name.lowercase() },
         TiwylaWidget.EntityInfoProvider(EntityType.RABBIT) { it.variant.name.lowercase() },
         TiwylaWidget.EntityInfoProvider(EntityType.LLAMA) { it.variant.name.lowercase() },
     )

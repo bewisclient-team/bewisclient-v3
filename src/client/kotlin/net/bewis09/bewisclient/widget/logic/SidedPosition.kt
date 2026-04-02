@@ -16,11 +16,11 @@ class SidedPosition(val x: Int, val y: Int, val xTransformer: TransformerType, v
     }
 
     override fun getX(widget: Widget): Float {
-        return xTransformer.transformer(x, widget.getScreenWidth(), widget.getScaledWidth())
+        return xTransformer.transformer(x, screenWidth, widget.getScaledWidth())
     }
 
     override fun getY(widget: Widget): Float {
-        return yTransformer.transformer(y, widget.getScreenHeight(), widget.getScaledHeight())
+        return yTransformer.transformer(y, screenHeight, widget.getScaledHeight())
     }
 
     override fun saveToJson(): JsonElement {

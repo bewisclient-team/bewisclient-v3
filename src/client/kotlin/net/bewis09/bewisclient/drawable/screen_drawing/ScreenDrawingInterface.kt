@@ -5,8 +5,6 @@ import net.bewis09.bewisclient.util.color.Color
 import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.logic.BewisclientInterface
 import net.minecraft.client.gui.Font
-import net.minecraft.client.gui.GuiGraphics
-import net.minecraft.resources.Identifier
 
 interface ScreenDrawingInterface : BewisclientInterface {
     val guiGraphics: GuiGraphics
@@ -33,7 +31,7 @@ interface ScreenDrawingInterface : BewisclientInterface {
      *
      * @param angle The angle in degrees to net.bewis09.bewisclient.core.rotate the context by.
      */
-    fun rotateDegrees(angle: Float) = guiGraphics.rotate(Math.toRadians(angle.toDouble()).toFloat())
+    fun rotateDegrees(angle: Float) = rotate(Math.toRadians(angle.toDouble()).toFloat())
 
     /**
      * Rotates the drawing context by the specified angle in radians.

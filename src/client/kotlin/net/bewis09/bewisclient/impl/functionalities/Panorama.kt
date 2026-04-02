@@ -26,9 +26,7 @@ import net.bewis09.bewisclient.util.catch
 import net.bewis09.bewisclient.util.createIdentifier
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.network.chat.Component
-import net.minecraft.resources.Identifier
 import net.minecraft.server.packs.resources.IoSupplier
-import net.minecraft.util.Util
 import java.io.File
 import java.io.InputStream
 import java.nio.file.Files
@@ -46,9 +44,9 @@ object Panorama : ImageSettingCategory(
     ), PanoramaSettings.enabled
 ), EventEntrypoint, BewisclientResourcePack.CustomResourceProvider {
     object TakePanoramaScreenshot : Keybind(-1, "screenshot.take_panorama", "Take Panorama Screenshot", {
-        client.player?.displayClientMessage(client.takePanoramaFull(FabricLoader.getInstance().gameDir.resolve("screenshots/panorama_" + (LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH.mm.ss-S")))).toFile().apply {
+        client.displaySystemMessage(client.takePanoramaFull(FabricLoader.getInstance().gameDir.resolve("screenshots/panorama_" + (LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH.mm.ss-S")))).toFile().apply {
             if (!exists()) mkdirs()
-        }), false)
+        }))
     })
 
     val images = mutableMapOf<File, PanoramaScreenshots>()
@@ -189,7 +187,7 @@ object Panorama : ImageSettingCategory(
             registered = true
 
             for (i in 0..5) {
-                val identifier = createIdentifier("bewisclient", directory.name.filter(Identifier::isAllowedInIdentifier) + "_" + i)
+                val identifier = createIdentifier("bewisclient", directory.name.filter(::isAllowedInIdentifier) + "_" + i)
                 identifiers[i] = identifier
                 client.registerTexture(identifier, images[i]!!)
             }

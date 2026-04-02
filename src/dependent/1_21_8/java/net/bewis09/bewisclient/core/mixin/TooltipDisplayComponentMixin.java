@@ -2,9 +2,9 @@ package net.bewis09.bewisclient.core.mixin;
 
 import net.bewis09.bewisclient.impl.functionalities.HeldItemTooltip;
 import net.bewis09.bewisclient.impl.settings.functionalities.HeldItemTooltipSettings;
-import net.minecraft.component.ComponentType;
-import net.minecraft.component.type.TooltipDisplayComponent;
-import net.minecraft.registry.Registries;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.item.component.TooltipDisplay;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -12,10 +12,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Arrays;
 
-@Mixin(TooltipDisplayComponent.class)
+@Mixin(TooltipDisplay.class)
 public class TooltipDisplayComponentMixin {
-    @Inject(method = "shouldDisplay", at = @At("RETURN"), cancellable = true)
-    public void bewisclient$shouldDisplay(ComponentType<?> componentType, CallbackInfoReturnable<Boolean> cir) {
+    @Inject(method = "shows", at = @At("RETURN"), cancellable = true)
+    public void bewisclient$shouldDisplay(DataComponentType<?> componentType, CallbackInfoReturnable<Boolean> cir) {
         if (HeldItemTooltip.INSTANCE.isLookup()) {
             HeldItemTooltip.INSTANCE.getComponentSet().add(componentType);
             return;
@@ -23,7 +23,8 @@ public class TooltipDisplayComponentMixin {
 
         if (!HeldItemTooltip.INSTANCE.isRendering() || !cir.getReturnValue()) return;
 
-        var id = Registries.DATA_COMPONENT_TYPE.getEntry(componentType).getIdAsString();
-        cir.setReturnValue(HeldItemTooltipSettings.INSTANCE.getShowMap().get(id, Arrays.stream(HeldItemTooltip.INSTANCE.getDefaultOff()).noneMatch(a -> a == componentType)));
+        var id = BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(componentType);
+        if (id == null) return;
+        cir.setReturnValue(HeldItemTooltipSettings.INSTANCE.getShowMap().get(id.toString(), Arrays.stream(HeldItemTooltip.INSTANCE.getDefaultOff()).noneMatch(a -> a == componentType)));
     }
 }

@@ -1,6 +1,8 @@
 package net.bewis09.bewisclient.impl.screenshot
 
 import com.mojang.blaze3d.platform.NativeImage
+import net.bewis09.bewisclient.core.Identifier
+import net.bewis09.bewisclient.core.Util
 import net.bewis09.bewisclient.core.registerTexture
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.Translations
@@ -28,8 +30,6 @@ import net.bewis09.bewisclient.util.color.Color
 import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.then
 import net.minecraft.client.Minecraft
-import net.minecraft.resources.Identifier
-import net.minecraft.util.Util
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.nio.file.FileSystems
@@ -298,7 +298,7 @@ class BigScreenshotViewElement(val file: File) : Renderable() {
                 } else {
                     NotificationManager.addNotification(SimpleTextNotification(Translations.DELETE_FAILED()))
                 }
-                Screenshot.invoke()
+                OptionScreen.currentInstance?.goBack()
             }))
         }(x + width - (width - 15) / 4, y + height - 14, (width - 15) / 4, 14))
     }

@@ -3,7 +3,6 @@
   "package": "net.bewis09.bewisclient.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "BlockItemMixin",
     "CameraMixin",
     "ClientPlayerInteractionManagerMixin",
     "ClientPlayNetworkHandlerMixin",
@@ -11,10 +10,8 @@
     "GameMenuScreenMixin",
     "GameOptionsMixin",
     "GameRendererMixin",
-    "InGameHudMixin",
     "InGameOverlayRendererMixin",
     "KeyBindingMixin",
-    "LightmapTextureManagerMixin",
     "LivingEntityMixin",
     "MinecraftClientMixin",
     "FileResourcePackProviderMixin"

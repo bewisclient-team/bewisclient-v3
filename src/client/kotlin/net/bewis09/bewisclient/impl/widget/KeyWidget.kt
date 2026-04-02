@@ -44,10 +44,10 @@ object KeyWidget : ScalableWidget(createIdentifier("bewisclient", "key_widget"))
         "pressed_border_opacity", DefaultWidgetSettings.borderOpacity.cloneWithDefault()
     )
     val pressedTextColor = color(
-        "pressed_text_color", StaticColorSaver(Color.BLACK), ColorSetting.CHANGING, ColorSetting.STATIC, ColorSetting.THEME
+        "pressed_text_color", StaticColorSaver(Color.GRAY), ColorSetting.CHANGING, ColorSetting.STATIC, ColorSetting.THEME
     )
 
-    val shadow = boolean("shadow", false)
+    val shadow = create("shadow", DefaultWidgetSettings.shadow.cloneWithDefault())
     val paddingSize = int("padding_size", 5, 0, 10)
     val borderRadius = create("border_radius", DefaultWidgetSettings.borderRadius.cloneWithDefault())
     val gap = int("gap", 2, 0, 20)
@@ -87,8 +87,14 @@ object KeyWidget : ScalableWidget(createIdentifier("bewisclient", "key_widget"))
         }
 
         if (showAttackUseKeys.get()) {
-            renderKey(screenDrawing, 0, y, middleWidth, bottomHeight, client.options.keyAttack)
-            renderKey(screenDrawing, totalWidth - middleWidth, y, middleWidth, bottomHeight, client.options.keyUse)
+            if (showCPS.get()) {
+                renderKey(screenDrawing, 0, y, middleWidth, bottomHeight, CPSWidget.getCPSCount(CPSWidget.leftMouseList).toString() + " L", isPressed(client.options.keyAttack))
+                renderKey(screenDrawing, totalWidth - middleWidth, y, middleWidth, bottomHeight, CPSWidget.getCPSCount(CPSWidget.rightMouseList).toString() + " R", isPressed(client.options.keyUse))
+            } else {
+                renderKey(screenDrawing, 0, y, middleWidth, bottomHeight, client.options.keyAttack)
+                renderKey(screenDrawing, totalWidth - middleWidth, y, middleWidth, bottomHeight, client.options.keyUse)
+            }
+
             y += bottomHeight + gap.get()
         }
 

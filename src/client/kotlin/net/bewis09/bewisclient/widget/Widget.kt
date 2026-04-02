@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.widget
 
+import net.bewis09.bewisclient.core.Identifier
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
@@ -9,8 +10,8 @@ import net.bewis09.bewisclient.impl.widget.CustomWidget
 import net.bewis09.bewisclient.util.catch
 import net.bewis09.bewisclient.settings.types.ObjectSetting
 import net.bewis09.bewisclient.settings.types.WidgetPositionSetting
+import net.bewis09.bewisclient.util.catchAndPrint
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
-import net.minecraft.resources.Identifier
 
 abstract class Widget(val id: Identifier) : ObjectSetting() {
     var position: WidgetPositionSetting = create("position", WidgetPositionSetting(defaultPosition()))
@@ -47,8 +48,6 @@ abstract class Widget(val id: Identifier) : ObjectSetting() {
 
     abstract fun render(screenDrawing: ScreenDrawing)
 
-    fun getScreenWidth(): Int = util.width
-    fun getScreenHeight(): Int = util.height
     fun getScaledWidth(): Float = getWidth() * getScale()
     fun getScaledHeight(): Float = getHeight() * getScale()
 
@@ -58,12 +57,12 @@ abstract class Widget(val id: Identifier) : ObjectSetting() {
 
     fun getX(): Float {
         val x = catch { position.get().getX(this) } ?: 0f
-        return x.coerceAtLeast(0f).coerceAtMost(getScreenWidth() - getScaledWidth())
+        return x.coerceAtLeast(0f).coerceAtMost(screenWidth - getScaledWidth())
     }
 
     fun getY(): Float {
         val y = catch { position.get().getY(this) } ?: 0f
-        return y.coerceAtLeast(0f).coerceAtMost(getScreenHeight() - getScaledHeight())
+        return y.coerceAtLeast(0f).coerceAtMost(screenHeight - getScaledHeight())
     }
 
     open fun getCustomWidgetDataPoints(): List<CustomWidget.WidgetStringData> = listOf()

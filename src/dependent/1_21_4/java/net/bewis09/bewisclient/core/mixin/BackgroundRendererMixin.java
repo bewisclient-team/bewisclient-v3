@@ -1,13 +1,13 @@
 package net.bewis09.bewisclient.core.mixin;
 
+import com.mojang.blaze3d.shaders.FogShape;
 import net.bewis09.bewisclient.impl.settings.functionalities.BetterVisibilitySettings;
-import net.minecraft.block.enums.CameraSubmersionType;
-import net.minecraft.client.render.BackgroundRenderer;
-import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.Fog;
-import net.minecraft.client.render.FogShape;
-import net.minecraft.entity.Entity;
-import net.minecraft.util.math.MathHelper;
+import net.bewis09.bewisclient.util.MathHelper;
+import net.minecraft.client.Camera;
+import net.minecraft.client.renderer.FogParameters;
+import net.minecraft.client.renderer.FogRenderer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.material.FogType;
 import org.jetbrains.annotations.Nullable;
 import org.joml.Vector4f;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,50 +16,50 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(BackgroundRenderer.class)
+@Mixin(FogRenderer.class)
 public abstract class BackgroundRendererMixin {
     @Shadow
     @Nullable
-    private static BackgroundRenderer.StatusEffectFogModifier getFogModifier(Entity entity, float tickDelta) {
+    private static FogRenderer.MobEffectFogFunction getPriorityFogFunction(Entity entity, float f) {
         return null;
     }
 
-    @Inject(method = "applyFog", at = @At("HEAD"), cancellable = true)
-    private static void bewisclient$applyFog(Camera camera, BackgroundRenderer.FogType fogType, Vector4f color, float viewDistance, boolean thickenFog, float tickDelta, CallbackInfoReturnable<Fog> cir) {
+    @Inject(method = "setupFog", at = @At("HEAD"), cancellable = true)
+    private static void bewisclient$applyFog(Camera camera, FogRenderer.FogMode fogMode, Vector4f color, float viewDistance, boolean thickenFog, float tickDelta, CallbackInfoReturnable<FogParameters> cir) {
         if(!BetterVisibilitySettings.INSTANCE.getEnabled().get()) return;
 
-        CameraSubmersionType cameraSubmersionType = camera.getSubmersionType();
-        Entity entity = camera.getFocusedEntity();
-        BackgroundRenderer.StatusEffectFogModifier statusEffectFogModifier = getFogModifier(entity, tickDelta);
+        FogType cameraSubmersionType = camera.getFluidInCamera();
+        Entity entity = camera.getEntity();
+        FogRenderer.MobEffectFogFunction statusEffectFogModifier = getPriorityFogFunction(entity, tickDelta);
 
-        BackgroundRenderer.FogData fogData = new BackgroundRenderer.FogData(fogType);
+        FogRenderer.FogData fogData = new FogRenderer.FogData(fogMode);
 
-        if (cameraSubmersionType == CameraSubmersionType.LAVA) {
+        if (cameraSubmersionType == FogType.LAVA) {
             if (entity.isSpectator() || !BetterVisibilitySettings.INSTANCE.getLava().get()) return;
-            fogData.fogStart = -8f;
-            fogData.fogEnd = 16f;
-            fogData.fogShape = FogShape.SPHERE;
-        } else if (cameraSubmersionType == CameraSubmersionType.POWDER_SNOW) {
+            fogData.start = -8f;
+            fogData.end = 16f;
+            fogData.shape = FogShape.SPHERE;
+        } else if (cameraSubmersionType == FogType.POWDER_SNOW) {
             if (!BetterVisibilitySettings.INSTANCE.getPowder_snow().get()) return;
-            fogData.fogStart = -8f;
-            fogData.fogEnd = 8f;
-            fogData.fogShape = FogShape.SPHERE;
+            fogData.start = -8f;
+            fogData.end = 8f;
+            fogData.shape = FogShape.SPHERE;
         } else if (statusEffectFogModifier != null) {
             return;
-        } else if (cameraSubmersionType == CameraSubmersionType.WATER) {
+        } else if (cameraSubmersionType == FogType.WATER) {
             if (!BetterVisibilitySettings.INSTANCE.getWater().get()) return;
-            fogData.fogStart = -8f;
-            fogData.fogEnd = viewDistance;
-            fogData.fogShape = FogShape.SPHERE;
+            fogData.start = -8f;
+            fogData.end = viewDistance;
+            fogData.shape = FogShape.SPHERE;
         } else if (thickenFog) {
             if (!BetterVisibilitySettings.INSTANCE.getNether().get()) return;
-            fogData.fogStart = viewDistance * 2 - MathHelper.clamp(viewDistance / 10.0f, 4.0f, 64.0f);
-            fogData.fogEnd = viewDistance * 2;
-            fogData.fogShape = FogShape.SPHERE;
+            fogData.start = viewDistance * 2 - MathHelper.INSTANCE.clamp(viewDistance / 10.0f, 4.0f, 64.0f);
+            fogData.end = viewDistance * 2;
+            fogData.shape = FogShape.SPHERE;
         } else {
             return;
         }
 
-        cir.setReturnValue(new Fog(fogData.fogStart, fogData.fogEnd, fogData.fogShape, color.x, color.y, color.z, color.w));
+        cir.setReturnValue(new FogParameters(fogData.start, fogData.end, fogData.shape, color.x, color.y, color.z, color.w));
     }
 }

@@ -44,6 +44,7 @@ abstract class PopupScreen : Renderable() {
         }
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+            this(0, 0, screen.width, screen.height)
             screenDrawing.push()
             screenDrawing.guiGraphics.translateToTopOptional()
             screenDrawing.pushAlpha(alphaAnimation.get()) {
@@ -62,7 +63,7 @@ abstract class PopupScreen : Renderable() {
 
         override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
             if (!child.isMouseOver(mouseX, mouseY)) {
-                OptionScreen.currentInstance?.closePopup()
+                screen.closePopup()
                 return true
             }
             return true

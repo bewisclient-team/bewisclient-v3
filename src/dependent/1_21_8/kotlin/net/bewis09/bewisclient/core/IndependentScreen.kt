@@ -1,10 +1,10 @@
 package net.bewis09.bewisclient.core
 
-import net.minecraft.client.gui.DrawContext
-import net.minecraft.client.gui.screen.Screen
-import net.minecraft.text.Text
+import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.client.gui.screens.Screen
+import net.minecraft.network.chat.Component
 
-open class IndependentScreen(title: Text): Screen(title) {
+open class IndependentScreen(title: Component): Screen(title) {
     override fun charTyped(chr: Char, modifiers: Int): Boolean = onCharTyped(chr, modifiers)
     override fun keyReleased(keyCode: Int, scanCode: Int, modifiers: Int): Boolean = onKeyRelease(keyCode, scanCode, modifiers)
     override fun mouseScrolled(mouseX: Double, mouseY: Double, horizontalAmount: Double, verticalAmount: Double): Boolean = onMouseScroll(mouseX, mouseY, horizontalAmount, verticalAmount)
@@ -21,5 +21,5 @@ open class IndependentScreen(title: Text): Screen(title) {
     open fun onKeyRelease(keyCode: Int, scanCode: Int, modifiers: Int): Boolean = false
     open fun onCharTyped(chr: Char, modifiers: Int): Boolean = false
 
-    fun renderIndependentBackground(context: DrawContext, mouseX: Int, mouseY: Int, deltaTicks: Float) {}
+    fun renderIndependentBackground(context: GuiGraphics, mouseX: Int, mouseY: Int, deltaTicks: Float) {}
 }

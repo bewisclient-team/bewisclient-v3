@@ -2,13 +2,14 @@ package net.bewis09.bewisclient.core.mixin;
 
 import net.bewis09.bewisclient.impl.functionalities.HeldItemTooltip;
 import net.bewis09.bewisclient.impl.widget.InventoryWidget;
-import net.minecraft.component.ComponentType;
-import net.minecraft.component.type.TooltipDisplayComponent;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.tooltip.TooltipAppender;
-import net.minecraft.item.tooltip.TooltipType;
-import net.minecraft.text.Text;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.component.TooltipDisplay;
+import net.minecraft.world.item.component.TooltipProvider;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -23,21 +24,21 @@ import java.util.function.Consumer;
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin {
     @Shadow
-    public abstract @Nullable Text getCustomName();
+    public abstract @Nullable Component getCustomName();
 
-    @Inject(method = "appendComponentTooltip", at = @At("HEAD"))
-    private <T extends TooltipAppender> void bewisclient$appendComponentTooltip(ComponentType<T> componentType, Item.TooltipContext context, TooltipDisplayComponent displayComponent, Consumer<Text> textConsumer, TooltipType type, CallbackInfo ci) {
+    @Inject(method = "addToTooltip", at = @At("HEAD"))
+    private <T extends TooltipProvider> void bewisclient$appendComponentTooltip(DataComponentType<@NotNull T> dataComponentType, Item.TooltipContext tooltipContext, TooltipDisplay tooltipDisplay, Consumer<Component> consumer, TooltipFlag tooltipFlag, CallbackInfo ci) {
         if (HeldItemTooltip.INSTANCE.isLookup()) {
-            HeldItemTooltip.INSTANCE.getComponentSet().add(componentType);
+            HeldItemTooltip.INSTANCE.getComponentSet().add(dataComponentType);
         }
     }
 
-    @Redirect(method = "method_57370", at = @At(value = "INVOKE", target = "Ljava/util/function/Consumer;accept(Ljava/lang/Object;)V"))
+    @Redirect(method = "lambda$addAttributeTooltips$0", at = @At(value = "INVOKE", target = "Ljava/util/function/Consumer;accept(Ljava/lang/Object;)V"))
     private static <T> void bewisclient$appendAttributeModifiersTooltip(Consumer<T> instance, T o) {
         if (!HeldItemTooltip.INSTANCE.isRendering()) instance.accept(o);
     }
 
-    @Inject(method = "hasEnchantments", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "isEnchanted", at = @At("HEAD"), cancellable = true)
     private void bewisclient$hasEnchantments(CallbackInfoReturnable<Boolean> cir) {
         if (this.getCustomName() == InventoryWidget.INSTANCE.getIndicatorText()) cir.setReturnValue(true);
     }

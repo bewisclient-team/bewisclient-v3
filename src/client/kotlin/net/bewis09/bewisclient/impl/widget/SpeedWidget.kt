@@ -1,6 +1,5 @@
 package net.bewis09.bewisclient.impl.widget
 
-import net.bewis09.bewisclient.core.pos
 import net.bewis09.bewisclient.drawable.renderables.options_structure.addToQuickSettings
 import net.bewis09.bewisclient.util.*
 import net.bewis09.bewisclient.widget.logic.RelativePosition
@@ -31,7 +30,7 @@ object SpeedWidget : LineWidget(createIdentifier("bewisclient", "speed_widget"))
         Timer().scheduleAtFixedRate(
             object : TimerTask() {
                 override fun run() {
-                    client.player?.pos()?.let {
+                    client.player?.position()?.let {
                         totalSpeed = it.distanceTo(oldPos).toFloat() * 20f
                         horizontalSpeed = it.subtract(oldPos).horizontalDistance().toFloat() * 20
                         oldPos = it

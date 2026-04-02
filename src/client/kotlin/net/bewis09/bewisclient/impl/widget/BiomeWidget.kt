@@ -2,6 +2,8 @@ package net.bewis09.bewisclient.impl.widget
 
 import com.google.gson.Gson
 import com.google.gson.JsonElement
+import net.bewis09.bewisclient.core.Identifier
+import net.bewis09.bewisclient.core.id
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.options_structure.addToQuickSettings
 import net.bewis09.bewisclient.util.*
@@ -11,7 +13,6 @@ import net.bewis09.bewisclient.widget.types.LineWidget
 import net.minecraft.core.BlockPos
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.TextColor
-import net.minecraft.resources.Identifier
 import net.minecraft.server.packs.resources.Resource
 import java.util.*
 
@@ -75,7 +76,7 @@ object BiomeWidget : LineWidget(createIdentifier("bewisclient", "biome_widget"))
     fun getBiomeString(): String? {
         return (client.level?.getBiome(
             client.cameraEntity?.onPos ?: BlockPos(0, 0, 0)
-        ))?.unwrap()?.map({ biomeKey -> biomeKey.identifier().toString() }, null)
+        ))?.unwrap()?.map({ biomeKey -> biomeKey.id().toString() }, null)
     }
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
