@@ -207,7 +207,7 @@ fun GuiGraphics.string(font: Font, text: Component, x: Int, y: Int, color: Int, 
 
 fun registerKeyBinding(keyBinding: KeyMapping) = KeyBindingHelper.registerKeyBinding(keyBinding)
 
-fun GuiGraphics.renderItem(itemStack: ItemStack, x: Int, y: Int) {
+fun GuiGraphics.drawItem(itemStack: ItemStack, x: Int, y: Int) {
     this.renderItem(itemStack, x, y)
 }
 
@@ -221,5 +221,5 @@ typealias TooltipComponentCallback = TooltipComponentCallback
 
 typealias ClientCommandManager = ClientCommandManager
 
-val ClientLevel.dayTime
+val ClientLevel.clockTime
     get() = this.dayTime

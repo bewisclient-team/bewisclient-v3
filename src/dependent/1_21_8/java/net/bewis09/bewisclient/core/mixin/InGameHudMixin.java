@@ -1,4 +1,4 @@
-package net.bewis09.bewisclient.mixin.client;
+package net.bewis09.bewisclient.core.mixin;
 
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing;
 import net.bewis09.bewisclient.impl.functionalities.HeldItemTooltip;

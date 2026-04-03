@@ -17,6 +17,6 @@ public class OverlayTextureMixin {
             return;
         }
 
-        instance.setPixel(j, i, ARGB.color(((int) ((1 - EntityHighlightSettings.INSTANCE.getAlpha().get()) * 255)) << 24, EntityHighlightSettings.INSTANCE.getColor().get().getColorInt()));
+        instance.setPixel(j, i, ARGB.color((int) ((1 - EntityHighlightSettings.INSTANCE.getAlpha().get()) * 255), EntityHighlightSettings.INSTANCE.getColor().get().getColorInt()));
     }
 }

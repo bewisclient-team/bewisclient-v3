@@ -14,7 +14,9 @@
     "ScreenshotRecorderMixin",
     "SkinTexturesMixin",
     "TitleScreenMixin",
-    "WorldRendererMixin"
+    "WorldRendererMixin",
+    "BlockItemMixin",
+    "LightmapTextureManagerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

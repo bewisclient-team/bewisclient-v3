@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.impl.widget
 
-import net.bewis09.bewisclient.core.dayTime
+import net.bewis09.bewisclient.core.clockTime
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.options_structure.addToQuickSettings
 import net.bewis09.bewisclient.util.createIdentifier
@@ -22,7 +22,7 @@ object DaytimeWidget : LineWidget(createIdentifier("bewisclient", "daytime_widge
     override fun getLine() = getText(format12Hours.get())
 
     fun getText(format12Hours: Boolean): Component {
-        val daytime = client.level?.dayTime ?: 15684L
+        val daytime = client.level?.clockTime ?: 15684L
         val hours = (daytime / 1000L + 6) % 24
         val minutes = ((daytime % 1000L) / 1000f * 60L).toInt()
 

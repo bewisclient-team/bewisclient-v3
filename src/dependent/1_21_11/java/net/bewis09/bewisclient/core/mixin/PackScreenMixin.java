@@ -44,7 +44,7 @@ public class PackScreenMixin extends Screen {
     public void bewisclient$init(CallbackInfo ci) {
         if (!PackAdderSettings.INSTANCE.isEnabled()) return;
 
-        addResourcePackButton = addRenderableWidget(new WorkingTexturedButtonWidget(width / 2 - 215, height - 49, 200, 18, BUTTON_TEXTURE, BUTTON_TEXTURE, (_) -> Minecraft.getInstance().setScreen(new RenderableScreen(new PackListScreen(
+        addResourcePackButton = addRenderableWidget(new WorkingTexturedButtonWidget(width / 2 - 215, height - 49, 200, 18, BUTTON_TEXTURE, BUTTON_TEXTURE, (b) -> Minecraft.getInstance().setScreen(new RenderableScreen(new PackListScreen(
                 packDir.endsWith(Path.of("resourcepacks")) ? Modrinth.Type.RESOURCE_PACK : Modrinth.Type.DATA_PACK, this, this.packDir
         ))),(packDir.endsWith(Path.of("resourcepacks")) ? Translations.INSTANCE.getADD_RESOURCE_PACK().getTranslatedText() : Translations.INSTANCE.getADD_DATA_PACK().getTranslatedText()).append("...")));
     }

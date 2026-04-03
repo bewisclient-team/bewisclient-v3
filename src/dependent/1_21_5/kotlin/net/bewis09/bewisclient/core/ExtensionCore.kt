@@ -4,7 +4,11 @@ import com.mojang.blaze3d.platform.InputConstants
 import com.mojang.blaze3d.platform.NativeImage
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawingInterface
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
+import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
 import net.minecraft.ChatFormatting
 import net.minecraft.Util
 import net.minecraft.WorldVersion
@@ -12,6 +16,7 @@ import net.minecraft.client.KeyMapping
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.Font
 import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.client.multiplayer.ClientLevel
 import net.minecraft.client.renderer.RenderType
 import net.minecraft.client.renderer.texture.DynamicTexture
 import net.minecraft.core.DefaultedRegistry
@@ -160,3 +165,28 @@ fun <T> ResourceKey<T>.id(): Identifier = this.location()
 fun <T> DefaultedRegistry<T>.getOrNull(id: Identifier): T? = this.getOptional(id).orElse(null)
 
 typealias IndependentResourceMetadataSerializer<T> = MetadataSectionType<T>
+
+typealias GuiGraphics = GuiGraphics
+
+fun GuiGraphics.string(font: Font, text: Component, x: Int, y: Int, color: Int, shadow: Boolean) {
+    this.drawString(font, text, x, y, color, shadow)
+}
+
+fun registerKeyBinding(keyBinding: KeyMapping): KeyMapping = KeyBindingHelper.registerKeyBinding(keyBinding)
+
+fun GuiGraphics.drawItem(itemStack: ItemStack, x: Int, y: Int) {
+    this.renderItem(itemStack, x, y)
+}
+
+typealias FabricDataOutput = FabricDataOutput
+
+fun Minecraft.displayOverlayMessage(message: Component) = this.player?.displayClientMessage(message, true)
+
+fun Minecraft.displaySystemMessage(message: Component) = this.player?.displayClientMessage(message, false)
+
+typealias TooltipComponentCallback = TooltipComponentCallback
+
+typealias ClientCommandManager = ClientCommandManager
+
+val ClientLevel.clockTime
+    get() = this.dayTime

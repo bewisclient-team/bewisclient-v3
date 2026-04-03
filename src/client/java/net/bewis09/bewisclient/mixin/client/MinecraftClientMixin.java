@@ -27,7 +27,7 @@ public class MinecraftClientMixin {
 
     @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/packs/resources/ReloadableResourceManager;registerReloadListener(Lnet/minecraft/server/packs/resources/PreparableReloadListener;)V"))
     public void registerResourceReloaders(GameConfig args, CallbackInfo ci) {
-        (this.resourceManager).registerReloadListener((ResourceManagerReloadListener) _ -> EventEntrypoint.Companion.onAllEventEntrypoints((a) -> {
+        (this.resourceManager).registerReloadListener((ResourceManagerReloadListener) r -> EventEntrypoint.Companion.onAllEventEntrypoints((a) -> {
             a.onResourcesReloaded();
             return Unit.INSTANCE;
         }));

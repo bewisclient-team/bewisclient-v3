@@ -1,4 +1,4 @@
-package net.bewis09.bewisclient.mixin.client;
+package net.bewis09.bewisclient.core.mixin;
 
 import net.bewis09.bewisclient.game.ShulkerBoxTooltipComponent;
 import net.bewis09.bewisclient.impl.settings.functionalities.ShulkerBoxTooltipSettings;
