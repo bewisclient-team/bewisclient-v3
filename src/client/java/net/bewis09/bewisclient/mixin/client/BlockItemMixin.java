@@ -1,5 +1,6 @@
-package net.bewis09.bewisclient.core.mixin;
+package net.bewis09.bewisclient.mixin.client;
 
+import net.bewis09.bewisclient.core.ExtensionCoreKt;
 import net.bewis09.bewisclient.game.ShulkerBoxTooltipComponent;
 import net.bewis09.bewisclient.impl.settings.functionalities.ShulkerBoxTooltipSettings;
 import net.minecraft.core.component.DataComponents;
@@ -26,7 +27,7 @@ public class BlockItemMixin extends Item {
             ItemContainerContents component = stack.get(DataComponents.CONTAINER);
 
             assert component != null;
-            ItemStack[] array = component.stream().toArray(ItemStack[]::new);
+            ItemStack[] array = ExtensionCoreKt.toStream(component).toArray(ItemStack[]::new);
 
             if (block.getColor() == null)
                 return Optional.ofNullable(ShulkerBoxTooltipComponent.Companion.of(null, array));

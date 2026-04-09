@@ -3,6 +3,7 @@ package net.bewis09.bewisclient.mixin.client;
 import kotlin.Unit;
 import net.bewis09.bewisclient.util.EventEntrypoint;
 import net.bewis09.bewisclient.mixin.EventEntrypointMixin;
+import net.minecraft.client.GameLoadCookie;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.main.GameConfig;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
@@ -21,7 +22,7 @@ public class MinecraftClientMixin {
     private ReloadableResourceManager resourceManager;
 
     @Inject(at = @At("HEAD"), method = "onGameLoadFinished")
-    private void onInitFinished(Minecraft.GameLoadCookie gameLoadCookie, CallbackInfo ci) {
+    private void onInitFinished(GameLoadCookie gameLoadCookie, CallbackInfo ci) {
         EventEntrypointMixin.INSTANCE.onMinecraftClientInitFinished();
     }
 

@@ -4,6 +4,7 @@ import com.mojang.blaze3d.platform.NativeImage
 import net.bewis09.bewisclient.core.Identifier
 import net.bewis09.bewisclient.core.Util
 import net.bewis09.bewisclient.core.registerTexture
+import net.bewis09.bewisclient.core.setScreen
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.Translations
 import net.bewis09.bewisclient.drawable.renderables.*
@@ -217,7 +218,7 @@ fun openBigScreenshotNewScreen(file: File) {
             instant = true
         )
 
-        client.setScreen(RenderableScreen(this))
+        setScreen(RenderableScreen(this))
     }
 }
 

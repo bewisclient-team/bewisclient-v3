@@ -14,7 +14,8 @@
     "KeyBindingMixin",
     "LivingEntityMixin",
     "MinecraftClientMixin",
-    "FileResourcePackProviderMixin"
+    "FileResourcePackProviderMixin",
+    "BlockItemMixin"
   ],
   "injectors": {
     "defaultRequire": 1

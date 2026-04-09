@@ -22,6 +22,7 @@ import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.types.ScalableWidget
 import net.bewis09.bewisclient.core.Identifier
+import net.bewis09.bewisclient.core.setScreen
 import org.lwjgl.glfw.GLFW
 import kotlin.math.abs
 
@@ -54,7 +55,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
                 }
 
                 if (button == 1) {
-                    client.setScreen(RenderableScreen(OptionScreen().apply {
+                    setScreen(RenderableScreen(OptionScreen().apply {
                         val widgetsCategory = SettingStructure.widgets.firstOrNull { b -> b.enableSetting == it.enabled } ?: return@apply
 
                         changeCategory(SettingStructure.widgetsCategory, instant = true)
@@ -145,7 +146,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
             openPopup(AddWidgetPopup(), Color.BLACK alpha 0.625f)
         }.setImagePadding(0)(width - 16, height - 16, 14, 14))
         addRenderable(ImageButton(createIdentifier("bewisclient", "textures/gui/sprites/settings.png")) {
-            client.setScreen(RenderableScreen(OptionScreen().apply {
+            setScreen(RenderableScreen(OptionScreen().apply {
                 changeCategory(SettingStructure.widgetsCategory, instant = true)
             }))
         }.setImagePadding(2)(width - 32, height - 16, 14, 14))
@@ -269,7 +270,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
 
     override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {
         if (key == GLFW.GLFW_KEY_ESCAPE) {
-            client.setScreen(RenderableScreen(OptionScreen()))
+            setScreen(RenderableScreen(OptionScreen()))
             return true
         }
         return super.onKeyPress(key, scanCode, modifiers)

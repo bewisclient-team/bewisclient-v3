@@ -85,7 +85,7 @@ class PackListScreen(val type: Modrinth.Type, val parent: Screen, val folder: Pa
         }, 4)(width / 2 - 150, 49, 300, height - 49 - 33))
 
         addRenderable(MinecraftButton(CommonComponents.GUI_DONE) {
-            client.setScreen(parent)
+            setScreen(parent)
         }(centerX - 100, y2 - 26, 200, 20))
 
         addRenderable(MinecraftButton(Component.literal(">")) {
@@ -109,7 +109,7 @@ class PackListScreen(val type: Modrinth.Type, val parent: Screen, val folder: Pa
 
     override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {
         if (key == GLFW.GLFW_KEY_ESCAPE) {
-            client.setScreen(parent)
+            setScreen(parent)
             return true
         }
         return super.onKeyPress(key, scanCode, modifiers)

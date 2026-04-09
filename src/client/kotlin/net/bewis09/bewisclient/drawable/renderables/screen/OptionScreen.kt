@@ -28,6 +28,7 @@ import net.bewis09.bewisclient.util.createIdentifier
 import net.minecraft.network.chat.CommonComponents
 import net.bewis09.bewisclient.core.Identifier
 import net.bewis09.bewisclient.core.Util
+import net.bewis09.bewisclient.core.setScreen
 import org.lwjgl.glfw.GLFW
 import kotlin.io.encoding.Base64
 
@@ -67,7 +68,7 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
             it.add(Rectangle { OptionsMenuSettings.getThemeColor(alpha = 0.3f) }.setHeight(1))
             it.add(ThemeButton("bewisclient:edit_hud", editHudTranslation(), category) {
                 alphaMainAnimation.set(0f) {
-                    client.setScreen(RenderableScreen(HudEditScreen()))
+                    setScreen(RenderableScreen(HudEditScreen()))
                 }
             }.setHeight(14))
         }, 5
@@ -173,7 +174,7 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
     }
 
     fun checkValidVersion() {
-        if (!Security.verificationState.allowed) client.setScreen(RenderableScreen(VersionInvalidScreen))
+        if (!Security.verificationState.allowed) setScreen(RenderableScreen(VersionInvalidScreen))
     }
 
     object VersionInvalidScreen : Renderable() {
@@ -194,7 +195,7 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
 
         override fun init() {
             addRenderable(MinecraftButton(CommonComponents.GUI_BACK) {
-                client.setScreen(null)
+                setScreen(null)
             }(width / 2 - 102, height / 2 + 50, 100, 20))
             addRenderable(MinecraftButton(Translations.MODRINTH()) {
                 Util.getPlatform().openUri(Constants.MODRINTH_URL)
@@ -203,7 +204,7 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
 
         override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {
             if (key == GLFW.GLFW_KEY_ESCAPE) {
-                client.setScreen(null)
+                setScreen(null)
                 return true
             }
             return super.onKeyPress(key, scanCode, modifiers)
@@ -270,7 +271,7 @@ class OptionScreen(startBlur: Float = 0f) : PopupScreen(), BackgroundEffectProvi
     fun close() {
         blurMainAnimation.set(0f)
         alphaMainAnimation.set(0f) {
-            client.setScreen(null)
+            setScreen(null)
         }
     }
 

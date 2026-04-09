@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.mixin.client;
 
+import net.bewis09.bewisclient.core.ExtensionCoreKt;
 import net.bewis09.bewisclient.core.WorkingTexturedButtonWidget;
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen;
 import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings;
@@ -22,6 +23,6 @@ public class GameMenuScreenMixin extends Screen {
 
     @Inject(method = "init", at = @At("HEAD"))
     private void bewisclient$init(CallbackInfo ci) {
-        if (OptionsMenuSettings.INSTANCE.getButtonInGameScreen().get()) addRenderableWidget(new WorkingTexturedButtonWidget(this.width / 2 + 106, this.height / 4 + 56, 20, 20, createIdentifier("bewisclient", "textures/gui/sprites/options_button.png"), createIdentifier("bewisclient", "textures/gui/sprites/options_button_pressed.png"), (b) -> this.minecraft.setScreen(new RenderableScreen(new OptionScreen(1f)))));
+        if (OptionsMenuSettings.INSTANCE.getButtonInGameScreen().get()) addRenderableWidget(new WorkingTexturedButtonWidget(this.width / 2 + 106, this.height / 4 + 56, 20, 20, createIdentifier("bewisclient", "textures/gui/sprites/options_button.png"), createIdentifier("bewisclient", "textures/gui/sprites/options_button_pressed.png"), (b) -> ExtensionCoreKt.setScreen(new RenderableScreen(new OptionScreen(1f)))));
     }
 }
