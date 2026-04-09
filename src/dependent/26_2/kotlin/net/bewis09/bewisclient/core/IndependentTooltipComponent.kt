@@ -1,6 +1,7 @@
 package net.bewis09.bewisclient.core
 
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
+import net.bewis09.bewisclient.version.GuiGraphics
 import net.minecraft.client.gui.Font
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
 

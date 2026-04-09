@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.cosmetics
 
-import net.bewis09.bewisclient.core.Identifier
 import net.bewis09.bewisclient.util.Bewisclient
+import net.bewis09.bewisclient.version.Identifier
 import java.awt.image.BufferedImage
 import java.io.ByteArrayInputStream
 import java.io.IOException

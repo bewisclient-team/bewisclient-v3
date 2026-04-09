@@ -1,8 +1,8 @@
 package net.bewis09.bewisclient.util.logic
 
-import net.bewis09.bewisclient.core.Identifier
 import net.bewis09.bewisclient.core.getScreen
 import net.bewis09.bewisclient.screen.RenderableScreen
+import net.bewis09.bewisclient.version.Identifier
 import net.minecraft.server.packs.resources.Resource
 import java.util.function.Predicate
 

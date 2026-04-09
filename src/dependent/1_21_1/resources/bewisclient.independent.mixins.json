@@ -8,14 +8,9 @@
     "InGameHudMixin",
     "ItemStackMixin",
     "MouseMixin",
-    "OverlayTextureMixin",
     "PackListWidgetMixin",
-    "PackScreenMixin",
-    "ScreenshotRecorderMixin",
     "SkinTexturesMixin",
-    "TitleScreenMixin",
     "WorldRendererMixin",
-    "BlockItemMixin",
     "LightmapTextureManagerMixin"
   ],
   "injectors": {

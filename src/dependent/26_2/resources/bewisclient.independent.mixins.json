@@ -9,14 +9,10 @@
     "ItemStackMixin",
     "LightmapTextureManagerMixin",
     "MouseMixin",
-    "OverlayTextureMixin",
     "PackScreenMixin",
-    "ScreenshotRecorderMixin",
     "SkinTexturesMixin",
-    "TitleScreenMixin",
     "TooltipDisplayComponentMixin",
-    "WorldRendererMixin",
-    "InGameHudMixin"
+    "WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

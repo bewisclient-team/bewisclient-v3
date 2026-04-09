@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.drawable.renderables
 
-import net.bewis09.bewisclient.core.Identifier
+import net.bewis09.bewisclient.version.Identifier
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.translate

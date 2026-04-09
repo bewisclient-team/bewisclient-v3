@@ -4,18 +4,13 @@
   "compatibilityLevel": "JAVA_21",
   "client": [
     "BackgroundRendererMixin",
-    "BlockItemMixin",
     "GameRendererMixin",
     "InGameHudMixin",
     "ItemStackMixin",
     "LightmapTextureManagerMixin",
     "MouseMixin",
-    "OverlayTextureMixin",
     "PackListWidgetMixin",
-    "PackScreenMixin",
-    "ScreenshotRecorderMixin",
     "SkinTexturesMixin",
-    "TitleScreenMixin",
     "TooltipDisplayComponentMixin",
     "WorldRendererMixin"
   ],

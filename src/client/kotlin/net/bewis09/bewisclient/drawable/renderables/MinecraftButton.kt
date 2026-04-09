@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.drawable.renderables
 
-import net.bewis09.bewisclient.core.Identifier
+import net.bewis09.bewisclient.version.Identifier
 import net.bewis09.bewisclient.core.drawGuiTexture
 import net.bewis09.bewisclient.core.setCursorPointer
 import net.bewis09.bewisclient.drawable.Renderable

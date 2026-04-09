@@ -3,19 +3,24 @@
   "package": "net.bewis09.bewisclient.mixin.client",
   "compatibilityLevel": "JAVA_21",
   "client": [
+    "BlockItemMixin",
     "CameraMixin",
     "ClientPlayerInteractionManagerMixin",
     "ClientPlayNetworkHandlerMixin",
+    "EntityHighlightMixin",
     "EntityMixin",
+    "FileResourcePackProviderMixin",
     "GameMenuScreenMixin",
     "GameOptionsMixin",
     "GameRendererMixin",
+    "HudMixin",
     "InGameOverlayRendererMixin",
     "KeyBindingMixin",
     "LivingEntityMixin",
     "MinecraftClientMixin",
-    "FileResourcePackProviderMixin",
-    "BlockItemMixin"
+    "PackSelectionScreenMixin",
+    "TitleScreenMixin",
+    "ScreenshotRecorderMixin"
   ],
   "injectors": {
     "defaultRequire": 1

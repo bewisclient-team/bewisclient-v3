@@ -13,17 +13,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(MouseHandler.class)
 public class MouseMixin {
     @Inject(method = "onButton", at = @At("HEAD"))
-    private void bewisclient$onMouseButton(long l, MouseButtonInfo mouseButtonInfo, int i, CallbackInfo ci) {
-        if (i != 1) return;
+    private void bewisclient$onMouseButton(long handle, MouseButtonInfo rawButtonInfo, int action, CallbackInfo ci) {
+        if (action != 1) return;
 
-        if (mouseButtonInfo.button() == 0) CPSWidget.INSTANCE.getLeftMouseList().add(System.currentTimeMillis());
-        if (mouseButtonInfo.button() == 1) CPSWidget.INSTANCE.getRightMouseList().add(System.currentTimeMillis());
+        if (rawButtonInfo.button() == 0) CPSWidget.INSTANCE.getLeftMouseList().add(System.currentTimeMillis());
+        if (rawButtonInfo.button() == 1) CPSWidget.INSTANCE.getRightMouseList().add(System.currentTimeMillis());
     }
 
     @Inject(method = "onScroll", at = @At("HEAD"), cancellable = true)
-    private void bewisclient$onMouseScroll(long window, double horizontal, double vertical, CallbackInfo ci) {
+    private void bewisclient$onMouseScroll(long handle, double xoffset, double yoffset, CallbackInfo ci) {
         if (Zoom.INSTANCE.isUsed()) {
-            Zoom.INSTANCE.getFactorAnimation().set(MathHelper.INSTANCE.clamp(Zoom.INSTANCE.getFactorAnimation().getWithoutInterpolation() - (float) vertical * 0.02f, .009f, .4f));
+            Zoom.INSTANCE.getFactorAnimation().set(MathHelper.INSTANCE.clamp(Zoom.INSTANCE.getFactorAnimation().getWithoutInterpolation() - (float) yoffset * 0.02f, .009f, .4f));
 
             ci.cancel();
         }

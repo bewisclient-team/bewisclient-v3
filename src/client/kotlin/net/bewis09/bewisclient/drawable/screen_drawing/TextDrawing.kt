@@ -5,7 +5,7 @@ import net.bewis09.bewisclient.util.color.Color
 import net.bewis09.bewisclient.util.color.color
 import net.bewis09.bewisclient.util.toText
 import net.minecraft.network.chat.Component
-import net.bewis09.bewisclient.core.Identifier
+import net.bewis09.bewisclient.version.Identifier
 import net.bewis09.bewisclient.core.string
 
 interface TextDrawing : RectDrawing {

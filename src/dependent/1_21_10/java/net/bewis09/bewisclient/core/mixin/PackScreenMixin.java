@@ -27,37 +27,8 @@ import static net.bewis09.bewisclient.util.UtilKt.createIdentifier;
 
 @Mixin(PackSelectionScreen.class)
 public class PackScreenMixin extends Screen {
-    @Shadow
-    @Final
-    private Path packDir;
-    @Unique
-    Button addResourcePackButton;
-
-    @Unique
-    ResourceLocation BUTTON_TEXTURE = createIdentifier("bewisclient", "textures/gui/sprites/pack_screen_button_texture.png");
-
     protected PackScreenMixin(Component title) {
         super(title);
-    }
-
-    @Inject(method = "init", at = @At("RETURN"))
-    public void bewisclient$init(CallbackInfo ci) {
-        if (!PackAdderSettings.INSTANCE.isEnabled()) return;
-
-        addResourcePackButton = addRenderableWidget(new WorkingTexturedButtonWidget(width / 2 - 215, height - 49, 200, 18, BUTTON_TEXTURE, BUTTON_TEXTURE, (b) -> Minecraft.getInstance().setScreen(new RenderableScreen(new PackListScreen(
-                packDir.endsWith(Path.of("resourcepacks")) ? Modrinth.Type.RESOURCE_PACK : Modrinth.Type.DATA_PACK, this, this.packDir
-        ))),(packDir.endsWith(Path.of("resourcepacks")) ? Translations.INSTANCE.getADD_RESOURCE_PACK().getTranslatedText() : Translations.INSTANCE.getADD_DATA_PACK().getTranslatedText()).append("...")));
-    }
-
-    @Inject(method = "repositionElements", at = @At("HEAD"))
-    public void bewisclient$refreshWidgetPositions(CallbackInfo ci) {
-        if (addResourcePackButton == null) return;
-        addResourcePackButton.setPosition(width / 2 - 215, height - 49);
-    }
-
-    @ModifyArg(method = "init", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/packs/TransferableSelectionList;<init>(Lnet/minecraft/client/Minecraft;Lnet/minecraft/client/gui/screens/packs/PackSelectionScreen;IILnet/minecraft/network/chat/Component;)V", ordinal = 0), index = 3)
-    public int bewisclient$modifyPackListWidgetTitle(int par3) {
-        return !PackAdderSettings.INSTANCE.isEnabled() ? par3 : par3 - 20;
     }
 
     @ModifyArg(method = "repositionElements", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/packs/TransferableSelectionList;updateSizeAndPosition(IIII)V", ordinal = 0), index = 1)

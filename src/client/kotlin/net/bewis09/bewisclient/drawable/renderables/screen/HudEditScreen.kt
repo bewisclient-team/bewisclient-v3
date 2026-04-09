@@ -21,7 +21,7 @@ import net.bewis09.bewisclient.widget.WidgetLoader.widgets
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.types.ScalableWidget
-import net.bewis09.bewisclient.core.Identifier
+import net.bewis09.bewisclient.version.Identifier
 import net.bewis09.bewisclient.core.setScreen
 import org.lwjgl.glfw.GLFW
 import kotlin.math.abs

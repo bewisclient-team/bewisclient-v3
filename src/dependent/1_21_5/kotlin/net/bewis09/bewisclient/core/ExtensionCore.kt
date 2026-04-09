@@ -4,18 +4,16 @@ import com.mojang.blaze3d.platform.InputConstants
 import com.mojang.blaze3d.platform.NativeImage
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawingInterface
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
+import net.bewis09.bewisclient.version.Identifier
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback
-import net.fabricmc.fabric.api.client.rendering.v1.TooltipComponentCallback
-import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput
 import net.minecraft.ChatFormatting
-import net.minecraft.Util
 import net.minecraft.WorldVersion
 import net.minecraft.client.KeyMapping
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.Font
 import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.client.gui.screens.Screen
 import net.minecraft.client.multiplayer.ClientLevel
 import net.minecraft.client.renderer.RenderType
 import net.minecraft.client.renderer.texture.DynamicTexture
@@ -24,29 +22,19 @@ import net.minecraft.core.component.DataComponents
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.MutableComponent
 import net.minecraft.resources.ResourceKey
-import net.minecraft.resources.ResourceLocation
-import net.minecraft.server.packs.metadata.MetadataSectionType
 import net.minecraft.util.profiling.Profiler
-import net.minecraft.world.entity.LivingEntity
 import net.minecraft.world.entity.animal.horse.Horse
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.TooltipFlag
+import net.minecraft.world.item.component.ItemContainerContents
 import net.minecraft.world.item.component.TooltipDisplay
-import net.minecraft.world.phys.Vec3
 import org.joml.Quaternionf
 import java.io.File
 import java.util.function.Consumer
-
-fun LivingEntity.pos(): Vec3 = this.position()
+import java.util.stream.Stream
 
 fun Horse.getColor(): String = this.variant.name.lowercase()
-
-var LivingEntity.beforeHeadYaw: Float
-    get() = this.yHeadRotO
-    set(value) {
-        this.yHeadRotO = value
-    }
 
 fun Component.setFont(id: Identifier?): MutableComponent {
     return (this as? MutableComponent ?: this.copy()).withStyle { it.withFont(id ?: ScreenDrawingInterface.BEWISCLIENT_FONT) }
@@ -156,15 +144,9 @@ fun Minecraft.takePanoramaFull(file: File): Component = this.grabPanoramixScreen
 
 fun isAllowedInIdentifier(char: Char) = Identifier.isAllowedInResourceLocation(char)
 
-typealias Identifier = ResourceLocation
-
-typealias Util = Util
-
 fun <T> ResourceKey<T>.id(): Identifier = this.location()
 
 fun <T> DefaultedRegistry<T>.getOrNull(id: Identifier): T? = this.getOptional(id).orElse(null)
-
-typealias IndependentResourceMetadataSerializer<T> = MetadataSectionType<T>
 
 typealias GuiGraphics = GuiGraphics
 
@@ -178,15 +160,15 @@ fun GuiGraphics.drawItem(itemStack: ItemStack, x: Int, y: Int) {
     this.renderItem(itemStack, x, y)
 }
 
-typealias FabricDataOutput = FabricDataOutput
-
 fun Minecraft.displayOverlayMessage(message: Component) = this.player?.displayClientMessage(message, true)
 
 fun Minecraft.displaySystemMessage(message: Component) = this.player?.displayClientMessage(message, false)
 
-typealias TooltipComponentCallback = TooltipComponentCallback
-
-typealias ClientCommandManager = ClientCommandManager
-
 val ClientLevel.clockTime
     get() = this.dayTime
+
+fun setScreen(screen: Screen?) = Minecraft.getInstance().setScreen(screen)
+
+fun getScreen() = Minecraft.getInstance().screen
+
+fun ItemContainerContents.toStream(): Stream<ItemStack?> = this.stream()

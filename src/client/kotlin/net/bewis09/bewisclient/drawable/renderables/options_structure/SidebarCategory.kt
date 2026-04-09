@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.drawable.renderables.options_structure
 
-import net.bewis09.bewisclient.core.Identifier
+import net.bewis09.bewisclient.version.Identifier
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.Plane
 import net.bewis09.bewisclient.drawable.renderables.TextElement

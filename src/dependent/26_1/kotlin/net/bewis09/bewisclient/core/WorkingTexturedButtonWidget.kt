@@ -3,6 +3,8 @@ package net.bewis09.bewisclient.core
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.util.color.alpha
 import net.bewis09.bewisclient.util.logic.BewisclientInterface
+import net.bewis09.bewisclient.version.GuiGraphics
+import net.bewis09.bewisclient.version.Identifier
 import net.minecraft.client.gui.components.Button
 import net.minecraft.network.chat.CommonComponents
 import net.minecraft.network.chat.Component

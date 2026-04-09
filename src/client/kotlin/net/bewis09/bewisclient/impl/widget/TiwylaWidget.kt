@@ -2,7 +2,7 @@ package net.bewis09.bewisclient.impl.widget
 
 import com.google.gson.*
 import net.bewis09.bewisclient.api.APIEntrypointLoader
-import net.bewis09.bewisclient.core.Identifier
+import net.bewis09.bewisclient.version.Identifier
 import net.bewis09.bewisclient.core.getOrNull
 import net.bewis09.bewisclient.core.setFont
 import net.bewis09.bewisclient.drawable.Renderable

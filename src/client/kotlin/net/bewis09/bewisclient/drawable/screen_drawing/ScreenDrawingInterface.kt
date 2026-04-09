@@ -1,9 +1,11 @@
 package net.bewis09.bewisclient.drawable.screen_drawing
 
 import net.bewis09.bewisclient.core.*
+import net.bewis09.bewisclient.version.GuiGraphics
 import net.bewis09.bewisclient.util.color.Color
 import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.logic.BewisclientInterface
+import net.bewis09.bewisclient.version.Identifier
 import net.minecraft.client.gui.Font
 
 interface ScreenDrawingInterface : BewisclientInterface {

@@ -44,7 +44,86 @@ object BuildInfo {
     )
 }
 
+tasks.register("replaceVersionDependentSources") {
+    def files = layout.projectDirectory.dir("src/client").asFileTree.matching {
+        include "**/*.java", "**/*.kt"
+    }.files
+
+    files.each {
+        def mcVersion = project.property("like_version_" + project.minecraft_version.replace('.', '_'))
+
+        if (it.text.startsWith("// @VersionReplacement")) {
+            def lines = it.readLines()
+
+            String replaceNext = null
+
+            def newFile = it.readLines()
+            lines.eachWithIndex { String line, int index ->
+                if (replaceNext != null) {
+                    def startIndex = line.indexOf("/*[@]*/") + 7
+                    def endIndex = line.indexOf("/*[!@]*/", startIndex)
+
+                    if (startIndex < 7 || endIndex < startIndex) return
+
+                    def newLine = line.substring(0, startIndex) + replaceNext + line.substring(endIndex)
+                    replaceNext = null
+                    newFile[index] = newLine
+                    return
+                }
+
+                line = line.trim()
+
+                if (!line.startsWith("//")) return
+
+                def l = line.substring(2).trim()
+
+                while (true) {
+                    if (!l.startsWith("@[")) return
+                    if (l.indexOf("]") == -1) return
+
+                    def version = l.substring(2, l.indexOf("]")).trim()
+
+                    l = l.substring(l.indexOf("]") + 1).trim()
+
+                    if (l.indexOf("@[") == -1 && version != "") return
+
+                    def replacement = version == "" ? l : l.substring(0, l.indexOf("@[")).trim()
+
+                    if (version == "") {
+                        replaceNext = replacement
+                        return
+                    } else {
+                        def compareVersions = { String a, String b ->
+                            def pa = a.tokenize('.').collect { try { it.toInteger() } catch(Exception e) { 0 } }
+                            def pb = b.tokenize('.').collect { try { it.toInteger() } catch(Exception e) { 0 } }
+                            int len = Math.max(pa.size(), pb.size())
+                            for (int i = 0; i < len; i++) {
+                                int ai = i < pa.size() ? pa[i] : 0
+                                int bi = i < pb.size() ? pb[i] : 0
+                                if (ai < bi) return -1
+                                if (ai > bi) return 1
+                            }
+                            return 0
+                        }
+
+                        if (compareVersions(mcVersion.toString(), version) <= 0) {
+                            replaceNext = replacement
+                            return
+                        } else {
+                            if (version != "")
+                                l = l.substring(l.indexOf("@[")).trim()
+                        }
+                    }
+                }
+            }
+
+            it.text = newFile.join("\n")
+        }
+    }
+}
+
 tasks.named("compileKotlin") {
+    dependsOn("replaceVersionDependentSources")
     dependsOn("generateVersionInfo")
 }
 

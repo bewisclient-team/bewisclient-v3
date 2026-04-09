@@ -24,6 +24,8 @@ import net.bewis09.bewisclient.impl.settings.functionalities.PanoramaSettings.pa
 import net.bewis09.bewisclient.util.EventEntrypoint
 import net.bewis09.bewisclient.util.catch
 import net.bewis09.bewisclient.util.createIdentifier
+import net.bewis09.bewisclient.version.Identifier
+import net.bewis09.bewisclient.version.Util
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.network.chat.Component
 import net.minecraft.server.packs.resources.IoSupplier

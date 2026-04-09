@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.impl
 
-import net.bewis09.bewisclient.core.Util
+import net.bewis09.bewisclient.version.Util
 import net.bewis09.bewisclient.data.Constants
 import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.renderables.ThemeButton

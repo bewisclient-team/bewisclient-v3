@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.util.logic
 
-import net.bewis09.bewisclient.core.Util
+import net.bewis09.bewisclient.version.Util
 import net.bewis09.bewisclient.util.Bewisclient
 import java.io.ByteArrayOutputStream
 import java.net.URI

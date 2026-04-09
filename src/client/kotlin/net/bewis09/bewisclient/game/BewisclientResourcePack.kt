@@ -4,11 +4,11 @@ import net.bewis09.bewisclient.api.APIEntrypointLoader
 import net.bewis09.bewisclient.drawable.Translations
 import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.logic.BewisclientInterface
-import net.bewis09.bewisclient.core.Identifier
+import net.bewis09.bewisclient.version.Identifier
+import net.bewis09.bewisclient.version.IndependentResourceMetadataSerializer
 import net.minecraft.server.packs.PackLocationInfo
 import net.minecraft.server.packs.PackResources
 import net.minecraft.server.packs.PackType
-import net.minecraft.server.packs.metadata.MetadataSectionType
 import net.minecraft.server.packs.repository.Pack
 import net.minecraft.server.packs.repository.PackCompatibility
 import net.minecraft.server.packs.repository.PackSource
@@ -52,7 +52,7 @@ object BewisclientResourcePack : PackResources, BewisclientInterface {
         return null
     }
 
-    override fun <T : Any> getMetadataSection(metadataSectionType: net.bewis09.bewisclient.core.IndependentResourceMetadataSerializer<T>): T? {
+    override fun <T : Any> getMetadataSection(metadataSectionType: IndependentResourceMetadataSerializer<T>): T? {
         return null
     }
 

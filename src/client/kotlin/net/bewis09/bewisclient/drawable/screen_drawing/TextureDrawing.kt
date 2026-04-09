@@ -2,7 +2,7 @@ package net.bewis09.bewisclient.drawable.screen_drawing
 
 import net.bewis09.bewisclient.core.drawTexture
 import net.bewis09.bewisclient.util.color.Color
-import net.bewis09.bewisclient.core.Identifier
+import net.bewis09.bewisclient.version.Identifier
 
 interface TextureDrawing : ScreenDrawingInterface {
     fun drawTexture(texture: Identifier, x: Int, y: Int, width: Int, height: Int) {

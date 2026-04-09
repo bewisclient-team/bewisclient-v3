@@ -26,41 +26,4 @@ public abstract class InGameHudMixin {
             ci.cancel();
         }
     }
-
-    @Shadow
-    public abstract Font getFont();
-
-    @Shadow
-    private int toolHighlightTimer;
-
-    @Shadow
-    private net.minecraft.world.item.ItemStack lastToolHighlight;
-
-    @Shadow
-    @Final
-    private Minecraft minecraft;
-
-    @Inject(method = "renderSelectedItemName", at = @At("HEAD"), cancellable = true)
-    private void bewisclient$renderHeldItemTooltip(GuiGraphics drawContext, CallbackInfo ci) {
-        if (HeldItemTooltipSettings.INSTANCE.isEnabled()) {
-            HeldItemTooltip.INSTANCE.render(new ScreenDrawing(drawContext, getFont()), toolHighlightTimer, lastToolHighlight);
-            ci.cancel();
-        }
-    }
-
-    @Inject(method = "displayScoreboardSidebar", at = @At("HEAD"))
-    private void bewisclient$renderScoreboardSidebar(GuiGraphics guiGraphics, Objective objective, CallbackInfo ci) {
-        float scale = ScoreboardSettings.INSTANCE.isEnabled() ? ScoreboardSettings.INSTANCE.getScale().get() : 1.0f;
-
-        ScreenDrawing screenDrawing = new ScreenDrawing(guiGraphics, minecraft.font);
-
-        screenDrawing.push();
-        screenDrawing.scale(scale, scale);
-        screenDrawing.translate((float) (-minecraft.getWindow().getGuiScaledWidth()) * (1.0f - 1 / scale), (float) (-minecraft.getWindow().getGuiScaledHeight()) * (1.0f - 1 / scale) / 2.0f);
-    }
-
-    @Inject(method = "displayScoreboardSidebar", at = @At("RETURN"))
-    private void bewisclient$renderScoreboardSidebarReturn(GuiGraphics guiGraphics, Objective objective, CallbackInfo ci) {
-        new ScreenDrawing(guiGraphics, minecraft.font).pop();
-    }
 }

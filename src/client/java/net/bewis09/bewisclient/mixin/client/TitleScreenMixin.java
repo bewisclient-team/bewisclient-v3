@@ -1,4 +1,4 @@
-package net.bewis09.bewisclient.core.mixin;
+package net.bewis09.bewisclient.mixin.client;
 
 import net.bewis09.bewisclient.core.WorkingTexturedButtonWidget;
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen;
@@ -12,6 +12,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+import static net.bewis09.bewisclient.core.ExtensionCoreKt.setScreen;
 import static net.bewis09.bewisclient.util.UtilKt.createIdentifier;
 
 @Mixin(TitleScreen.class)
@@ -22,7 +23,7 @@ public class TitleScreenMixin extends Screen {
 
     @Redirect(method = "createNormalMenuOptions", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/components/Button$Builder;bounds(IIII)Lnet/minecraft/client/gui/components/Button$Builder;", ordinal = 1))
     private Button.Builder bewisclient$init(Button.Builder instance, int x, int y, int width, int height) {
-        if (OptionsMenuSettings.INSTANCE.getButtonInTitleScreen().get()) this.addRenderableWidget(new WorkingTexturedButtonWidget(x + width + 4, y, 20, 20, createIdentifier("bewisclient", "textures/gui/sprites/options_button.png"), createIdentifier("bewisclient", "textures/gui/sprites/options_button_pressed.png"), (_) -> this.minecraft.setScreen(new RenderableScreen(new OptionScreen()))));
+        if (OptionsMenuSettings.INSTANCE.getButtonInTitleScreen().get()) this.addRenderableWidget(new WorkingTexturedButtonWidget(x + width + 4, y, 20, 20, createIdentifier("bewisclient", "textures/gui/sprites/options_button.png"), createIdentifier("bewisclient", "textures/gui/sprites/options_button_pressed.png"), (b) -> setScreen(new RenderableScreen(new OptionScreen()))));
         return instance.bounds(x, y, width, height);
     }
 }

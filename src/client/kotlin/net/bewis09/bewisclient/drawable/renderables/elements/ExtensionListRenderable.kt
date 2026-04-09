@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.drawable.renderables.elements
 
 import net.bewis09.bewisclient.api.BewisclientAPIEntrypoint
-import net.bewis09.bewisclient.core.Identifier
+import net.bewis09.bewisclient.version.Identifier
 import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.renderables.settings.SettingRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing

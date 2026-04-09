@@ -1,4 +1,6 @@
-package net.bewis09.bewisclient.core.mixin;
+// @VersionReplacement
+
+package net.bewis09.bewisclient.mixin.client;
 
 import net.bewis09.bewisclient.impl.settings.functionalities.ScreenshotSettings;
 import net.minecraft.client.Screenshot;
@@ -13,9 +15,11 @@ import java.io.File;
 
 @Mixin(Screenshot.class)
 public class ScreenshotRecorderMixin {
-    @Inject(method = "method_67805", at = @At("HEAD"), cancellable = true)
+    // @[1.21.4] "method_1664" @[1.21.11] "method_67805" @[] "lambda$grab$2"
+    @Inject(method = /*[@]*/"method_1664"/*[!@]*/, at = @At("HEAD"), cancellable = true)
     private static void injectScreenshotText(File file, Style style, CallbackInfoReturnable<Style> cir) {
         if (ScreenshotSettings.INSTANCE.getRedirect().get())
-            cir.setReturnValue(style.withClickEvent(new ClickEvent.RunCommand("bewisclient screenshot "+file.getAbsolutePath())));
+            // @[1.21.4] (ClickEvent.Action.RUN_COMMAND, "/"+ @[] .RunCommand(
+            cir.setReturnValue(style.withClickEvent(new ClickEvent/*[@]*/(ClickEvent.Action.RUN_COMMAND, "/"+/*[!@]*/"bewisclient screenshot "+file.getAbsolutePath())));
     }
 }

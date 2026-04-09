@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.api
 
-import net.bewis09.bewisclient.core.Identifier
+import net.bewis09.bewisclient.version.Identifier
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.options_structure.SettingCategory
 import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCategory

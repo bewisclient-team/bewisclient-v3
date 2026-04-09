@@ -9,14 +9,9 @@
     "ItemStackMixin",
     "LightmapTextureManagerMixin",
     "MouseMixin",
-    "OverlayTextureMixin",
     "PackListWidgetMixin",
-    "PackScreenMixin",
-    "ScreenshotRecorderMixin",
     "SkinTexturesMixin",
-    "TitleScreenMixin",
-    "WorldRendererMixin",
-    "BlockItemMixin"
+    "WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

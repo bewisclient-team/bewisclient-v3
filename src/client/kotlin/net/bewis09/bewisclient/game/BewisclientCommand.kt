@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.game
 
 import com.mojang.brigadier.arguments.StringArgumentType
-import net.bewis09.bewisclient.core.ClientCommandManager
+import net.bewis09.bewisclient.version.ClientCommandManager
 import net.bewis09.bewisclient.impl.screenshot.openBigScreenshotNewScreen
 import net.bewis09.bewisclient.util.EventEntrypoint
 import net.bewis09.bewisclient.util.toText

@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.screen
 
-import net.bewis09.bewisclient.core.GuiGraphics
+import net.bewis09.bewisclient.version.GuiGraphics
 import net.bewis09.bewisclient.core.IndependentScreen
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.notification.NotificationManager
