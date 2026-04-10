@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.impl.widget
 
-import net.bewis09.bewisclient.core.clockTime
+import net.bewis09.bewisclient.version.clockTime
 import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.toText
 import net.bewis09.bewisclient.widget.logic.RelativePosition

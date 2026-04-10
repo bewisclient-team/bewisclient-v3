@@ -2,7 +2,7 @@ package net.bewis09.bewisclient.impl.widget
 
 import com.google.gson.Gson
 import com.google.gson.JsonElement
-import net.bewis09.bewisclient.core.id
+import net.bewis09.bewisclient.version.id
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.options_structure.addToQuickSettings
 import net.bewis09.bewisclient.util.*

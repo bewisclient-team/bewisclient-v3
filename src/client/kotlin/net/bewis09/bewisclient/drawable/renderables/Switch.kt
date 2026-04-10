@@ -9,13 +9,8 @@ import net.bewis09.bewisclient.util.color.color
 import net.bewis09.bewisclient.util.color.within
 import kotlin.math.abs
 
-class Switch(var state: Gettable<Boolean>, val onChange: (new: Boolean) -> Unit) : Hoverable() {
+class Switch(var state: Gettable<Boolean>, val onChange: (new: Boolean) -> Unit) : Hoverable(24, 12) {
     val stateAnimation = Animator(OptionsMenuSettings.animationTime.get().toLong(), Animator.EASE_IN_OUT, if (state.get()) 1f else 0f)
-
-    init {
-        internalWidth = 24
-        internalHeight = 12
-    }
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
@@ -38,8 +33,5 @@ class Switch(var state: Gettable<Boolean>, val onChange: (new: Boolean) -> Unit)
         super.init()
     }
 
-    override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
-        onChange(!state.get())
-        return true
-    }
+    override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean = onChange(!state.get()).let { true }
 }

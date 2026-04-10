@@ -3,3 +3,6 @@ classTweaker v1 official
 accessible class net/minecraft/client/Minecraft$GameLoadCookie
 accessible field net/minecraft/client/OptionInstance caption Lnet/minecraft/network/chat/Component;
 accessible method net/minecraft/world/item/ItemStack <init> (Lnet/minecraft/core/Holder;ILnet/minecraft/core/component/PatchedDataComponentMap;)V
+accessible field net/minecraft/client/multiplayer/MultiPlayerGameMode destroyProgress F
+accessible field net/minecraft/client/multiplayer/ClientPacketListener pingDebugMonitor Lnet/minecraft/client/multiplayer/PingDebugMonitor;
+accessible field net/minecraft/client/KeyMapping key Lcom/mojang/blaze3d/platform/InputConstants$Key;

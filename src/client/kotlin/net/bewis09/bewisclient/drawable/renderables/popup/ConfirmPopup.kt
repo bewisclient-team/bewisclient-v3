@@ -8,19 +8,15 @@ import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.minecraft.network.chat.CommonComponents
 import net.minecraft.network.chat.Component
 
-class ConfirmPopup(val text: Component, val onConfirm: () -> Unit, confirmText: Component = CommonComponents.GUI_CONTINUE, cancelText: Component = CommonComponents.GUI_CANCEL) : Renderable() {
+class ConfirmPopup(val text: Component, val onConfirm: () -> Unit, confirmText: Component = CommonComponents.GUI_CONTINUE, cancelText: Component = CommonComponents.GUI_CANCEL) : Renderable(200, 100) {
     val cancelButton = Button(cancelText) {
         OptionScreen.currentInstance?.closePopup()
     }
+
     val confirmButton = Button(confirmText, selected = { true }, onClick = {
         onConfirm()
         OptionScreen.currentInstance?.closePopup()
     })
-
-    init {
-        internalWidth = 200
-        internalHeight = 100
-    }
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         val lines = screenDrawing.wrapText(text.string, width - 20)

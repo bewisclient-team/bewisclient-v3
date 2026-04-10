@@ -1,57 +1,25 @@
 package net.bewis09.bewisclient.drawable.screen_drawing
 
-import net.bewis09.bewisclient.core.*
-import net.bewis09.bewisclient.version.GuiGraphics
 import net.bewis09.bewisclient.util.color.Color
 import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.logic.BewisclientInterface
-import net.bewis09.bewisclient.version.Identifier
+import net.bewis09.bewisclient.version.*
 import net.minecraft.client.gui.Font
 
 interface ScreenDrawingInterface : BewisclientInterface {
     val guiGraphics: GuiGraphics
     val textRenderer: Font
 
-    /**
-     * Translates the drawing context by the specified x and y offsets.
-     *
-     * @param x The x offset to net.bewis09.bewisclient.core.translate the context by.
-     * @param y The y offset to net.bewis09.bewisclient.core.translate the context by.
-     */
     fun translate(x: Float, y: Float) = guiGraphics.translate(x, y)
 
-    /**
-     * Scales the drawing context by the specified x and y factors.
-     *
-     * @param x The x factor to net.bewis09.bewisclient.core.scale the context by.
-     * @param y The y factor to net.bewis09.bewisclient.core.scale the context by.
-     */
     fun scale(x: Float, y: Float) = guiGraphics.scale(x, y)
 
-    /**
-     * Rotates the drawing context by the specified angle in degrees.
-     *
-     * @param angle The angle in degrees to net.bewis09.bewisclient.core.rotate the context by.
-     */
     fun rotateDegrees(angle: Float) = rotate(Math.toRadians(angle.toDouble()).toFloat())
 
-    /**
-     * Rotates the drawing context by the specified angle in radians.
-     *
-     * @param angle The angle in radians to net.bewis09.bewisclient.core.rotate the context by.
-     */
     fun rotate(angle: Float) = guiGraphics.rotate(angle)
 
-    /**
-     * Pushes a new matrix onto the drawing context's matrix stack. This is used to save the current
-     * transformation state so that it can be restored later.
-     */
     fun push() = guiGraphics.push()
 
-    /**
-     * Pops the last matrix from the drawing context's matrix stack. This restores the previous
-     * transformation state that was saved by a net.bewis09.bewisclient.core.push operation.
-     */
     fun pop() = guiGraphics.pop()
 
     fun applyAlpha(color: Color): Int = (getCurrentColorModifier() * color).argb

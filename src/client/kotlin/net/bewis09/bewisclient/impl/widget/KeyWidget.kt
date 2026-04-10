@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.impl.widget
 
 import com.mojang.blaze3d.platform.InputConstants
-import net.bewis09.bewisclient.core.isKeyPressed
+import net.bewis09.bewisclient.version.isKeyPressed
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.options_structure.addToQuickSettings
 import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
@@ -9,7 +9,6 @@ import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSett
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.translate
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
-import net.bewis09.bewisclient.interfaces.KeyBindingAccessor
 import net.bewis09.bewisclient.util.color.Color
 import net.bewis09.bewisclient.util.color.StaticColorSaver
 import net.bewis09.bewisclient.util.createIdentifier
@@ -113,14 +112,14 @@ object KeyWidget : ScalableWidget(createIdentifier("bewisclient", "key_widget"))
         val c = util.getCurrentRenderableScreen() ?: return keyBinding.isDown
         val d = c.renderable as? HudEditScreen ?: return keyBinding.isDown
 
-        val key = (keyBinding as KeyBindingAccessor).getKey()
+        val key = keyBinding.key
 
         if (key.type == InputConstants.Type.KEYSYM) return client.isKeyPressed(key.value)
         if (key.type == InputConstants.Type.MOUSE) return d.mouseMap[key.value] == true
         return keyBinding.isDown
     }
 
-    fun KeyMapping.getKeyText(): String = when ((this as KeyBindingAccessor).getKey().value) {
+    fun KeyMapping.getKeyText(): String = when (this.key.value) {
         GLFW.GLFW_MOUSE_BUTTON_LEFT -> "LMB"
         GLFW.GLFW_MOUSE_BUTTON_RIGHT -> "RMB"
         else -> this.translatedKeyMessage.string

@@ -16,8 +16,5 @@ class Button(var text: Component, val onClick: (Button) -> Unit, tooltip: Compon
         }
     }
 
-    override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
-        onClick(this)
-        return true
-    }
+    override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean = onClick(this).let { true }
 }

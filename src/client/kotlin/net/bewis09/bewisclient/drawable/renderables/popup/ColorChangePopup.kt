@@ -8,7 +8,7 @@ import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.interfaces.Gettable
 import net.bewis09.bewisclient.util.color.ColorSaver
 
-class ColorChangePopup(val state: Gettable<ColorSaver>, val onChange: (ColorSaver) -> Unit, val types: Array<String>) : Renderable() {
+class ColorChangePopup(val state: Gettable<ColorSaver>, val onChange: (ColorSaver) -> Unit, val types: Array<String>) : Renderable(200, 100) {
     val buttons = types.map { type ->
         ColorSaver.getType(type)?.let {
             ThemeButton(it.getTranslation()(), {
@@ -21,11 +21,6 @@ class ColorChangePopup(val state: Gettable<ColorSaver>, val onChange: (ColorSave
                 }
             }, it.getDescription()?.invoke())
         }
-    }
-
-    init {
-        internalWidth = 200
-        internalHeight = 100
     }
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {

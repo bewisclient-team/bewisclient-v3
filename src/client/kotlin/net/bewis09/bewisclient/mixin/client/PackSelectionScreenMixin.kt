@@ -1,7 +1,6 @@
 package net.bewis09.bewisclient.mixin.client
 
-import net.bewis09.bewisclient.core.WorkingTexturedButtonWidget
-import net.bewis09.bewisclient.core.setScreen
+import net.bewis09.bewisclient.drawable.TexturedButtonWidget
 import net.bewis09.bewisclient.drawable.Translations.ADD_DATA_PACK
 import net.bewis09.bewisclient.drawable.Translations.ADD_RESOURCE_PACK
 import net.bewis09.bewisclient.impl.pack.Modrinth
@@ -10,8 +9,8 @@ import net.bewis09.bewisclient.impl.settings.functionalities.PackAdderSettings
 import net.bewis09.bewisclient.screen.RenderableScreen
 import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.version.Identifier
+import net.bewis09.bewisclient.version.setScreen
 import net.minecraft.client.gui.components.Button
-import net.minecraft.client.gui.components.Button.OnPress
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.client.gui.screens.packs.PackSelectionScreen
 import net.minecraft.network.chat.Component
@@ -41,11 +40,11 @@ class PackSelectionScreenMixin(title: Component) : Screen(title) {
     fun bewisclientInit(ci: CallbackInfo) {
         if (!PackAdderSettings.isEnabled()) return
 
-        addResourcePackButton = addRenderableWidget(WorkingTexturedButtonWidget(width / 2 - 215, height - 49, 200, 18, buttonTexture, buttonTexture, OnPress { b: Button? ->
+        addResourcePackButton = addRenderableWidget(TexturedButtonWidget(width / 2 - 215, height - 49, 200, 18, buttonTexture, buttonTexture, { b: Button? ->
             setScreen(
                 RenderableScreen(
                     PackListScreen(
-                        if (packDir!!.endsWith(Path.of("resourcepacks"))) Modrinth.Type.RESOURCE_PACK else Modrinth.Type.DATA_PACK, this, this.packDir
+                        if (packDir.endsWith(Path.of("resourcepacks"))) Modrinth.Type.RESOURCE_PACK else Modrinth.Type.DATA_PACK, this, this.packDir
                     )
                 )
             )

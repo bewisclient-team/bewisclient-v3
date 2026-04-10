@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.game
 
 import net.bewis09.bewisclient.api.APIEntrypointLoader
-import net.bewis09.bewisclient.core.registerKeyBinding
+import net.bewis09.bewisclient.version.registerKeyBinding
 import net.bewis09.bewisclient.impl.functionalities.Perspective
 import net.bewis09.bewisclient.util.EventEntrypoint
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents

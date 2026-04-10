@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.impl.widget
 
-import net.bewis09.bewisclient.core.name
+import net.bewis09.bewisclient.version.name
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.options_structure.addToQuickSettings
 import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSettingsRenderable
@@ -16,7 +16,6 @@ import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.ScalableWidget
 import net.minecraft.SharedConstants
-import net.minecraft.commands.arguments.SlotArgument.slot
 import net.minecraft.core.component.DataComponents
 import net.minecraft.network.chat.Component
 import net.minecraft.world.item.ItemStack

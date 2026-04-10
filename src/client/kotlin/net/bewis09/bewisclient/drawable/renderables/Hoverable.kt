@@ -5,8 +5,13 @@ import net.bewis09.bewisclient.drawable.Animator.Companion.LINEAR
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 
-open class Hoverable(duration: Long = 200) : Renderable() {
-    val hoverAnimation = Animator(duration, LINEAR, 0f)
+open class Hoverable(
+    minWidth: Int = 0,
+    minHeight: Int = 0,
+    widthProvider: (Renderable.() -> Int)? = null,
+    heightProvider: (Renderable.() -> Int)? = null
+) : Renderable(minWidth, minHeight, widthProvider, heightProvider) {
+    val hoverAnimation = Animator(200, LINEAR, 0f)
 
     val hoverFactor
         get() = hoverAnimation.get()

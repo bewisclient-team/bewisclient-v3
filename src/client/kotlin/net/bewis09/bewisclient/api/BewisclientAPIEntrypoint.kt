@@ -36,22 +36,13 @@ open class BewisclientAPIEntrypoint : BewisclientInterface {
         }
     }
 
-    /**
-     * Returns a list of [EventEntrypoint]s that are registered in the mod.
-     * This is used to register event handlers for the Bewisclient API.
-     *
-     * @return A list of [EventEntrypoint]s that are registered in the mod.
-     */
     open fun getEventEntrypoints(): List<EventEntrypoint> {
         return emptyList()
     }
 
     /**
      * Returns a list of [Settings] objects that are registered in the mod.
-     * This is used to register settings for the Bewisclient API.
      * Each [Settings] object should be a singleton that holds the settings for your mod.
-     *
-     * @return A list of [Settings] objects that are registered in the mod.
      */
     open fun getSettingsObjects(): List<Settings> {
         return emptyList()
@@ -60,19 +51,11 @@ open class BewisclientAPIEntrypoint : BewisclientInterface {
     /**
      * Returns a list of [Keybind]s that are registered in the mod.
      * This is used to register keybinds for the Bewisclient API.
-     *
-     * @return A list of [Keybind]s that are registered in the mod.
      */
     open fun getKeybinds(): List<Keybind> {
         return emptyList()
     }
 
-    /**
-     * Returns a list of [Widget]s that are registered in the mod.
-     * This is used to register widgets for the Bewisclient API.
-     *
-     * @return A list of [Widget]s that are registered in the mod.
-     */
     open fun getWidgets(): List<Widget> {
         return emptyList()
     }

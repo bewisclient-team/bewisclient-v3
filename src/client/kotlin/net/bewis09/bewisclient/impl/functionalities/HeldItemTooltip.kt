@@ -1,6 +1,5 @@
 package net.bewis09.bewisclient.impl.functionalities
 
-import net.bewis09.bewisclient.core.Profiler
 import net.bewis09.bewisclient.core.appendTooltip
 import net.bewis09.bewisclient.core.getItemFormattedName
 import net.bewis09.bewisclient.drawable.Translations
@@ -13,7 +12,7 @@ import net.bewis09.bewisclient.impl.settings.functionalities.HeldItemTooltipSett
 import net.bewis09.bewisclient.interfaces.SettingInterface
 import net.bewis09.bewisclient.util.color.Color
 import net.bewis09.bewisclient.util.setColor
-import net.minecraft.core.component.DataComponentType
+import net.bewis09.bewisclient.version.Profiler
 import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
@@ -37,7 +36,7 @@ object HeldItemTooltip : ImageSettingCategory(
     var isLookup = false
     var isRendering = false
 
-    val componentSet = mutableSetOf<DataComponentType<*>>(
+    val componentSet = mutableSetOf(
         DataComponents.ATTRIBUTE_MODIFIERS, DataComponents.UNBREAKABLE, DataComponents.BLOCK_ENTITY_DATA, DataComponents.CAN_BREAK, DataComponents.CAN_PLACE_ON, DataComponents.DAMAGE
     )
 

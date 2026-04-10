@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.impl
 
-import net.bewis09.bewisclient.core.setScreen
+import net.bewis09.bewisclient.version.setScreen
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.game.Keybind
 import net.bewis09.bewisclient.screen.RenderableScreen

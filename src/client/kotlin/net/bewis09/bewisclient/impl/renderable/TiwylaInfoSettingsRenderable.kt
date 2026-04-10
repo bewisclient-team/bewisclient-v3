@@ -1,6 +1,5 @@
 package net.bewis09.bewisclient.impl.renderable
 
-import net.bewis09.bewisclient.core.getOrNull
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.Rectangle
 import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSettingsRenderable
@@ -11,10 +10,11 @@ import net.bewis09.bewisclient.interfaces.SettingInterface
 import net.bewis09.bewisclient.util.color.Color
 import net.bewis09.bewisclient.util.color.alpha
 import net.bewis09.bewisclient.util.createIdentifier
+import net.bewis09.bewisclient.util.getOrNull
+import net.bewis09.bewisclient.util.snake_toCamelCase
 import net.bewis09.bewisclient.util.staticFun
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
-import kotlin.jvm.optionals.getOrNull
 
 class TiwylaInfoSettingsRenderable : Renderable() {
     val blockInfoList = MultipleBooleanSettingsRenderable(
@@ -22,7 +22,7 @@ class TiwylaInfoSettingsRenderable : Renderable() {
         null,
         TiwylaWidget.blockStateInfoMap.map {
             MultipleBooleanSettingsRenderable.Part(
-                Component.literal(BuiltInRegistries.BLOCK.getOrNull(createIdentifier(it.key))?.name?.string + " -> " + TiwylaWidget.snake_toCamelCase(it.value.name)),
+                Component.literal(BuiltInRegistries.BLOCK.getOrNull(createIdentifier(it.key))?.name?.string + " -> " + snake_toCamelCase(it.value.name)),
                 null,
                 object : SettingInterface<Boolean> {
                     override fun get(): Boolean {

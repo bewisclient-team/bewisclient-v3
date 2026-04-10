@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Redirect
 @Mixin(OverlayTexture::class)
 class EntityHighlightMixin {
     // @[1.21.1] "Lcom/mojang/blaze3d/platform/NativeImage;setPixelRGBA(III)V" @[] "Lcom/mojang/blaze3d/platform/NativeImage;setPixel(III)V"
-    @Redirect(method = ["<init>"], at = At(value = "INVOKE", target = /*[@]*/"Lcom/mojang/blaze3d/platform/NativeImage;setPixelRGBA(III)V"/*[!@]*/))
+    @Redirect(method = ["<init>"], at = At(value = "INVOKE", target = /*[@]*/"Lcom/mojang/blaze3d/platform/NativeImage;setPixel(III)V"/*[!@]*/))
     private fun bewisclientInit(instance: NativeImage, j: Int, i: Int, color: Int) {
         if (!EntityHighlightSettings.isEnabled() || i >= 8) {
             setPixel(instance, j, i, color)
@@ -24,7 +24,7 @@ class EntityHighlightMixin {
         setPixel(
             instance, j, i, createColor(
                 // @[1.21.1] color.blue, color.green, color.red @[] color.red, color.green, color.blue
-                (255 - EntityHighlightSettings.alpha.get() * 255).toInt(), /*[@]*/color.blue, color.green, color.red/*[!@]*/
+                (255 - EntityHighlightSettings.alpha.get() * 255).toInt(), /*[@]*/color.red, color.green, color.blue/*[!@]*/
             )
         )
     }
@@ -34,5 +34,5 @@ class EntityHighlightMixin {
     }
 
     // @[1.21.1] setPixelRGBA @[] setPixel
-    fun setPixel(nativeImage: NativeImage, x: Int, y: Int, color: Int) = nativeImage./*[@]*/setPixelRGBA/*[!@]*/(x, y, color)
+    fun setPixel(nativeImage: NativeImage, x: Int, y: Int, color: Int) = nativeImage./*[@]*/setPixel/*[!@]*/(x, y, color)
 }

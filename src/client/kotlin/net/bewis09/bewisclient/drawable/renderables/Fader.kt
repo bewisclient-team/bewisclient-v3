@@ -7,12 +7,7 @@ import net.bewis09.bewisclient.interfaces.Gettable
 import net.bewis09.bewisclient.util.color.*
 import net.bewis09.bewisclient.util.number.Precision
 
-class Fader(val value: Gettable<Float>, val precision: Precision, val onChange: (new: Float) -> Unit) : Hoverable() {
-    init {
-        internalWidth = 100
-        internalHeight = 14
-    }
-
+class Fader(val value: Gettable<Float>, val precision: Precision, val onChange: (new: Float) -> Unit) : Hoverable(100, 14) {
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
         val normalizedValue = precision.normalize(value.get())

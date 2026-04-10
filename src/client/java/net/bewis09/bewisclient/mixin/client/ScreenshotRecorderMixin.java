@@ -16,10 +16,10 @@ import java.io.File;
 @Mixin(Screenshot.class)
 public class ScreenshotRecorderMixin {
     // @[1.21.4] "method_1664" @[1.21.11] "method_67805" @[] "lambda$grab$2"
-    @Inject(method = /*[@]*/"method_1664"/*[!@]*/, at = @At("HEAD"), cancellable = true)
+    @Inject(method = /*[@]*/"lambda$grab$2"/*[!@]*/, at = @At("HEAD"), cancellable = true)
     private static void injectScreenshotText(File file, Style style, CallbackInfoReturnable<Style> cir) {
         if (ScreenshotSettings.INSTANCE.getRedirect().get())
             // @[1.21.4] (ClickEvent.Action.RUN_COMMAND, "/"+ @[] .RunCommand(
-            cir.setReturnValue(style.withClickEvent(new ClickEvent/*[@]*/(ClickEvent.Action.RUN_COMMAND, "/"+/*[!@]*/"bewisclient screenshot "+file.getAbsolutePath())));
+            cir.setReturnValue(style.withClickEvent(new ClickEvent/*[@]*/.RunCommand(/*[!@]*/"bewisclient screenshot "+file.getAbsolutePath())));
     }
 }

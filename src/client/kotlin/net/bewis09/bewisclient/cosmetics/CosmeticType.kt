@@ -5,11 +5,5 @@ enum class CosmeticType(val id: String) {
     CAPE("cape"),
     WING("wing");
 
-    companion object {
-        fun fromId(id: String): CosmeticType? {
-            return entries.firstOrNull { it.id == id }
-        }
-    }
-
     override fun toString() = id
 }

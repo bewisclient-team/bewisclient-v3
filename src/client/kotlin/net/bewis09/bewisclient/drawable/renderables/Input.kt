@@ -19,17 +19,13 @@ class Input : Renderable {
     val onChange: ((String) -> Unit)?
     val font: Identifier?
 
-    constructor(maxWidth: Int = 0, text: String = "", color: Color = Color.WHITE, font: Identifier? = null, onChange: ((String) -> Unit)? = null) : super() {
+    constructor(maxWidth: Int = 0, text: String = "", color: Color = Color.WHITE, font: Identifier? = null, onChange: ((String) -> Unit)? = null) : super(minHeight = 10) {
         this.maxWidth = maxWidth
         this.text = text
         this.color = color
         this.cursor = text.length
         this.onChange = onChange
         this.font = font
-    }
-
-    init {
-        internalHeight = 10
     }
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
@@ -70,9 +66,7 @@ class Input : Renderable {
         return true
     }
 
-    override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
-        return true
-    }
+    override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean = true
 
     override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {
         return when (key) {

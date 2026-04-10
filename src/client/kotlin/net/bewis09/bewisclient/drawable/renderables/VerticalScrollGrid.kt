@@ -4,11 +4,11 @@ import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import kotlin.math.floor
 
-open class VerticalScrollGrid(val init: (Int) -> List<Renderable>, val gap: Int, val minWidth: Int) : Scrollable(Direction.VERTICAL) {
+open class VerticalScrollGrid(val init: (Int) -> List<Renderable>, val gap: Int, val minElementWidth: Int) : Scrollable(Direction.VERTICAL) {
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         if (renderables.isEmpty()) return
 
-        val elementsInRow = floor(((width + gap) / (minWidth + gap)).toDouble()).coerceAtLeast(1.0)
+        val elementsInRow = floor(((width + gap) / (minElementWidth + gap)).toDouble()).coerceAtLeast(1.0)
         val elementWidth = (width + gap) / elementsInRow - gap
         val columnHeights = Array(elementsInRow.toInt()) { 0 }
 
@@ -27,7 +27,7 @@ open class VerticalScrollGrid(val init: (Int) -> List<Renderable>, val gap: Int,
     }
 
     override fun init() {
-        val elementsInRow = floor(((width + gap) / (minWidth + gap)).toDouble())
+        val elementsInRow = floor(((width + gap) / (minElementWidth + gap)).toDouble())
         val elementWidth = (width + gap) / elementsInRow - gap
 
         init.invoke(elementWidth.toInt()).forEach {

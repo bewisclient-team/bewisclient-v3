@@ -15,7 +15,5 @@ class VerticalAlignPlane(val elements: List<Renderable>, val gap: Int = 5): Rend
         renderRenderables(screenDrawing, mouseX, mouseY)
     }
 
-    override fun init() {
-        elements.forEach { addRenderable(it.setWidth(this.width)) }
-    }
+    override fun init() = elements.forEach { addRenderable(it.setWidth(this.width)) }
 }

@@ -16,22 +16,12 @@ open class ImageButton(val image: Identifier, val onClick: (ImageButton) -> Unit
         super.render(screenDrawing, mouseX, mouseY)
 
         screenDrawing.fillRounded(x, y, width, height, 5, OptionsMenuSettings.getThemeColor(alpha = (hoverFactor * 0.15f + 0.15f)))
-
         screenDrawing.drawTexture(image, x + imagePadding, y + imagePadding, width - imagePadding * 2, height - imagePadding * 2, imageColor())
     }
 
-    override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
-        onClick(this)
-        return true
-    }
+    override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean = onClick(this).let { true }
 
-    fun setImageColor(color: () -> Color): ImageButton {
-        this.imageColor = color
-        return this
-    }
+    fun setImageColor(color: () -> Color): ImageButton = apply { imageColor = color }
 
-    fun setImagePadding(padding: Int): ImageButton {
-        this.imagePadding = padding
-        return this
-    }
+    fun setImagePadding(padding: Int): ImageButton = apply { imagePadding = padding }
 }

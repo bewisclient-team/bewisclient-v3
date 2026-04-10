@@ -18,7 +18,5 @@ class TooltipHoverableText(val text: Component, val color: Color, val hoverColor
         }
     }
 
-    override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
-        return onClick?.let { it() } != null
-    }
+    override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean = onClick?.let { it() } != null
 }

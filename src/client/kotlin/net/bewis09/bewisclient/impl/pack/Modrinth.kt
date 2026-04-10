@@ -10,6 +10,7 @@ import net.bewis09.bewisclient.settings.Settings.Companion.gson
 import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.logic.BewisclientInterface
 import net.bewis09.bewisclient.version.Identifier
+import net.bewis09.bewisclient.version.name
 import net.minecraft.SharedConstants
 import net.minecraft.network.chat.Component
 import org.apache.commons.io.output.ByteArrayOutputStream

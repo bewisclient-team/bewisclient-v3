@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package net.bewis09.bewisclient.util.color
 
 infix fun Float.within(pair: Pair<Color, Color>): Color {

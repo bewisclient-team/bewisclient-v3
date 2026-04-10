@@ -20,8 +20,5 @@ class ResetButton<T>(val setting: Settable<T?>) : TooltipHoverable(Translations.
         screenDrawing.drawTexture(createIdentifier("bewisclient", "textures/gui/sprites/reset.png"), x + 2, y + 2, width - 4, height - 4, OptionsMenuSettings.getThemeColor())
     }
 
-    override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
-        setting.set(null)
-        return true
-    }
+    override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean = setting.set(null).let { true }
 }

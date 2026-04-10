@@ -8,7 +8,10 @@ import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.widget.Widget
 import net.bewis09.bewisclient.widget.WidgetLoader
 
-class AddWidgetPopup : Renderable() {
+class AddWidgetPopup : Renderable(
+    widthProvider = { screenWidth - 100 },
+    heightProvider = { screenHeight - 100 }
+) {
     companion object {
         val addText = Translation("popup.add_widget.title", "Add Widget")
     }
@@ -18,14 +21,7 @@ class AddWidgetPopup : Renderable() {
         WidgetLoader.widgets.filter { !it.isEnabled() }.map { widget -> WidgetElement(widget).setHeight(90) }
     }, 5, 80)
 
-    init {
-        internalWidth = screenWidth - 100
-        internalHeight = screenHeight - 100
-    }
-
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        internalWidth = screenWidth - 100
-        internalHeight = screenHeight - 100
         screenDrawing.fillWithBorderRounded(x, y, width, height, 10, OptionsMenuSettings.getBackgroundColor(), OptionsMenuSettings.getThemeColor(alpha = 0.15f))
         renderRenderables(screenDrawing, mouseX, mouseY)
     }

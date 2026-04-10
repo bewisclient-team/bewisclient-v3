@@ -2,7 +2,6 @@ package net.bewis09.bewisclient.impl.widget
 
 import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.toText
-import net.bewis09.bewisclient.mixin.client.ClientPlayNetworkHandlerMixin
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
@@ -35,9 +34,7 @@ object PingWidget : LineWidget(createIdentifier("bewisclient", "ping_widget")) {
             if (client.isSingleplayer || client.connection == null) return -1
 
             if (lastRequest + 100 < System.currentTimeMillis()) {
-                if (!client.debugOverlay.showNetworkCharts()) {
-                    (client.connection as ClientPlayNetworkHandlerMixin).pingDebugMonitor.tick()
-                }
+                if (!client.debugOverlay.showNetworkCharts()) client.connection?.pingDebugMonitor?.tick()
 
                 var l = 0
                 var o = 0

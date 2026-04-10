@@ -8,7 +8,6 @@
     "GameRendererMixin",
     "ItemStackMixin",
     "LightmapTextureManagerMixin",
-    "MouseMixin",
     "PackScreenMixin",
     "SkinTexturesMixin",
     "TooltipDisplayComponentMixin",

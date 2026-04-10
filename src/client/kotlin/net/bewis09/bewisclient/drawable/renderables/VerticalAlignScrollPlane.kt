@@ -19,9 +19,7 @@ class VerticalAlignScrollPlane(val init: (Int) -> List<Renderable>, val gap: Int
         screenDrawing.disableScissors()
     }
 
-    override fun init() {
-        init.invoke(width).forEach {
-            addRenderable(it)
-        }
+    override fun init() = init.invoke(width).forEach {
+        addRenderable(it)
     }
 }

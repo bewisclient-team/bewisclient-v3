@@ -3,7 +3,6 @@ package net.bewis09.bewisclient.impl.widget
 import com.google.gson.*
 import net.bewis09.bewisclient.api.APIEntrypointLoader
 import net.bewis09.bewisclient.version.Identifier
-import net.bewis09.bewisclient.core.getOrNull
 import net.bewis09.bewisclient.core.setFont
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.options_structure.addToQuickSettings
@@ -13,7 +12,6 @@ import net.bewis09.bewisclient.drawable.screen_drawing.transform
 import net.bewis09.bewisclient.impl.renderable.TiwylaInfoSettingsRenderable
 import net.bewis09.bewisclient.impl.renderable.TiwylaLinesSettingsRenderable
 import net.bewis09.bewisclient.impl.settings.DefaultWidgetSettings
-import net.bewis09.bewisclient.interfaces.BreakingProgressAccessor
 import net.bewis09.bewisclient.util.*
 import net.bewis09.bewisclient.util.color.color
 import net.bewis09.bewisclient.settings.types.BooleanMapSetting
@@ -35,6 +33,7 @@ import net.minecraft.world.level.block.state.BlockState
 import net.minecraft.world.level.block.state.properties.Property
 import net.minecraft.world.phys.BlockHitResult
 import net.minecraft.world.phys.EntityHitResult
+import kotlin.collections.forEachIndexed
 import kotlin.math.*
 
 object TiwylaWidget : ScalableWidget(createIdentifier("bewisclient", "tiwyla_widget")), EventEntrypoint {
@@ -291,7 +290,7 @@ object TiwylaWidget : ScalableWidget(createIdentifier("bewisclient", "tiwyla_wid
             if (secs > 60) return@Line minutesText((secs / 6 * 10).roundToInt() / 100F)
             return@Line secondsText((secs * 100).roundToInt() / 100F)
         }, "break_time", 0), Information.Line({ _ ->
-            val s = ((client.gameMode as BreakingProgressAccessor?)?.getDestroyProgress() ?: 0f) * 1000
+            val s = (client.gameMode?.destroyProgress ?: 0f) * 1000
             if (s == 0F) {
                 return@Line null
             }
@@ -354,20 +353,6 @@ object TiwylaWidget : ScalableWidget(createIdentifier("bewisclient", "tiwyla_wid
     fun <T : Entity> provideEntityInfo(entity: T): String? {
         @Suppress("UNCHECKED_CAST") val provider = entityInfoProviders.firstOrNull { entity.type == it.second.entityType }?.second as? EntityInfoProvider<T> ?: return null
         return provider.fn(entity)
-    }
-
-    @Suppress("FunctionName")
-    fun `snake_toWord With Spaces`(str: String): String {
-        return str.split("_".toRegex()).filter { it.isNotEmpty() }.joinToString(" ") {
-            it.replaceFirstChar(Char::uppercaseChar)
-        }
-    }
-
-    @Suppress("FunctionName")
-    fun snake_toCamelCase(str: String): String {
-        return str.split("_".toRegex()).filter { it.isNotEmpty() }.mapIndexed { i, it ->
-            it.replaceFirstChar(Char::uppercaseChar)
-        }.joinToString("")
     }
 
     override fun onResourcesReloaded() {

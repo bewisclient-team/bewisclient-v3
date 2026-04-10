@@ -1,6 +1,5 @@
 package net.bewis09.bewisclient.impl.pack
 
-import net.bewis09.bewisclient.core.*
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.Translations
 import net.bewis09.bewisclient.drawable.renderables.Input
@@ -10,16 +9,16 @@ import net.bewis09.bewisclient.drawable.renderables.VerticalAlignScrollPlane
 import net.bewis09.bewisclient.drawable.renderables.notification.NotificationManager
 import net.bewis09.bewisclient.drawable.renderables.notification.ProgressNotification
 import net.bewis09.bewisclient.drawable.renderables.notification.SimpleTextNotification
-import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawingInterface
-import net.bewis09.bewisclient.game.Translation
 import net.bewis09.bewisclient.impl.pack.Modrinth.downloadFailed
 import net.bewis09.bewisclient.impl.pack.Modrinth.downloadFailedReason
 import net.bewis09.bewisclient.util.color.Color
 import net.bewis09.bewisclient.util.color.color
 import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.util.toText
+import net.bewis09.bewisclient.version.name
+import net.bewis09.bewisclient.version.setScreen
 import net.minecraft.SharedConstants
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.network.chat.CommonComponents

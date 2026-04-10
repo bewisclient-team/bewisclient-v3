@@ -31,7 +31,7 @@ abstract class HudMixin: BewisclientInterface {
     private val lastToolHighlight: ItemStack? = null
 
     // @[1.21.11] "renderSelectedItemName" @[] "extractSelectedItemName"
-    @Inject(method = [/*[@]*/"renderSelectedItemName"/*[!@]*/], at = [At("HEAD")], cancellable = true)
+    @Inject(method = [/*[@]*/"extractSelectedItemName"/*[!@]*/], at = [At("HEAD")], cancellable = true)
     private fun bewisclientRenderHeldItemTooltip(drawContext: GuiGraphics, ci: CallbackInfo) {
         if (HeldItemTooltipSettings.isEnabled()) {
             HeldItemTooltip.render(ScreenDrawing(drawContext, getFont()!!), toolHighlightTimer, lastToolHighlight!!)

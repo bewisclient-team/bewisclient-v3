@@ -7,17 +7,13 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawingInterface
 import net.bewis09.bewisclient.version.GuiGraphics
 import net.bewis09.bewisclient.version.Identifier
-import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper
 import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry
 import net.minecraft.ChatFormatting
-import net.minecraft.WorldVersion
 import net.minecraft.client.KeyMapping
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.Font
-import net.minecraft.client.gui.screens.Screen
 import net.minecraft.client.model.geom.ModelLayers
 import net.minecraft.client.model.player.PlayerModel
-import net.minecraft.client.multiplayer.ClientLevel
 import net.minecraft.client.player.LocalPlayerResolver
 import net.minecraft.client.renderer.PlayerSkinRenderCache
 import net.minecraft.client.renderer.RenderPipelines
@@ -35,33 +31,12 @@ import net.minecraft.util.profiling.Profiler
 import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.TooltipFlag
-import net.minecraft.world.item.component.ItemContainerContents
 import net.minecraft.world.item.component.TooltipDisplay
 import java.io.File
 import java.util.function.Consumer
 
 fun Component.setFont(id: Identifier?): MutableComponent {
     return (this as? MutableComponent ?: this.copy()).withStyle { it.withFont(FontDescription.Resource((id ?: ScreenDrawingInterface.BEWISCLIENT_FONT))) }
-}
-
-fun GuiGraphics.pop() {
-    this.pose().popMatrix()
-}
-
-fun GuiGraphics.push() {
-    this.pose().pushMatrix()
-}
-
-fun GuiGraphics.translate(x: Float, y: Float) {
-    this.pose().translate(x, y)
-}
-
-fun GuiGraphics.scale(x: Float, y: Float) {
-    this.pose().scale(x, y)
-}
-
-fun GuiGraphics.rotate(angle: Float) {
-    this.pose().rotate(angle)
 }
 
 fun GuiGraphics.drawTexture(
@@ -80,20 +55,10 @@ fun Minecraft.registerTexture(identifier: Identifier, image: NativeImage) {
     )
 }
 
-object Profiler {
-    fun push(name: String) = Profiler.get().push(name)
-
-    fun pop() = Profiler.get().pop()
-}
-
 fun registerKeybind(translation: String, type: InputConstants.Type, default: Int): KeyMapping {
     return KeyMapping(
         translation, type, default, KeyMapping.Category.MISC
     )
-}
-
-fun Minecraft.isKeyPressed(key: Int): Boolean {
-    return InputConstants.isKeyDown(this.window, key)
 }
 
 fun registerWidget(id: Identifier, widget: (context: GuiGraphics) -> Unit) = HudElementRegistry.addLast(id) { context, _ -> widget(context) }
@@ -146,58 +111,3 @@ fun ScreenDrawing.drawCape(identifier: Identifier, x: Int, y: Int, width: Int, h
     this.guiGraphics.skin(model, identifier, height.toFloat() * 0.9f, 18f, -195f, -10f, x - xOffset, y, x + (width * 1.13).toInt() - xOffset, y + (height * 1.13).toInt())
     this.disableScissors()
 }
-
-fun ScreenDrawing.setCursorPointer() {
-    guiGraphics.requestCursor(CursorTypes.POINTING_HAND)
-}
-
-fun ScreenDrawing.drawGuiTexture(
-    texture: Identifier,
-    x: Int,
-    y: Int,
-    width: Int,
-    height: Int
-) {
-    this.guiGraphics.blitSprite(
-        RenderPipelines.GUI_TEXTURED,
-        texture,
-        x,
-        y,
-        width,
-        height
-    )
-}
-
-val WorldVersion.name: String
-    get() = this.name()
-
-fun Minecraft.takePanoramaFull(file: File): Component = this.grabPanoramixScreenshot(file)
-
-fun isAllowedInIdentifier(char: Char) = Identifier.isAllowedInIdentifier(char)
-
-fun <T: Any> ResourceKey<T>.id(): Identifier = this.identifier()
-
-fun <T: Any> DefaultedRegistry<T>.getOrNull(id: Identifier): T? = this.getOptional(id).orElse(null)
-
-fun GuiGraphics.string(font: Font, text: Component, x: Int, y: Int, color: Int, shadow: Boolean) {
-    this.text(font, text, x, y, color, shadow)
-}
-
-fun registerKeyBinding(keyBinding: KeyMapping) = KeyMappingHelper.registerKeyMapping(keyBinding)
-
-fun GuiGraphics.drawItem(itemStack: ItemStack, x: Int, y: Int) {
-    this.item(itemStack, x, y)
-}
-
-fun Minecraft.displayOverlayMessage(message: Component) = this.player?.sendOverlayMessage(message)
-
-fun Minecraft.displaySystemMessage(message: Component) = this.player?.sendSystemMessage(message)
-
-val ClientLevel.clockTime
-    get() = this.overworldClockTime
-
-fun setScreen(screen: Screen?) = Minecraft.getInstance().setScreen(screen)
-
-fun getScreen() = Minecraft.getInstance().screen
-
-fun ItemContainerContents.toStream() = this.allItemsCopyStream()

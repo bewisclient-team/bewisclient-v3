@@ -28,7 +28,7 @@ import net.bewis09.bewisclient.util.createIdentifier
 import net.minecraft.network.chat.CommonComponents
 import net.bewis09.bewisclient.version.Identifier
 import net.bewis09.bewisclient.version.Util
-import net.bewis09.bewisclient.core.setScreen
+import net.bewis09.bewisclient.version.setScreen
 import org.lwjgl.glfw.GLFW
 import kotlin.io.encoding.Base64
 

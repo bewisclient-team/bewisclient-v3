@@ -3,40 +3,38 @@ package net.bewis09.bewisclient.drawable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.util.logic.BewisclientInterface
 
-abstract class Renderable : BewisclientInterface {
-    protected var internalX: Int
-    protected var internalY: Int
-    protected var internalWidth: Int
-    protected var internalHeight: Int
+abstract class Renderable(
+    val minWidth: Int = 0,
+    val minHeight: Int = 0,
+    widthProvider: (Renderable.() -> Int)? = null,
+    heightProvider: (Renderable.() -> Int)? = null
+) : BewisclientInterface {
+    protected var internalX: Int = 0
+    protected var internalY: Int = 0
+    protected var internalWidth: Int = 0
+    protected var internalHeight: Int = 0
+
+    val widthProvider = widthProvider ?: { this.internalWidth }
+    val heightProvider = heightProvider ?: { this.internalHeight }
 
     val x: Int
         get() = internalX
     val y: Int
         get() = internalY
     val width: Int
-        get() = internalWidth
+        get() = this.widthProvider().coerceAtLeast(minWidth)
     val height: Int
-        get() = internalHeight
+        get() = this.heightProvider().coerceAtLeast(minHeight)
     val x2: Int
-        get() = internalX + internalWidth
+        get() = internalX + width
     val y2: Int
-        get() = internalY + internalHeight
+        get() = internalY + height
     val centerX: Int
-        get() = internalX + internalWidth / 2
+        get() = internalX + width / 2
     val centerY: Int
-        get() = internalY + internalHeight / 2
+        get() = internalY + height / 2
 
-    constructor(x: Int, y: Int, width: Int, height: Int) {
-        this.internalX = x
-        this.internalY = y
-        this.internalWidth = width
-        this.internalHeight = height
-        this.renderables = mutableListOf<Renderable>()
-    }
-
-    constructor() : this(0, 0, 0, 0)
-
-    val renderables: MutableList<Renderable>
+    val renderables = mutableListOf<Renderable>()
 
     var selectedElement: Renderable? = null
 

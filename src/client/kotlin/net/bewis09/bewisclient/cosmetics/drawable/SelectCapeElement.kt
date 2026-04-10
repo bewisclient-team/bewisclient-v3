@@ -12,6 +12,7 @@ import net.bewis09.bewisclient.impl.settings.OptionsMenuSettings
 import net.bewis09.bewisclient.util.color.Color
 import net.bewis09.bewisclient.util.color.within
 import net.bewis09.bewisclient.util.createIdentifier
+import net.bewis09.bewisclient.util.`snake_toWord With Spaces`
 
 class SelectCapeElement(val identifier: CosmeticIdentifier, val cosmetic: Cosmetic) : TooltipHoverable() {
     val selected = Animator(200, Animator.EASE_IN_OUT, 0f)
@@ -32,13 +33,6 @@ class SelectCapeElement(val identifier: CosmeticIdentifier, val cosmetic: Cosmet
         }
 
         screenDrawing.drawBorderRounded(x, y, width, height, 5, 0.2f within ((selected.get() within (Color.DARK_GRAY to Color.WHITE)) to OptionsMenuSettings.getThemeColor()))
-    }
-
-    @Suppress("FunctionName")
-    private fun `snake_toWord With Spaces`(str: String): String {
-        return str.split("_".toRegex()).filter { it.isNotEmpty() }.joinToString(" ") {
-            it.replaceFirstChar(Char::uppercaseChar)
-        }
     }
 
     override fun init() {

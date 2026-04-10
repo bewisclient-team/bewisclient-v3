@@ -1,7 +1,6 @@
 package net.bewis09.bewisclient.impl
 
 import net.bewis09.bewisclient.api.BewisclientAPIEntrypoint
-import net.bewis09.bewisclient.core.id
 import net.bewis09.bewisclient.cosmetics.CosmeticLoader
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.options_structure.SidebarCategory
@@ -17,6 +16,7 @@ import net.bewis09.bewisclient.security.Security
 import net.bewis09.bewisclient.util.EventEntrypoint
 import net.bewis09.bewisclient.settings.Settings
 import net.bewis09.bewisclient.settings.SettingsLoader
+import net.bewis09.bewisclient.version.id
 import net.bewis09.bewisclient.widget.Widget
 import net.bewis09.bewisclient.widget.WidgetLoader
 import net.minecraft.world.entity.EntityType

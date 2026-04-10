@@ -12,42 +12,17 @@ class Translation(private val namespace: String, private val key: String, @Suppr
         if (!key.isEmpty()) addTranslation(namespace, key, en_us)
     }
 
-    fun getTranslatedText(): MutableComponent {
-        if (key.isEmpty()) {
-            return en_us.toText()
-        }
-        return Component.translatable("$namespace.$key")
-    }
+    fun getTranslatedText(): MutableComponent = Component.translatable("$namespace.$key")
 
-    fun getTranslatedText(vararg args: Any): MutableComponent {
-        return if (key.isEmpty()) en_us.toText()
-        else Component.translatable("$namespace.$key", *args)
-    }
+    fun getTranslatedText(vararg args: Any): MutableComponent = Component.translatable("$namespace.$key", *args)
 
-    fun getTranslatedString(): String {
-        return if (key.isEmpty()) en_us
-        else getTranslatedText().string
-    }
+    fun getTranslatedString(): String = getTranslatedText().string
 
-    fun getKey(): String {
-        return "$namespace.$key"
-    }
+    fun getKey(): String = "$namespace.$key"
 
     fun getKeyWithoutNamespace() = key
 
-    operator fun invoke(): MutableComponent {
-        return getTranslatedText()
-    }
+    operator fun invoke(): MutableComponent = getTranslatedText()
 
-    operator fun invoke(vararg args: Any): MutableComponent {
-        return getTranslatedText(*args)
-    }
-
-    companion object {
-        fun literal(text: String): Translation = Translation("", text)
-    }
-}
-
-fun registerTranslation(key: String, @Suppress("LocalVariableName") en_us: String): String {
-    return Translation(key, en_us).getKey()
+    operator fun invoke(vararg args: Any): MutableComponent = getTranslatedText(*args)
 }

@@ -187,7 +187,7 @@ object CosmeticLoader : ObjectSetting(), EventEntrypoint {
         @Suppress("PropertyName")
         val has_elytra: Boolean
     ) {
-        fun getCosmetic() = CosmeticType.fromId(type)?.let { CosmeticIdentifier(it, id) }
+        fun getCosmetic() = CosmeticType.entries.firstOrNull { it.id == id }?.let { CosmeticIdentifier(it, id) }
     }
 
     fun getCosmeticForPlayer(player: GameProfile, type: CosmeticType): Cosmetic? {

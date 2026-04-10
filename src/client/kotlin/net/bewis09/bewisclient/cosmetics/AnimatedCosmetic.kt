@@ -26,8 +26,7 @@ class AnimatedCosmetic(val baseIdentifier: Identifier, val frames: Int) : Cosmet
         @Throws(IOException::class)
         fun getFrames(input: ByteArray, count: Int): List<BufferedImage> {
             val reader = ImageIO.getImageReadersByFormatName("gif").next()
-            val stream = ImageIO.createImageInputStream(ByteArrayInputStream(input))
-            reader.input = stream
+            reader.input = ImageIO.createImageInputStream(ByteArrayInputStream(input))
 
             val frames = Array<BufferedImage>(count) { index ->
                 reader.read(index)

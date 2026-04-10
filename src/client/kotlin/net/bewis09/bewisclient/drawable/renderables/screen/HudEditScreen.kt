@@ -1,6 +1,5 @@
 package net.bewis09.bewisclient.drawable.renderables.screen
 
-import net.bewis09.bewisclient.core.isKeyPressed
 import net.bewis09.bewisclient.core.translateToTopOptional
 import net.bewis09.bewisclient.drawable.SettingStructure
 import net.bewis09.bewisclient.drawable.renderables.ImageButton
@@ -22,7 +21,8 @@ import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.types.ScalableWidget
 import net.bewis09.bewisclient.version.Identifier
-import net.bewis09.bewisclient.core.setScreen
+import net.bewis09.bewisclient.version.isKeyPressed
+import net.bewis09.bewisclient.version.setScreen
 import org.lwjgl.glfw.GLFW
 import kotlin.math.abs
 

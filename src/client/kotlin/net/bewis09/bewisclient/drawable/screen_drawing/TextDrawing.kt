@@ -6,7 +6,7 @@ import net.bewis09.bewisclient.util.color.color
 import net.bewis09.bewisclient.util.toText
 import net.minecraft.network.chat.Component
 import net.bewis09.bewisclient.version.Identifier
-import net.bewis09.bewisclient.core.string
+import net.bewis09.bewisclient.version.string
 
 interface TextDrawing : RectDrawing {
     fun drawText(text: String, x: Int, y: Int, color: Color, font: Identifier? = this.overwrittenFont) {

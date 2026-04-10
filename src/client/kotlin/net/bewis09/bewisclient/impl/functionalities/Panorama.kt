@@ -26,6 +26,8 @@ import net.bewis09.bewisclient.util.catch
 import net.bewis09.bewisclient.util.createIdentifier
 import net.bewis09.bewisclient.version.Identifier
 import net.bewis09.bewisclient.version.Util
+import net.bewis09.bewisclient.version.isAllowedInIdentifier
+import net.bewis09.bewisclient.version.takePanoramaFull
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.network.chat.Component
 import net.minecraft.server.packs.resources.IoSupplier
@@ -46,7 +48,7 @@ object Panorama : ImageSettingCategory(
     ), PanoramaSettings.enabled
 ), EventEntrypoint, BewisclientResourcePack.CustomResourceProvider {
     object TakePanoramaScreenshot : Keybind(-1, "screenshot.take_panorama", "Take Panorama Screenshot", {
-        client.displaySystemMessage(client.takePanoramaFull(FabricLoader.getInstance().gameDir.resolve("screenshots/panorama_" + (LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH.mm.ss-S")))).toFile().apply {
+        showSystemMessage(client.takePanoramaFull(FabricLoader.getInstance().gameDir.resolve("screenshots/panorama_" + (LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH.mm.ss-S")))).toFile().apply {
             if (!exists()) mkdirs()
         }))
     })
