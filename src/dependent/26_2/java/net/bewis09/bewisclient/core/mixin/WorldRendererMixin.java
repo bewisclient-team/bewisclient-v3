@@ -11,8 +11,8 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 public class WorldRendererMixin {
     @Redirect(method = "submitBlockOutline", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/ARGB;black(I)I", ordinal = 0))
     private static int drawOutline(int alpha) {
-        if (!BlockHighlight.INSTANCE.isEnabled()) return ARGB.black(alpha);
+        if (!BlockHighlight.INSTANCE.getEnabled()) return ARGB.black(alpha);
 
-        return (BlockHighlight.INSTANCE.getColor().get().getColorInt() & 0x00FFFFFF) | ((int) (BlockHighlight.INSTANCE.getThickness().get() * 255f) << 24);
+        return (BlockHighlight.INSTANCE.getColor().getColorInt() & 0x00FFFFFF) | ((int) (BlockHighlight.INSTANCE.getThickness() * 255f) << 24);
     }
 }

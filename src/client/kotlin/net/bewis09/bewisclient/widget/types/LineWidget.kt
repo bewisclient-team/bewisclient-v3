@@ -95,25 +95,20 @@ abstract class LineWidget(id: Identifier, title: String, description: String) : 
 
     open fun renderAccessories(screenDrawing: ScreenDrawing) {}
 
-    final override fun getWidth(): Int {
-        return lineWidth.coerceIn(getMinimumWidth(), getMaximumWidth())
-    }
+    final override fun getWidth(): Int = lineWidth.coerceIn(getMinimumWidth(), getMaximumWidth())
 
     abstract fun getMinimumWidth(): Int
 
     open fun getMaximumWidth(): Int = getMinimumWidth()
 
     override fun getHeight(): Int {
-        val paddingSize = paddingSize.get()
-        val lineSpacing = lineSpacing.get()
-
         val lines = getLines()
         if (lines.isEmpty()) return 0
 
-        return lines.size * (9 + lineSpacing) + 2 * paddingSize - lineSpacing - 2
+        return lines.size * (9 + lineSpacing.get()) + 2 * paddingSize.get() - lineSpacing.get() - 2
     }
 
-    override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
+     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
         list.add(backgroundColorRenderable(backgroundColor, backgroundOpacity))
         list.add(borderColorRenderable(borderColor, borderOpacity))
         list.add(paddingSizeRenderable(paddingSize))

@@ -14,8 +14,8 @@ import net.minecraft.world.effect.MobEffects
 import org.lwjgl.glfw.GLFW
 
 object Fullbright : ImageFeature(createIdentifier("bewisclient", "fullbright"), "Fullbright") {
-    val nightVision = boolean("night_vision", false)
-    val brightness = float("brightness", 1f, 0f, 15f, 0.01f, 2)
+    var nightVision by boolean("night_vision", false, "Night Vision", "Allows you to have the visual effect of night vision without actually having it", quickSetting = true)
+    var brightness by float("brightness", 1f, 0f, 15f, 0.01f, 2, "Brightness", "Adjust the brightness level. 0.0 to 1.0 are the normal levels, while 1.0 to 15.0 is lighting up the world according to the brightness level", quickSetting = true)
 
     val nightVisionEnabledTranslation = createTranslation("night_vision.enabled", "Night Vision Enabled")
     val nightVisionDisabledTranslation = createTranslation("night_vision.disabled", "Night Vision Disabled")
@@ -27,7 +27,7 @@ object Fullbright : ImageFeature(createIdentifier("bewisclient", "fullbright"), 
     )
 
     object ToggleNightVision : Keybind(GLFW.GLFW_KEY_H, "fullbright.toggle_night_vision", "Toggle Night Vision", {
-        nightVision.toggle()
+        nightVision = !nightVision
         if (hasNightVision()) {
             showTitle(nightVisionEnabledTranslation().setColor(0xFFFF55))
         } else {
@@ -36,38 +36,29 @@ object Fullbright : ImageFeature(createIdentifier("bewisclient", "fullbright"), 
     })
 
     object ToggleFullbright : Keybind(GLFW.GLFW_KEY_G, "fullbright.toggle_fullbright", "Toggle Fullbright", {
-        brightness.set(if (brightness.get() > 1f) 1f else 15f)
-
-        enabled.set(true)
+        brightness = if (brightness > 1f) 1f else 15f
+        enabled = true
 
         showFullbrightMessage()
     })
 
     object IncreaseBrightness : Keybind(GLFW.GLFW_KEY_UP, "fullbright.increase_brightness", "Increase Brightness", {
-        val current = brightness.get()
-        brightness.set(15f.coerceAtMost(current + 0.25f))
+        brightness = 15f.coerceAtMost(brightness + 0.25f)
         showFullbrightMessage()
     })
 
     object DecreaseBrightness : Keybind(GLFW.GLFW_KEY_DOWN, "fullbright.decrease_brightness", "Decrease Brightness", {
-        val current = brightness.get()
-        brightness.set(0f.coerceAtLeast(current - 0.25f))
+        brightness = 0f.coerceAtLeast(brightness - 0.25f)
         showFullbrightMessage()
     })
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
-        list.addRenderable(this, brightness, "brightness", "Brightness", "Adjust the brightness level. 0.0 to 1.0 are the normal levels, while 1.0 to 15.0 is lighting up the world according to the brightness level", "brightness")
-        list.addRenderable(this, nightVision, "night_vision", "Night Vision", "Allows you to have the visual effect of night vision without actually having it", "night_vision")
-        list.add(
-            InfoTextRenderable(
-                infoText(), 0xAAAAAA.color * General.getThemeColor(), true
-            )
-        )
+        super.appendSettingsRenderables(list)
+        list.add(InfoTextRenderable(infoText(), 0xAAAAAA.color * General.getThemeColor(), true))
     }
 
     fun showFullbrightMessage() {
-        val value = brightness.get()
-        showTitle(brightnessTranslation((value * 100).toString() + "%").setColor(((value / 15) within (0xFF0000.color to 0xFFFF00.color)).argb))
+        showTitle(brightnessTranslation((brightness * 100).toString() + "%").setColor(((brightness / 15) within (0xFF0000.color to 0xFFFF00.color)).argb))
     }
 
     private val nightVisionInstance = MobEffectInstance(MobEffects.NIGHT_VISION, -1, 255, false, false, false)
@@ -77,6 +68,6 @@ object Fullbright : ImageFeature(createIdentifier("bewisclient", "fullbright"), 
     }
 
     fun hasNightVision(): Boolean {
-        return nightVision.get() && enabled.get()
+        return nightVision && enabled
     }
 }

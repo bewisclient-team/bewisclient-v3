@@ -22,7 +22,7 @@ public abstract class FogRendererMixin {
 
     @Inject(method = "setupFog", at = @At("RETURN"))
     private void bewisclient$applyFog(Camera camera, int renderDistanceInChunks, DeltaTracker deltaTracker, float darkenWorldAmount, ClientLevel level, CallbackInfoReturnable<FogData> cir) {
-        if(!BetterVisibility.INSTANCE.getEnabled().get()) return;
+        if(!BetterVisibility.INSTANCE.getEnabledSetting().get()) return;
 
         FogType cameraSubmersionType = camera.getFluidInCamera();
         FogData fogData = cir.getReturnValue();

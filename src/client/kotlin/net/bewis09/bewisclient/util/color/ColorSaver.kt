@@ -17,7 +17,7 @@ interface ColorSaver {
     }
 
     companion object {
-        val types = listOf<ColorSaverFactory<*>>(
+        val types = listOf(
             StaticColorSaver.Factory, ChangingColorSaver.Factory, ThemeColorSaver.Factory
         ).also { it.forEach { a -> a.getDefault() } }
 

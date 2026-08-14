@@ -16,8 +16,6 @@ class BooleanSetting(default: () -> Boolean) : Setting<Boolean>(default), Render
 
     override fun convertFromElement(data: JsonElement?): Boolean? = data?.boolean()
 
-    fun toggle() = set(not())
-
     override fun createRenderable(feature: Feature, id: String, title: String, description: String?): BooleanSettingRenderable {
         return BooleanSettingRenderable(feature.createTranslation(id, title), description?.let { feature.createTranslation("$id.description", it) }, this)
     }

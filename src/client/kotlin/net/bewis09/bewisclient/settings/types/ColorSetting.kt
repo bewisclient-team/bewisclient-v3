@@ -9,7 +9,9 @@ import net.bewis09.bewisclient.settings.logic.RenderableCreator
 import net.bewis09.bewisclient.settings.structure.Feature
 import net.bewis09.bewisclient.util.color.ColorSaver
 
-class ColorSetting(default: () -> ColorSaver, vararg val types: String = ALL) : Setting<ColorSaver>(default), RenderableCreator<ColorSettingRenderable> {
+class ColorSetting(default: () -> ColorSaver, vararg types: String) : Setting<ColorSaver>(default), RenderableCreator<ColorSettingRenderable> {
+    val types: Array<out String> = types.ifEmpty { ALL }
+
     companion object {
         val ALL = ColorSaver.types.map { it.getType() }.toTypedArray()
         const val STATIC = "static"
@@ -17,10 +19,6 @@ class ColorSetting(default: () -> ColorSaver, vararg val types: String = ALL) : 
         const val THEME = "theme"
 
         val opacityTranslation = Translation("menu.color.opacity", "Opacity")
-
-        fun without(vararg types: String): Array<String> {
-            return ALL.filterNot { it in types }.toTypedArray()
-        }
     }
 
     override fun convertToElement(): JsonElement? {

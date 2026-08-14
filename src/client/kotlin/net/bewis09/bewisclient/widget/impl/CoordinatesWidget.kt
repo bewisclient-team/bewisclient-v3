@@ -53,10 +53,10 @@ object CoordinatesWidget : LineWidget(
     override fun isCentered(): Boolean = false
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
-        list.addRenderable(this, showBiome, "show_biome", "Show Biome", null, "show_biome")
-        list.addRenderable(this, colorCodeBiome, "color_code_biome", "Color Code Biome", "Whether to color code the biome name", "color_code_biome")
-        list.addRenderable(this, showDirection, "show_direction", "Show Direction", null, "show_direction")
-        list.addRenderable(this, showCoordinateChange, "show_coordinate_change", "Show Coordinate Change", "Shows how your coordinates will change if you move forward", "show_coordinate_change")
+        list.addRenderableQS(showBiome, "Show Biome")
+        list.addRenderableQS(colorCodeBiome, "Color Code Biome", "Whether to color code the biome name")
+        list.addRenderableQS(showDirection, "Show Direction")
+        list.addRenderableQS(showCoordinateChange, "Show Coordinate Change", "Shows how your coordinates will change if you move forward")
         super.appendSettingsRenderables(list)
     }
 

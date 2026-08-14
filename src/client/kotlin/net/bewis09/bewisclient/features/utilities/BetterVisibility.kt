@@ -3,35 +3,26 @@
 package net.bewis09.bewisclient.features.utilities
 
 import net.bewis09.bewisclient.common.createIdentifier
-import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.settings.structure.ImageFeature
-import net.bewis09.bewisclient.settings.types.BooleanSetting
 
 object BetterVisibility : ImageFeature(createIdentifier("bewisclient", "better_visibility"), "Better Visibility") {
-    val nether = boolean("nether", false)
-    val water = boolean("water", false)
-    val lava = boolean("lava", false)
-    val powder_snow = boolean("powder_snow", false)
+    var nether by boolean("nether", default = false, "Nether", "Improve visibility in the Nether dimension", quickSetting = true)
+    var water by boolean("water", default = false, "Water", "Enhance visibility underwater", quickSetting = true)
+    var lava by boolean("lava", default = false, "Lava", "Boost visibility in lava", quickSetting = true)
+    var powder_snow by boolean("powder_snow", default = false, "Powder Snow", "Increase visibility in powder snow", quickSetting = true)
 
-    class FogModifierConfig(val setting: BooleanSetting, val start: (Float) -> Float, val end: (Float) -> Float)
+    class FogModifierConfig(val setting: () -> Boolean, val start: (Float) -> Float, val end: (Float) -> Float)
 
     val fogModifiers = mapOf(
-        "atmospheric" to FogModifierConfig(nether, { it * 2 - (it / 10.0f).coerceIn(4.0f, 64.0f) }, { it * 2 }),
-        "water" to FogModifierConfig(water, { -8f }, { it }),
-        "lava" to FogModifierConfig(lava, { -8f }, { 16f }),
-        "powder_snow" to FogModifierConfig(powder_snow, { -8f }, { 8f })
+        "atmospheric" to FogModifierConfig({ nether }, { it * 2 - (it / 10.0f).coerceIn(4.0f, 64.0f) }, { it * 2 }),
+        "water" to FogModifierConfig({ water }, { -8f }, { it }),
+        "lava" to FogModifierConfig({ lava }, { -8f }, { 16f }),
+        "powder_snow" to FogModifierConfig({ powder_snow }, { -8f }, { 8f })
     )
 
-    override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
-        list.addRenderable(this, nether, "nether", "Nether", "Improve visibility in the Nether dimension", "nether")
-        list.addRenderable(this, water, "water", "Water", "Enhance visibility underwater", "water")
-        list.addRenderable(this, lava, "lava", "Lava", "Boost visibility in lava", "lava")
-        list.addRenderable(this, powder_snow, "powder_snow", "Powder Snow", "Increase visibility in powder snow", "snow")
-    }
-
     fun applyFogModifier(instance: String, fogData: FogData, viewDistance: Float) {
-        if (isEnabled()) fogModifiers[instance]?.let {
-            if (!it.setting.get()) return
+        if (enabled) fogModifiers[instance]?.let {
+            if (!it.setting()) return
 
             val start = it.start(viewDistance)
             val end = it.end(viewDistance)

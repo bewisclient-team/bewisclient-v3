@@ -13,7 +13,7 @@ interface WidgetPosition : ClientInterface {
     fun getType(): String
 
     companion object {
-        val types = listOf<WidgetPositionFactory<*>>(
+        val types = listOf(
             SidedPosition.Factory, RelativePosition.Factory
         )
     }

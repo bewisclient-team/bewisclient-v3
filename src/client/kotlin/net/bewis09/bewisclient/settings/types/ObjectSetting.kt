@@ -7,8 +7,9 @@ import net.bewis09.bewisclient.util.color.ColorSaver
 import net.bewis09.bewisclient.util.jsonObject
 import net.bewis09.bewisclient.util.number.Precision
 
-open class ObjectSetting() : Setting<JsonObject>(JsonObject()) {
+open class ObjectSetting : Setting<JsonObject>(JsonObject()) {
     val map: HashMap<String, Setting<*>> = hashMapOf()
+    val idLookup: HashMap<Setting<*>, String> = hashMapOf()
 
     override fun convertToElement(): JsonElement {
         val jsonObject = JsonObject()
@@ -46,6 +47,7 @@ open class ObjectSetting() : Setting<JsonObject>(JsonObject()) {
      */
     protected fun <T : Setting<*>> create(key: String, setting: T): T {
         map[key] = setting
+        idLookup[setting] = key
         get().get(key)?.let {
             setting.setFromElement(it)
         }

@@ -16,6 +16,6 @@ public class PackScreenMixin extends Screen {
 
     @ModifyArg(method = "repositionElements", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/packs/TransferableSelectionList;updateSizeAndPosition(IIII)V", ordinal = 0), index = 1)
     public int bewisclient$modifyPackListWidgetPosition(int par1) {
-        return !PackAdder.INSTANCE.isEnabled() ? par1 : par1 - 20;
+        return !PackAdder.INSTANCE.getEnabled() ? par1 : par1 - 20;
     }
 }

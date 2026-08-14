@@ -14,7 +14,7 @@ import java.util.Optional;
 public class EquippableComponentMixin {
     @Inject(method = "cameraOverlay", at = @At("RETURN"), cancellable = true)
     private void bewisclient$cameraOverlay(CallbackInfoReturnable<Optional<Identifier>> cir) {
-        if (!PumpkinOverlay.INSTANCE.isEnabled()) return;
+        if (!PumpkinOverlay.INSTANCE.getEnabled()) return;
 
         if (cir.getReturnValue().isEmpty()) return;
 

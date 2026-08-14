@@ -14,17 +14,17 @@ class EntityHighlightMixin {
     // @[1.21.1] "Lcom/mojang/blaze3d/platform/NativeImage;setPixelRGBA(III)V" @[] "Lcom/mojang/blaze3d/platform/NativeImage;setPixel(III)V"
     @Redirect(method = ["<init>"], at = At(value = "INVOKE", target = /*[@]*/"Lcom/mojang/blaze3d/platform/NativeImage;setPixel(III)V"/*[!@]*/))
     private fun bewisclientInit(instance: NativeImage, j: Int, i: Int, color: Int) {
-        if (!EntityHighlight.isEnabled() || i >= 8) {
+        if (!EntityHighlight.enabled || i >= 8) {
             setPixel(instance, j, i, color)
             return
         }
 
-        val color = EntityHighlight.color.get().getColor()
+        val color = EntityHighlight.color.getColor()
 
         setPixel(
             instance, j, i, createColor(
                 // @[1.21.1] color.blue, color.green, color.red @[] color.red, color.green, color.blue
-                (255 - EntityHighlight.alpha.get() * 255).toInt(), /*[@]*/color.red, color.green, color.blue/*[!@]*/
+                (255 - EntityHighlight.alpha * 255).toInt(), /*[@]*/color.red, color.green, color.blue/*[!@]*/
             )
         )
     }

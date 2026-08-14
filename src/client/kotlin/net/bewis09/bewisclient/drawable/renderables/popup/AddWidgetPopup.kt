@@ -21,7 +21,7 @@ class AddWidgetPopup : Renderable(
 
     val text = TextElement({ addText() }, General.getTextThemeColor(), centered = true)
     var grid = VerticalScrollGrid({
-        WidgetLoader.widgets.filter { !it.isEnabled() }.map { widget -> WidgetElement(widget).setHeight(90) }
+        WidgetLoader.widgets.filter { !it.enabled }.map { widget -> WidgetElement(widget).setHeight(90) }
     }, 5, 80)
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
@@ -39,9 +39,9 @@ class AddWidgetPopup : Renderable(
         val description = widget.description()
 
         override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
-            widget.enabled.set(true)
+            widget.enabled = true
             this@AddWidgetPopup.grid = VerticalScrollGrid({
-                WidgetLoader.widgets.filter { !it.isEnabled() }.map { widget -> WidgetElement(widget).setHeight(90) }
+                WidgetLoader.widgets.filter { !it.enabled }.map { widget -> WidgetElement(widget).setHeight(90) }
             }, 5, 80)
             this@AddWidgetPopup.resize()
 

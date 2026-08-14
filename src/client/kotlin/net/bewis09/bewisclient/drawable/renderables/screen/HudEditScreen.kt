@@ -44,7 +44,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
             if (it.isInBox(mouseX, mouseY)) {
                 if (isMouseOver(mouseX.toFloat(), mouseY.toFloat(), (it.getX() + it.getScaledWidth() - 8).toInt(), (it.getY()).toInt(), 8, 8)) {
                     if (button == 0) {
-                        it.enabled.set(false)
+                        it.enabled = false
 
                         return true
                     }
@@ -52,14 +52,14 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
 
                 if (button == 1) {
                     setRenderableScreen(OptionScreen().apply {
-                        val widgetsCategory = widgets.firstOrNull { b -> b.enabled == it.enabled } ?: return@apply
+                        val widgetsCategory = widgets.firstOrNull { b -> b.enabledSetting == it.enabledSetting } ?: return@apply
 
                         changeCategory(Widgets, instant = true)
 
                         openPage(
                             widgetsCategory.getHeader(),
                             widgetsCategory.getPane(),
-                            it.enabled,
+                            it.enabledSetting,
                             instant = true
                         )
                     })
@@ -79,7 +79,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
 
     override fun renderScreen(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         widgets.forEach {
-            if (it.isEnabled()) {
+            if (it.enabled) {
                 it.renderScaled(screenDrawing.copy())
 
                 if (isMouseOver(mouseX.toFloat(), mouseY.toFloat(), (it.getX() + it.getScaledWidth() - 8).toInt(), (it.getY()).toInt(), 8, 8)) {

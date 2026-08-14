@@ -28,7 +28,7 @@ abstract class TntRendererMixin {
     )
     // @[1.21.1] entity: Entity, f: Float, g: Float, poseStack: com.mojang.blaze3d.vertex.PoseStack, multiBufferSource: net.minecraft.client.renderer.MultiBufferSource, i: Int, ci: CallbackInfo @[] entity: Entity, state: net.minecraft.client.renderer.entity.state.EntityRenderState, f: Float, ci: CallbackInfo
     fun onSubmit(/*[@]*/entity: Entity, state: net.minecraft.client.renderer.entity.state.EntityRenderState, f: Float, ci: CallbackInfo/*[!@]*/) {
-        if (TntTimer.isEnabled() && (this.entityRenderDispatcher?.distanceToSqr(entity) ?: 0.0) <= 144.0) {
+        if (TntTimer.enabled && (this.entityRenderDispatcher?.distanceToSqr(entity) ?: 0.0) <= 144.0) {
             val nameTag = TntTimer.getNameTagForEntity(entity) ?: return
             // @[1.21.1] this.renderNameTag(entity, nameTag, poseStack, multiBufferSource, i, g) @[] state.nameTagAttachment = net.minecraft.world.phys.Vec3(0.0, 1.0, 0.0)
             /*[@]*/state.nameTagAttachment = net.minecraft.world.phys.Vec3(0.0, 1.0, 0.0)/*[!@]*/

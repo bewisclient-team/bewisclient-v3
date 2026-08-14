@@ -163,19 +163,19 @@ object KeyWidget : ScalableWidget(
             ).addToQuickSettings(this, "shown_keys")
         )
 
-        list.addRenderable(this, showCPS, "show_cps", "Show CPS", "Shows your clicks per second (CPS) for the attack/use keys", "show_cps")
-        list.addRenderable(this, backgroundColor, "background", "Background", "Set the color of the widget's background")
+        list.addRenderableQS(showCPS, "Show CPS", "Shows your clicks per second (CPS) for the attack/use keys")
+        list.addRenderable(backgroundColor, "Background", "Set the color of the widget's background")
 
         list.add(LineWidget.backgroundColorRenderable(backgroundColor, backgroundOpacity))
         list.add(LineWidget.borderColorRenderable(borderColor, borderOpacity))
         list.add(LineWidget.textColorRenderable(textColor))
 
-        list.addColorRenderable(this, pressedBackgroundColor, pressedBackgroundOpacity, "pressed_background", "Pressed Background", "Set the color and opacity of the widget when a key is pressed")
-        list.addColorRenderable(this, pressedBorderColor, pressedBorderOpacity, "pressed_border", "Pressed Border", "Set the color and opacity of the widget's border when a key is pressed")
-        list.addRenderable(this, pressedTextColor, "pressed_text_color", "Pressed Text Color", "Set the color of the text in the widget when a key is pressed")
+        list.addColorRenderable(pressedBackgroundColor, pressedBackgroundOpacity, "pressed_background", "Pressed Background", "Set the color and opacity of the widget when a key is pressed")
+        list.addColorRenderable(pressedBorderColor, pressedBorderOpacity, "pressed_border", "Pressed Border", "Set the color and opacity of the widget's border when a key is pressed")
+        list.addRenderable(pressedTextColor, "Pressed Text Color", "Set the color of the text in the widget when a key is pressed")
 
         list.add(LineWidget.shadowRenderable(shadow))
-        list.addRenderable(this, gap, "gap", "Gap", "Set the gap between the keys in the widget")
+        list.addRenderable(gap, "Gap", "Set the gap between the keys in the widget")
         list.add(LineWidget.paddingSizeRenderable(paddingSize))
         list.add(LineWidget.borderRadiusRenderable(borderRadius))
 

@@ -21,10 +21,6 @@ object Settings : ObjectSetting(), ClientInterface, EventEntrypoint {
     }
 
     fun load() {
-        if (Version2Migration.update()) {
-            saveAll()
-        }
-
         isLoading = true
         val data = readRelativeFile("bewisclient", "bewisclient.json")
         setFromElement(gson.fromJson(data, JsonElement::class.java))

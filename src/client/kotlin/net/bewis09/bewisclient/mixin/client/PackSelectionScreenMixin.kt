@@ -35,7 +35,7 @@ class PackSelectionScreenMixin(title: Component) : Screen(title) {
 
     @Inject(method = ["init"], at = [At("RETURN")])
     fun bewisclientInit(ci: CallbackInfo) {
-        if (!PackAdder.isEnabled()) return
+        if (!PackAdder.enabled) return
 
         addResourcePackButton = addRenderableWidget(TexturedButtonWidget(width / 2 - 215, height - 49, 200, 18, buttonTexture, buttonTexture, { b: Button? ->
             Bewisclient.setRenderableScreen(
@@ -54,6 +54,6 @@ class PackSelectionScreenMixin(title: Component) : Screen(title) {
 
     @ModifyArg(method = ["init"], at = At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screens/packs/TransferableSelectionList;<init>(Lnet/minecraft/client/Minecraft;Lnet/minecraft/client/gui/screens/packs/PackSelectionScreen;IILnet/minecraft/network/chat/Component;)V", ordinal = 0), index = 3)
     fun bewisclientModifyPackListWidgetTitle(par3: Int): Int {
-        return if (!PackAdder.isEnabled()) par3 else par3 - 20
+        return if (!PackAdder.enabled) par3 else par3 - 20
     }
 }

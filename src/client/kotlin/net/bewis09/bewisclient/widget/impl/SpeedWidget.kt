@@ -41,7 +41,7 @@ object SpeedWidget : LineWidget(
     override fun appendSettingsRenderables(
         list: ArrayList<Renderable>
     ) {
-        list.addRenderable(this, verticalSpeed, "vertical_speed", "Include Vertical Speed", null, "vertical_speed")
+        list.addRenderableQS(verticalSpeed, "Include Vertical Speed")
         super.appendSettingsRenderables(list)
     }
 

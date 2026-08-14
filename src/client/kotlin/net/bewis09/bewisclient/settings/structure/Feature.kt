@@ -8,7 +8,7 @@ import net.bewis09.bewisclient.settings.types.ObjectSetting
 
 open class Feature(val id: Identifier): ObjectSetting() {
     fun Renderable.addToQuickSettings(feature: Feature, quickSettingsId: String): Renderable {
-        return addToQuickSettings("${feature.id.namespace}.menu.category.${feature.id.path}", quickSettingsId)
+        return addToQuickSettings("${feature.id.namespace}.category.${feature.id.path}", quickSettingsId)
     }
 
     open fun createTranslation(key: String, translation: String): Translation {

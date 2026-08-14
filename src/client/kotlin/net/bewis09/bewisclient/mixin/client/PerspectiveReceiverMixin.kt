@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo
 class PerspectiveReceiverMixin {
     @Inject(method = ["turn"], at = [At("HEAD")], cancellable = true)
     fun inject(cursorDeltaX: Double, cursorDeltaY: Double, ci: CallbackInfo) {
-        if (!Minecraft.getInstance().options.cameraType.isFirstPerson && Perspective.EnablePerspective.isPressed() && Perspective.isEnabled()) {
+        if (!Minecraft.getInstance().options.cameraType.isFirstPerson && Perspective.EnablePerspective.isPressed() && Perspective.enabled) {
             Perspective.cameraAddPitch += (cursorDeltaY * 0.15f).toFloat()
             Perspective.cameraAddYaw += (cursorDeltaX * 0.15f).toFloat()
             ci.cancel()

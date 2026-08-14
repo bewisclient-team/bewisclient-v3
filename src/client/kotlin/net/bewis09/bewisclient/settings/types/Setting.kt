@@ -4,6 +4,7 @@ import com.google.gson.JsonElement
 import net.bewis09.bewisclient.settings.logic.SettingInterfaceWithDefault
 import net.bewis09.bewisclient.settings.logic.Settings
 import net.bewis09.bewisclient.util.logic.ClientInterface
+import kotlin.reflect.KProperty
 
 /**
  * Base class for settings that can be stored in the settings file.
@@ -11,7 +12,6 @@ import net.bewis09.bewisclient.util.logic.ClientInterface
  *
  * @param T The type of the setting value.
  * @param default The default value of the setting.
- * @param onChangeListener An optional listener that is called when the setting value changes.
  */
 abstract class Setting<T>(val default: () -> T) : ClientInterface, SettingInterfaceWithDefault<T> {
     constructor(default: T) : this({ default })
@@ -128,4 +128,8 @@ abstract class Setting<T>(val default: () -> T) : ClientInterface, SettingInterf
     }
 
     open fun processChange(value: T?) = value
+
+    operator fun getValue(obj: Any, prop: KProperty<*>) = get()
+
+    operator fun setValue(obj: Any, prop: KProperty<*>, value: T?) = set(value)
 }

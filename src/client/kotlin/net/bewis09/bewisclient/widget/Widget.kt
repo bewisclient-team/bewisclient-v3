@@ -24,7 +24,7 @@ abstract class Widget(id: Identifier, title: String, description: String) : Desc
     open fun isHidden(): Boolean = false
 
     fun isShowing(): Boolean {
-        return this@Widget.isEnabled() && (!isHidden() || (getCurrentRenderableScreen()?.renderable is HudEditScreen))
+        return this@Widget.enabled && (!isHidden() || (getCurrentRenderableScreen()?.renderable is HudEditScreen))
     }
 
     abstract fun defaultPosition(): WidgetPosition
@@ -36,7 +36,7 @@ abstract class Widget(id: Identifier, title: String, description: String) : Desc
             } catch (e: Exception) {
                 error("Error rendering widget $id - disabling it to prevent further errors")
                 e.printStackTrace()
-                enabled.set(false)
+                enabled = false
             }
         }
     }

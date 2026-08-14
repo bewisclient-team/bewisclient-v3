@@ -35,7 +35,7 @@ abstract class HudMixin : ClientInterface {
     // @[1.21.11] "renderSelectedItemName" @[] "extractSelectedItemName"
     @Inject(method = [/*[@]*/"extractSelectedItemName"/*[!@]*/], at = [At("HEAD")], cancellable = true)
     private fun bewisclientRenderHeldItemTooltip(drawContext: GuiGraphics, ci: CallbackInfo) {
-        if (!HeldItemTooltip.isEnabled()) return
+        if (!HeldItemTooltip.enabled) return
 
         HeldItemTooltip.render(ScreenDrawing(drawContext, getFont()!!), toolHighlightTimer, lastToolHighlight!!)
         ci.cancel()
@@ -43,7 +43,7 @@ abstract class HudMixin : ClientInterface {
 
     @Inject(method = ["displayScoreboardSidebar"], at = [At("HEAD")])
     private fun bewisclientRenderScoreboardSidebar(guiGraphics: GuiGraphics, objective: Objective?, ci: CallbackInfo?) {
-        val scale = if (Scoreboard.isEnabled()) Scoreboard.scale.get() else 1.0f
+        val scale = if (Scoreboard.enabled) Scoreboard.scale else 1.0f
 
         guiGraphics.push()
         guiGraphics.scale(scale, scale)

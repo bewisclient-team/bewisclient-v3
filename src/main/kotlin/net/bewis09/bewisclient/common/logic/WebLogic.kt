@@ -17,7 +17,7 @@ interface WebLogic {
                     .uri(url.toURI())
                     .POST(HttpRequest.BodyPublishers.ofByteArray(postData)).apply {
                         if (headers != null) {
-                            headers(*headers.toList().map { listOf(it.first, it.second) }.flatten().toTypedArray())
+                            headers(*headers.toList().flatMap { listOf(it.first, it.second) }.toTypedArray())
                         }
                     }
                     .build(),

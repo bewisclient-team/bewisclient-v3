@@ -71,11 +71,11 @@ object TiwylaWidget : ScalableWidget(
     val entityInformation: List<Line<Entity>>
 
     init {
-        blockInformation = listOf<Line<BlockData>>(
+        blockInformation = listOf(
             BlockLines.tool, BlockLines.miningLevel, BlockLines.breakTime, BlockLines.progress, BlockLines.blockProperty
         )
 
-        entityInformation = listOf<Line<Entity>>(
+        entityInformation = listOf(
             EntityLines.entityId, EntityLines.health, EntityLines.specialEntityInfo
         )
 
@@ -195,8 +195,8 @@ object TiwylaWidget : ScalableWidget(
     override fun getHeight(): Int = 9 + getSublines().size * 6 + lineSpacing.get() * (getSublines().size) + 2 * paddingSize.get()
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
-        list.addRenderable(this, topTextColor, "top_text_color", "Top Text Color", "Set the color of the top text in the widget")
-        list.addRenderable(this, bottomTextColor, "bottom_text_color", "Bottom Text Color", "Set the color of the bottom text in the widget")
+        list.addRenderable(topTextColor, "Top Text Color", "Set the color of the top text in the widget")
+        list.addRenderable(bottomTextColor, "Bottom Text Color", "Set the color of the bottom text in the widget")
 
         list.add(TiwylaLinesSettingsRenderable().addToQuickSettings(this, "lines"))
         list.add(InfoTextRenderable(healthInfoText(), 0xAAAAAA.color, true))

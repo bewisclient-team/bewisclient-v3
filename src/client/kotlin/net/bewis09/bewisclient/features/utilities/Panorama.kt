@@ -2,7 +2,6 @@ package net.bewis09.bewisclient.features.utilities
 
 import com.mojang.blaze3d.platform.NativeImage
 import net.bewis09.bewisclient.common.*
-import net.bewis09.bewisclient.core.*
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.components.logic.Hoverable
 import net.bewis09.bewisclient.drawable.renderables.components.button.ImageButton
@@ -38,7 +37,7 @@ import kotlin.io.path.exists
 object Panorama : ImageFeature(createIdentifier("bewisclient","panorama"), "Panorama"), EventEntrypoint, BewisclientResourcePack.CustomResourceProvider {
     val path = string("path", "")
 
-    val deletedPanormaText = createTranslation("delete_panorama_success", "Deleted panorama")
+    val deletedPanoramaText = createTranslation("delete_panorama_success", "Deleted panorama")
     val noEmptyNameText = createTranslation("no_empty_name", "Name cannot be empty")
     val nameAlreadyExistsText = createTranslation("name_already_exists", "A panorama with this name already exists")
     val renameSuccessText = createTranslation("rename_success", "Renamed panorama")
@@ -114,18 +113,18 @@ object Panorama : ImageFeature(createIdentifier("bewisclient","panorama"), "Pano
                 if (path.get() == file.absolutePath) return@ImageButton
 
                 path.set(file.absolutePath)
-                if (enabled.get()) client.reloadResourcePacks()
+                if (enabled) client.reloadResourcePacks()
             }.setImagePadding(2)(x + width - 21, y + 7, 14, 14))
             addRenderable(ImageButton(createIdentifier("bewisclient", "textures/gui/sprites/delete.png")) {
                 OptionScreen.currentInstance?.openPopup(
                     ConfirmPopup(confirmPanoramaDelete(), {
                         if (catch { file.deleteRecursively() } == true) {
-                            NotificationManager.addNotification(SimpleTextNotification(deletedPanormaText()))
+                            NotificationManager.addNotification(SimpleTextNotification(deletedPanoramaText()))
                         } else {
                             NotificationManager.addNotification(SimpleTextNotification(Screenshot.deleteFailedNotifText()))
                         }
                         OptionScreen.currentInstance?.goBack(instant = true)
-                        OptionScreen.currentInstance?.openPage(getHeader(), getPane(), enabled, true)
+                        OptionScreen.currentInstance?.openPage(getHeader(), getPane(), enabledSetting, true)
                     })
                 )
             }.setImagePadding(2)(x + width - 21, y + 25, 14, 14))
@@ -145,7 +144,7 @@ object Panorama : ImageFeature(createIdentifier("bewisclient","panorama"), "Pano
 
                     if (catch { Files.move(file.toPath(), file.parentFile.resolve(newName).toPath(), StandardCopyOption.REPLACE_EXISTING) } != null) {
                         OptionScreen.currentInstance?.goBack(instant = true)
-                        OptionScreen.currentInstance?.openPage(getHeader(), getPane(), enabled, instant = true)
+                        OptionScreen.currentInstance?.openPage(getHeader(), getPane(), enabledSetting, instant = true)
                         if (path.get() == file.absolutePath) {
                             path.set(file.parentFile.resolve(newName).absolutePath)
                         }
@@ -160,7 +159,7 @@ object Panorama : ImageFeature(createIdentifier("bewisclient","panorama"), "Pano
     }
 
     override fun provideResources(id: Identifier): IoSupplier<InputStream>? {
-        if (id.namespace != "minecraft" || path.get().isEmpty() || !enabled) return null
+        if (id.namespace != "minecraft" || path.get().isEmpty() || !enabledSetting) return null
 
         if (id.path == "textures/gui/title/background/panorama") return null
         if (id.path == "textures/gui/title/background/panorama_overlay.png") return null

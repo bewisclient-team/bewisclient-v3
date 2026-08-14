@@ -17,7 +17,7 @@ public class InGameOverlayRendererMixin {
             target = /*[@]*/"Lorg/joml/Matrix4f;translate(FFF)Lorg/joml/Matrix4f;"/*[!@]*/
     ), index = 1)
     private static float modifyTranslateY(float y) {
-        if (!FireHeight.INSTANCE.isEnabled()) return y;
-        return y - (1 - FireHeight.INSTANCE.getHeight().get()) * 0.4f;
+        if (!FireHeight.INSTANCE.getEnabled()) return y;
+        return y - (1 - FireHeight.INSTANCE.getHeight()) * 0.4f;
     }
 }

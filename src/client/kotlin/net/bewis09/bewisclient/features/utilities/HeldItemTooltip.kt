@@ -19,13 +19,13 @@ import net.minecraft.network.chat.Style
 import net.minecraft.world.item.ItemStack
 
 object HeldItemTooltip : ImageFeature(createIdentifier("bewisclient", "held_item_tooltip"), "Held Item Info") {
-    val maxShownLines = int("max_shown_lines", 5, 1, 10)
+    val maxShownLines by int("max_shown_lines", 5, 1, 10, "Max Shown Lines", "Maximum number of lines to show in the held item tooltip", quickSetting = true)
     val showMap = create("show_map", BooleanMapSetting())
 
     val moreLinesText = createTranslation("more_lines", "and %s more...")
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
-        list.addRenderable(this, maxShownLines, "max_shown_lines", "Max Shown Lines", "Maximum number of lines to show in the held item tooltip", "max_lines")
+        super.appendSettingsRenderables(list)
         list.add(MultipleBooleanSettingsRenderable.create(
             this, "multiple_boolean_settings", "Data Component Tooltips:", "Select which information to show in the held item tooltip"
         ) { componentRenderableParts })
@@ -110,9 +110,9 @@ object HeldItemTooltip : ImageFeature(createIdentifier("bewisclient", "held_item
                 }
             }
 
-            if (texts.size > maxShownLines.get() + 1) {
+            if (texts.size > maxShownLines + 1) {
                 val beforeSize = texts.size
-                texts = texts.subList(0, maxShownLines.get())
+                texts = texts.subList(0, maxShownLines)
                 texts.add(moreLinesText(beforeSize - texts.size))
             }
 

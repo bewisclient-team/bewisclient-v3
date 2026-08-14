@@ -42,8 +42,8 @@ object CPSWidget : LineWidget(
     }
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
-        list.addRenderable(this, leftEnabled, "left_enabled", "Show Left Mouse Button CPS", null, "left_enabled")
-        list.addRenderable(this, rightEnabled, "right_enabled", "Show Right Mouse Button CPS", null, "right_enabled")
+        list.addRenderableQS(leftEnabled, "Show Left Mouse Button CPS")
+        list.addRenderableQS(rightEnabled, "Show Right Mouse Button CPS")
         super.appendSettingsRenderables(list)
     }
 

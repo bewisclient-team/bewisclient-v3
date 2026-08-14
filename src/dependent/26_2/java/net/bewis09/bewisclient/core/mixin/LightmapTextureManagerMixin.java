@@ -10,9 +10,9 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 abstract class LightmapTextureManagerMixin {
     @Redirect(method = "extract", at = @At(value = "INVOKE", target = "Ljava/lang/Double;floatValue()F", ordinal = 0))
     private float invokeGamma(Double instance) {
-        if (!Fullbright.INSTANCE.isEnabled()) {
+        if (!Fullbright.INSTANCE.getEnabled()) {
             return instance.floatValue();
         }
-        return Fullbright.INSTANCE.getBrightness().get();
+        return Fullbright.INSTANCE.getBrightness();
     }
 }

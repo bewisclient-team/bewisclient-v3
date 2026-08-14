@@ -85,7 +85,7 @@ object BiomeWidget : LineWidget(
     }
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
-        list.addRenderable(this, colorCodeBiome, "color_code_biome", "Color Code Biome", "Whether to color code the biome name", "color_code")
+        list.addRenderable(colorCodeBiome, "Color Code Biome", "Whether to color code the biome name")
         super.appendSettingsRenderables(list)
     }
 

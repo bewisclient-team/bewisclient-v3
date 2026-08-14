@@ -30,11 +30,7 @@ class CustomWidgetLineRenderable : Renderable() {
         }
     }
 
-    fun computeLines(): MutableList<Input> = CustomWidget.lines.mapIndexed { i, _ ->
-        Input(1000) {
-            CustomWidget.lines[i] = it
-        }
-    }.toMutableList()
+    fun computeLines(): MutableList<Input> = MutableList(CustomWidget.lines.size) { i -> Input(1000) { CustomWidget.lines[i] = it } }
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         textDisplay(x + width / 2 + 3, y + 7, (width / 2 - 3), lines.size * 10)

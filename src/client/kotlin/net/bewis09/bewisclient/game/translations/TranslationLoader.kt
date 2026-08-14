@@ -1,6 +1,7 @@
 package net.bewis09.bewisclient.game.translations
 
 import net.bewis09.bewisclient.api.APIEntrypointLoader
+import net.bewis09.bewisclient.api.BewisclientAPIEntrypoint
 import net.bewis09.bewisclient.drawable.renderables.popup.AddWidgetPopup
 import net.bewis09.bewisclient.drawable.renderables.popup.TiwylaLinesSettingsPopup
 import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
@@ -24,9 +25,9 @@ object TranslationLoader : EventEntrypoint {
         HudEditScreen
         TiwylaLinesSettingsPopup
         Modrinth
-        APIEntrypointLoader.mapEntrypointForList { it.getWidgets() }.map(CategorizedFeature::getSettingRenderables)
-        APIEntrypointLoader.mapEntrypointForList { it.getUtilities() }.map(CategorizedFeature::getSettingRenderables)
-        APIEntrypointLoader.mapEntrypointForList { it.getSidebarCategories() }.map(SidebarFeature::getRenderable)
+        APIEntrypointLoader.mapEntrypointForList(BewisclientAPIEntrypoint::getWidgets).forEach(CategorizedFeature::getSettingRenderables)
+        APIEntrypointLoader.mapEntrypointForList(BewisclientAPIEntrypoint::getUtilities).forEach(CategorizedFeature::getSettingRenderables)
+        APIEntrypointLoader.mapEntrypointForList(BewisclientAPIEntrypoint::getSidebarCategories).forEach(SidebarFeature::getRenderable)
         BewisclientResourcePack
         PackListScreen.Companion
         AcceptPrivacyPage

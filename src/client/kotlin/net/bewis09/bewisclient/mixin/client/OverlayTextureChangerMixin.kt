@@ -12,23 +12,23 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable
 @Mixin(GameRenderer::class)
 abstract class OverlayTextureChangerMixin {
     @Unique
-    var alpha: Float = EntityHighlight.alpha.get()
+    var alpha: Float = EntityHighlight.alpha
 
     @Unique
-    var color: Int = EntityHighlight.color.get().getColorInt()
+    var color: Int = EntityHighlight.color.getColorInt()
 
     @Unique
-    var enabled: Boolean = EntityHighlight.isEnabled()
+    var enabled: Boolean = EntityHighlight.enabled
 
     @Unique
     var overlayTexture: OverlayTexture = OverlayTexture()
 
     @Inject(method = ["overlayTexture"], at = [At("HEAD")], cancellable = true)
     fun getOverlayTexture(cir: CallbackInfoReturnable<OverlayTexture?>) {
-        if (enabled != EntityHighlight.isEnabled() || enabled && (alpha != EntityHighlight.alpha.get() || color != (EntityHighlight.color.get().getColorInt()))) {
-            alpha = EntityHighlight.alpha.get()
-            color = EntityHighlight.color.get().getColorInt()
-            enabled = EntityHighlight.isEnabled()
+        if (enabled != EntityHighlight.enabled || enabled && (alpha != EntityHighlight.alpha || color != (EntityHighlight.color.getColorInt()))) {
+            alpha = EntityHighlight.alpha
+            color = EntityHighlight.color.getColorInt()
+            enabled = EntityHighlight.enabled
 
             overlayTexture = OverlayTexture()
         }

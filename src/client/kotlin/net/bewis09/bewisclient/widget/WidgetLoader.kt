@@ -33,6 +33,6 @@ object WidgetLoader : ObjectSetting(), EventEntrypoint {
     }
 
     fun getEnabledWidgets(): List<Widget> {
-        return widgets.filter { it.isEnabled() }
+        return widgets.filter { it.enabled }
     }
 }

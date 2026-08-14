@@ -66,7 +66,7 @@ object Home : SidebarFeature(createIdentifier("bewisclient", "home"), "Bewisclie
                 )
             }
 
-            val innerList = quickSettings.toSortedSet().filter { it.split("/").size >= 2 }.groupBy { it.split("/")[0] }.mapNotNull {
+            val innerList = quickSettings.asSequence().filter { it.split("/").size >= 2 }.groupBy { it.split("/")[0] }.mapNotNull {
                 (listOf(
                     EmptyRenderable().setHeight(5),
                     InfoTextRenderable(Component.translatable(it.key), centered = true, color = General.getTextThemeColor(), padding = 0).setHeight(14),
@@ -74,7 +74,7 @@ object Home : SidebarFeature(createIdentifier("bewisclient", "home"), "Bewisclie
                 ) + it.value.mapNotNull { a ->
                     quickSettingsOptions[it.key]?.get(a.split("/")[1])
                 }).run { if (size == 3) null else this }
-            }.flatten()
+            }.flatten().toList()
 
             if (innerList.isEmpty()) {
                 addRenderable(Plane { x, y, width, height ->

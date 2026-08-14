@@ -48,7 +48,7 @@ object DaytimeWidget : LineWidget(
     }
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
-        list.addRenderable(this, format12Hours, "format_12_hours", "Use 12-Hour Format", null, "format_12_hours")
+        list.addRenderableQS(format12Hours, "Use 12-Hour Format")
         super.appendSettingsRenderables(list)
     }
 
