@@ -1,7 +1,6 @@
 package net.bewis09.bewisclient.widget.impl
 
 import net.bewis09.bewisclient.common.createIdentifier
-import net.bewis09.bewisclient.common.toText
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.settings.types.BooleanSetting
 import net.bewis09.bewisclient.widget.logic.BOTTOM
@@ -42,14 +41,14 @@ object CPSWidget : LineWidget(
     }
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
-        list.addRenderableQS(leftEnabled, "Show Left Mouse Button CPS")
-        list.addRenderableQS(rightEnabled, "Show Right Mouse Button CPS")
+        list.menuQuick(leftEnabled, "Show Left Mouse Button CPS")
+        list.menuQuick(rightEnabled, "Show Right Mouse Button CPS")
         super.appendSettingsRenderables(list)
     }
 
     override fun getCustomWidgetDataPoints(): List<CustomWidget.WidgetStringData> = listOf(
-        CustomWidget.WidgetStringData("cps_left", "Left CPS", "Your current left clicks per second", { getCPSCount(leftMouseList).toText() }),
-        CustomWidget.WidgetStringData("cps_right", "Right CPS", "Your current right clicks per second", { getCPSCount(rightMouseList).toText() }),
-        CustomWidget.WidgetStringData("cps_total", "Total CPS", "Your current total clicks per second", { (getCPSCount(leftMouseList) + getCPSCount(rightMouseList)).toText() }),
+        CustomWidget.WidgetStringData("cps_left", "Left CPS", "Your current left clicks per second", { getCPSCount(leftMouseList).toString() }),
+        CustomWidget.WidgetStringData("cps_right", "Right CPS", "Your current right clicks per second", { getCPSCount(rightMouseList).toString() }),
+        CustomWidget.WidgetStringData("cps_total", "Total CPS", "Your current total clicks per second", { (getCPSCount(leftMouseList) + getCPSCount(rightMouseList)).toString() }),
     )
 }

@@ -1,9 +1,7 @@
 package net.bewis09.bewisclient.features.utilities
 
-import net.bewis09.bewisclient.common.color
 import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.common.setColor
-import net.bewis09.bewisclient.common.within
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.game.keybinds.Keybind
@@ -14,8 +12,8 @@ import net.minecraft.world.effect.MobEffects
 import org.lwjgl.glfw.GLFW
 
 object Fullbright : ImageFeature(createIdentifier("bewisclient", "fullbright"), "Fullbright") {
-    var nightVision by boolean("night_vision", false, "Night Vision", "Allows you to have the visual effect of night vision without actually having it", quickSetting = true)
-    var brightness by float("brightness", 1f, 0f, 15f, 0.01f, 2, "Brightness", "Adjust the brightness level. 0.0 to 1.0 are the normal levels, while 1.0 to 15.0 is lighting up the world according to the brightness level", quickSetting = true)
+    var nightVision by boolean("night_vision", false) menuQuick ("Night Vision" to "Allows you to have the visual effect of night vision without actually having it")
+    var brightness by float("brightness", 1f, 0f, 15f, 0.01f, 2) menuQuick ("Brightness" to "Adjust the brightness level. 0.0 to 1.0 are the normal levels, while 1.0 to 15.0 is lighting up the world according to the brightness level")
 
     val nightVisionEnabledTranslation = createTranslation("night_vision.enabled", "Night Vision Enabled")
     val nightVisionDisabledTranslation = createTranslation("night_vision.disabled", "Night Vision Disabled")
@@ -58,7 +56,7 @@ object Fullbright : ImageFeature(createIdentifier("bewisclient", "fullbright"), 
     }
 
     fun showFullbrightMessage() {
-        showTitle(brightnessTranslation((brightness * 100).toString() + "%").setColor(((brightness / 15) within (0xFF0000.color to 0xFFFF00.color)).argb))
+        showTitle(brightnessTranslation((brightness * 100).toString() + "%").setColor(((brightness / 15) within (!0xFF0000 to !0xFFFF00)).argb))
     }
 
     private val nightVisionInstance = MobEffectInstance(MobEffects.NIGHT_VISION, -1, 255, false, false, false)

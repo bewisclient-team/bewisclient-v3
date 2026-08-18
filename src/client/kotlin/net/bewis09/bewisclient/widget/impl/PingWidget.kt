@@ -1,8 +1,7 @@
 package net.bewis09.bewisclient.widget.impl
 
 import net.bewis09.bewisclient.common.createIdentifier
-import net.bewis09.bewisclient.common.toText
-import net.bewis09.bewisclient.mixin.client.ClientPacketListenerAccessor
+import net.bewis09.bewisclient.mixin.client.accessor.ClientPacketListenerAccessor
 import net.bewis09.bewisclient.widget.logic.BOTTOM
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
@@ -16,6 +15,9 @@ object PingWidget : LineWidget(
 ) {
     var lastLatency = 0
     var lastRequest = System.currentTimeMillis()
+
+    var lastUpdate = System.currentTimeMillis()
+    var latencyText = 0
 
     val pingText = createTranslation("ping", "Ping: %s")
     val loadingText = createTranslation("loading", "Loading...")
@@ -53,13 +55,18 @@ object PingWidget : LineWidget(
                 lastLatency = l / o
             }
 
-            return lastLatency
+            if (lastUpdate + 1000 < System.currentTimeMillis()) {
+                latencyText = lastLatency
+                lastUpdate = System.currentTimeMillis()
+            }
+
+            return latencyText
         } catch (_: Exception) {
             return -1
         }
     }
 
     override fun getCustomWidgetDataPoints(): List<CustomWidget.WidgetStringData> = listOf(
-        CustomWidget.WidgetStringData("ping", "Ping", "Your current ping in milliseconds", { getLatency().toText() })
+        CustomWidget.WidgetStringData("ping", "Ping", "Your current ping in milliseconds", { getLatency().toString() })
     )
 }

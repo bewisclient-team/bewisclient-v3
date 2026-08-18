@@ -4,7 +4,6 @@ package net.bewis09.bewisclient.drawable.minecraft
 
 import net.bewis09.bewisclient.common.Color
 import net.bewis09.bewisclient.common.Identifier
-import net.bewis09.bewisclient.common.alpha
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.util.logic.ClientInterface
 import net.bewis09.bewisclient.version.GuiGraphics

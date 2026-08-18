@@ -2,6 +2,7 @@ package net.bewis09.bewisclient.drawable.renderables.impl
 
 import net.bewis09.bewisclient.common.Color
 import net.bewis09.bewisclient.common.createIdentifier
+import net.bewis09.bewisclient.common.toText
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.components.button.Button
 import net.bewis09.bewisclient.drawable.renderables.components.button.ImageButton
@@ -26,7 +27,7 @@ class CustomWidgetLineRenderable : Renderable() {
 
     val textDisplay = ScrollPlane(Scrollable.Direction.HORIZONTAL) { x, y, width, _, scroll ->
         lines.mapIndexed { index, input ->
-            TextElement({ CustomWidget.computeLine(input.text) }, Color.WHITE, centered = CustomWidget.centered.get(), font = ScreenDrawingInterface.DEFAULT_FONT)(x + scroll.toInt(), index * 10 + y, width, 10)
+            TextElement({ CustomWidget.computeLine(input.text).toText() }, Color.WHITE, centered = CustomWidget.centered.get(), font = ScreenDrawingInterface.DEFAULT_FONT)(x + scroll.toInt(), index * 10 + y, width, 10)
         }
     }
 
@@ -81,7 +82,7 @@ class CustomWidgetLineRenderable : Renderable() {
             resize()
         }(x, y + 9 + lines.size * 10 - if (CustomWidget.lines.isEmpty()) 1 else 0, width - 16, 14))
         addRenderable(ImageButton(createIdentifier("bewisclient", "textures/gui/sprites/help.png")) {
-            OptionScreen.currentInstance?.let { it.openPopup(CustomWidgetHelpPopup(it), Color.BLACK alpha 0.9f) }
+            OptionScreen.currentInstance?.openPopup(CustomWidgetHelpPopup(), Color.BLACK alpha 0.9f)
         }.setImagePadding(2)(x + width - 14, y + 9 + lines.size * 10 - if (CustomWidget.lines.isEmpty()) 1 else 0, 14, 14))
     }
 }

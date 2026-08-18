@@ -64,14 +64,6 @@ interface RoundedDrawing : RectDrawing, TextureDrawing {
                 val height = sqrt((r * r - i * i).toDouble()).roundToInt()
                 val inner = sqrt(0.0.coerceAtLeast(((r - scale).toDouble()).pow(2) - i * i)).roundToInt()
                 for (j in inner until height) {
-                    it.setRGB(i, j, 0xFFFFFFFF.toInt())
-                }
-            }
-
-            for (i in 0 until r) {
-                val height = sqrt((r * r - i * i).toDouble()).roundToInt()
-                val inner = sqrt(0.0.coerceAtLeast(((r - scale).toDouble()).pow(2) - i * i)).roundToInt()
-                for (j in inner until height) {
                     it.setRGB(j, i, 0xFFFFFFFF.toInt())
                 }
             }

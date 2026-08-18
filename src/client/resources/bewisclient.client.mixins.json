@@ -21,10 +21,10 @@
     "MouseMixin",
     "ZoomMixin",
     "MultiPlayerGameModeMixin",
-    "ClientPacketListenerAccessor",
+    "accessor.ClientPacketListenerAccessor",
     "TntRendererMixin",
-    "ScissorStackMixin",
-    "KeyMappingAccessor"
+    "accessor.ScissorStackAccessor",
+    "accessor.KeyMappingAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

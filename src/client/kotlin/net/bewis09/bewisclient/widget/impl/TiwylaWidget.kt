@@ -195,8 +195,8 @@ object TiwylaWidget : ScalableWidget(
     override fun getHeight(): Int = 9 + getSublines().size * 6 + lineSpacing.get() * (getSublines().size) + 2 * paddingSize.get()
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
-        list.addRenderable(topTextColor, "Top Text Color", "Set the color of the top text in the widget")
-        list.addRenderable(bottomTextColor, "Bottom Text Color", "Set the color of the bottom text in the widget")
+        list.menu(topTextColor, "Top Text Color", "Set the color of the top text in the widget")
+        list.menu(bottomTextColor, "Bottom Text Color", "Set the color of the bottom text in the widget")
 
         list.add(TiwylaLinesSettingsRenderable().addToQuickSettings(this, "lines"))
         list.add(InfoTextRenderable(healthInfoText(), 0xAAAAAA.color, true))
@@ -232,8 +232,6 @@ object TiwylaWidget : ScalableWidget(
     }
 
     data class BlockData(val state: BlockState, val blockPos: BlockPos)
-
-    fun findBlockInformation(name: String) = blockInformation.firstOrNull { it.id == name }
 
     fun convertToHearths(h: Double, mH: Double, a: Double): Component {
         var health = h
@@ -376,6 +374,4 @@ object TiwylaWidget : ScalableWidget(
             return@Line provideEntityInfo(entity)?.toText()
         }, "special_entity_info", 2)
     }
-
-    class LineCollection
 }

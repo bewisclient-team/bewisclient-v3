@@ -26,7 +26,7 @@ class PauseScreenButtonInjectorMixin(title: Component) : Screen(title), ClientIn
                 20,
                 createIdentifier("bewisclient", "textures/gui/sprites/options_button.png"),
                 createIdentifier("bewisclient", "textures/gui/sprites/options_button_pressed.png")
-            ) { setRenderableScreen(OptionScreen(1f)) }
+            ) { setRenderableScreen(OptionScreen.getOrCreateInstance(1f)) }
         )
     }
 }

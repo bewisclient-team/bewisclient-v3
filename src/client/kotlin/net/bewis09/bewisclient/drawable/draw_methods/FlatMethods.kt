@@ -1,8 +1,5 @@
 package net.bewis09.bewisclient.drawable.draw_methods
 
-import net.bewis09.bewisclient.common.alpha
-import net.bewis09.bewisclient.common.color
-import net.bewis09.bewisclient.common.within
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.transform
 import net.bewis09.bewisclient.features.sidebar.General
@@ -25,12 +22,12 @@ object FlatMethods : DrawMethods {
 
     override fun renderSwitch(screenDrawing: ScreenDrawing, x: Int, y: Int, width: Int, height: Int, hover: Float, stateAnimation: Float, mouseX: Int, mouseY: Int) {
         screenDrawing.fillWithBorderRounded(
-            x, y, width, height, 6, stateAnimation within (0x333333.color to General.getThemeColor()) alpha hover.coerceAtLeast(stateAnimation) * 0.15f + 0.15f, stateAnimation within (0x888888.color to General.getThemeColor()) alpha hover * 0.5f + 0.5f
+            x, y, width, height, 6, stateAnimation within (!0x333333 to General.getThemeColor()) alpha hover.coerceAtLeast(stateAnimation) * 0.15f + 0.15f, stateAnimation within (!0x888888 to General.getThemeColor()) alpha hover * 0.5f + 0.5f
         )
         val scaleFactor = 0.5f
         screenDrawing.transform(x + ((width - 12) * stateAnimation) + 6f, y + 6f, 1 - scaleFactor + abs(stateAnimation - 0.5f) * 2 * scaleFactor, 1f) {
             screenDrawing.fillRounded(
-                -4, -4, 8, 8, 4, stateAnimation within (0x888888.color to General.getThemeColor()) alpha hover * 0.5f + 0.5f
+                -4, -4, 8, 8, 4, stateAnimation within (!0x888888 to General.getThemeColor()) alpha hover * 0.5f + 0.5f
             )
         }
     }
@@ -42,7 +39,7 @@ object FlatMethods : DrawMethods {
 
         screenDrawing.transform(x + normalizedValue * (width - 8) + 4, y + 2f, 0.1f) {
             screenDrawing.fillRounded(
-                -20, 0, 40, 100, 20, (hover within (0xCCCCCC.color to 0xFFFFFF.color)) * General.getThemeColor()
+                -20, 0, 40, 100, 20, (hover within (!0xCCCCCC to !0xFFFFFF)) * General.getThemeColor()
             )
         }
     }

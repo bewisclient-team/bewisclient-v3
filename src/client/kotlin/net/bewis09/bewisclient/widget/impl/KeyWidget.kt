@@ -10,9 +10,8 @@ import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSett
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.translate
 import net.bewis09.bewisclient.features.sidebar.Widgets
-import net.bewis09.bewisclient.mixin.client.KeyMappingAccessor
+import net.bewis09.bewisclient.mixin.client.accessor.KeyMappingAccessor
 import net.bewis09.bewisclient.settings.types.BooleanSetting
-import net.bewis09.bewisclient.settings.types.ColorSetting
 import net.bewis09.bewisclient.util.color.StaticColorSaver
 import net.bewis09.bewisclient.version.isKeyPressed
 import net.bewis09.bewisclient.widget.logic.RelativePosition
@@ -32,16 +31,16 @@ object KeyWidget : ScalableWidget(
     val borderOpacity = create("border_opacity", Widgets.Default.borderOpacity.cloneWithDefault())
     val textColor = create("text_color", Widgets.Default.textColor.cloneWithDefault())
 
-    val pressedBackgroundColor = color("pressed_background_color", StaticColorSaver(Color.LIGHT_GRAY), *ColorSetting.ALL)
+    val pressedBackgroundColor = color("pressed_background_color", StaticColorSaver(Color.LIGHT_GRAY))
     val pressedBackgroundOpacity = create("pressed_background_opacity", Widgets.Default.backgroundOpacity.cloneWithDefault())
-    val pressedBorderColor = color("pressed_border_color", StaticColorSaver(Color.LIGHT_GRAY), *ColorSetting.ALL)
+    val pressedBorderColor = color("pressed_border_color", StaticColorSaver(Color.LIGHT_GRAY))
     val pressedBorderOpacity = create("pressed_border_opacity", Widgets.Default.borderOpacity.cloneWithDefault())
-    val pressedTextColor = color("pressed_text_color", StaticColorSaver(Color.GRAY), *ColorSetting.ALL)
+    val pressedTextColor = color("pressed_text_color", StaticColorSaver(Color.GRAY))
 
     val shadow = create("shadow", Widgets.Default.shadow.cloneWithDefault())
-    val paddingSize = int("padding_size", 5, 0, 10)
+    val paddingSize = int("padding_size", 5, 0 to 10)
     val borderRadius = create("border_radius", Widgets.Default.borderRadius.cloneWithDefault())
-    val gap = int("gap", 2, 0, 20)
+    val gap = int("gap", 2, 0 to 20)
 
     val showMovementKeys: BooleanSetting = boolean("show_movement_keys", true) { _, new ->
         if (!showAttackUseKeys.get() && !showJumpKey.get() && new == false) showAttackUseKeys.set(true)
@@ -163,19 +162,19 @@ object KeyWidget : ScalableWidget(
             ).addToQuickSettings(this, "shown_keys")
         )
 
-        list.addRenderableQS(showCPS, "Show CPS", "Shows your clicks per second (CPS) for the attack/use keys")
-        list.addRenderable(backgroundColor, "Background", "Set the color of the widget's background")
+        list.menuQuick(showCPS, "Show CPS", "Shows your clicks per second (CPS) for the attack/use keys")
+        list.menu(backgroundColor, "Background", "Set the color of the widget's background")
 
         list.add(LineWidget.backgroundColorRenderable(backgroundColor, backgroundOpacity))
         list.add(LineWidget.borderColorRenderable(borderColor, borderOpacity))
         list.add(LineWidget.textColorRenderable(textColor))
 
-        list.addColorRenderable(pressedBackgroundColor, pressedBackgroundOpacity, "pressed_background", "Pressed Background", "Set the color and opacity of the widget when a key is pressed")
-        list.addColorRenderable(pressedBorderColor, pressedBorderOpacity, "pressed_border", "Pressed Border", "Set the color and opacity of the widget's border when a key is pressed")
-        list.addRenderable(pressedTextColor, "Pressed Text Color", "Set the color of the text in the widget when a key is pressed")
+        list.colorAlphaMenu(pressedBackgroundColor, pressedBackgroundOpacity, "pressed_background", "Pressed Background", "Set the color and opacity of the widget when a key is pressed")
+        list.colorAlphaMenu(pressedBorderColor, pressedBorderOpacity, "pressed_border", "Pressed Border", "Set the color and opacity of the widget's border when a key is pressed")
+        list.menu(pressedTextColor, "Pressed Text Color", "Set the color of the text in the widget when a key is pressed")
 
         list.add(LineWidget.shadowRenderable(shadow))
-        list.addRenderable(gap, "Gap", "Set the gap between the keys in the widget")
+        list.menu(gap, "Gap", "Set the gap between the keys in the widget")
         list.add(LineWidget.paddingSizeRenderable(paddingSize))
         list.add(LineWidget.borderRadiusRenderable(borderRadius))
 

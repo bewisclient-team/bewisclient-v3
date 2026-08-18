@@ -22,8 +22,8 @@ object CustomWidget : LineWidget(
 ) {
     val customWidgetParamInfo = createTranslation("param_info", "You can include live information in the Custom Widget using curly brackets, e.g. {biome_id}. Some data points can take parameters, which can be specified after a | character. For example, {real_time|seconds} will show the real time including seconds.")
 
-    class WidgetStringData(val id: String, val name: Translation, val description: Translation, val func: (param: String?) -> Component, val param: Translation? = null) {
-        constructor(id: String, name: String, description: String, func: (param: String?) -> Component, param: String? = null) : this(id, createTranslation("data.$id", name), createTranslation("data.$id.description", description), { func(it) }, param?.let { createTranslation("data.$id.param", it) })
+    class WidgetStringData(val id: String, val name: Translation, val description: Translation, val func: (param: String?) -> String, val param: Translation? = null) {
+        constructor(id: String, name: String, description: String, func: (param: String?) -> String, param: String? = null) : this(id, createTranslation("data.$id", name), createTranslation("data.$id.description", description), { func(it) }, param?.let { createTranslation("data.$id.param", it) })
     }
 
     val widgetStringDataPoints = APIEntrypointLoader.mapEntrypoint {
@@ -42,17 +42,17 @@ object CustomWidget : LineWidget(
 
     override fun isEnabledByDefault(): Boolean = false
 
-    override fun getLines(): List<Component> = lines.get().map(::computeLine)
+    override fun getLines(): List<Component> = lines.get().map(::computeLine).map(String::toText)
 
-    fun computeLine(line: String): Component {
+    fun computeLine(line: String): String {
         return Regex("\\{\\w+(?:\\|\\w+)?}|.+?|").findAll(line).toList().map { a ->
             Regex("\\{(\\w+)(?:\\|(\\w+))?}|.+").findAll(a.value).map { b ->
                 val id = b.groupValues.getOrNull(1) ?: return@map b.value.toText()
                 val param = b.groupValues.getOrNull(2)
 
-                widgetStringDataPoints.find { a -> a.id == id }?.func(param)?.copy() ?: b.value.toText()
+                widgetStringDataPoints.find { a -> a.id == id }?.func(param) ?: b.value
             }.toList()
-        }.flatten().reduceOrNull { a, b -> "".toText().append(a.append(b)) } ?: "".toText()
+        }.flatten().joinToString("")
     }
 
     override fun getMinimumWidth(): Int = minimumWidth.get().toInt()

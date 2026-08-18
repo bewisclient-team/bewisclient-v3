@@ -3,7 +3,6 @@ package net.bewis09.bewisclient.util.color
 import com.google.gson.JsonElement
 import com.google.gson.JsonPrimitive
 import net.bewis09.bewisclient.common.Color
-import net.bewis09.bewisclient.common.color
 import net.bewis09.bewisclient.common.toText
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.components.element.Rectangle
@@ -15,6 +14,7 @@ import net.bewis09.bewisclient.drawable.renderables.components.structure.Horizon
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.features.sidebar.General
+import net.bewis09.bewisclient.util.Bewisclient
 import net.bewis09.bewisclient.util.number.Precision
 import net.bewis09.bewisclient.util.string
 import net.minecraft.network.chat.Component
@@ -26,7 +26,7 @@ open class StaticColorSaver(private val color: Color) : ColorSaver {
 
         fun fromColorString(colorString: String): StaticColorSaver? {
             if (colorString.startsWith("#")) {
-                return StaticColorSaver(colorString.substring(1).toIntOrNull(16)?.color ?: Color.WHITE)
+                return StaticColorSaver(Bewisclient.color(colorString.substring(1).toIntOrNull(16)) ?: Color.WHITE)
             }
             return null
         }
@@ -66,7 +66,7 @@ open class StaticColorSaver(private val color: Color) : ColorSaver {
 
         override fun getTranslation(): Translation = translation
 
-        override fun getDefault(): StaticColorSaver = StaticColorSaver(0xFFFFFF.color)
+        override fun getDefault(): StaticColorSaver = StaticColorSaver(Color.WHITE)
 
         override fun getDescription(): Translation = description
 

@@ -23,7 +23,7 @@ class SelectCapeElement(val identifier: CosmeticIdentifier, val cosmetic: Cosmet
 
         if (isMinecrafty) {
             screenDrawing.darken(0.6f) {
-                screenDrawing.fill(x + 3, y + 3, width - 6, height - 6, (selected.get() / 2f) within (hoverFactor within (0x333333.color to 0x444444.color) to Color.WHITE))
+                screenDrawing.fill(x + 3, y + 3, width - 6, height - 6, (selected.get() / 2f) within (hoverFactor within (!0x333333 to !0x444444) to Color.WHITE))
             }
         } else {
             screenDrawing.fillRounded(x, y, width, height, 5, General.getThemeColor(alpha = selected.get() * 0.3f + hoverFactor * 0.15f + 0.1f))
@@ -40,9 +40,9 @@ class SelectCapeElement(val identifier: CosmeticIdentifier, val cosmetic: Cosmet
 
         if (isMinecrafty) {
             screenDrawing.darken(0.6f + selected.get() * 0.4f) {
-                screenDrawing.drawBorder(x, y, width, height, 0x222222.color)
-                screenDrawing.drawBorder(x + 1, y + 1, width - 2, height - 2, hoverFactor within (0x5B5B5B.color to 0xA1A1A1.color))
-                screenDrawing.drawBorder(x + 2, y + 2, width - 4, height - 4, 0x282828.color)
+                screenDrawing.drawBorder(x, y, width, height, !0x222222)
+                screenDrawing.drawBorder(x + 1, y + 1, width - 2, height - 2, hoverFactor within (!0x5B5B5B to !0xA1A1A1))
+                screenDrawing.drawBorder(x + 2, y + 2, width - 4, height - 4, !0x282828)
             }
         } else {
             screenDrawing.drawBorderRounded(x, y, width, height, 5, 0.2f within ((selected.get() within (Color.DARK_GRAY to Color.WHITE)) to General.getThemeColor()))

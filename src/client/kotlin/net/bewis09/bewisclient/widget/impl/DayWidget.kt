@@ -1,7 +1,6 @@
 package net.bewis09.bewisclient.widget.impl
 
 import net.bewis09.bewisclient.common.createIdentifier
-import net.bewis09.bewisclient.common.toText
 import net.bewis09.bewisclient.version.clockTime
 import net.bewis09.bewisclient.widget.logic.BOTTOM
 import net.bewis09.bewisclient.widget.logic.RelativePosition
@@ -29,7 +28,7 @@ object DayWidget : LineWidget(
     override fun getMinimumWidth(): Int = 80
 
     override fun getCustomWidgetDataPoints(): List<CustomWidget.WidgetStringData> = listOf(
-        CustomWidget.WidgetStringData("day", "In-Game Day", "The current in-game day", { getText().toText() }),
-        CustomWidget.WidgetStringData("real_day", "Real-Life Day", "The current real-life day", { (DateFormat.getDateInstance(DateFormat.SHORT, it?.let { Locale.forLanguageTag(it) } ?: Locale.getDefault()).format(Date.from(Instant.now()))).toText() }, "A language tag (e.g., \"en-US\") to format the date accordingly")
+        CustomWidget.WidgetStringData("day", "In-Game Day", "The current in-game day", { getText().toString() }),
+        CustomWidget.WidgetStringData("real_day", "Real-Life Day", "The current real-life day", { (DateFormat.getDateInstance(DateFormat.SHORT, it?.let { Locale.forLanguageTag(it) } ?: Locale.getDefault()).format(Date.from(Instant.now()))) }, "A language tag (e.g., \"en-US\") to format the date accordingly")
     )
 }

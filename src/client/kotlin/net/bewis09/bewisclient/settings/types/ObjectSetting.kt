@@ -2,8 +2,11 @@ package net.bewis09.bewisclient.settings.types
 
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
+import net.bewis09.bewisclient.common.Color
+import net.bewis09.bewisclient.common.staticFun
 import net.bewis09.bewisclient.settings.logic.Settings
 import net.bewis09.bewisclient.util.color.ColorSaver
+import net.bewis09.bewisclient.util.color.StaticColorSaver
 import net.bewis09.bewisclient.util.jsonObject
 import net.bewis09.bewisclient.util.number.Precision
 
@@ -65,12 +68,16 @@ open class ObjectSetting : Setting<JsonObject>(JsonObject()) {
         return create(key, FloatSetting({ default }, Precision(min, max, step, precision)))
     }
 
-    fun int(key: String, default: Int, min: Int, max: Int): IntegerSetting {
-        return create(key, IntegerSetting({ default }, min, max))
+    fun int(key: String, default: Int, range: Pair<Int, Int>): IntegerSetting {
+        return create(key, IntegerSetting({ default }, range.first, range.second))
     }
 
     fun color(key: String, default: ColorSaver, vararg types: String): ColorSetting {
         return create(key, ColorSetting({ default }, *types))
+    }
+
+    fun color(key: String, default: Color, vararg types: String): ColorSetting {
+        return create(key, ColorSetting(StaticColorSaver(default).staticFun(), *types))
     }
 
     fun string(key: String, default: String): StringSetting {

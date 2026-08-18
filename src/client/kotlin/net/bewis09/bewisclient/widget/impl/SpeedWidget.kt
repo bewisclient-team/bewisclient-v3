@@ -41,12 +41,12 @@ object SpeedWidget : LineWidget(
     override fun appendSettingsRenderables(
         list: ArrayList<Renderable>
     ) {
-        list.addRenderableQS(verticalSpeed, "Include Vertical Speed")
+        list.menuQuick(verticalSpeed, "Include Vertical Speed")
         super.appendSettingsRenderables(list)
     }
 
     override fun getCustomWidgetDataPoints(): List<CustomWidget.WidgetStringData> = listOf(
-        CustomWidget.WidgetStringData("horizontal_speed", "Horizontal Speed", "Your current horizontal speed in blocks per second", { String.format("%.2f", if (!isInWorld()) 4.2f else horizontalSpeed).toText() }),
-        CustomWidget.WidgetStringData("total_speed", "Total Speed", "Your current total speed in blocks per second", { String.format("%.2f", if (!isInWorld()) 6.9f else totalSpeed).toText() }),
+        CustomWidget.WidgetStringData("horizontal_speed", "Horizontal Speed", "Your current horizontal speed in blocks per second", { String.format("%.2f", if (!isInWorld()) 4.2f else horizontalSpeed) }),
+        CustomWidget.WidgetStringData("total_speed", "Total Speed", "Your current total speed in blocks per second", { String.format("%.2f", if (!isInWorld()) 6.9f else totalSpeed) }),
     )
 }

@@ -1,14 +1,13 @@
 package net.bewis09.bewisclient.features.utilities
 
-import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.game.keybinds.Keybind
 import net.bewis09.bewisclient.settings.structure.ImageFeature
 import org.lwjgl.glfw.GLFW
 
-object Zoom : ImageFeature(createIdentifier("bewisclient", "zoom"), "Zoom") {
-    val smooth by boolean("smooth", true, "Smooth Zoom", "Enable or disable smooth zoom (Works as if smooth camera is enabled)", quickSetting = true)
-    val instant by boolean("instant", false, "Instant Zoom", "Disables the transition animation when zooming in or out", quickSetting = true)
+object Zoom : ImageFeature("zoom", "Zoom") {
+    val smooth by boolean("smooth", true) menuQuick ("Smooth Zoom" to "Enable or disable smooth zoom (Works as if smooth camera is enabled)")
+    val instant by boolean("instant", false) menuQuick ("Instant Zoom" to "Disables the transition animation when zooming in or out")
 
     var smoothCameraEnabledBefore: Boolean? = null
 

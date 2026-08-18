@@ -87,7 +87,11 @@ abstract class Setting<T>(val default: () -> T) : ClientInterface, SettingInterf
         if (processChange(value) == this.value) {
             return // No change, do nothing
         }
-        this.value = processChange(value)
+        if (processChange(value) == this.default()) {
+            this.value = null
+        } else {
+            this.value = processChange(value)
+        }
         onChange(oldValue, this.value)
         onChangeListener?.invoke(this, oldValue, this.value)
     }
@@ -123,9 +127,7 @@ abstract class Setting<T>(val default: () -> T) : ClientInterface, SettingInterf
      * @param oldValue The previous value of the setting.
      * @param newValue The new value of the setting.
      */
-    open fun onChange(oldValue: T?, newValue: T?) {
-
-    }
+    open fun onChange(oldValue: T?, newValue: T?) = Unit
 
     open fun processChange(value: T?) = value
 

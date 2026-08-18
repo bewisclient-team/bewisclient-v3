@@ -7,6 +7,8 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.features.sidebar.General
 
 abstract class ImageFeature(id: Identifier, text: String) : CategorizedFeature(id, text) {
+    constructor(id: String, text: String) : this(createIdentifier("bewisclient", id), text)
+
     val identifier = createIdentifier(id.namespace, "textures/gui/features/${id.path}.png")
 
     override fun createRenderable(): SettingCategory = object : SettingCategory() {

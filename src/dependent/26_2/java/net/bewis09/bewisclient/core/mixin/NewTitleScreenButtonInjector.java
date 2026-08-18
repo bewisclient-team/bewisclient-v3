@@ -53,7 +53,7 @@ public abstract class NewTitleScreenButtonInjector extends Screen {
     private void addModMenuIconWidget(CallbackInfo ci, @Local(name = "currentButton") LocalIntRef currentButton, @Local(name = "topPos") int topPos, @Local(name = "numberOfButtons") int numberOfButtons, @Share("addModMenuIconWidget") LocalBooleanRef addModMenuIconWidget) {
         if (!General.INSTANCE.getButtonInTitleScreen().get()) return;
         currentButton.set(currentButton.get()+1);
-        Screen screen = (TitleScreen) (Object) this;
+        Screen screen = this;
         var button = new TexturedButtonWidget(
                 this.getHorizontalPosition(currentButton.get(), numberOfButtons, 20),
                 topPos,
@@ -61,7 +61,7 @@ public abstract class NewTitleScreenButtonInjector extends Screen {
                 20,
                 UtilKt.createIdentifier("bewisclient", "textures/gui/sprites/options_button.png"),
                 UtilKt.createIdentifier("bewisclient", "textures/gui/sprites/options_button_pressed.png"),
-                (b) -> Bewisclient.INSTANCE.setRenderableScreen(new OptionScreen(1f, 0f))
+                (b) -> Bewisclient.INSTANCE.setRenderableScreen(OptionScreen.Companion.getOrCreateInstance(1f, 0f))
         );
 
         Screens.getWidgets(screen).add(button);

@@ -25,6 +25,6 @@ object ServerWidget : LineWidget(
     override fun isHidden(): Boolean = client.currentServer == null
 
     override fun getCustomWidgetDataPoints() = listOf(
-        CustomWidget.WidgetStringData("server_ip", "Server IP", "Your current server IP address", { getLine() })
+        CustomWidget.WidgetStringData("server_ip", "Server IP", "Your current server IP address", { getLine().string })
     )
 }

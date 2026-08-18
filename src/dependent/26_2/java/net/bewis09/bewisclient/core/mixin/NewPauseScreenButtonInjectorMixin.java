@@ -33,7 +33,7 @@ public class NewPauseScreenButtonInjectorMixin extends Screen {
                     20,
                     UtilKt.createIdentifier("bewisclient", "textures/gui/sprites/options_button.png"),
                     UtilKt.createIdentifier("bewisclient", "textures/gui/sprites/options_button_pressed.png"),
-                    (b) -> Bewisclient.INSTANCE.setRenderableScreen(new OptionScreen(1f, 0f))
+                    (b) -> Bewisclient.INSTANCE.setRenderableScreen(OptionScreen.Companion.getOrCreateInstance(1f, 0f))
             );
 
             button.setTooltip(Tooltip.create(Component.literal("Bewisclient")));

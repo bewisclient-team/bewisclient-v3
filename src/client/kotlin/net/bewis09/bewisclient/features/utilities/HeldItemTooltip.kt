@@ -1,7 +1,6 @@
 package net.bewis09.bewisclient.features.utilities
 
 import net.bewis09.bewisclient.common.Color
-import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.common.setColor
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSettingsRenderable
@@ -18,8 +17,8 @@ import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.Style
 import net.minecraft.world.item.ItemStack
 
-object HeldItemTooltip : ImageFeature(createIdentifier("bewisclient", "held_item_tooltip"), "Held Item Info") {
-    val maxShownLines by int("max_shown_lines", 5, 1, 10, "Max Shown Lines", "Maximum number of lines to show in the held item tooltip", quickSetting = true)
+object HeldItemTooltip : ImageFeature("held_item_tooltip", "Held Item Info") {
+    val maxShownLines by int("max_shown_lines", 5, 1 to 10) menuQuick ("Max Shown Lines" to "Maximum number of lines to show in the held item tooltip")
     val showMap = create("show_map", BooleanMapSetting())
 
     val moreLinesText = createTranslation("more_lines", "and %s more...")

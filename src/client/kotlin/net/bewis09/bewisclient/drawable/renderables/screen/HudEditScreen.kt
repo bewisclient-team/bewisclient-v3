@@ -2,7 +2,6 @@ package net.bewis09.bewisclient.drawable.renderables.screen
 
 import net.bewis09.bewisclient.common.Color
 import net.bewis09.bewisclient.common.Identifier
-import net.bewis09.bewisclient.common.alpha
 import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.drawable.BackgroundEffectProvider
 import net.bewis09.bewisclient.drawable.renderables.components.button.ImageButton
@@ -51,7 +50,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
                 }
 
                 if (button == 1) {
-                    setRenderableScreen(OptionScreen().apply {
+                    setRenderableScreen(OptionScreen.getOrCreateInstance().apply {
                         val widgetsCategory = widgets.firstOrNull { b -> b.enabledSetting == it.enabledSetting } ?: return@apply
 
                         changeCategory(Widgets, instant = true)
@@ -142,7 +141,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
             openPopup(AddWidgetPopup(), Color.BLACK alpha 0.625f)
         }.setImagePadding(0)(width - 16, height - 16, 14, 14))
         addRenderable(ImageButton(createIdentifier("bewisclient", "textures/gui/sprites/settings.png")) {
-            setRenderableScreen(OptionScreen().apply {
+            setRenderableScreen(OptionScreen.getOrCreateInstance().apply {
                 changeCategory(Widgets, instant = true)
             })
         }.setImagePadding(2)(width - 32, height - 16, 14, 14))
@@ -266,7 +265,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
 
     override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {
         if (key == GLFW.GLFW_KEY_ESCAPE) {
-            setRenderableScreen(OptionScreen())
+            setRenderableScreen(OptionScreen.getOrCreateInstance())
             return true
         }
         return super.onKeyPress(key, scanCode, modifiers)

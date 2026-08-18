@@ -85,14 +85,14 @@ object BiomeWidget : LineWidget(
     }
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
-        list.addRenderable(colorCodeBiome, "Color Code Biome", "Whether to color code the biome name")
+        list.menu(colorCodeBiome, "Color Code Biome", "Whether to color code the biome name")
         super.appendSettingsRenderables(list)
     }
 
     override fun isEnabledByDefault(): Boolean = false
 
     override fun getCustomWidgetDataPoints(): List<CustomWidget.WidgetStringData> = listOf(
-        CustomWidget.WidgetStringData("biome_name", "Biome Name", "The name of the biome you are currently in", { color -> getText(color == "colored") }, "\"colored\" to color code the biome name"),
-        CustomWidget.WidgetStringData("biome_id", "Biome ID", "The ID of the biome you are currently in", { color -> applyColor(getBiomeID().toString().toText(), color == "colored") }, "\"colored\" to color code the biome name")
+        CustomWidget.WidgetStringData("biome_name", "Biome Name", "The name of the biome you are currently in", { getText(false).string }),
+        CustomWidget.WidgetStringData("biome_id", "Biome ID", "The ID of the biome you are currently in", { getBiomeID().toString() })
     )
 }

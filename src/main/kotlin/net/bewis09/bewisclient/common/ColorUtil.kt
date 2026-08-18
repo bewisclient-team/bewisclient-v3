@@ -2,41 +2,6 @@
 
 package net.bewis09.bewisclient.common
 
-infix fun Float.within(pair: Pair<Color, Color>): Color {
-    val startAlpha = pair.first.alpha
-    val startRed = pair.first.red
-    val startGreen = pair.first.green
-    val startBlue = pair.first.blue
-
-    val endAlpha = pair.second.alpha
-    val endRed = pair.second.red
-    val endGreen = pair.second.green
-    val endBlue = pair.second.blue
-
-    val alpha = (startAlpha + (endAlpha - startAlpha) * this).toInt()
-    val red = (startRed + (endRed - startRed) * this).toInt()
-    val green = (startGreen + (endGreen - startGreen) * this).toInt()
-    val blue = (startBlue + (endBlue - startBlue) * this).toInt()
-
-    return Color(red, green, blue, alpha)
-}
-
-val Int.color: Color
-    get() = Color(this, 1f)
-
-val Long.color: Color
-    get() = Color(this.toInt())
-
-val Int.brightness: Float get() = this.color.brightness
-
-val Int.saturation: Float get() = this.color.saturation
-
-val Int.hue: Float get() = this.color.hue
-
-infix fun Int.alpha(alpha: Float): Color {
-    return this.color alpha alpha
-}
-
 @JvmInline
 value class Color(val argb: Int) {
     companion object {
@@ -53,6 +18,8 @@ value class Color(val argb: Int) {
         val MAGENTA = Color(255, 0, 255)
         val CYAN = Color(0, 255, 255)
         val BLUE = Color(0, 0, 255)
+
+        fun rgb(rgb: Int): Color = Color(rgb or (255 shl 24))
     }
 
     constructor(rgb: Int, alpha: Float) : this(rgb or (((alpha * 255).toInt()) shl 24))
@@ -139,11 +106,13 @@ value class Color(val argb: Int) {
     }
 
     operator fun times(other: Int): Color {
+        val otherColor = rgb(other)
+
         return Color(
-            (this.red * other.color.red / 255),
-            (this.green * other.color.green / 255),
-            (this.blue * other.color.blue / 255),
-            (this.alpha * other.color.alpha / 255)
+            (this.red * otherColor.red / 255),
+            (this.green * otherColor.green / 255),
+            (this.blue * otherColor.blue / 255),
+            (this.alpha * otherColor.alpha / 255)
         )
     }
 

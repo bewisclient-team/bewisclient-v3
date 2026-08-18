@@ -24,8 +24,6 @@ class Translation(private val namespace: String, private val key: String, @Suppr
 
     fun getKey(): String = "$namespace.$key"
 
-    fun getKeyWithoutNamespace() = key
-
     operator fun invoke(): MutableComponent = getTranslatedText()
 
     operator fun invoke(vararg args: Any): MutableComponent = getTranslatedText(*args)

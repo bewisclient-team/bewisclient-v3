@@ -1,6 +1,5 @@
 package net.bewis09.bewisclient.drawable.renderables.settings
 
-import net.bewis09.bewisclient.common.alpha
 import net.bewis09.bewisclient.drawable.renderables.components.button.ResetButton
 import net.bewis09.bewisclient.drawable.renderables.components.setting.Switch
 import net.bewis09.bewisclient.drawable.renderables.components.logic.TooltipHoverable

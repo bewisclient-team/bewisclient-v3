@@ -2,7 +2,6 @@ package net.bewis09.bewisclient.features.sidebar
 
 import net.bewis09.bewisclient.common.Color
 import net.bewis09.bewisclient.common.Util
-import net.bewis09.bewisclient.common.alpha
 import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.data.Constants
 import net.bewis09.bewisclient.drawable.Animator

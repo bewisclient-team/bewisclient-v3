@@ -79,20 +79,6 @@ interface WebLogic {
         }
     }
 
-    fun downloadFile(url: URL, onComplete: (success: ByteArray) -> Unit) {
-        downloadFile(url, onComplete, null)
-    }
-
-    fun downloadFile(url: URL, onComplete: (success: ByteArray) -> Unit, onError: ((error: Exception) -> Unit)? = null) {
-        Util.nonCriticalIoPool().execute {
-            try {
-                onComplete(downloadSync(url))
-            } catch (e: Exception) {
-                onError?.apply { this(e) } ?: error("Failed to download file from URL: ${url.path} \n  Error Message: ${e.message}")
-            }
-        }
-    }
-
     fun downloadFileWithProgress(url: URI, onProgress: (progress: Float) -> Unit, onComplete: (success: ByteArray) -> Unit, onError: ((error: Exception) -> Unit)? = null) {
         Util.nonCriticalIoPool().execute {
             try {

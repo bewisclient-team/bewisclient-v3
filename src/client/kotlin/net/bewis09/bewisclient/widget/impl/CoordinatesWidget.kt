@@ -53,10 +53,10 @@ object CoordinatesWidget : LineWidget(
     override fun isCentered(): Boolean = false
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
-        list.addRenderableQS(showBiome, "Show Biome")
-        list.addRenderableQS(colorCodeBiome, "Color Code Biome", "Whether to color code the biome name")
-        list.addRenderableQS(showDirection, "Show Direction")
-        list.addRenderableQS(showCoordinateChange, "Show Coordinate Change", "Shows how your coordinates will change if you move forward")
+        list.menuQuick(showBiome, "Show Biome")
+        list.menuQuick(colorCodeBiome, "Color Code Biome", "Whether to color code the biome name")
+        list.menuQuick(showDirection, "Show Direction")
+        list.menuQuick(showCoordinateChange, "Show Coordinate Change", "Shows how your coordinates will change if you move forward")
         super.appendSettingsRenderables(list)
     }
 
@@ -89,9 +89,9 @@ object CoordinatesWidget : LineWidget(
     }
 
     override fun getCustomWidgetDataPoints(): List<CustomWidget.WidgetStringData> = listOf(
-        CustomWidget.WidgetStringData("x", "X-Coordinate", "The current x coordinate of the player", { (client.cameraEntity?.onPos?.x ?: 137).toText() }),
-        CustomWidget.WidgetStringData("y", "Y-Coordinate", "The current y coordinate of the player", { (client.cameraEntity?.onPos?.y ?: 69).toText() }),
-        CustomWidget.WidgetStringData("z", "Z-Coordinate", "The current z coordinate of the player", { (client.cameraEntity?.onPos?.z ?: 420).toText() }),
-        CustomWidget.WidgetStringData("direction", "Direction", "The cardinal direction the player is facing", { (getCardinalDirection(it == "long")).toText() }, "\"long\" for full cardinal direction name"),
+        CustomWidget.WidgetStringData("x", "X-Coordinate", "The current x coordinate of the player", { (client.cameraEntity?.onPos?.x ?: 137).toString() }),
+        CustomWidget.WidgetStringData("y", "Y-Coordinate", "The current y coordinate of the player", { (client.cameraEntity?.onPos?.y ?: 69).toString() }),
+        CustomWidget.WidgetStringData("z", "Z-Coordinate", "The current z coordinate of the player", { (client.cameraEntity?.onPos?.z ?: 420).toString() }),
+        CustomWidget.WidgetStringData("direction", "Direction", "The cardinal direction the player is facing", { (getCardinalDirection(it == "long")) }, "\"long\" for full cardinal direction name"),
     )
 }

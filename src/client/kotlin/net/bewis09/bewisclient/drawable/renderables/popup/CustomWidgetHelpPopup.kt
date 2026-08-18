@@ -5,13 +5,12 @@ import net.bewis09.bewisclient.common.toText
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.structure.VerticalAlignScrollPlane
-import net.bewis09.bewisclient.drawable.renderables.screen.PopupScreen
 import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.widget.impl.CustomWidget
 
-class CustomWidgetHelpPopup(val screen: PopupScreen) : Renderable() {
+class CustomWidgetHelpPopup : Renderable() {
     init {
         internalWidth = 200
         internalHeight = screenHeight - 100

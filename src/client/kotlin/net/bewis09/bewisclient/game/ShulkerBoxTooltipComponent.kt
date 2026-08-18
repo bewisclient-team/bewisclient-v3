@@ -15,22 +15,16 @@ import net.minecraft.world.item.ItemStack
 
 class ShulkerBoxTooltipComponent(val data: Data) : ClientTooltipComponent {
     // @[1.21.1] () @[] (textRenderer: Font)
-    override fun getHeight/*[@]*/(textRenderer: Font)/*[!@]*/: Int {
-        return getHeightDef()
-    }
+    override fun getHeight/*[@]*/(textRenderer: Font)/*[!@]*/: Int = 77
 
-    override fun getWidth(textRenderer: Font): Int {
-        return 180
-    }
-
-    fun getHeightDef(): Int = 77
+    override fun getWidth(textRenderer: Font): Int = 180
 
     // @[1.21.1] renderImage(textRenderer: Font, x: Int, y: Int @[1.21.11] renderImage(textRenderer: Font, x: Int, y: Int, width: Int, height: Int @[] extractImage(textRenderer: Font, x: Int, y: Int, width: Int, height: Int
     override fun /*[@]*/extractImage(textRenderer: Font, x: Int, y: Int, width: Int, height: Int/*[!@]*/, context: GuiGraphics) {
         val screenDrawing = ScreenDrawing(context, textRenderer)
 
-        screenDrawing.fill(x + 1, y + 1, getWidth(screenDrawing.textRenderer) - 2, getHeightDef() - 7, data.color * 0xC3C3C3)
-        screenDrawing.fill(x + 4, y + 4, getWidth(screenDrawing.textRenderer) - 8, getHeightDef() - 13, data.color)
+        screenDrawing.fill(x + 1, y + 1, getWidth(screenDrawing.textRenderer) - 2, 70, data.color * 0xC3C3C3)
+        screenDrawing.fill(x + 4, y + 4, getWidth(screenDrawing.textRenderer) - 8, 64, data.color)
         var i = 0
         for (k in 0..2) {
             for (l in 0..8) {
@@ -52,7 +46,7 @@ class ShulkerBoxTooltipComponent(val data: Data) : ClientTooltipComponent {
 
     companion object {
         fun of(color: Int?, array: Array<ItemStack>): Data? {
-            return Data(Color(color ?: 0x956896, 1f), array.also { if (it.all { a -> a.isEmpty }) return null })
+            return Data(Color.rgb(color ?: 0x956896), array.also { if (it.all { a -> a.isEmpty }) return null })
         }
     }
 

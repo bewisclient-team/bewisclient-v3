@@ -1,4 +1,4 @@
-package net.bewis09.bewisclient.mixin.client
+package net.bewis09.bewisclient.mixin.client.accessor
 
 import com.mojang.blaze3d.platform.InputConstants
 import net.minecraft.client.KeyMapping

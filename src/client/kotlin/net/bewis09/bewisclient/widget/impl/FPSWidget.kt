@@ -1,7 +1,6 @@
 package net.bewis09.bewisclient.widget.impl
 
 import net.bewis09.bewisclient.common.createIdentifier
-import net.bewis09.bewisclient.common.toText
 import net.bewis09.bewisclient.widget.logic.BOTTOM
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
@@ -21,6 +20,6 @@ object FPSWidget : LineWidget(
     override fun getMinimumWidth(): Int = 80
 
     override fun getCustomWidgetDataPoints(): List<CustomWidget.WidgetStringData> = listOf(
-        CustomWidget.WidgetStringData("fps", "Frames Per Second", "Your current frames per second", { client.fps.toText() }),
+        CustomWidget.WidgetStringData("fps", "Frames Per Second", "Your current frames per second", { client.fps.toString() }),
     )
 }

@@ -48,12 +48,12 @@ object DaytimeWidget : LineWidget(
     }
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
-        list.addRenderableQS(format12Hours, "Use 12-Hour Format")
+        list.menuQuick(format12Hours, "Use 12-Hour Format")
         super.appendSettingsRenderables(list)
     }
 
     override fun getCustomWidgetDataPoints(): List<CustomWidget.WidgetStringData> = listOf(
-        CustomWidget.WidgetStringData("daytime", "In-Game Time", "The current in-game time in hours and minutes", { getText((it == "true" || format12Hours.get()) && it != "false") }, "\"true\" or \"false\" to override the 12-hour format setting"),
-        CustomWidget.WidgetStringData("real_time", "Real-Life Time", "The current real-life time in hours and minutes", { DateFormat.getTimeInstance(if (it == "seconds") DateFormat.MEDIUM else DateFormat.SHORT).format(Date.from(Instant.now())).toText() }, "\"seconds\" to include seconds in the time"),
+        CustomWidget.WidgetStringData("daytime", "In-Game Time", "The current in-game time in hours and minutes", { getText((it == "true" || format12Hours.get()) && it != "false").string }, "\"true\" or \"false\" to override the 12-hour format setting"),
+        CustomWidget.WidgetStringData("real_time", "Real-Life Time", "The current real-life time in hours and minutes", { DateFormat.getTimeInstance(if (it == "seconds") DateFormat.MEDIUM else DateFormat.SHORT).format(Date.from(Instant.now())) }, "\"seconds\" to include seconds in the time"),
     )
 }

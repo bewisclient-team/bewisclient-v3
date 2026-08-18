@@ -70,6 +70,29 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
     companion object {
         var currentInstance: OptionScreen? = null
         val modrinthButtonText = Translation("menu.pack.modrinth", "Modrinth")
+
+        fun getOrCreateInstance(startBlur: Float = 0f, startAlpha: Float = 0f): OptionScreen {
+            if (General.restoreTab()) {
+                return this.currentInstance?.apply {
+                    alphaMainAnimation.pauseForOnce()
+                    alphaMainAnimation.set(startAlpha)
+
+                    blurMainAnimation.pauseForOnce()
+                    blurMainAnimation.set(startBlur)
+
+                    insideMainAnimation.pauseForOnce()
+                    insideMainAnimation.set(1f)
+
+                    alphaMainAnimation.set(1f)
+                    blurMainAnimation.set(1f)
+                    internalWidth = screenWidth
+                    internalHeight = screenHeight
+                    resize()
+                } ?: OptionScreen(startBlur, startAlpha)
+            }
+
+            return OptionScreen(startBlur, startAlpha)
+        }
     }
 
     val pageStack = mutableListOf(
@@ -239,7 +262,10 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
 
     override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {
         if (key == GLFW.GLFW_KEY_ESCAPE) {
-            close()
+            if (General.goBackEscape())
+                goBack()
+            else
+                close()
             return true
         }
         return super.onKeyPress(key, scanCode, modifiers)

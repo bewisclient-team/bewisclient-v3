@@ -3,7 +3,6 @@
 package net.bewis09.bewisclient.features.utilities
 
 import net.bewis09.bewisclient.api.APIEntrypointLoader
-import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSettingsRenderable
 import net.bewis09.bewisclient.settings.logic.SettingInterfaceWithDefault
@@ -13,7 +12,7 @@ import net.minecraft.network.chat.Component
 import net.minecraft.world.entity.Entity
 import net.minecraft.world.entity.EntityType
 
-object TntTimer : ImageFeature(createIdentifier("bewisclient", "tnt_timer"), "TNT Timer") {
+object TntTimer : ImageFeature("tnt_timer", "TNT Timer") {
     val enabledEntities = create("entities", BooleanMapSetting())
 
     fun getNameTagForEntity(entity: Entity): Component? {

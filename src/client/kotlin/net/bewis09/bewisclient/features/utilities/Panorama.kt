@@ -34,7 +34,7 @@ import java.time.format.DateTimeFormatter
 import javax.imageio.ImageIO
 import kotlin.io.path.exists
 
-object Panorama : ImageFeature(createIdentifier("bewisclient","panorama"), "Panorama"), EventEntrypoint, BewisclientResourcePack.CustomResourceProvider {
+object Panorama : ImageFeature("panorama", "Panorama"), EventEntrypoint, BewisclientResourcePack.CustomResourceProvider {
     val path = string("path", "")
 
     val deletedPanoramaText = createTranslation("delete_panorama_success", "Deleted panorama")

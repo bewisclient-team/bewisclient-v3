@@ -148,11 +148,11 @@ object ArmorWidget : ScalableWidget(
             ).addToQuickSettings(this, "armor_slots")
         )
 
-        list.addRenderableQS(showDurability, "Show Durability", "Toggle whether to show armor durability")
-        list.addRenderableQS(showPercentage, "Show Percentage", "Toggle whether to show durability as a percentage")
-        list.addRenderableQS(showEmptySlots, "Show Empty Slots", "Toggle whether to show empty armor slots")
-        list.addRenderableQS(showEmptySlotIcon, "Show Empty Slot Icon", "Toggle whether to show an icon for empty armor slots")
-        list.addRenderableQS(colorCodeText, "Color Code Text", "Toggle whether to color code the durability text")
+        list.menuQuick(showDurability, "Show Durability", "Toggle whether to show armor durability")
+        list.menuQuick(showPercentage, "Show Percentage", "Toggle whether to show durability as a percentage")
+        list.menuQuick(showEmptySlots, "Show Empty Slots", "Toggle whether to show empty armor slots")
+        list.menuQuick(showEmptySlotIcon, "Show Empty Slot Icon", "Toggle whether to show an icon for empty armor slots")
+        list.menuQuick(colorCodeText, "Color Code Text", "Toggle whether to color code the durability text")
 
         list.add(LineWidget.backgroundColorRenderable(backgroundColor, backgroundOpacity))
         list.add(LineWidget.borderColorRenderable(borderColor, borderOpacity))

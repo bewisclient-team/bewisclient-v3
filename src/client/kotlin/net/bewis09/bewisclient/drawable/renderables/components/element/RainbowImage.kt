@@ -2,15 +2,11 @@ package net.bewis09.bewisclient.drawable.renderables.components.element
 
 import net.bewis09.bewisclient.common.Color
 import net.bewis09.bewisclient.common.Identifier
-import net.bewis09.bewisclient.common.color
-import net.bewis09.bewisclient.common.within
 import net.bewis09.bewisclient.drawable.renderables.components.logic.Hoverable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 
 class RainbowImage(val image: Identifier, val alpha: Float) : Hoverable() {
-    val colors = listOf(
-        0xCC3333.color, 0xCC8833.color, 0xCCCC33.color, 0x33CC66.color, 0x3366CC.color, 0x7F33A6.color
-    )
+    val colors = listOf(!0xCC3333, !0xCC8833, !0xCCCC33, !0x33CC66, !0x3366CC, !0x7F33A6)
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)

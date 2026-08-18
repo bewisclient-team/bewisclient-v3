@@ -1,8 +1,9 @@
 package net.bewis09.bewisclient.drawable.draw_methods
 
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
+import net.bewis09.bewisclient.util.logic.ClientInterface
 
-interface DrawMethods {
+interface DrawMethods: ClientInterface {
     fun renderMenuBackground(screenDrawing: ScreenDrawing, screenWidth: Int, screenHeight: Int)
 
     fun renderButtonBackground(screenDrawing: ScreenDrawing, hover: Float, animation: Float, x: Int, y: Int, width: Int, height: Int, click: Float, mouseX: Int, mouseY: Int, dark: Boolean = false, small: Boolean = false)

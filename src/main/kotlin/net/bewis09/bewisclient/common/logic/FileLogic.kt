@@ -63,6 +63,4 @@ interface FileLogic {
     }
 
     fun createFile(vararg path: String): File = File(FabricLoader.getInstance().gameDir.toString() + File.separator + path.joinToString(File.separator))
-
-    fun createBewisclientFile(vararg path: String): File = createFile("bewisclient", *path)
 }

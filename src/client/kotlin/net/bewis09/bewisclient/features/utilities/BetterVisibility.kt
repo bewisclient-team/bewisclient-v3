@@ -6,10 +6,10 @@ import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.settings.structure.ImageFeature
 
 object BetterVisibility : ImageFeature(createIdentifier("bewisclient", "better_visibility"), "Better Visibility") {
-    var nether by boolean("nether", default = false, "Nether", "Improve visibility in the Nether dimension", quickSetting = true)
-    var water by boolean("water", default = false, "Water", "Enhance visibility underwater", quickSetting = true)
-    var lava by boolean("lava", default = false, "Lava", "Boost visibility in lava", quickSetting = true)
-    var powder_snow by boolean("powder_snow", default = false, "Powder Snow", "Increase visibility in powder snow", quickSetting = true)
+    var nether by boolean("nether", false) menuQuick ("Nether" to "Improve visibility in the Nether dimension")
+    var water by boolean("water", false) menuQuick ("Water" to "Enhance visibility underwater")
+    var lava by boolean("lava", false) menuQuick ("Lava" to "Boost visibility in lava")
+    var powder_snow by boolean("powder_snow", false) menuQuick ("Powder Snow" to "Increase visibility in powder snow")
 
     class FogModifierConfig(val setting: () -> Boolean, val start: (Float) -> Float, val end: (Float) -> Float)
 

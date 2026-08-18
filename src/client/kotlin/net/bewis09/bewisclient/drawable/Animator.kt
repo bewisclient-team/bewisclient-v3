@@ -20,7 +20,6 @@ class Animator(val duration: () -> Long, val interpolationType: (delta: Float) -
 
     companion object {
         val LINEAR = { delta: Float -> delta }
-        val EASE_IN = { delta: Float -> delta * delta }
         val EASE_OUT = { delta: Float -> delta * (2 - delta) }
         val EASE_IN_OUT = { delta: Float ->
             if (delta < 0.5f) {

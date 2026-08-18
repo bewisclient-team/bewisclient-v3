@@ -4,8 +4,8 @@ package net.bewis09.bewisclient.version
 
 import com.mojang.blaze3d.platform.InputConstants
 import com.mojang.blaze3d.platform.NativeImage
+import net.bewis09.bewisclient.common.Color
 import net.bewis09.bewisclient.common.Identifier
-import net.bewis09.bewisclient.common.color
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawingInterface
 import net.minecraft.ChatFormatting
@@ -139,8 +139,8 @@ fun GuiGraphics.drawItemOverlay(textRenderer: Font, itemStack: ItemStack, x: Int
 fun createCategory(name: Identifier) = /*[@]*/KeyMapping.Category.register(name)/*[!@]*/
 
 fun ItemStack.getItemFormattedName(): Component {
-    // @[1.21.1] hoverName @[] itemName
-    val mutableText: MutableComponent = Component.empty().append(this./*[@]*/itemName/*[!@]*/).withStyle(this.rarity.color())
+    // @[1.21.1] hoverName @[] hoverName
+    val mutableText: MutableComponent = Component.empty().append(this./*[@]*/hoverName/*[!@]*/).withStyle(this.rarity.color())
     if (this.has(DataComponents.CUSTOM_NAME)) {
         mutableText.withStyle(ChatFormatting.ITALIC)
     }
@@ -167,7 +167,7 @@ fun GuiGraphics.drawTexture(
     texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, regionWidth: Int, regionHeight: Int, textureWidth: Int, textureHeight: Int, color: Int
 ) {
     enableBlend()
-    setShaderColor(color.toLong().color.red / 255f, color.toLong().color.green / 255f, color.toLong().color.blue / 255f, color.toLong().color.alpha / 255f)
+    setShaderColor(Color(color).red / 255f, Color(color).green / 255f, Color(color).blue / 255f, Color(color).alpha / 255f)
     // @[1.21.1] this.blit(texture, x, y, width, height, u, v, regionWidth, regionHeight, textureWidth, textureHeight) @[1.21.5] this.blit({ texture: Identifier -> net.minecraft.client.renderer.RenderType.guiTextured(texture) }, texture, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, color) @[] this.blit(net.minecraft.client.renderer.RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, color)
     /*[@]*/this.blit(net.minecraft.client.renderer.RenderPipelines.GUI_TEXTURED, texture, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, color)/*[!@]*/
     setShaderColor(1f, 1f, 1f, 1f)

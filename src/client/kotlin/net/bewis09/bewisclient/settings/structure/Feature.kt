@@ -7,7 +7,7 @@ import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.settings.types.ObjectSetting
 
 open class Feature(val id: Identifier): ObjectSetting() {
-    fun Renderable.addToQuickSettings(feature: Feature, quickSettingsId: String): Renderable {
+    fun <T: Renderable> T.addToQuickSettings(feature: Feature, quickSettingsId: String): T {
         return addToQuickSettings("${feature.id.namespace}.category.${feature.id.path}", quickSettingsId)
     }
 

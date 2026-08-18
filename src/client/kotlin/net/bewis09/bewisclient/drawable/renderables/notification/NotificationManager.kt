@@ -7,7 +7,7 @@ import net.bewis09.bewisclient.util.EventEntrypoint
 object NotificationManager : EventEntrypoint {
     private val notifications = mutableListOf<Notification>()
 
-    fun addNotification(renderable: Notification, duration: Long = 5000) {
+    fun addNotification(renderable: Notification) {
         notifications.add(renderable)
     }
 
@@ -18,10 +18,12 @@ object NotificationManager : EventEntrypoint {
 
     fun renderNotifications(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         var yOffset = 0
+        screenDrawing.setBewisclientFont()
         getNotifications().forEach {
             it.setPosition(screenWidth - it.width, 4 + yOffset)
             it.render(screenDrawing, mouseX, mouseY)
             yOffset += it.height + 4
         }
+        screenDrawing.setDefaultFont()
     }
 }

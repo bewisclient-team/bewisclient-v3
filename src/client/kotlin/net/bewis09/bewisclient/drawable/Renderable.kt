@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.drawable
 
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.mixin.client.ScissorStackMixin
+import net.bewis09.bewisclient.mixin.client.accessor.ScissorStackAccessor
 import net.bewis09.bewisclient.util.logic.ClientInterface
 import net.bewis09.bewisclient.version.setCursorPointer
 
@@ -204,7 +204,7 @@ abstract class Renderable(
         return mouseX.toInt() >= this.x && mouseX.toInt() <= this.x2 && mouseY.toInt() >= this.y && mouseY.toInt() <= this.y2
     }
 
-    fun usePointer(screenDrawing: ScreenDrawing, mouseX: Number, mouseY: Number) = if (isMouseOver(mouseX, mouseY) && (screenDrawing.guiGraphics.scissorStack as? ScissorStackMixin)?.getStack()?.peekLast()?.containsPoint(mouseX.toInt(), mouseY.toInt()) != false) screenDrawing.setCursorPointer() else Unit
+    fun usePointer(screenDrawing: ScreenDrawing, mouseX: Number, mouseY: Number) = if (isMouseOver(mouseX, mouseY) && (screenDrawing.guiGraphics.scissorStack as? ScissorStackAccessor)?.getStack()?.peekLast()?.containsPoint(mouseX.toInt(), mouseY.toInt()) != false) screenDrawing.setCursorPointer() else Unit
 
     operator fun invoke(x: Int, y: Int, width: Int, height: Int): Renderable {
         setBounds(x, y, width, height)

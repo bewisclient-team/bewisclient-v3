@@ -2,7 +2,6 @@ package net.bewis09.bewisclient.settings.structure
 
 import net.bewis09.bewisclient.common.Color
 import net.bewis09.bewisclient.common.Identifier
-import net.bewis09.bewisclient.common.color
 import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
@@ -19,12 +18,9 @@ import net.bewis09.bewisclient.drawable.screen_drawing.translate
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.settings.logic.RenderableCreator
-import net.bewis09.bewisclient.settings.types.BooleanSetting
 import net.bewis09.bewisclient.settings.types.ColorSetting
 import net.bewis09.bewisclient.settings.types.FloatSetting
-import net.bewis09.bewisclient.settings.types.IntegerSetting
 import net.bewis09.bewisclient.settings.types.Setting
-import net.bewis09.bewisclient.util.color.ColorSaver
 
 abstract class CategorizedFeature(id: Identifier, titleText: String) : Feature(id) {
     companion object {
@@ -48,29 +44,25 @@ abstract class CategorizedFeature(id: Identifier, titleText: String) : Feature(i
         settingAppliers.forEach { it(list) }
     }
 
-    fun <T> addApplier(setting: T, title: String, description: String?, quickSetting: Boolean): T where T : Setting<*>, T: RenderableCreator<*> {
-        settingAppliers.add { it.addRenderable(setting, title, description, quickSetting) }
-        return setting
+    fun <T> T.menu(title: String, description: String? = null, quickSetting: Boolean = false): T where T : Setting<*>, T: RenderableCreator<*> {
+        settingAppliers.add { it.menu(this, title, description, quickSetting) }
+        return this
     }
 
-    fun boolean(key: String, default: Boolean, title: String, description: String? = null, quickSetting: Boolean): BooleanSetting {
-        return addApplier(boolean(key, default), title, description, quickSetting)
+    infix fun <T> T.menu(title: String): T where T : Setting<*>, T: RenderableCreator<*> {
+        return this.menu(title, null, false)
     }
 
-    fun boolean(key: String, default: Boolean, onChangeListener: (Setting<Boolean>.(oldValue: Boolean?, newValue: Boolean?) -> Unit)? = null, title: String, description: String? = null, quickSetting: Boolean): BooleanSetting {
-        return addApplier(boolean(key, default, onChangeListener), title, description, quickSetting)
+    infix fun <T> T.menuQuick(title: String): T where T : Setting<*>, T: RenderableCreator<*> {
+        return this.menu(title, null, true)
     }
 
-    fun float(key: String, default: Float, min: Float, max: Float, step: Float, precision: Int, title: String, description: String? = null, quickSetting: Boolean): FloatSetting {
-        return addApplier(float(key, default, min, max, step, precision), title, description, quickSetting)
+    infix fun <T> T.menu(data: Pair<String, String>): T where T : Setting<*>, T: RenderableCreator<*> {
+        return this.menu(data.first, data.second, false)
     }
 
-    fun int(key: String, default: Int, min: Int, max: Int, title: String, description: String? = null, quickSetting: Boolean): IntegerSetting {
-        return addApplier(int(key, default, min, max), title, description, quickSetting)
-    }
-
-    fun color(key: String, default: ColorSaver, title: String, description: String? = null, quickSetting: Boolean, vararg types: String): ColorSetting {
-        return addApplier(color(key, default, *types), title, description, quickSetting)
+    infix fun <T> T.menuQuick(data: Pair<String, String>): T where T : Setting<*>, T: RenderableCreator<*> {
+        return this.menu(data.first, data.second, true)
     }
 
     open fun enabledListener(oldValue: Boolean?, newValue: Boolean?) {}
@@ -136,18 +128,18 @@ abstract class CategorizedFeature(id: Identifier, titleText: String) : Feature(i
         }
     }
 
-    fun <T> ArrayList<Renderable>.addRenderableQS(setting: T, title: String, description: String? = null) where T : RenderableCreator<*>, T : Setting<*> {
-        return addRenderable(setting, title, description, true)
+    fun <T> ArrayList<Renderable>.menuQuick(setting: T, title: String, description: String? = null) where T : RenderableCreator<*>, T : Setting<*> {
+        return menu(setting, title, description, true)
     }
 
-    fun <T> ArrayList<Renderable>.addRenderable(setting: T, title: String, description: String? = null, quickSettings: Boolean = false) where T : RenderableCreator<*>, T : Setting<*> {
+    fun <T> ArrayList<Renderable>.menu(setting: T, title: String, description: String? = null, quickSettings: Boolean = false) where T : RenderableCreator<*>, T : Setting<*> {
         val id = idLookup[setting] ?: throw IllegalArgumentException("Setting not in id lookup: $setting")
         val renderable = setting.createRenderable(this@CategorizedFeature, id, title, description)
         if (quickSettings) renderable.addToQuickSettings(this@CategorizedFeature, id)
         this.add(renderable)
     }
 
-    fun ArrayList<Renderable>.addColorRenderable(setting: ColorSetting, alpha: FloatSetting, id: String, title: String, description: String? = null, quickSettingsId: String? = null) {
+    fun ArrayList<Renderable>.colorAlphaMenu(setting: ColorSetting, alpha: FloatSetting, id: String, title: String, description: String? = null, quickSettingsId: String? = null) {
         val renderable = setting.createRenderableWithFader(this@CategorizedFeature, id, title, description, alpha)
         if (quickSettingsId != null) renderable.addToQuickSettings(this@CategorizedFeature, quickSettingsId)
         this.add(renderable)

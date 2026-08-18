@@ -1,4 +1,4 @@
-package net.bewis09.bewisclient.mixin.client
+package net.bewis09.bewisclient.mixin.client.accessor
 
 import net.minecraft.client.multiplayer.ClientPacketListener
 import net.minecraft.client.multiplayer.PingDebugMonitor
