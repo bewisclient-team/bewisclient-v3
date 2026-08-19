@@ -4,8 +4,8 @@ import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.components.logic.Scrollable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 
-class VerticalAlignScrollPlane(val init: (Int) -> List<Renderable>, val gap: Int) : Scrollable(Direction.VERTICAL) {
-    constructor(list: List<Renderable>, gap: Int) : this({ list }, gap)
+class VerticalAlignScrollPlane(val init: (Int) -> List<Renderable>, val gap: Int, val paddingBottom: Int = 0) : Scrollable(Direction.VERTICAL) {
+    constructor(list: List<Renderable>, gap: Int, paddingBottom: Int = 0) : this({ list }, gap, paddingBottom)
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         screenDrawing.enableScissors(x, y, width, height)
@@ -15,7 +15,7 @@ class VerticalAlignScrollPlane(val init: (Int) -> List<Renderable>, val gap: Int
             it.setWidth(width)
             scrollY += it.height + gap
         }
-        innerSize = scrollY - scrollAnimation.get() - gap
+        innerSize = scrollY - scrollAnimation.get() - gap + paddingBottom
         renderRenderables(screenDrawing, mouseX, mouseY)
         screenDrawing.disableScissors()
     }

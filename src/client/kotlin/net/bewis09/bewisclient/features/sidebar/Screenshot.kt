@@ -5,9 +5,7 @@ import net.bewis09.bewisclient.common.*
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.Button
-import net.bewis09.bewisclient.drawable.renderables.components.element.TextElement
 import net.bewis09.bewisclient.drawable.renderables.components.logic.Hoverable
-import net.bewis09.bewisclient.drawable.renderables.components.structure.Plane
 import net.bewis09.bewisclient.drawable.renderables.components.structure.VerticalAlignScrollPlane
 import net.bewis09.bewisclient.drawable.renderables.components.structure.VerticalScrollGrid
 import net.bewis09.bewisclient.drawable.renderables.notification.NotificationManager
@@ -225,28 +223,20 @@ object Screenshot : SidebarFeature(createIdentifier("bewisclient", "screenshot")
 
         OptionScreen().apply {
             changeCategory(Screenshot, instant = true)
-
-            openPage(
-                Plane { x, y, width, _ -> listOf(TextElement(ScreenshotElement.screenshotName(file.name), General.getTextThemeColor(), centered = true)(x, y, width, 13)) }.setHeight(14), VerticalAlignScrollPlane({ w ->
-                    listOf(
-                        BigScreenshotViewElement(file).setWidth(w)
-                    )
-                }, 5),
-                instant = true
-            )
-
+            openBigScreenshot(file, this, true)
             setRenderableScreen(this)
         }
     }
 
-    fun openBigScreenshot(file: File) {
-        OptionScreen.currentInstance?.openPage(
-            Plane { x, y, width, _ -> listOf(TextElement(ScreenshotElement.screenshotName(file.name), General.getTextThemeColor(), centered = true)(x, y, width, 13)) }.setHeight(14),
+    fun openBigScreenshot(file: File, screen: OptionScreen? = OptionScreen.currentInstance, instant: Boolean = false) {
+        screen?.openPage(
+            ScreenshotElement.screenshotName(file.name),
             VerticalAlignScrollPlane({ w ->
                 listOf(
                     BigScreenshotViewElement(file).setWidth(w)
                 )
-            }, 5)
+            }, 5),
+            instant = instant
         )
     }
 

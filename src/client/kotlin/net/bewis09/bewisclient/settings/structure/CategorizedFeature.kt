@@ -44,24 +44,24 @@ abstract class CategorizedFeature(id: Identifier, titleText: String) : Feature(i
         settingAppliers.forEach { it(list) }
     }
 
-    fun <T> T.menu(title: String, description: String? = null, quickSetting: Boolean = false): T where T : Setting<*>, T: RenderableCreator<*> {
+    fun <T> T.menu(title: String, description: String? = null, quickSetting: Boolean = false): T where T : Setting<*>, T : RenderableCreator<*> {
         settingAppliers.add { it.menu(this, title, description, quickSetting) }
         return this
     }
 
-    infix fun <T> T.menu(title: String): T where T : Setting<*>, T: RenderableCreator<*> {
+    infix fun <T> T.menu(title: String): T where T : Setting<*>, T : RenderableCreator<*> {
         return this.menu(title, null, false)
     }
 
-    infix fun <T> T.menuQuick(title: String): T where T : Setting<*>, T: RenderableCreator<*> {
+    infix fun <T> T.menuQuick(title: String): T where T : Setting<*>, T : RenderableCreator<*> {
         return this.menu(title, null, true)
     }
 
-    infix fun <T> T.menu(data: Pair<String, String>): T where T : Setting<*>, T: RenderableCreator<*> {
+    infix fun <T> T.menu(data: Pair<String, String>): T where T : Setting<*>, T : RenderableCreator<*> {
         return this.menu(data.first, data.second, false)
     }
 
-    infix fun <T> T.menuQuick(data: Pair<String, String>): T where T : Setting<*>, T: RenderableCreator<*> {
+    infix fun <T> T.menuQuick(data: Pair<String, String>): T where T : Setting<*>, T : RenderableCreator<*> {
         return this.menu(data.first, data.second, true)
     }
 
@@ -91,7 +91,7 @@ abstract class CategorizedFeature(id: Identifier, titleText: String) : Feature(i
                 return true
             }
 
-            OptionScreen.currentInstance?.openPage(getHeader(), getPane(), enabledSetting)
+            OptionScreen.currentInstance?.openPage(title(), getPane(), enabledSetting)
 
             return true
         }

@@ -124,7 +124,7 @@ object Panorama : ImageFeature("panorama", "Panorama"), EventEntrypoint, Bewiscl
                             NotificationManager.addNotification(SimpleTextNotification(Screenshot.deleteFailedNotifText()))
                         }
                         OptionScreen.currentInstance?.goBack(instant = true)
-                        OptionScreen.currentInstance?.openPage(getHeader(), getPane(), enabledSetting, true)
+                        OptionScreen.currentInstance?.openPage(title(), getPane(), enabledSetting, true)
                     })
                 )
             }.setImagePadding(2)(x + width - 21, y + 25, 14, 14))
@@ -144,7 +144,7 @@ object Panorama : ImageFeature("panorama", "Panorama"), EventEntrypoint, Bewiscl
 
                     if (catch { Files.move(file.toPath(), file.parentFile.resolve(newName).toPath(), StandardCopyOption.REPLACE_EXISTING) } != null) {
                         OptionScreen.currentInstance?.goBack(instant = true)
-                        OptionScreen.currentInstance?.openPage(getHeader(), getPane(), enabledSetting, instant = true)
+                        OptionScreen.currentInstance?.openPage(title(), getPane(), enabledSetting, instant = true)
                         if (path.get() == file.absolutePath) {
                             path.set(file.parentFile.resolve(newName).absolutePath)
                         }

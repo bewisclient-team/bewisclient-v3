@@ -41,6 +41,10 @@ object MinecraftyMethods : DrawMethods {
         )
     }
 
+    override fun renderSettingRenderableBackground(screenDrawing: ScreenDrawing, hover: Float, x: Int, y: Int, width: Int, height: Int, mouseX: Int, mouseY: Int) {
+        renderButtonBackground(screenDrawing, hover, 0f, x, y, width, height, 1f, mouseX, mouseY)
+    }
+
     override fun getSideButtonHeight(): Int = 18
 
     override fun renderSwitch(screenDrawing: ScreenDrawing, x: Int, y: Int, width: Int, height: Int, hover: Float, stateAnimation: Float, mouseX: Int, mouseY: Int) {

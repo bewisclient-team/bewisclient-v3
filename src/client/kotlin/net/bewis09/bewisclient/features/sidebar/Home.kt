@@ -6,7 +6,6 @@ import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.Button
-import net.bewis09.bewisclient.drawable.renderables.components.element.TextElement
 import net.bewis09.bewisclient.drawable.renderables.components.logic.TooltipHoverable
 import net.bewis09.bewisclient.drawable.renderables.components.setting.Fader
 import net.bewis09.bewisclient.drawable.renderables.components.structure.EmptyRenderable
@@ -53,7 +52,7 @@ object Home : SidebarFeature(createIdentifier("bewisclient", "home"), "Bewisclie
         override fun init() {
             val button = Button(editQuickSettings()) {
                 OptionScreen.currentInstance?.openPage(
-                    Plane { x, y, width, _ -> listOf(TextElement(editQuickSettings(), General.getTextThemeColor(), centered = true)(x, y, width, 13)) }.setHeight(14),
+                    editQuickSettings(),
                     VerticalAlignScrollPlane({ width ->
                         quickSettingsOptions.map {
                             listOf(

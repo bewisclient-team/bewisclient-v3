@@ -19,6 +19,8 @@ value class Color(val argb: Int) {
         val CYAN = Color(0, 255, 255)
         val BLUE = Color(0, 0, 255)
 
+        val TRANSPARENT = Color(0, 0, 0) alpha 0f
+
         fun rgb(rgb: Int): Color = Color(rgb or (255 shl 24))
     }
 

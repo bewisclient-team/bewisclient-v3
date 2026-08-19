@@ -13,7 +13,7 @@ abstract class SettingRenderable(tooltip: () -> Translation?, height: Int) : Too
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
         screenDrawing.pushColor(0.7f, 0.7f, 0.7f, 1f) {
-            SelectiveScreenDrawer.renderButtonBackground(screenDrawing, hoverAnimation.get(), 0f, x, y, width, height, 1f, mouseX, mouseY)
+            SelectiveScreenDrawer.renderSettingRenderableBackground(screenDrawing, hoverAnimation.get(), x, y, width, height, mouseX, mouseY)
         }
     }
 

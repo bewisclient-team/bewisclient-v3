@@ -5,7 +5,6 @@ import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.Button
-import net.bewis09.bewisclient.drawable.renderables.components.element.TextElement
 import net.bewis09.bewisclient.drawable.renderables.components.structure.Plane
 import net.bewis09.bewisclient.drawable.renderables.components.structure.VerticalAlignScrollPlane
 import net.bewis09.bewisclient.drawable.renderables.components.structure.VerticalScrollGrid
@@ -32,7 +31,7 @@ object Widgets : SidebarFeature(createIdentifier("bewisclient", "widgets"), "Wid
         listOf(
             Button(createTranslation("general_setting", "General Widget Settings")()) {
                 OptionScreen.currentInstance?.openPage(
-                    TextElement(createTranslation("general_setting", "General Widget Settings")(), centered = true).setHeight(12), VerticalAlignScrollPlane({ generalWidgetSettings }, 1)
+                    createTranslation("general_setting", "General Widget Settings")(), VerticalAlignScrollPlane({ generalWidgetSettings }, 1)
                 )
             }(x, y, width, SelectiveScreenDrawer.getSideButtonHeight()),
 //            Button(Translation("menu.widgets.presets", "Presets")()) {

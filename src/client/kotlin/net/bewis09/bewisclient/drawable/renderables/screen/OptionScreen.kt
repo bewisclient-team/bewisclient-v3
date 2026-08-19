@@ -3,8 +3,10 @@ package net.bewis09.bewisclient.drawable.renderables.screen
 import net.bewis09.bewisclient.api.APIEntrypointLoader
 import net.bewis09.bewisclient.common.*
 import net.bewis09.bewisclient.data.Constants
-import net.bewis09.bewisclient.drawable.*
+import net.bewis09.bewisclient.drawable.Animator
+import net.bewis09.bewisclient.drawable.BackgroundEffectProvider
 import net.bewis09.bewisclient.drawable.ImageIdentifier.iconIdentifier
+import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.ImageButton
 import net.bewis09.bewisclient.drawable.renderables.components.button.MinecraftButton
@@ -14,19 +16,20 @@ import net.bewis09.bewisclient.drawable.renderables.components.element.Rectangle
 import net.bewis09.bewisclient.drawable.renderables.components.setting.Switch
 import net.bewis09.bewisclient.drawable.renderables.components.structure.Plane
 import net.bewis09.bewisclient.drawable.renderables.components.structure.VerticalAlignScrollPlane
-import net.bewis09.bewisclient.settings.structure.SidebarFeature
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawingInterface.Companion.DEFAULT_FONT
 import net.bewis09.bewisclient.drawable.screen_drawing.pushAlpha
 import net.bewis09.bewisclient.drawable.screen_drawing.transform
+import net.bewis09.bewisclient.features.sidebar.General
+import net.bewis09.bewisclient.features.sidebar.Home
 import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.generated.BuildInfo
 import net.bewis09.bewisclient.server.Security
-import net.bewis09.bewisclient.features.sidebar.General
-import net.bewis09.bewisclient.features.sidebar.Home
+import net.bewis09.bewisclient.settings.structure.SidebarFeature
 import net.bewis09.bewisclient.settings.types.Setting
 import net.bewis09.bewisclient.version.setScreen
 import net.minecraft.network.chat.CommonComponents
+import net.minecraft.network.chat.Component
 import org.lwjgl.glfw.GLFW
 
 class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(), BackgroundEffectProvider {
@@ -95,13 +98,7 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
         }
     }
 
-    val pageStack = mutableListOf(
-        Page(
-            Home.getHeader(),
-            Home.getRenderable(),
-            null
-        )
-    )
+    val pageStack = mutableListOf(Page(Home.title(), Home.getRenderable(), null))
 
     val page
         get() = pageStack.last()
@@ -210,19 +207,19 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
 
         if (instant) {
             pageStack.removeAll { pageStack[0] != it }
-            pageStack.add(Page(category.getHeader(), category.getRenderable()))
+            pageStack.add(Page(category.title(), category.getRenderable()))
             return resize()
         }
 
         insideMainAnimation.set(0f) {
             pageStack.removeAll { pageStack[0] != it }
-            pageStack.add(Page(category.getHeader(), category.getRenderable()))
+            pageStack.add(Page(category.title(), category.getRenderable()))
             resize()
             insideMainAnimation.set(1f)
         }
     }
 
-    fun openPage(afterHeader: Renderable, afterPane: Renderable, setting: Setting<Boolean>? = null, instant: Boolean = false) {
+    fun openPage(afterHeader: Component, afterPane: Renderable, setting: Setting<Boolean>? = null, instant: Boolean = false) {
         if (instant) {
             pageStack.add(Page(afterHeader, afterPane, setting))
             return resize()
@@ -258,7 +255,17 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
         }
     }
 
-    class Page(val header: Renderable, val pane: Renderable, val setting: Setting<Boolean>? = null)
+    class Page(header: Component, val pane: Renderable, val setting: Setting<Boolean>? = null) {
+        val header = Header(header).setHeight(if(General.isMinecrafty) 18 else 14)
+    }
+
+    class Header(val header: Component): Renderable() {
+        override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+            screenDrawing.transform(exactCenterX, fontYCenter - if (General.isMinecrafty) 2 else 0, if(General.isMinecrafty) 1.3f else 1f) {
+                screenDrawing.drawCenteredText(header, 0, 0, General.getTextThemeColor())
+            }
+        }
+    }
 
     override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {
         if (key == GLFW.GLFW_KEY_ESCAPE) {

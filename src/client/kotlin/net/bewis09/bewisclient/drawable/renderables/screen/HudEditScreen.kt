@@ -56,7 +56,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
                         changeCategory(Widgets, instant = true)
 
                         openPage(
-                            widgetsCategory.getHeader(),
+                            widgetsCategory.title(),
                             widgetsCategory.getPane(),
                             it.enabledSetting,
                             instant = true

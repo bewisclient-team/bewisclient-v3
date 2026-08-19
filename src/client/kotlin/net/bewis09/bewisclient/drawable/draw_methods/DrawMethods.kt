@@ -8,6 +8,8 @@ interface DrawMethods: ClientInterface {
 
     fun renderButtonBackground(screenDrawing: ScreenDrawing, hover: Float, animation: Float, x: Int, y: Int, width: Int, height: Int, click: Float, mouseX: Int, mouseY: Int, dark: Boolean = false, small: Boolean = false)
 
+    fun renderSettingRenderableBackground(screenDrawing: ScreenDrawing, hover: Float, x: Int, y: Int, width: Int, height: Int, mouseX: Int, mouseY: Int)
+
     fun getSideButtonHeight(): Int
 
     fun renderSwitch(screenDrawing: ScreenDrawing, x: Int, y: Int, width: Int, height: Int, hover: Float, stateAnimation: Float, mouseX: Int, mouseY: Int)
