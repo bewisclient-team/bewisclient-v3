@@ -69,10 +69,6 @@ abstract class CategorizedFeature(id: Identifier, titleText: String) : Feature(i
 
     abstract fun createRenderable(): SettingCategory
 
-    fun getHeader(): Renderable {
-        return Plane { x, y, width, _ -> listOf(TextElement(title(), General.getTextThemeColor(), centered = true)(x, y, width, 13)) }.setHeight(14)
-    }
-
     open fun getPane(): Renderable {
         return VerticalAlignScrollPlane(getSettingRenderables().toList(), 1)
     }
