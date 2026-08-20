@@ -4,7 +4,7 @@ import net.bewis09.bewisclient.common.Identifier
 import net.bewis09.bewisclient.common.catch
 import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.drawable.screen_drawing.transform
+import net.bewis09.renderite.drawer.transform
 import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.settings.structure.DescriptionFeature
 import net.bewis09.bewisclient.settings.types.WidgetPositionSetting

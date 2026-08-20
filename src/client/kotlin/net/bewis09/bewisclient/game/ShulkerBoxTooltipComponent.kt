@@ -2,12 +2,12 @@
 
 package net.bewis09.bewisclient.game
 
-import net.bewis09.bewisclient.common.Color
 import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.util.EventEntrypoint
 import net.bewis09.bewisclient.version.GuiGraphics
 import net.bewis09.bewisclient.version.TooltipComponentCallback
+import net.bewis09.renderite.logic.Color
 import net.minecraft.client.gui.Font
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTooltipComponent
 import net.minecraft.world.inventory.tooltip.TooltipComponent
@@ -23,8 +23,8 @@ class ShulkerBoxTooltipComponent(val data: Data) : ClientTooltipComponent {
     override fun /*[@]*/extractImage(textRenderer: Font, x: Int, y: Int, width: Int, height: Int/*[!@]*/, context: GuiGraphics) {
         val screenDrawing = ScreenDrawing(context, textRenderer)
 
-        screenDrawing.fill(x + 1, y + 1, getWidth(screenDrawing.textRenderer) - 2, 70, data.color * 0xC3C3C3)
-        screenDrawing.fill(x + 4, y + 4, getWidth(screenDrawing.textRenderer) - 8, 64, data.color)
+        screenDrawing.fill(x + 1, y + 1, getWidth(screenDrawing.font) - 2, 70, data.color * 0xC3C3C3)
+        screenDrawing.fill(x + 4, y + 4, getWidth(screenDrawing.font) - 8, 64, data.color)
         var i = 0
         for (k in 0..2) {
             for (l in 0..8) {

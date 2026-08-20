@@ -148,6 +148,7 @@ sourceSets {
         java {
             srcDir('src/dependent/' + project.property("like_version_" + project.minecraft_version.replace('.', '_')).replace('.', '_') + "/java")
             srcDir('src/dependent/' + project.property("like_version_" + project.minecraft_version.replace('.', '_')).replace('.', '_') + "/kotlin")
+            srcDir('src/renderite/kotlin')
             srcDir('src/generated/kotlin')
         }
         resources {

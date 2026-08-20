@@ -1,8 +1,11 @@
 package net.bewis09.bewisclient.drawable.draw_methods
 
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.drawable.screen_drawing.transform
 import net.bewis09.bewisclient.features.sidebar.General
+import net.bewis09.renderite.logic.alpha
+import net.bewis09.renderite.logic.not
+import net.bewis09.renderite.drawer.transform
+import net.bewis09.renderite.logic.within
 import kotlin.math.abs
 
 object FlatMethods : DrawMethods {

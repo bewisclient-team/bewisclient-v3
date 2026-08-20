@@ -1,7 +1,6 @@
 package net.bewis09.bewisclient.features.sidebar
 
 import com.google.gson.JsonPrimitive
-import net.bewis09.bewisclient.common.Color
 import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
@@ -20,6 +19,7 @@ import net.bewis09.bewisclient.settings.types.ListSetting
 import net.bewis09.bewisclient.util.color.ThemeColorSaver
 import net.bewis09.bewisclient.util.number.Precision
 import net.bewis09.bewisclient.util.string
+import net.bewis09.renderite.logic.Color
 import net.minecraft.network.chat.Component
 
 object Home : SidebarFeature(createIdentifier("bewisclient", "home"), "Bewisclient") {

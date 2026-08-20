@@ -5,13 +5,16 @@ import net.bewis09.bewisclient.common.*
 import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.renderables.settings.SettingRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
+import net.bewis09.bewisclient.features.sidebar.General
+import net.bewis09.renderite.logic.Color
+import net.bewis09.renderite.logic.color
 import net.fabricmc.loader.api.ModContainer
 import kotlin.math.roundToInt
 
 class ExtensionListRenderable(val modContainer: ModContainer, val entrypoint: BewisclientAPIEntrypoint) : SettingRenderable(null, 22) {
     val notFoundIdentifier: Identifier = createIdentifier("textures/misc/unknown_pack.png")
 
-    val menuAnimation = Animator({ animationDuration }, Animator.EASE_IN_OUT, 0f)
+    val menuAnimation = Animator({ General.animationDuration }, Animator.EASE_IN_OUT, 0f)
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)

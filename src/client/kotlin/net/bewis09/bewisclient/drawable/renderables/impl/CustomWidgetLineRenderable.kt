@@ -1,6 +1,5 @@
 package net.bewis09.bewisclient.drawable.renderables.impl
 
-import net.bewis09.bewisclient.common.Color
 import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.common.toText
 import net.bewis09.bewisclient.drawable.Renderable
@@ -14,10 +13,10 @@ import net.bewis09.bewisclient.drawable.renderables.components.structure.ScrollP
 import net.bewis09.bewisclient.drawable.renderables.popup.CustomWidgetHelpPopup
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawingInterface
 import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.widget.impl.CustomWidget
+import net.bewis09.renderite.logic.Color
 
 class CustomWidgetLineRenderable : Renderable() {
     val addLine = Translation("widget.tiwyla_widget.add_line", "Add Line")
@@ -27,7 +26,7 @@ class CustomWidgetLineRenderable : Renderable() {
 
     val textDisplay = ScrollPlane(Scrollable.Direction.HORIZONTAL) { x, y, width, _, scroll ->
         lines.mapIndexed { index, input ->
-            TextElement({ CustomWidget.computeLine(input.text).toText() }, Color.WHITE, centered = CustomWidget.centered.get(), font = ScreenDrawingInterface.DEFAULT_FONT)(x + scroll.toInt(), index * 10 + y, width, 10)
+            TextElement({ CustomWidget.computeLine(input.text).toText() }, Color.WHITE, centered = CustomWidget.centered.get(), font = ScreenDrawing.DEFAULT_FONT)(x + scroll.toInt(), index * 10 + y, width, 10)
         }
     }
 
@@ -35,7 +34,7 @@ class CustomWidgetLineRenderable : Renderable() {
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         textDisplay(x + width / 2 + 3, y + 7, (width / 2 - 3), lines.size * 10)
-        textDisplay.innerSize = (CustomWidget.lines.maxOfOrNull { screenDrawing.getTextWidth(CustomWidget.computeLine(it), ScreenDrawingInterface.DEFAULT_FONT) }?.toFloat() ?: 0f).coerceAtLeast(((width / 2 - 3).toFloat()))
+        textDisplay.innerSize = (CustomWidget.lines.maxOfOrNull { screenDrawing.getTextWidth(CustomWidget.computeLine(it), ScreenDrawing.DEFAULT_FONT) }?.toFloat() ?: 0f).coerceAtLeast(((width / 2 - 3).toFloat()))
         if (centered != CustomWidget.centered.get()) {
             centered = CustomWidget.centered.get()
             resize()

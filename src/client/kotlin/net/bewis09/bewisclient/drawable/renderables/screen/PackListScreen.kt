@@ -10,10 +10,12 @@ import net.bewis09.bewisclient.drawable.renderables.notification.NotificationMan
 import net.bewis09.bewisclient.drawable.renderables.notification.ProgressNotification
 import net.bewis09.bewisclient.drawable.renderables.notification.SimpleTextNotification
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawingInterface
 import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.server.Modrinth
+import net.bewis09.bewisclient.util.Bewisclient
 import net.bewis09.bewisclient.version.setScreen
+import net.bewis09.renderite.logic.Color
+import net.bewis09.renderite.logic.color
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.network.chat.CommonComponents
 import net.minecraft.network.chat.Component
@@ -27,7 +29,7 @@ class PackListScreen(val type: Modrinth.Type, val parent: Screen, val folder: Pa
     var hasLoaded = false
     var lastTyped = Long.MAX_VALUE
 
-    val search = Input(font = ScreenDrawingInterface.DEFAULT_FONT, maxWidth = 200, onChange = {
+    val search = Input(font = ScreenDrawing.DEFAULT_FONT, maxWidth = 200, onChange = {
         lastTyped = System.currentTimeMillis()
     })
 
@@ -130,12 +132,12 @@ class PackListScreen(val type: Modrinth.Type, val parent: Screen, val folder: Pa
 
             Modrinth.getImageByURL(URI(pack.icon_url))?.let {
                 screenDrawing.drawTexture(it, x + 4, y, 32, 32)
-                if (isMouseOver(mouseX, mouseY) && isMouseOver(mouseX, mouseY, centerX - 150, 49, 300, screenHeight - 49 - 33)) {
+                if (isMouseOver(mouseX, mouseY) && screenDrawing.isMouseOver(mouseX, mouseY, centerX - 150, 49, 300, Bewisclient.screenHeight - 49 - 33)) {
                     screenDrawing.fill(x + 4, y, 32, 32, 0xA0909090.color)
                 }
             }
 
-            if (isMouseOver(mouseX, mouseY) && isMouseOver(mouseX, mouseY, centerX - 150, 49, 300, screenHeight - 49 - 33)) {
+            if (isMouseOver(mouseX, mouseY) && screenDrawing.isMouseOver(mouseX, mouseY, centerX - 150, 49, 300, Bewisclient.screenHeight - 49 - 33)) {
                 if (screenDrawing.isMouseOver(mouseX, mouseY, x + 4, y, 32, 32)) {
                     screenDrawing.drawTexture(createIdentifier("bewisclient", "textures/gui/sprites/download_highlighted.png"), x + 4, y, 32, 32)
                 } else {
@@ -145,14 +147,14 @@ class PackListScreen(val type: Modrinth.Type, val parent: Screen, val folder: Pa
         }
 
         override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
-            if (isMouseOver(mouseX, mouseY, x + 4, y, 32, 32)) {
+            if (isMouseOver(mouseX.toInt(), mouseY.toInt(), x + 4, y, 32, 32)) {
                 Modrinth.loadPack(pack.slug) { p ->
                     Modrinth.loadVersions(p) { map ->
                         map.values.filter { it.loaders.contains(type.loader) && it.game_versions.contains(getModrinthVersion()) }.maxByOrNull { it.date_published }?.let { version ->
                             version.files.firstOrNull { it.primary }?.also { file ->
                                 val progressNotification = ProgressNotification(Modrinth.downloading(pack.title))
                                 NotificationManager.addNotification(progressNotification)
-                                downloadFileWithProgress(URI(file.url), {
+                                Bewisclient.downloadFileWithProgress(URI(file.url), {
                                     progressNotification.progress = it
                                 }, {
                                     folder.resolve(file.filename).writeBytes(it)

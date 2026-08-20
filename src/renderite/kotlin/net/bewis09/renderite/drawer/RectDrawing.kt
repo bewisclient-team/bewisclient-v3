@@ -1,11 +1,13 @@
-package net.bewis09.bewisclient.drawable.screen_drawing
+package net.bewis09.renderite.drawer
 
-import net.bewis09.bewisclient.common.Color
+import net.bewis09.renderite.logic.Color
 
-interface RectDrawing : ScreenDrawingInterface {
+interface RectDrawing<I, T, F> : ScreenDrawingInterface<I, T, F> {
     fun fill(x: Int, y: Int, width: Int, height: Int, color: Color) {
-        guiGraphics.fill(x, y, x + width, y + height, applyAlpha(color))
+        fillIntern(x, y, width, height, applyAlpha(color))
     }
+
+    fun fillIntern(x: Int, y: Int, width: Int, height: Int, color: Int)
 
     fun drawBorder(x: Int, y: Int, width: Int, height: Int, color: Color) {
         fill(x, y, width, 1, color)
@@ -27,15 +29,15 @@ interface RectDrawing : ScreenDrawingInterface {
         fill(x, startY, 1, height, color)
     }
 
-    fun drawHorizontalGradient(
-        x: Int, y: Int, width: Int, height: Int, startColor: Color, endColor: Color
-    ) {
-        guiGraphics.fillGradient(x, y, x + width, y + height, applyAlpha(startColor), applyAlpha(endColor))
+    fun drawHorizontalGradient(x: Int, y: Int, width: Int, height: Int, startColor: Color, endColor: Color) {
+        drawHorizontalGradientIntern(x, y, x + width, y + height, applyAlpha(startColor), applyAlpha(endColor))
     }
 
-    fun drawVerticalGradient(
-        x: Int, y: Int, width: Int, height: Int, startColor: Color, endColor: Color
-    ) {
+    fun drawHorizontalGradientIntern(
+        x: Int, y: Int, width: Int, height: Int, startColor: Int, endColor: Int
+    )
+
+    fun drawVerticalGradient(x: Int, y: Int, width: Int, height: Int, startColor: Color, endColor: Color) {
         translate(x.toFloat(), (y + height).toFloat()) {
             rotateDegrees(-90f)
             drawHorizontalGradient(0, 0, height, width, startColor, endColor)

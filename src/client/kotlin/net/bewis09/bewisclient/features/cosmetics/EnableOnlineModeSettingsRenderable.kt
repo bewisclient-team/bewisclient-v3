@@ -33,10 +33,10 @@ class EnableOnlineModeSettingsRenderable(val title: Translation, val description
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         internalHeight = 44
         super.render(screenDrawing, mouseX, mouseY)
-        screenDrawing.drawText(title(), x + 8, y + 11 - screenDrawing.getTextHeight() / 2f + if(isMinecrafty) 0f else 0.5f, General.getTextThemeColor())
+        screenDrawing.drawText(title(), x + 8, y + 11 - screenDrawing.getTextHeight() / 2f + if(General.isMinecrafty) 0f else 0.5f, General.getTextThemeColor())
         if (Authorization.onlineModeEnabled != setting.get())
-            screenDrawing.drawText(reloadWarning(), x + 8, y + 22 - screenDrawing.getTextHeight() / 2f + if(isMinecrafty) 0f else 0.5f, General.getTextThemeColor() alpha 0.7f)
-        screenDrawing.drawText(needToAccept(), x + 8, y + 33 - screenDrawing.getTextHeight() / 2f + if(isMinecrafty) 0f else 0.5f, General.getTextThemeColor() alpha 0.7f)
+            screenDrawing.drawText(reloadWarning(), x + 8, y + 22 - screenDrawing.getTextHeight() / 2f + if(General.isMinecrafty) 0f else 0.5f, General.getTextThemeColor() alpha 0.7f)
+        screenDrawing.drawText(needToAccept(), x + 8, y + 33 - screenDrawing.getTextHeight() / 2f + if(General.isMinecrafty) 0f else 0.5f, General.getTextThemeColor() alpha 0.7f)
         renderRenderables(screenDrawing, mouseX, mouseY)
     }
 

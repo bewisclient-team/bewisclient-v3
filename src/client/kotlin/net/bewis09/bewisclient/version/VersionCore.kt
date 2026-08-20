@@ -4,10 +4,9 @@ package net.bewis09.bewisclient.version
 
 import com.mojang.blaze3d.platform.InputConstants
 import com.mojang.blaze3d.platform.NativeImage
-import net.bewis09.bewisclient.common.Color
+import net.bewis09.renderite.logic.Color
 import net.bewis09.bewisclient.common.Identifier
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawingInterface
 import net.minecraft.ChatFormatting
 import net.minecraft.client.KeyMapping
 import net.minecraft.client.Minecraft
@@ -85,8 +84,8 @@ fun Minecraft.isKeyPressed(key: Int): Boolean {
 // @[1.21.5] , 1024, 1024) @[] )
 fun Minecraft.takePanoramaFull(file: File): Component = this.grabPanoramixScreenshot(file/*[@]*/)/*[!@]*/
 
-// @[1.21.8] Unit @[] guiGraphics.requestCursor(com.mojang.blaze3d.platform.cursor.CursorTypes.POINTING_HAND)
-fun ScreenDrawingInterface.setCursorPointer() = /*[@]*/guiGraphics.requestCursor(com.mojang.blaze3d.platform.cursor.CursorTypes.POINTING_HAND)/*[!@]*/
+// @[1.21.8] Unit @[] requestCursor(com.mojang.blaze3d.platform.cursor.CursorTypes.POINTING_HAND)
+fun GuiGraphics.setCursorPointer() = /*[@]*/requestCursor(com.mojang.blaze3d.platform.cursor.CursorTypes.POINTING_HAND)/*[!@]*/
 
 fun ScreenDrawing.drawGuiTexture(
     texture: Identifier,
@@ -126,8 +125,8 @@ val model by lazy {
 fun GuiGraphics.translateToTopOptional() = /*[@]*/Unit/*[!@]*/
 
 fun Component.setFont(id: Identifier?): MutableComponent {
-    // @[1.21.8] id ?: ScreenDrawingInterface.BEWISCLIENT_FONT @[] net.minecraft.network.chat.FontDescription.Resource((id ?: ScreenDrawingInterface.BEWISCLIENT_FONT))
-    return (this as? MutableComponent ?: this.copy()).withStyle { it.withFont(/*[@]*/net.minecraft.network.chat.FontDescription.Resource((id ?: ScreenDrawingInterface.BEWISCLIENT_FONT))/*[!@]*/) }
+    // @[1.21.8] id ?: ScreenDrawingInterface.BEWISCLIENT_FONT @[] net.minecraft.network.chat.FontDescription.Resource((id ?: ScreenDrawing.BEWISCLIENT_FONT))
+    return (this as? MutableComponent ?: this.copy()).withStyle { it.withFont(/*[@]*/net.minecraft.network.chat.FontDescription.Resource((id ?: ScreenDrawing.BEWISCLIENT_FONT))/*[!@]*/) }
 }
 
 fun GuiGraphics.drawItemOverlay(textRenderer: Font, itemStack: ItemStack, x: Int, y: Int) {

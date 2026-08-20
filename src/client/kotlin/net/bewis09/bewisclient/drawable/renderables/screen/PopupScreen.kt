@@ -1,11 +1,12 @@
 package net.bewis09.bewisclient.drawable.renderables.screen
 
-import net.bewis09.bewisclient.common.Color
 import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.drawable.screen_drawing.pushAlpha
+import net.bewis09.bewisclient.features.sidebar.General
+import net.bewis09.renderite.drawer.pushAlpha
 import net.bewis09.bewisclient.version.translateToTopOptional
+import net.bewis09.renderite.logic.Color
 import org.lwjgl.glfw.GLFW
 
 abstract class PopupScreen : Renderable() {
@@ -23,7 +24,7 @@ abstract class PopupScreen : Renderable() {
     abstract fun renderScreen(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int)
 
     class Popup(val child: Renderable, val screen: PopupScreen) : Renderable() {
-        val alphaAnimation = Animator({ animationDuration }, Animator.EASE_IN_OUT, 0f)
+        val alphaAnimation = Animator({ General.animationDuration }, Animator.EASE_IN_OUT, 0f)
 
         init {
             alphaAnimation.set(1f)

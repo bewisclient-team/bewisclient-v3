@@ -1,6 +1,5 @@
 package net.bewis09.bewisclient.features.utilities
 
-import net.bewis09.bewisclient.common.Color
 import net.bewis09.bewisclient.common.setColor
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSettingsRenderable
@@ -11,6 +10,7 @@ import net.bewis09.bewisclient.settings.types.BooleanMapSetting
 import net.bewis09.bewisclient.version.Profiler
 import net.bewis09.bewisclient.version.appendTooltip
 import net.bewis09.bewisclient.version.getItemFormattedName
+import net.bewis09.renderite.logic.Color
 import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component

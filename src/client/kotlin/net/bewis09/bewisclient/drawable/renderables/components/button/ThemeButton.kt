@@ -4,7 +4,7 @@ import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.logic.TooltipHoverable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.drawable.screen_drawing.transform
+import net.bewis09.renderite.drawer.transform
 import net.bewis09.bewisclient.features.sidebar.General
 import net.minecraft.network.chat.Component
 
@@ -25,13 +25,13 @@ class ThemeButton : TooltipHoverable {
         this.onClick = onClick
     }
 
-    val clickAnimation: Animator = Animator({ animationDuration }, Animator.EASE_IN_OUT, 1f)
-    val colorAnimation: Animator = Animator({ animationDuration }, Animator.EASE_IN_OUT, 0f)
+    val clickAnimation: Animator = Animator({ General.animationDuration }, Animator.EASE_IN_OUT, 1f)
+    val colorAnimation: Animator = Animator({ General.animationDuration }, Animator.EASE_IN_OUT, 0f)
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
         colorAnimation.set(if (selected()) 1f else 0f)
-        val click = if (isMinecrafty) 1f else clickAnimation.get()
+        val click = if (General.isMinecrafty) 1f else clickAnimation.get()
         SelectiveScreenDrawer.renderButtonBackground(screenDrawing, hoverFactor, colorAnimation.get(), x, y, width, height, click, mouseX, mouseY)
 
         usePointer(screenDrawing, mouseX, mouseY)
@@ -42,10 +42,10 @@ class ThemeButton : TooltipHoverable {
     }
 
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
-        if (!isMinecrafty)
+        if (!General.isMinecrafty)
             colorAnimation.set(1f)
         onClick(this)
-        if (!isMinecrafty)
+        if (!General.isMinecrafty)
             clickAnimation.set(0f) { set(1f) }
         return true
     }

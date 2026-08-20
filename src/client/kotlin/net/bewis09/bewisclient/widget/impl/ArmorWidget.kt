@@ -4,7 +4,6 @@ import net.bewis09.bewisclient.common.*
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSettingsRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.drawable.screen_drawing.translate
 import net.bewis09.bewisclient.features.sidebar.Widgets
 import net.bewis09.bewisclient.widget.impl.InventoryWidget.indicatorText
 import net.bewis09.bewisclient.widget.logic.RelativePosition
@@ -12,6 +11,8 @@ import net.bewis09.bewisclient.widget.logic.TOP
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
 import net.bewis09.bewisclient.widget.types.ScalableWidget
+import net.bewis09.renderite.logic.Color
+import net.bewis09.renderite.drawer.translate
 import net.minecraft.SharedConstants
 import net.minecraft.core.component.DataComponents
 import net.minecraft.network.chat.Component

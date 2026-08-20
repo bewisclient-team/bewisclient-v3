@@ -21,6 +21,7 @@ import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.settings.structure.SidebarFeature
 import net.bewis09.bewisclient.settings.types.StringMapSetting
 import net.bewis09.bewisclient.util.EventEntrypoint
+import net.bewis09.renderite.logic.Color
 import net.minecraft.client.multiplayer.PlayerInfo
 import net.minecraft.world.item.Items
 import java.net.URI

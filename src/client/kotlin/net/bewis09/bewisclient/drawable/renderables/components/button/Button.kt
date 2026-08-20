@@ -13,7 +13,7 @@ class Button(var text: Component, val onClick: (Button) -> Unit, tooltip: Compon
         super.render(screenDrawing, mouseX, mouseY)
         SelectiveScreenDrawer.renderButtonBackground(screenDrawing, hoverAnimation.get(), if (selected?.invoke() == true) 1f else 0f, x, y, width, height, 1f, mouseX, mouseY, dark, small)
         usePointer(screenDrawing, mouseX, mouseY)
-        screenDrawing.drawCenteredText(text, exactCenterX, fontYCenter, General.getTextThemeColor())
+        screenDrawing.drawCenteredText(text, exactCenterX, screenDrawing.getTextYCenter(this), General.getTextThemeColor())
     }
 
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean = onClick(this).let { true }

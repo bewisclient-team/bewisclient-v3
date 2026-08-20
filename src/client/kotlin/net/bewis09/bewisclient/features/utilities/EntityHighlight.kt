@@ -2,6 +2,7 @@ package net.bewis09.bewisclient.features.utilities
 
 import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.settings.structure.ImageFeature
+import net.bewis09.renderite.logic.not
 
 object EntityHighlight : ImageFeature(createIdentifier("bewisclient","entity_highlight"), "Entity Highlight") {
     var color by color("color", !0xFF0000) menuQuick "Color"

@@ -8,12 +8,13 @@ import net.bewis09.bewisclient.drawable.renderables.components.structure.Vertica
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.features.sidebar.General
+import net.bewis09.bewisclient.util.Bewisclient
 import net.bewis09.bewisclient.widget.Widget
 import net.bewis09.bewisclient.widget.WidgetLoader
 
 class AddWidgetPopup : Renderable(
-    widthProvider = { screenWidth - 100 },
-    heightProvider = { screenHeight - 100 }
+    widthProvider = { Bewisclient.screenWidth - 100 },
+    heightProvider = { Bewisclient.screenHeight - 100 }
 ) {
     companion object {
         val addText = Translation("popup.add_widget.title", "Add Widget")

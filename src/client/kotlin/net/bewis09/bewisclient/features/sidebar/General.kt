@@ -1,6 +1,5 @@
 package net.bewis09.bewisclient.features.sidebar
 
-import net.bewis09.bewisclient.common.Color
 import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.common.staticFun
 import net.bewis09.bewisclient.drawable.Renderable
@@ -13,6 +12,9 @@ import net.bewis09.bewisclient.settings.types.ColorSetting
 import net.bewis09.bewisclient.util.Bewisclient
 import net.bewis09.bewisclient.util.color.StaticColorSaver
 import net.bewis09.bewisclient.util.color.ThemeColorSaver
+import net.bewis09.renderite.logic.Color
+import net.bewis09.renderite.logic.not
+import net.bewis09.renderite.logic.within
 
 object General : SidebarFeature(createIdentifier("bewisclient", "options_menu"), "Settings") {
     val animationTime = int("animation_time", 150, 0 to 500)

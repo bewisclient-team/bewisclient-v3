@@ -8,6 +8,7 @@ import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.settings.logic.SettingInterfaceWithDefault
 import net.bewis09.bewisclient.settings.structure.Feature
+import net.bewis09.renderite.logic.alpha
 import net.minecraft.network.chat.Component
 
 class MultipleBooleanSettingsRenderable(
@@ -47,7 +48,7 @@ class MultipleBooleanSettingsRenderable(
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             super.render(screenDrawing, mouseX, mouseY)
             screenDrawing.drawHorizontalLine(x + 5, y - 2, width - 10, 0xAAAAAA alpha 0.2F)
-            screenDrawing.drawText(name, x + 8, fontYCenter, General.getTextThemeColor())
+            screenDrawing.drawText(name, x + 8, screenDrawing.getTextYCenter(this), General.getTextThemeColor())
             renderRenderables(screenDrawing, mouseX, mouseY)
         }
 

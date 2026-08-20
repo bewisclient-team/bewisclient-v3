@@ -2,7 +2,7 @@ package net.bewis09.bewisclient.util.color
 
 import com.google.gson.JsonElement
 import com.google.gson.JsonPrimitive
-import net.bewis09.bewisclient.common.Color
+import net.bewis09.renderite.logic.Color
 import net.bewis09.bewisclient.common.then
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.components.button.ResetButton

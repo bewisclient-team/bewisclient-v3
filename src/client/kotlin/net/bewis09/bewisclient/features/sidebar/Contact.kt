@@ -1,6 +1,5 @@
 package net.bewis09.bewisclient.features.sidebar
 
-import net.bewis09.bewisclient.common.Color
 import net.bewis09.bewisclient.common.Util
 import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.data.Constants
@@ -14,6 +13,8 @@ import net.bewis09.bewisclient.drawable.renderables.notification.SimpleTextNotif
 import net.bewis09.bewisclient.settings.structure.SidebarFeature
 import net.bewis09.bewisclient.drawable.renderables.settings.SettingRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
+import net.bewis09.renderite.logic.Color
+import net.bewis09.renderite.logic.alpha
 import kotlin.math.roundToInt
 
 object Contact : SidebarFeature(

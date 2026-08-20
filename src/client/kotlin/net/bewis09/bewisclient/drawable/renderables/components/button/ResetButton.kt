@@ -31,7 +31,7 @@ class ResetButton<T>(val setting: Settable<T?>, val isDefault: () -> Boolean) : 
         SelectiveScreenDrawer.renderButtonBackground(screenDrawing, if (isDefault()) 0f else hoverFactor, 0f, x, y, width, height, 1f, mouseX, mouseY)
         screenDrawing.popColor()
 
-        val imagePadding = if (isMinecrafty) 3 else 2
+        val imagePadding = if (General.isMinecrafty) 3 else 2
         screenDrawing.drawTexture(createIdentifier("bewisclient", "textures/gui/sprites/reset.png"), x + imagePadding, y + imagePadding, width - imagePadding * 2, height - imagePadding * 2, General.getTextThemeColor())
 
         if (isDefault())

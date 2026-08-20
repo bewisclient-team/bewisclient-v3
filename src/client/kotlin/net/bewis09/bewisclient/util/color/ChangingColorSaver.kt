@@ -2,7 +2,6 @@ package net.bewis09.bewisclient.util.color
 
 import com.google.gson.JsonElement
 import com.google.gson.JsonPrimitive
-import net.bewis09.bewisclient.common.Color
 import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.components.setting.Fader
@@ -10,12 +9,13 @@ import net.bewis09.bewisclient.drawable.renderables.components.button.ImageButto
 import net.bewis09.bewisclient.drawable.renderables.components.element.Rectangle
 import net.bewis09.bewisclient.drawable.renderables.components.element.TextElement
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.drawable.screen_drawing.translate
+import net.bewis09.renderite.drawer.translate
 import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.util.Bewisclient
 import net.bewis09.bewisclient.util.int
 import net.bewis09.bewisclient.util.number.Precision
+import net.bewis09.renderite.logic.Color
 
 class ChangingColorSaver : ColorSaver {
     val changingSpeed: Int

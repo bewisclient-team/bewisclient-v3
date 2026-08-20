@@ -21,7 +21,7 @@ open class FaderSettingRenderable<T : Number>(val title: Translation, val descri
         super.render(screenDrawing, mouseX, mouseY)
         drawVerticalCenteredText(screenDrawing, title)
         renderRenderables(screenDrawing, mouseX, mouseY)
-        screenDrawing.drawRightAlignedText(precision.roundToString(setting.get().toFloat()), x2 - fader.width - 12 - resetButton.width, fontYCenter, General.getTextThemeColor())
+        screenDrawing.drawRightAlignedText(precision.roundToString(setting.get().toFloat()), x2 - fader.width - 12 - resetButton.width, screenDrawing.getTextYCenter(this), General.getTextThemeColor())
     }
 
     override fun init() {

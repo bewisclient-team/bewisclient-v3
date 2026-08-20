@@ -7,6 +7,9 @@ import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.game.keybinds.Keybind
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.settings.structure.ImageFeature
+import net.bewis09.renderite.logic.color
+import net.bewis09.renderite.logic.not
+import net.bewis09.renderite.logic.within
 import net.minecraft.world.effect.MobEffectInstance
 import net.minecraft.world.effect.MobEffects
 import org.lwjgl.glfw.GLFW

@@ -1,27 +1,29 @@
 package net.bewis09.bewisclient.drawable.renderables.components.logic
 
-import net.bewis09.bewisclient.common.Color
 import net.bewis09.bewisclient.drawable.Animator
-import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.renderite.RenderiteElement
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.drawable.screen_drawing.pushAlpha
+import net.bewis09.bewisclient.features.sidebar.General
+import net.bewis09.bewisclient.util.Bewisclient
+import net.bewis09.renderite.drawer.pushAlpha
 import net.bewis09.bewisclient.version.translateToTopOptional
+import net.bewis09.renderite.logic.Color
 import net.minecraft.network.chat.Component
 
 open class TooltipHoverable(
     val tooltip: () -> Component?,
     minWidth: Int = 0,
     minHeight: Int = 0,
-    widthProvider: (Renderable.() -> Int)? = null,
-    heightProvider: (Renderable.() -> Int)? = null
+    widthProvider: (RenderiteElement<ScreenDrawing>.() -> Int)? = null,
+    heightProvider: (RenderiteElement<ScreenDrawing>.() -> Int)? = null
 ) : Hoverable(minWidth, minHeight, widthProvider, heightProvider) {
     constructor(
         tooltip: Component? = null,
         minWidth: Int = 0,
         minHeight: Int = 0,
-        widthProvider: (Renderable.() -> Int)? = null,
-        heightProvider: (Renderable.() -> Int)? = null
+        widthProvider: (RenderiteElement<ScreenDrawing>.() -> Int)? = null,
+        heightProvider: (RenderiteElement<ScreenDrawing>.() -> Int)? = null
     ) : this({ tooltip }, minWidth, minHeight, widthProvider, heightProvider)
 
     val tooltipAnimation = Animator(200, Animator.EASE_IN_OUT, 0f)
@@ -59,13 +61,13 @@ open class TooltipHoverable(
 
                 val width = wrappedText.maxOfOrNull { screenDrawing.getTextWidth(it) }?.plus(10) ?: 210
 
-                if (mouseX + width > screenWidth) {
+                if (mouseX + width > Bewisclient.screenWidth) {
                     screenDrawing.translate(-width.toFloat(), 0f)
                 }
 
                 screenDrawing.push()
                 screenDrawing.guiGraphics.translateToTopOptional()
-                if (isMinecrafty) {
+                if (General.isMinecrafty) {
                     screenDrawing.pushAlpha(tooltipAnimation.get() * 0.9f) {
                         SelectiveScreenDrawer.renderButtonBackground(screenDrawing, 1f, 0f, mouseX, mouseY - tooltipHeight, width, tooltipHeight, 1f, mouseX, mouseY, true)
                     }

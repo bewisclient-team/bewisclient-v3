@@ -8,12 +8,13 @@ import net.bewis09.bewisclient.drawable.renderables.components.structure.Vertica
 import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.features.sidebar.General
+import net.bewis09.bewisclient.util.Bewisclient
 import net.bewis09.bewisclient.widget.impl.CustomWidget
 
 class CustomWidgetHelpPopup : Renderable() {
     init {
         internalWidth = 200
-        internalHeight = screenHeight - 100
+        internalHeight = Bewisclient.screenHeight - 100
     }
 
     val plane = VerticalAlignScrollPlane(
@@ -28,7 +29,7 @@ class CustomWidgetHelpPopup : Renderable() {
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         internalWidth = 200
-        internalHeight = screenHeight - 100
+        internalHeight = Bewisclient.screenHeight - 100
         SelectiveScreenDrawer.renderPopupBackground(screenDrawing, x, y, width, height, 10, 0.15f)
         renderRenderables(screenDrawing, mouseX, mouseY)
     }

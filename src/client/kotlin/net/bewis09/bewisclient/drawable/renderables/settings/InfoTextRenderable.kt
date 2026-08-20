@@ -1,8 +1,8 @@
 package net.bewis09.bewisclient.drawable.renderables.settings
 
-import net.bewis09.bewisclient.common.Color
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
+import net.bewis09.renderite.logic.Color
 import net.bewis09.bewisclient.features.sidebar.General
 import net.minecraft.network.chat.Component
 

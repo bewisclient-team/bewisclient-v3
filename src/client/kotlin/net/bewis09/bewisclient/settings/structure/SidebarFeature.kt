@@ -7,6 +7,7 @@ import net.bewis09.bewisclient.drawable.renderables.components.button.ThemeButto
 import net.bewis09.bewisclient.drawable.renderables.components.structure.VerticalScrollGrid
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.game.translations.Translation
+import kotlin.collections.map
 
 abstract class SidebarFeature(id: Identifier, titleText: String): Feature(id) {
     val title = Translation(id.namespace, "category.${id.path}", titleText)

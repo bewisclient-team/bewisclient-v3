@@ -1,9 +1,9 @@
 package net.bewis09.bewisclient.drawable.renderables.components.element
 
-import net.bewis09.bewisclient.common.Color
 import net.bewis09.bewisclient.common.Identifier
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
+import net.bewis09.renderite.logic.Color
 import net.minecraft.network.chat.Component
 
 class TextElement(val text: () -> Component, val color: () -> Color, val centered: Boolean = false, val font: Identifier? = null) : Renderable() {
@@ -13,9 +13,9 @@ class TextElement(val text: () -> Component, val color: () -> Color, val centere
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         if (centered) {
-            screenDrawing.drawCenteredText(text(), exactCenterX, fontYCenter, color(), font)
+            screenDrawing.drawCenteredText(text(), exactCenterX, screenDrawing.getTextYCenter(this), color(), font)
         } else {
-            screenDrawing.drawText(text(), x, fontYCenter, color(), font)
+            screenDrawing.drawText(text(), x, screenDrawing.getTextYCenter(this), color(), font)
         }
     }
 }

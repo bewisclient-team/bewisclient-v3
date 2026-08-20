@@ -1,10 +1,10 @@
 package net.bewis09.bewisclient.settings.structure
 
-import net.bewis09.bewisclient.common.Color
 import net.bewis09.bewisclient.common.Identifier
 import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.features.sidebar.General
+import net.bewis09.renderite.logic.Color
 
 abstract class ImageFeature(id: Identifier, text: String) : CategorizedFeature(id, text) {
     constructor(id: String, text: String) : this(createIdentifier("bewisclient", id), text)

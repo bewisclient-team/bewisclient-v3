@@ -1,6 +1,4 @@
-@file:Suppress("unused")
-
-package net.bewis09.bewisclient.common
+package net.bewis09.renderite.logic
 
 @JvmInline
 value class Color(val argb: Int) {
@@ -135,4 +133,43 @@ value class Color(val argb: Int) {
             (this.alpha + other.alpha)
         )
     }
+}
+
+operator fun Int.not() = this.color
+
+infix fun Float.within(pair: Pair<Color, Color>): Color {
+    val startAlpha = pair.first.alpha
+    val startRed = pair.first.red
+    val startGreen = pair.first.green
+    val startBlue = pair.first.blue
+
+    val endAlpha = pair.second.alpha
+    val endRed = pair.second.red
+    val endGreen = pair.second.green
+    val endBlue = pair.second.blue
+
+    val alpha = (startAlpha + (endAlpha - startAlpha) * this).toInt()
+    val red = (startRed + (endRed - startRed) * this).toInt()
+    val green = (startGreen + (endGreen - startGreen) * this).toInt()
+    val blue = (startBlue + (endBlue - startBlue) * this).toInt()
+
+    return Color(red, green, blue, alpha)
+}
+
+fun color(t: Int): Color {
+    return t.color
+}
+
+fun color(t: Int?): Color? {
+    return t?.color
+}
+
+val Int.color: Color
+    get() = Color.rgb(this)
+
+val Long.color: Color
+    get() = Color(this.toInt())
+
+infix fun Int.alpha(alpha: Float): Color {
+    return this.color alpha alpha
 }

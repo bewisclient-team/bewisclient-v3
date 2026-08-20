@@ -1,10 +1,12 @@
 package net.bewis09.bewisclient.drawable.renderables.components.setting
 
-import net.bewis09.bewisclient.common.Color
 import net.bewis09.bewisclient.common.Identifier
 import net.bewis09.bewisclient.common.toText
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
+import net.bewis09.bewisclient.util.Bewisclient
+import net.bewis09.renderite.logic.Color
+import net.minecraft.client.Minecraft
 import org.lwjgl.glfw.GLFW
 
 class Input : Renderable {
@@ -37,7 +39,7 @@ class Input : Renderable {
         }
         if (cursor == text.length) scrollX = scrollX.coerceAtMost(screenDrawing.getTextWidth(text, font) - width + 5).coerceAtLeast(0)
         screenDrawing.enableScissors(x, y, width, height)
-        val shouldShow = System.currentTimeMillis() % 1000 < 500 && getCurrentRenderableScreen()?.getSelectedRenderable() == this
+        val shouldShow = System.currentTimeMillis() % 1000 < 500 && Bewisclient.getCurrentRenderableScreen()?.getSelectedRenderable() == this
         screenDrawing.drawText((text + if (cursor == text.length && shouldShow) "_" else "").toText(), x - scrollX, y + 1, color, font)
         if (cursor != text.length && shouldShow)
             screenDrawing.drawVerticalLine(screenDrawing.getTextWidth(text.substring(0, cursor), font) + x - scrollX, y - 1, 12, color)
@@ -59,7 +61,7 @@ class Input : Renderable {
     }
 
     override fun onCharTyped(character: Char, modifiers: Int): Boolean {
-        if (maxWidth == 0 || client.font.width(text + character) < maxWidth) {
+        if (maxWidth == 0 || Minecraft.getInstance().font.width(text + character) < maxWidth) {
             insertChar(character)
             onChange?.invoke(text)
         }

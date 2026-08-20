@@ -7,21 +7,24 @@ import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.logic.Hoverable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.drawable.screen_drawing.darken
+import net.bewis09.renderite.drawer.darken
 import net.bewis09.bewisclient.features.cosmetics.Cosmetic
 import net.bewis09.bewisclient.features.cosmetics.CosmeticLoader
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.version.drawCape
+import net.bewis09.renderite.logic.Color
+import net.bewis09.renderite.logic.not
+import net.bewis09.renderite.logic.within
 
 class SelectCapeElement(val identifier: CosmeticIdentifier, val cosmetic: Cosmetic) : Hoverable() {
-    val selected = Animator({ animationDuration }, Animator.EASE_IN_OUT, 0f)
+    val selected = Animator({ General.animationDuration }, Animator.EASE_IN_OUT, 0f)
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         super.render(screenDrawing, mouseX, mouseY)
 
         selected.set(if (CosmeticLoader.selected[CosmeticType.CAPE.id] == identifier.id) 1f else 0f)
 
-        if (isMinecrafty) {
+        if (General.isMinecrafty) {
             screenDrawing.darken(0.6f) {
                 screenDrawing.fill(x + 3, y + 3, width - 6, height - 6, (selected.get() / 2f) within (hoverFactor within (!0x333333 to !0x444444) to Color.WHITE))
             }
@@ -38,7 +41,7 @@ class SelectCapeElement(val identifier: CosmeticIdentifier, val cosmetic: Cosmet
             )
         }
 
-        if (isMinecrafty) {
+        if (General.isMinecrafty) {
             screenDrawing.darken(0.6f + selected.get() * 0.4f) {
                 screenDrawing.drawBorder(x, y, width, height, !0x222222)
                 screenDrawing.drawBorder(x + 1, y + 1, width - 2, height - 2, hoverFactor within (!0x5B5B5B to !0xA1A1A1))
@@ -49,7 +52,7 @@ class SelectCapeElement(val identifier: CosmeticIdentifier, val cosmetic: Cosmet
         }
 
         if (CosmeticLoader.elytraCosmetics.contains(identifier)) {
-            if (isMinecrafty) {
+            if (General.isMinecrafty) {
                 screenDrawing.drawBorder(x + width - 21, y - 1, 22, 22, Color.BLACK alpha 0.5f)
                 SelectiveScreenDrawer.renderButtonBackground(screenDrawing, 0f, 0f, x + width - 20, y, 20, 20, 1f, mouseX, mouseY, small = true)
             } else {

@@ -6,6 +6,7 @@ import net.bewis09.bewisclient.data.Constants
 import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.BackgroundEffectProvider
 import net.bewis09.bewisclient.drawable.ImageIdentifier.iconIdentifier
+import net.bewis09.bewisclient.drawable.ImageIdentifier.setRenderableScreen
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.ImageButton
@@ -17,9 +18,9 @@ import net.bewis09.bewisclient.drawable.renderables.components.setting.Switch
 import net.bewis09.bewisclient.drawable.renderables.components.structure.Plane
 import net.bewis09.bewisclient.drawable.renderables.components.structure.VerticalAlignScrollPlane
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawingInterface.Companion.DEFAULT_FONT
-import net.bewis09.bewisclient.drawable.screen_drawing.pushAlpha
-import net.bewis09.bewisclient.drawable.screen_drawing.transform
+import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing.Companion.DEFAULT_FONT
+import net.bewis09.renderite.drawer.pushAlpha
+import net.bewis09.renderite.drawer.transform
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.features.sidebar.Home
 import net.bewis09.bewisclient.game.translations.Translation
@@ -27,7 +28,9 @@ import net.bewis09.bewisclient.generated.BuildInfo
 import net.bewis09.bewisclient.server.Security
 import net.bewis09.bewisclient.settings.structure.SidebarFeature
 import net.bewis09.bewisclient.settings.types.Setting
+import net.bewis09.bewisclient.util.Bewisclient
 import net.bewis09.bewisclient.version.setScreen
+import net.bewis09.renderite.logic.Color
 import net.minecraft.network.chat.CommonComponents
 import net.minecraft.network.chat.Component
 import org.lwjgl.glfw.GLFW
@@ -37,9 +40,9 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
 
     var category = "bewisclient:home"
 
-    val alphaMainAnimation = Animator({ animationDuration }, Animator.EASE_IN_OUT, startAlpha)
-    val insideMainAnimation = Animator({ animationDuration }, Animator.EASE_IN_OUT, 1f)
-    val blurMainAnimation = Animator({ animationDuration }, Animator.EASE_IN_OUT, startBlur)
+    val alphaMainAnimation = Animator({ General.animationDuration }, Animator.EASE_IN_OUT, startAlpha)
+    val insideMainAnimation = Animator({ General.animationDuration }, Animator.EASE_IN_OUT, 1f)
+    val blurMainAnimation = Animator({ General.animationDuration }, Animator.EASE_IN_OUT, startBlur)
 
     val backIdentifier = createIdentifier("bewisclient", "textures/gui/sprites/back.png")
     val closeIdentifier = createIdentifier("bewisclient", "textures/gui/sprites/remove.png")
@@ -51,7 +54,7 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
                     listOf(
                         createTopButton(backIdentifier, 1, x, y, ::goBack),
                         button(x + 19, y, 82, SelectiveScreenDrawer.getSideButtonHeight()),
-                        createTopButton(closeIdentifier, 3, x + 106 - ((isMinecrafty then 4) ?: 0), y, ::close)
+                        createTopButton(closeIdentifier, 3, x + 106 - ((General.isMinecrafty then 4) ?: 0), y, ::close)
                     )
                 }.setHeight(SelectiveScreenDrawer.getSideButtonHeight())
             })
@@ -60,10 +63,10 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
             it.add(Rectangle { General.getThemeColor(alpha = 0.3f) }.setHeight(1))
             it.add(ThemeButton(editHudTranslation()) {
                 alphaMainAnimation.set(0f) {
-                    setRenderableScreen(HudEditScreen())
+                    Bewisclient.setRenderableScreen(HudEditScreen())
                 }
             }.setHeight(SelectiveScreenDrawer.getSideButtonHeight()))
-        }, (isMinecrafty then 2) ?: 5
+        }, (General.isMinecrafty then 2) ?: 5
     )
 
     fun createTopButton(identifier: Identifier, padding: Int, x: Int, y: Int, onClick: () -> Unit): Renderable = ImageButton(identifier) {
@@ -88,8 +91,8 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
 
                     alphaMainAnimation.set(1f)
                     blurMainAnimation.set(1f)
-                    internalWidth = screenWidth
-                    internalHeight = screenHeight
+                    internalWidth = General.screenWidth
+                    internalHeight = General.screenHeight
                     resize()
                 } ?: OptionScreen(startBlur, startAlpha)
             }
@@ -110,8 +113,8 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
         currentInstance = this
         alphaMainAnimation.set(1f)
         blurMainAnimation.set(1f)
-        internalWidth = screenWidth
-        internalHeight = screenHeight
+        internalWidth = General.screenWidth
+        internalHeight = General.screenHeight
         resize()
     }
 
@@ -139,7 +142,7 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
 
     fun renderVersionText(screenDrawing: ScreenDrawing) {
         screenDrawing.transform(width - 5f, height - 11f, 0.7f) {
-            screenDrawing.drawRightAlignedText("Bewisclient ${BuildInfo.VERSION} by Bewis09", 0, 0, if (isMinecrafty) Color.WHITE alpha 0.5f else General.getThemeColor(alpha = 0.5f))
+            screenDrawing.drawRightAlignedText("Bewisclient ${BuildInfo.VERSION} by Bewis09", 0, 0, if (General.isMinecrafty) Color.WHITE alpha 0.5f else General.getThemeColor(alpha = 0.5f))
         }
     }
 
@@ -261,7 +264,7 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
 
     class Header(val header: Component): Renderable() {
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-            screenDrawing.transform(exactCenterX, fontYCenter - if (General.isMinecrafty) 2 else 0, if(General.isMinecrafty) 1.3f else 1f) {
+            screenDrawing.transform(exactCenterX, screenDrawing.getTextYCenter(this) - if (General.isMinecrafty) 2 else 0, if(General.isMinecrafty) 1.3f else 1f) {
                 screenDrawing.drawCenteredText(header, 0, 0, General.getTextThemeColor())
             }
         }

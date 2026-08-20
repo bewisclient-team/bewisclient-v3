@@ -4,14 +4,16 @@ import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.Animator.Companion.LINEAR
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
+import net.bewis09.bewisclient.features.sidebar.General
+import net.bewis09.renderite.RenderiteElement
 
 open class Hoverable(
     minWidth: Int = 0,
     minHeight: Int = 0,
-    widthProvider: (Renderable.() -> Int)? = null,
-    heightProvider: (Renderable.() -> Int)? = null
+    widthProvider: (RenderiteElement<ScreenDrawing>.() -> Int)? = null,
+    heightProvider: (RenderiteElement<ScreenDrawing>.() -> Int)? = null
 ) : Renderable(minWidth, minHeight, widthProvider, heightProvider) {
-    val hoverAnimation = Animator({ animationDuration }, LINEAR, 0f)
+    val hoverAnimation = Animator({ General.animationDuration }, LINEAR, 0f)
 
     val hoverFactor
         get() = hoverAnimation.get()

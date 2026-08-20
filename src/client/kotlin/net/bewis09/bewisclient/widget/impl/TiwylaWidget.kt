@@ -10,7 +10,7 @@ import net.bewis09.bewisclient.drawable.renderables.impl.TiwylaInfoSettingsRende
 import net.bewis09.bewisclient.drawable.renderables.impl.TiwylaLinesSettingsRenderable
 import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.drawable.screen_drawing.transform
+import net.bewis09.renderite.drawer.transform
 import net.bewis09.bewisclient.features.sidebar.Widgets
 import net.bewis09.bewisclient.mixin.client.MultiPlayerGameModeMixin
 import net.bewis09.bewisclient.settings.types.BooleanMapSetting
@@ -21,6 +21,7 @@ import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
 import net.bewis09.bewisclient.widget.types.ScalableWidget
+import net.bewis09.renderite.logic.color
 import net.minecraft.core.BlockPos
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component

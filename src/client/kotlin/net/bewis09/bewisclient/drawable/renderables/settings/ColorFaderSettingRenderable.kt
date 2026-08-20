@@ -39,6 +39,6 @@ class ColorFaderSettingRenderable(val title: Translation, val description: Trans
         super.init()
         addRenderable(resetButton.setPosition(x2 - resetButton.width - 4, y + 4))
         addRenderable(colorInfoButton.setPosition(x2 - colorInfoButton.width - 8 - resetButton.width, y + 4))
-        addRenderable(fader.setPosition(x2 - fader.width - 8 - resetButton.width, y + 20 - if (isMinecrafty) 1 else 0))
+        addRenderable(fader.setPosition(x2 - fader.width - 8 - resetButton.width, y + 20 - if (General.isMinecrafty) 1 else 0))
     }
 }

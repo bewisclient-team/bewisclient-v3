@@ -1,10 +1,13 @@
 package net.bewis09.bewisclient.drawable.draw_methods
 
-import net.bewis09.bewisclient.common.Color
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.drawable.screen_drawing.darken
-import net.bewis09.bewisclient.drawable.screen_drawing.transform
-import net.bewis09.bewisclient.drawable.screen_drawing.translate
+import net.bewis09.renderite.logic.Color
+import net.bewis09.renderite.logic.alpha
+import net.bewis09.renderite.logic.not
+import net.bewis09.renderite.drawer.darken
+import net.bewis09.renderite.drawer.transform
+import net.bewis09.renderite.drawer.translate
+import net.bewis09.renderite.logic.within
 
 object MinecraftyMethods : DrawMethods {
     override fun renderMenuBackground(screenDrawing: ScreenDrawing, screenWidth: Int, screenHeight: Int) {

@@ -1,26 +1,24 @@
 package net.bewis09.bewisclient.settings.structure
 
-import net.bewis09.bewisclient.common.Color
 import net.bewis09.bewisclient.common.Identifier
 import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
-import net.bewis09.bewisclient.drawable.renderables.components.element.TextElement
 import net.bewis09.bewisclient.drawable.renderables.components.element.TooltipHoverableText
 import net.bewis09.bewisclient.drawable.renderables.components.logic.Hoverable
-import net.bewis09.bewisclient.drawable.renderables.components.structure.Plane
 import net.bewis09.bewisclient.drawable.renderables.components.structure.VerticalAlignScrollPlane
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.renderables.settings.BooleanSettingRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.drawable.screen_drawing.pushColor
-import net.bewis09.bewisclient.drawable.screen_drawing.translate
-import net.bewis09.bewisclient.features.sidebar.General
+import net.bewis09.renderite.drawer.pushColor
+import net.bewis09.renderite.drawer.translate
 import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.settings.logic.RenderableCreator
 import net.bewis09.bewisclient.settings.types.ColorSetting
 import net.bewis09.bewisclient.settings.types.FloatSetting
 import net.bewis09.bewisclient.settings.types.Setting
+import net.bewis09.renderite.logic.Color
+import net.bewis09.renderite.logic.color
 
 abstract class CategorizedFeature(id: Identifier, titleText: String) : Feature(id) {
     companion object {

@@ -1,6 +1,5 @@
 package net.bewis09.bewisclient.drawable.renderables.impl
 
-import net.bewis09.bewisclient.common.Color
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.components.button.Button
 import net.bewis09.bewisclient.drawable.renderables.components.element.Rectangle
@@ -12,6 +11,7 @@ import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.settings.types.ListSetting
 import net.bewis09.bewisclient.widget.impl.TiwylaWidget
+import net.bewis09.renderite.logic.Color
 
 class TiwylaLinesSettingsRenderable : Renderable() {
     companion object {

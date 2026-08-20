@@ -2,7 +2,7 @@ package net.bewis09.bewisclient.util.color
 
 import com.google.gson.JsonElement
 import com.google.gson.JsonObject
-import net.bewis09.bewisclient.common.Color
+import net.bewis09.renderite.logic.Color
 import net.bewis09.bewisclient.common.catch
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.game.translations.Translation

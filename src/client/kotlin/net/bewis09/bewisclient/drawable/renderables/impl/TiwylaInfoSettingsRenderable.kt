@@ -8,6 +8,8 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.settings.logic.SettingInterfaceWithDefault
 import net.bewis09.bewisclient.widget.impl.TiwylaWidget
+import net.bewis09.renderite.logic.Color
+import net.bewis09.renderite.logic.alpha
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
 
