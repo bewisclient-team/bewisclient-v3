@@ -1,11 +1,14 @@
 package net.bewis09.bewisclient.drawable.renderables.components.element
 
-import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.renderite.logic.Color
 
-class Rectangle(var color: () -> Color) : Renderable() {
-    constructor(color: Color) : this({ color })
+class Rectangle(p: Props<Rectangle>) : PropedRenderable<Rectangle>(p) {
+    var colorProvider = { require { color } }
+    var color: Color? = null
 
-    override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) = screenDrawing.fill(x, y, width, height, color())
+    init { props() }
+
+    override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) = screenDrawing.fill(x, y, width, height, colorProvider())
 }

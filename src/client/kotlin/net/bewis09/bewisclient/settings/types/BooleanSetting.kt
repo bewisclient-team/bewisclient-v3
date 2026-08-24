@@ -4,7 +4,6 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonPrimitive
 import net.bewis09.bewisclient.drawable.renderables.settings.BooleanSettingRenderable
 import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSettingsRenderable
-import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.settings.logic.RenderableCreator
 import net.bewis09.bewisclient.settings.structure.Feature
 import net.bewis09.bewisclient.util.boolean
@@ -17,11 +16,19 @@ class BooleanSetting(default: () -> Boolean) : Setting<Boolean>(default), Render
     override fun convertFromElement(data: JsonElement?): Boolean? = data?.boolean()
 
     override fun createRenderable(feature: Feature, id: String, title: String, description: String?): BooleanSettingRenderable {
-        return BooleanSettingRenderable(feature.createTranslation(id, title), description?.let { feature.createTranslation("$id.description", it) }, this)
-    }
+        return BooleanSettingRenderable {
+            this.title = feature.createTranslation(id, title)
+            tooltip = description?.let { feature.createTranslation("$id.description", it)() }
+            setting = this@BooleanSetting
+        }
+}
 
     fun createRenderablePart(feature: Feature, id: String, title: String, description: String? = null): MultipleBooleanSettingsRenderable.Part {
-        return MultipleBooleanSettingsRenderable.Part(feature.createTranslation(id, title).invoke(), description?.let { Translation("menu.$id.description", it) }(), this)
+        return MultipleBooleanSettingsRenderable.Part {
+            this.title = feature.createTranslation(id, title).invoke()
+            tooltip = description?.let { feature.createTranslation("$id.description", it)() }
+            setting = this@BooleanSetting
+        }
     }
 
     fun cloneWithDefault(): BooleanSetting = BooleanSetting(::get)

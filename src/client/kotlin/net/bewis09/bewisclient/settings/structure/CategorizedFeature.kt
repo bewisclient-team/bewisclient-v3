@@ -5,18 +5,18 @@ import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.element.TooltipHoverableText
-import net.bewis09.bewisclient.drawable.renderables.components.logic.Hoverable
-import net.bewis09.bewisclient.drawable.renderables.components.structure.VerticalAlignScrollPlane
+import net.bewis09.bewisclient.drawable.renderables.components.structure.Grid
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.renderables.settings.BooleanSettingRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.renderite.drawer.pushColor
-import net.bewis09.renderite.drawer.translate
 import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.settings.logic.RenderableCreator
 import net.bewis09.bewisclient.settings.types.ColorSetting
 import net.bewis09.bewisclient.settings.types.FloatSetting
 import net.bewis09.bewisclient.settings.types.Setting
+import net.bewis09.renderite.components.Hoverable
+import net.bewis09.renderite.drawer.pushColor
+import net.bewis09.renderite.drawer.translate
 import net.bewis09.renderite.logic.Color
 import net.bewis09.renderite.logic.color
 
@@ -67,15 +67,17 @@ abstract class CategorizedFeature(id: Identifier, titleText: String) : Feature(i
 
     abstract fun createRenderable(): SettingCategory
 
-    open fun getPane(): Renderable {
-        return VerticalAlignScrollPlane(getSettingRenderables().toList(), 1)
+    open fun getPane(): Renderable = Grid {
+        children = getSettingRenderables().toList()
+        gap = 1
+        fitType = Grid.FitType.SCROLL
     }
 
-    abstract inner class SettingCategory : Hoverable() {
+    abstract inner class SettingCategory : Hoverable<SettingCategory>({}) {
         val state = Animator({ animationDuration }, Animator.EASE_IN_OUT, if (enabled) 1f else 0f)
 
         init {
-            BooleanSettingRenderable(enabledText, null, enabledSetting).addToQuickSettings(this@CategorizedFeature, "enabled")
+            BooleanSettingRenderable { title = enabledText; setting = enabledSetting }.addToQuickSettings(this@CategorizedFeature, "enabled")
         }
 
         override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
@@ -112,13 +114,14 @@ abstract class CategorizedFeature(id: Identifier, titleText: String) : Feature(i
 
         override fun init() {
             super.init()
-            addRenderable(
-                TooltipHoverableText(
-                    if (enabled) enabledText() else disabledText(), 0xAAAAAA.color, Color.WHITE, if (enabled) clickToDisableText() else clickToEnableText(), true
-                ) { enabled = !enabled; resize() }(
-                    x, y2 - 14, width, 14
-                )
-            )
+            addRenderable(TooltipHoverableText {
+                text = if (enabled) enabledText() else disabledText()
+                color = 0xAAAAAA.color
+                hoverColor = Color.WHITE
+                tooltip = if (enabled) clickToDisableText() else clickToEnableText()
+                centered = true
+                onClick = { enabled = !enabled; resize() }
+            }(x, y2 - 14, width, 14))
         }
     }
 

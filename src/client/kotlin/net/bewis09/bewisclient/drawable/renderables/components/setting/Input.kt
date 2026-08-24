@@ -2,33 +2,24 @@ package net.bewis09.bewisclient.drawable.renderables.components.setting
 
 import net.bewis09.bewisclient.common.Identifier
 import net.bewis09.bewisclient.common.toText
-import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.util.Bewisclient
 import net.bewis09.renderite.logic.Color
 import net.minecraft.client.Minecraft
 import org.lwjgl.glfw.GLFW
 
-class Input : Renderable {
-    var maxWidth: Int
-    var text: String
-        private set
-    var color: Color
-    var cursor: Int
+class Input(p: Props<Input>) : PropedRenderable<Input>(p) {
+    var maxTextLength: Int = -1
+    var text: String = ""
+    var color: Color = Color.WHITE
+    var font: Identifier? = null
+    var onChange: ((String) -> Unit)? = null
 
+    init { props() }
+
+    var cursor: Int = text.length
     var scrollX = 0
-
-    val onChange: ((String) -> Unit)?
-    val font: Identifier?
-
-    constructor(maxWidth: Int = 0, text: String = "", color: Color = Color.WHITE, font: Identifier? = null, onChange: ((String) -> Unit)? = null) : super(minHeight = 10) {
-        this.maxWidth = maxWidth
-        this.text = text
-        this.color = color
-        this.cursor = text.length
-        this.onChange = onChange
-        this.font = font
-    }
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         if (screenDrawing.getTextWidth(text.substring(0, cursor), font) - scrollX > width - 5) {
@@ -38,12 +29,10 @@ class Input : Renderable {
             if (scrollX < 0) scrollX = 0
         }
         if (cursor == text.length) scrollX = scrollX.coerceAtMost(screenDrawing.getTextWidth(text, font) - width + 5).coerceAtLeast(0)
-        screenDrawing.enableScissors(x, y, width, height)
         val shouldShow = System.currentTimeMillis() % 1000 < 500 && Bewisclient.getCurrentRenderableScreen()?.getSelectedRenderable() == this
         screenDrawing.drawText((text + if (cursor == text.length && shouldShow) "_" else "").toText(), x - scrollX, y + 1, color, font)
         if (cursor != text.length && shouldShow)
             screenDrawing.drawVerticalLine(screenDrawing.getTextWidth(text.substring(0, cursor), font) + x - scrollX, y - 1, 12, color)
-        screenDrawing.disableScissors()
     }
 
     fun setText(text: String): Input {
@@ -61,7 +50,7 @@ class Input : Renderable {
     }
 
     override fun onCharTyped(character: Char, modifiers: Int): Boolean {
-        if (maxWidth == 0 || Minecraft.getInstance().font.width(text + character) < maxWidth) {
+        if (maxTextLength == 0 || Minecraft.getInstance().font.width(text + character) < maxTextLength) {
             insertChar(character)
             onChange?.invoke(text)
         }

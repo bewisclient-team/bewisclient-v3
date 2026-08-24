@@ -1,33 +1,38 @@
 package net.bewis09.bewisclient.drawable.renderables.popup
 
-import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
-import net.bewis09.bewisclient.drawable.renderables.components.logic.Hoverable
-import net.bewis09.bewisclient.drawable.renderables.components.element.TextElement
-import net.bewis09.bewisclient.drawable.renderables.components.structure.VerticalScrollGrid
+import net.bewis09.bewisclient.drawable.renderables.components.element.Text
+import net.bewis09.bewisclient.drawable.renderables.components.logic.TextAlign
+import net.bewis09.bewisclient.drawable.renderables.components.structure.Grid
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.features.sidebar.General
+import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.util.Bewisclient
 import net.bewis09.bewisclient.widget.Widget
 import net.bewis09.bewisclient.widget.WidgetLoader
+import net.bewis09.renderite.components.Hoverable
 
-class AddWidgetPopup : Renderable(
-    widthProvider = { Bewisclient.screenWidth - 100 },
+class AddWidgetPopup : PropedRenderable<AddWidgetPopup> ({
+    widthProvider = { Bewisclient.screenWidth - 100 }
     heightProvider = { Bewisclient.screenHeight - 100 }
-) {
+}) {
     companion object {
         val addText = Translation("popup.add_widget.title", "Add Widget")
     }
 
-    val text = TextElement({ addText() }, General.getTextThemeColor(), centered = true)
-    var grid = VerticalScrollGrid({
-        WidgetLoader.widgets.filter { !it.enabled }.map { widget -> WidgetElement(widget).setHeight(90) }
-    }, 5, 80)
+    val text = Text { text = addText(); textAlign = TextAlign.CENTER }
 
-    override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+    var grid = Grid {
+        init = { WidgetLoader.widgets.filter { !it.enabled }.map { widget -> WidgetElement(widget).updateHeight(90) } }
+        gap = 5
+        minElementSize = 80
+        lineType = Grid.LineType.SIZED
+        fitType = Grid.FitType.SCROLL
+    }
+
+    override fun renderBackground(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         SelectiveScreenDrawer.renderPopupBackground(screenDrawing, x, y, width, height, 10, 0.15f)
-        renderRenderables(screenDrawing, mouseX, mouseY)
     }
 
     override fun init() {
@@ -35,15 +40,19 @@ class AddWidgetPopup : Renderable(
         addRenderable(grid(x + 10, y + 24, width - 20, height - 31))
     }
 
-    inner class WidgetElement(val widget: Widget) : Hoverable() {
+    inner class WidgetElement(val widget: Widget) : Hoverable<WidgetElement>({}) {
         val title = widget.title()
         val description = widget.description()
 
         override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
             widget.enabled = true
-            this@AddWidgetPopup.grid = VerticalScrollGrid({
-                WidgetLoader.widgets.filter { !it.enabled }.map { widget -> WidgetElement(widget).setHeight(90) }
-            }, 5, 80)
+            this@AddWidgetPopup.grid = Grid {
+                init = { WidgetLoader.widgets.filter { !it.enabled }.map { widget -> WidgetElement(widget).updateHeight(90) } }
+                gap = 5
+                minElementSize = 80
+                lineType = Grid.LineType.SIZED
+                fitType = Grid.FitType.SCROLL
+            }
             this@AddWidgetPopup.resize()
 
             return true

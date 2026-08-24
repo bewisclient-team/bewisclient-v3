@@ -1,15 +1,18 @@
 package net.bewis09.bewisclient.drawable.renderables.screen
 
 import net.bewis09.bewisclient.drawable.Animator
+import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.drawable.SimpleRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.renderite.drawer.pushAlpha
 import net.bewis09.bewisclient.version.translateToTopOptional
+import net.bewis09.renderite.RenderiteElement
 import net.bewis09.renderite.logic.Color
 import org.lwjgl.glfw.GLFW
 
-abstract class PopupScreen : Renderable() {
+abstract class PopupScreen : SimpleRenderable() {
     var popup: Popup? = null
     var backgroundColor: Color = Color.BLACK alpha 0.5f
 
@@ -23,7 +26,14 @@ abstract class PopupScreen : Renderable() {
 
     abstract fun renderScreen(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int)
 
-    class Popup(val child: Renderable, val screen: PopupScreen) : Renderable() {
+    class Popup(p: Props<Popup>) : PropedRenderable<Popup>(p + {
+        colorModifier = { Color.WHITE alpha alphaAnimation.get() }
+    }) {
+        lateinit var screen: PopupScreen
+        lateinit var child: Renderable
+
+        init { props() }
+
         val alphaAnimation = Animator({ General.animationDuration }, Animator.EASE_IN_OUT, 0f)
 
         init {
@@ -44,22 +54,21 @@ abstract class PopupScreen : Renderable() {
             return super.onKeyPress(key, scanCode, modifiers)
         }
 
-        override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-            this(0, 0, screen.width, screen.height)
-            screenDrawing.push()
+        override fun renderLogic(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             screenDrawing.guiGraphics.translateToTopOptional()
-            screenDrawing.pushAlpha(alphaAnimation.get()) {
-                screenDrawing.fill(0, 0, width, height, screen.backgroundColor)
-                screenDrawing.setBewisclientFont()
-                child.setPosition((width - child.width) / 2, (height - child.height) / 2)
-                child.render(screenDrawing, mouseX, mouseY)
-                screenDrawing.setDefaultFont()
-            }
-            screenDrawing.pop()
+            screenDrawing.setBewisclientFont()
+        }
+
+        override fun renderBackground(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+            screenDrawing.fill(0, 0, width, height, screen.backgroundColor)
+        }
+
+        override fun cleanup(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+            screenDrawing.setDefaultFont()
         }
 
         override fun init() {
-            addRenderable(child)
+            addRenderable(child.updatePosition((width - child.width) / 2, (height - child.height) / 2))
         }
 
         override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
@@ -97,7 +106,10 @@ abstract class PopupScreen : Renderable() {
         if (popup != null) {
             popup?.let { renderables.remove(it) }
         }
-        popup = Popup(popupRenderable, this)
+        popup = Popup {
+            screen = this@PopupScreen
+            child = popupRenderable
+        }
         renderables.addFirst(popup!!)
         popup?.invoke(0, 0, width, height)?.resize()
         selectedElement = popup

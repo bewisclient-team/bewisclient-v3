@@ -1,18 +1,20 @@
 package net.bewis09.bewisclient.drawable.renderables.components.logic
 
 import net.bewis09.bewisclient.drawable.Animator
-import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.drawable.PropedRenderable
 import kotlin.math.abs
 
-abstract class Scrollable(val direction: Direction) : Renderable() {
-    var scrollAnimation = Animator(200, Animator.EASE_OUT, 0f)
+abstract class Scrollable<T: Scrollable<T>>(p: Props<T>) : PropedRenderable<T>(p) {
+    lateinit var direction: Direction
+
+    val scrollAnimation = Animator(200, Animator.EASE_OUT, 0f)
     var innerSize = 0f
 
-    var lastDragX = null as Double?
-    var lastDragY = null as Double?
+    private var lastDragX = null as Double?
+    private var lastDragY = null as Double?
 
-    var hasScrollStartedVertical = false
-    var hasScrollStartedHorizontal = false
+    private var hasScrollStartedVertical = false
+    private var hasScrollStartedHorizontal = false
 
     override fun onMouseScroll(mouseX: Double, mouseY: Double, horizontalAmount: Double, verticalAmount: Double): Boolean {
         scrollAnimation.set((scrollAnimation.getWithoutInterpolation() + (verticalAmount.toFloat() * 30f) + (horizontalAmount.toFloat() * 30f)).coerceIn(0f.coerceAtMost((if (direction == Direction.HORIZONTAL) width else height) - innerSize), 0f))
@@ -64,7 +66,4 @@ abstract class Scrollable(val direction: Direction) : Renderable() {
         return true
     }
 
-    enum class Direction {
-        VERTICAL, HORIZONTAL
-    }
 }

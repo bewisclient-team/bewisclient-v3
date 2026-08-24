@@ -8,11 +8,15 @@ import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.util.interfaces.Settable
 
-class ResetButton<T>(val setting: Settable<T?>, val isDefault: () -> Boolean) : TooltipHoverable({ if (isDefault()) null else resetText() }) {
-    init {
-        internalWidth = 14
-        internalHeight = 14
-    }
+class ResetButton<T>(p: Props<ResetButton<T>>) : TooltipHoverable<ResetButton<T>>(p + {
+    tooltipProvider = { if (isDefault()) null else resetText() }
+    width = 14
+    height = 14
+}) {
+    var settable: Settable<T?> = {}
+    var isDefault: () -> Boolean = { false }
+
+    init { props() }
 
     companion object {
         val resetText = Translation("menu.general.reset", "Reset")
@@ -38,5 +42,5 @@ class ResetButton<T>(val setting: Settable<T?>, val isDefault: () -> Boolean) : 
             screenDrawing.popColor()
     }
 
-    override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean = setting.set(null).let { true }
+    override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean = settable.set(null).let { true }
 }

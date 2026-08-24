@@ -201,7 +201,7 @@ object Modrinth : ClientInterface {
             }
             typeMaps[type to query]!!.first[page] = json.hits to true
         }) {
-            NotificationManager.addNotification(SimpleTextNotification(searchFailedReason(it.message ?: "Unknown Error")))
+            NotificationManager.addNotification(SimpleTextNotification { text = searchFailedReason(it.message ?: "Unknown Error") })
         }
     }
 
@@ -233,7 +233,7 @@ object Modrinth : ClientInterface {
             packCache[slug] = json
             onFinish?.invoke(json)
         }) {
-            NotificationManager.addNotification(SimpleTextNotification(downloadFailedReason(it.message ?: "Unknown Error")))
+            NotificationManager.addNotification(SimpleTextNotification { text = downloadFailedReason(it.message ?: "Unknown Error") })
         }
     }
 

@@ -2,12 +2,20 @@ package net.bewis09.bewisclient.drawable.renderables.components.setting
 
 import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
-import net.bewis09.bewisclient.drawable.renderables.components.logic.Hoverable
+import net.bewis09.renderite.components.Hoverable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.util.interfaces.Gettable
 
-class Switch(var state: Gettable<Boolean>, val onChange: (new: Boolean) -> Unit) : Hoverable(24, 12) {
+class Switch(p: Props<Switch>) : Hoverable<Switch>(p + {
+    width = 24
+    height = 12
+}) {
+    lateinit var state: Gettable<Boolean>
+    var onChange: (new: Boolean) -> Unit = {}
+
+    init { props() }
+
     val stateAnimation = Animator({ General.animationDuration }, Animator.EASE_IN_OUT, if (state.get()) 1f else 0f)
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {

@@ -1,11 +1,9 @@
 package net.bewis09.bewisclient.features.cosmetics
 
-import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.drawable.SimpleRenderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.Button
-import net.bewis09.bewisclient.drawable.renderables.components.structure.EmptyRenderable
-import net.bewis09.bewisclient.drawable.renderables.components.structure.VerticalAlignPlane
-import net.bewis09.bewisclient.drawable.renderables.components.structure.VerticalAlignScrollPlane
+import net.bewis09.bewisclient.drawable.renderables.components.structure.Grid
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
@@ -14,7 +12,7 @@ import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.util.Bewisclient
 import net.minecraft.network.chat.Component
 
-object AcceptPrivacyPage : Renderable() {
+object AcceptPrivacyPage : SimpleRenderable() {
     val headerText = Translation("privacy.header", "Read and accept privacy notice to continue")
     val decline = Translation("privacy.reject", "Reject privacy notice")
     val accept = Translation("privacy.accept", "Accept privacy notice and enable online mode")
@@ -49,31 +47,39 @@ object AcceptPrivacyPage : Renderable() {
         )
     }
 
-    override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        renderRenderables(screenDrawing, mouseX, mouseY)
-    }
-
     override fun init() {
-        addRenderable(VerticalAlignScrollPlane({
-            listOf(
-                VerticalAlignPlane(
-                    listOf(
-                        InfoTextRenderable(Component.literal(notice)),
-                        EmptyRenderable(),
-                        Button(decline(), {
-                            val screen = Bewisclient.getCurrentRenderableScreen()?.renderable as? OptionScreen ?: return@Button
-                            screen.goBack()
-                            General.acceptedEULA.set(false)
-                        }, dark = true).setSize(100, SelectiveScreenDrawer.getSideButtonHeight()),
-                        Button(accept()) {
-                            General.acceptedEULA.set(true)
-                            General.onlineMode.set(true)
-                            val screen = Bewisclient.getCurrentRenderableScreen()?.renderable as? OptionScreen ?: return@Button
-                            screen.goBack()
-                        }.setSize(100, SelectiveScreenDrawer.getSideButtonHeight())
-                    ), 2
+        addRenderable(Grid {
+            gap = 5
+            fitType = Grid.FitType.SCROLL
+            init = {
+                listOf(
+                    Grid {
+                        gap = 2
+                        children = listOf(
+                            InfoTextRenderable { text = Component.literal(notice) },
+                            SimpleRenderable(),
+                            Button {
+                                text = decline()
+                                dark = true
+                                onClick = onClick@{
+                                    val screen = Bewisclient.getCurrentRenderableScreen()?.renderable as? OptionScreen ?: return@onClick
+                                    screen.goBack()
+                                    General.acceptedEULA.set(false)
+                                }
+                            }.updateSize(100, SelectiveScreenDrawer.getSideButtonHeight()),
+                            Button {
+                                text = accept()
+                                onClick = onClick@{
+                                    General.acceptedEULA.set(true)
+                                    General.onlineMode.set(true)
+                                    val screen = Bewisclient.getCurrentRenderableScreen()?.renderable as? OptionScreen ?: return@onClick
+                                    screen.goBack()
+                                }
+                            }.updateSize(100, SelectiveScreenDrawer.getSideButtonHeight())
+                        )
+                    }
                 )
-            )
-        }, 5)(x, y, width, height))
+            }
+        }(x, y, width, height))
     }
 }

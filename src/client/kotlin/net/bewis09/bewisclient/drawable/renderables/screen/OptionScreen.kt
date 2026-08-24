@@ -5,9 +5,9 @@ import net.bewis09.bewisclient.common.*
 import net.bewis09.bewisclient.data.Constants
 import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.BackgroundEffectProvider
-import net.bewis09.bewisclient.drawable.ImageIdentifier.iconIdentifier
 import net.bewis09.bewisclient.drawable.ImageIdentifier.setRenderableScreen
 import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.drawable.SimpleRenderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.ImageButton
 import net.bewis09.bewisclient.drawable.renderables.components.button.MinecraftButton
@@ -15,8 +15,7 @@ import net.bewis09.bewisclient.drawable.renderables.components.button.ThemeButto
 import net.bewis09.bewisclient.drawable.renderables.components.element.RainbowImage
 import net.bewis09.bewisclient.drawable.renderables.components.element.Rectangle
 import net.bewis09.bewisclient.drawable.renderables.components.setting.Switch
-import net.bewis09.bewisclient.drawable.renderables.components.structure.Plane
-import net.bewis09.bewisclient.drawable.renderables.components.structure.VerticalAlignScrollPlane
+import net.bewis09.bewisclient.drawable.renderables.components.structure.Grid
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing.Companion.DEFAULT_FONT
 import net.bewis09.renderite.drawer.pushAlpha
@@ -47,31 +46,36 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
     val backIdentifier = createIdentifier("bewisclient", "textures/gui/sprites/back.png")
     val closeIdentifier = createIdentifier("bewisclient", "textures/gui/sprites/remove.png")
 
-    val sidebarPlane = VerticalAlignScrollPlane(
-        arrayListOf<Renderable>().also {
+    val sidebarPlane = Grid {
+        children = arrayListOf<Renderable>().also {
             it.add(Home.createButton().let { button ->
-                Plane { x, y, _, _ ->
-                    listOf(
-                        createTopButton(backIdentifier, 1, x, y, ::goBack),
-                        button(x + 19, y, 82, SelectiveScreenDrawer.getSideButtonHeight()),
-                        createTopButton(closeIdentifier, 3, x + 106 - ((General.isMinecrafty then 4) ?: 0), y, ::close)
-                    )
-                }.setHeight(SelectiveScreenDrawer.getSideButtonHeight())
+                object : SimpleRenderable() {
+                    override fun init() {
+                        addRenderable(createTopButton(backIdentifier, 1, x, y, ::goBack))
+                        addRenderable(button(x + 19, y, 82, SelectiveScreenDrawer.getSideButtonHeight()))
+                        addRenderable(createTopButton(closeIdentifier, 3, x + 106 - ((General.isMinecrafty then 4) ?: 0), y, ::close))
+                    }
+                }.updateHeight(SelectiveScreenDrawer.getSideButtonHeight())
             })
-            it.add(Rectangle { General.getThemeColor(alpha = 0.3f) }.setHeight(1))
+            it.add(Rectangle {
+                colorProvider = { General.getThemeColor(alpha = 0.3f) }
+            }.updateHeight(1))
             it.addAll(APIEntrypointLoader.mapEntrypoint { a -> a.getSidebarCategories().map { b -> b.createButton() } }.flatten())
-            it.add(Rectangle { General.getThemeColor(alpha = 0.3f) }.setHeight(1))
-            it.add(ThemeButton(editHudTranslation()) {
-                alphaMainAnimation.set(0f) {
-                    Bewisclient.setRenderableScreen(HudEditScreen())
-                }
-            }.setHeight(SelectiveScreenDrawer.getSideButtonHeight()))
-        }, (General.isMinecrafty then 2) ?: 5
-    )
+            it.add(Rectangle { colorProvider = { General.getThemeColor(alpha = 0.3f) } }.updateHeight(1))
+            it.add(ThemeButton {
+                text = editHudTranslation()
+                onClick = { alphaMainAnimation.set(0f) { Bewisclient.setRenderableScreen(HudEditScreen()) } }
+            }.updateHeight(SelectiveScreenDrawer.getSideButtonHeight()))
+        }
+        gap = (General.isMinecrafty then 2) ?: 5
+        fitType = Grid.FitType.SCROLL
+    }
 
-    fun createTopButton(identifier: Identifier, padding: Int, x: Int, y: Int, onClick: () -> Unit): Renderable = ImageButton(identifier) {
-        onClick()
-    }.setImagePadding(padding).setImageColor { General.getTextThemeColor() }(x, y, SelectiveScreenDrawer.getSideButtonHeight(), SelectiveScreenDrawer.getSideButtonHeight())
+    fun createTopButton(identifier: Identifier, padding: Int, x: Int, y: Int, onClick: () -> Unit): Renderable = ImageButton {
+        image = identifier
+        this.onClick = { onClick() }
+        imagePadding = padding
+    }(x, y, SelectiveScreenDrawer.getSideButtonHeight(), SelectiveScreenDrawer.getSideButtonHeight())
 
     companion object {
         var currentInstance: OptionScreen? = null
@@ -91,8 +95,8 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
 
                     alphaMainAnimation.set(1f)
                     blurMainAnimation.set(1f)
-                    internalWidth = General.screenWidth
-                    internalHeight = General.screenHeight
+                    width = General.screenWidth
+                    height = General.screenHeight
                     resize()
                 } ?: OptionScreen(startBlur, startAlpha)
             }
@@ -106,15 +110,18 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
     val page
         get() = pageStack.last()
 
-    var switch = Switch(state = { page.setting?.get() ?: false }, onChange = { page.setting?.set(it) })
-    val image = RainbowImage(iconIdentifier, 0.5f)
+    var switch = Switch {
+        state = { page.setting?.get() ?: false }
+        onChange = { page.setting?.set(it) }
+    }
+    val image = RainbowImage()
 
     init {
         currentInstance = this
         alphaMainAnimation.set(1f)
         blurMainAnimation.set(1f)
-        internalWidth = General.screenWidth
-        internalHeight = General.screenHeight
+        width = General.screenWidth
+        height = General.screenHeight
         resize()
     }
 
@@ -160,7 +167,7 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
         if (!Security.verificationState.allowed) setRenderableScreen(VersionInvalidScreen)
     }
 
-    object VersionInvalidScreen : Renderable() {
+    object VersionInvalidScreen : SimpleRenderable() {
         const val SECURITY_MESSAGE =
             "Your version of Bewisclient could not be verified. This probably means that the file your are using was changed after downloading or the version you are using was removed from Modrinth due to a critical bug.\n\nPlease download the newest version from Modrinth to ensure you are using a safe version.\n\nIf you believe this is an error, please let us know on GitHub."
 
@@ -177,11 +184,13 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
         }
 
         override fun init() {
-            addRenderable(MinecraftButton(CommonComponents.GUI_BACK) {
-                setScreen(null)
+            addRenderable(MinecraftButton {
+                text = CommonComponents.GUI_BACK
+                onClick = { setScreen(null) }
             }(width / 2 - 102, height / 2 + 50, 100, 20))
-            addRenderable(MinecraftButton(modrinthButtonText()) {
-                Util.getPlatform().openUri(Constants.MODRINTH_URL)
+            addRenderable(MinecraftButton {
+                text = modrinthButtonText()
+                onClick = { Util.getPlatform().openUri(Constants.MODRINTH_URL) }
             }(width / 2 + 2, height / 2 + 50, 100, 20))
         }
 
@@ -199,9 +208,9 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
         addRenderable(sidebarPlane(37, 37, 120, height - 101))
         addRenderable(image(37, height - 59, 120, 22))
         if (page.setting != null) {
-            addRenderable(switch.setPosition(width - 37 - switch.width, 37))
+            addRenderable(switch.updatePosition(width - 37 - switch.width, 37))
         }
-        page.header.setPosition(175, 37).setWidth(width - 211).let { addRenderable(it) }
+        page.header.updatePosition(175, 37).updateWidth(width - 211).let { addRenderable(it) }
         addRenderable(page.pane.invoke(175, 37 + (page.header.height + 5), width - 211, height - 74 - (page.header.height + 5)))
     }
 
@@ -259,11 +268,11 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
     }
 
     class Page(header: Component, val pane: Renderable, val setting: Setting<Boolean>? = null) {
-        val header = Header(header).setHeight(if(General.isMinecrafty) 18 else 14)
+        val header = Header(header).updateHeight(if(General.isMinecrafty) 18 else 14)
     }
 
-    class Header(val header: Component): Renderable() {
-        override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+    class Header(val header: Component): SimpleRenderable() {
+        override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             screenDrawing.transform(exactCenterX, screenDrawing.getTextYCenter(this) - if (General.isMinecrafty) 2 else 0, if(General.isMinecrafty) 1.3f else 1f) {
                 screenDrawing.drawCenteredText(header, 0, 0, General.getTextThemeColor())
             }

@@ -200,7 +200,7 @@ object TiwylaWidget : ScalableWidget(
         list.menu(bottomTextColor, "Bottom Text Color", "Set the color of the bottom text in the widget")
 
         list.add(TiwylaLinesSettingsRenderable().addToQuickSettings(this, "lines"))
-        list.add(InfoTextRenderable(healthInfoText(), 0xAAAAAA.color, true))
+        list.add(InfoTextRenderable({ text = healthInfoText(); color = 0xAAAAAA.color; centered = true }))
 
         list.add(LineWidget.backgroundColorRenderable(backgroundColor, backgroundOpacity))
         list.add(LineWidget.borderColorRenderable(borderColor, borderOpacity))

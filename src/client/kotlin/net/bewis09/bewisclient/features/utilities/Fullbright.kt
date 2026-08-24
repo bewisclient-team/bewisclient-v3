@@ -4,8 +4,8 @@ import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.common.setColor
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
-import net.bewis09.bewisclient.game.keybinds.Keybind
 import net.bewis09.bewisclient.features.sidebar.General
+import net.bewis09.bewisclient.game.keybinds.Keybind
 import net.bewis09.bewisclient.settings.structure.ImageFeature
 import net.bewis09.renderite.logic.color
 import net.bewis09.renderite.logic.not
@@ -55,7 +55,11 @@ object Fullbright : ImageFeature(createIdentifier("bewisclient", "fullbright"), 
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
         super.appendSettingsRenderables(list)
-        list.add(InfoTextRenderable(infoText(), 0xAAAAAA.color * General.getThemeColor(), true))
+        list.add(InfoTextRenderable {
+            text = infoText()
+            color = 0xAAAAAA.color * General.getThemeColor()
+            centered = true
+        })
     }
 
     fun showFullbrightMessage() {

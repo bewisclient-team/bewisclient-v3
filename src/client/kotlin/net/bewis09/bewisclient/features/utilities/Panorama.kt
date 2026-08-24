@@ -3,9 +3,8 @@ package net.bewis09.bewisclient.features.utilities
 import com.mojang.blaze3d.platform.NativeImage
 import net.bewis09.bewisclient.common.*
 import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.bewisclient.drawable.renderables.components.logic.Hoverable
 import net.bewis09.bewisclient.drawable.renderables.components.button.ImageButton
-import net.bewis09.bewisclient.drawable.renderables.components.structure.VerticalAlignScrollPlane
+import net.bewis09.bewisclient.drawable.renderables.components.structure.Grid
 import net.bewis09.bewisclient.drawable.renderables.notification.NotificationManager
 import net.bewis09.bewisclient.drawable.renderables.notification.SimpleTextNotification
 import net.bewis09.bewisclient.drawable.renderables.popup.ConfirmPopup
@@ -13,15 +12,16 @@ import net.bewis09.bewisclient.drawable.renderables.popup.InputTextPopup
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.game.BewisclientResourcePack
-import net.bewis09.bewisclient.game.keybinds.Keybind
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.features.sidebar.Screenshot
+import net.bewis09.bewisclient.game.BewisclientResourcePack
+import net.bewis09.bewisclient.game.keybinds.Keybind
 import net.bewis09.bewisclient.settings.logic.Settings
 import net.bewis09.bewisclient.settings.structure.ImageFeature
 import net.bewis09.bewisclient.util.EventEntrypoint
 import net.bewis09.bewisclient.version.registerTexture
 import net.bewis09.bewisclient.version.takePanoramaFull
+import net.bewis09.renderite.components.Hoverable
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.network.chat.Component
 import net.minecraft.server.packs.resources.IoSupplier
@@ -60,30 +60,44 @@ object Panorama : ImageFeature("panorama", "Panorama"), EventEntrypoint, Bewiscl
     val images = mutableMapOf<File, PanoramaScreenshots>()
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
-        list.add(InfoTextRenderable(
-            createTranslation("info_text", "The panorama functionality allows you to set a custom panorama background for the main menu. You can create the panorama by pressing the \"%s\" button [%s]. After taking the screenshot select the screenshot below.")(Component.translatable("bewisclient.key.screenshot.take_panorama"), Component.keybind("bewisclient.key.screenshot.take_panorama")),
-            centered = true
-        ))
+        list.add(
+            InfoTextRenderable {
+                text = createTranslation("info_text", "The panorama functionality allows you to set a custom panorama background for the main menu. You can create the panorama by pressing the \"%s\" button [%s]. After taking the screenshot select the screenshot below.")(Component.translatable("bewisclient.key.screenshot.take_panorama"), Component.keybind("bewisclient.key.screenshot.take_panorama"))
+                centered = true
+            }
+        )
     }
 
     override fun getPane(): Renderable {
-        return VerticalAlignScrollPlane(getSettingRenderables().toMutableList().apply {
-            addAll(FabricLoader.getInstance().gameDir.resolve("screenshots").toFile().listFiles {
-                it.isDirectory && it.resolve("screenshots").exists() && it.resolve("screenshots").listFiles().map { f -> f.name }.let { name ->
-                    name.contains("panorama_0.png") && name.contains("panorama_1.png") && name.contains("panorama_2.png") && name.contains("panorama_3.png") && name.contains("panorama_4.png") && name.contains("panorama_5.png")
-                }
-            }.mapIndexedWithSelf { index, file -> PanoramaElement(file, index, size) })
-        }, 1)
+        return Grid {
+            children = getSettingRenderables().toMutableList().apply {
+                addAll(FabricLoader.getInstance().gameDir.resolve("screenshots").toFile().listFiles {
+                    it.isDirectory && it.resolve("screenshots").exists() && it.resolve("screenshots").listFiles().map { f -> f.name }.let { name ->
+                        name.contains("panorama_0.png") && name.contains("panorama_1.png") && name.contains("panorama_2.png") && name.contains("panorama_3.png") && name.contains("panorama_4.png") && name.contains("panorama_5.png")
+                    }
+                }.mapIndexedWithSelf { index, file ->
+                    PanoramaElement {
+                        this.file = file
+                        this.index = index
+                        this.length = size
+                    }
+                })
+            }
+            gap = 1
+            fitType = Grid.FitType.SCROLL
+        }
     }
 
     inline fun <T, R> Array<T>.mapIndexedWithSelf(transform: Array<T>.(index: Int, element: T) -> R): List<R> {
         return this.mapIndexed { index, element -> this.transform(index, element) }
     }
 
-    class PanoramaElement(val file: File, val index: Int, val size: Int) : Hoverable() {
-        init {
-            internalHeight = 64
-        }
+    class PanoramaElement(p: Props<PanoramaElement>) : Hoverable<PanoramaElement>(p + { height = 64 }) {
+        lateinit var file: File
+        var index: Int = -1
+        var length: Int = -1
+
+        init { props() }
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             if (!images.containsKey(file)) {
@@ -94,8 +108,8 @@ object Panorama : ImageFeature("panorama", "Panorama"), EventEntrypoint, Bewiscl
 
             super.render(screenDrawing, mouseX, mouseY)
 
-            if (path.get() == file.absolutePath) screenDrawing.fillWithBorderRounded(x, y, width, height, 5, General.getThemeColor(alpha = 0.25f), General.getThemeColor(alpha = 0.5f), topLeft = index == 0, topRight = index == 0, bottomLeft = index == size - 1, bottomRight = index == size - 1)
-            else screenDrawing.fillRounded(x, y, width, height, 5, General.getThemeColor(alpha = hoverFactor * 0.15f + 0.1f), topLeft = index == 0, topRight = index == 0, bottomLeft = index == size - 1, bottomRight = index == size - 1)
+            if (path.get() == file.absolutePath) screenDrawing.fillWithBorderRounded(x, y, width, height, 5, General.getThemeColor(alpha = 0.25f), General.getThemeColor(alpha = 0.5f), topLeft = index == 0, topRight = index == 0, bottomLeft = index == length - 1, bottomRight = index == length - 1)
+            else screenDrawing.fillRounded(x, y, width, height, 5, General.getThemeColor(alpha = hoverFactor * 0.15f + 0.1f), topLeft = index == 0, topRight = index == 0, bottomLeft = index == length - 1, bottomRight = index == length - 1)
             screenDrawing.drawText(file.name, x + 8, y + 8, General.getTextThemeColor())
 
             images[file]?.identifiers?.forEachIndexed { index, identifier ->
@@ -109,52 +123,71 @@ object Panorama : ImageFeature("panorama", "Panorama"), EventEntrypoint, Bewiscl
 
         override fun init() {
             super.init()
-            addRenderable(ImageButton(createIdentifier("bewisclient", "textures/gui/sprites/select.png")) {
-                if (path.get() == file.absolutePath) return@ImageButton
+            addRenderable(ImageButton {
+                image = createIdentifier("bewisclient", "textures/gui/sprites/select.png")
+                imagePadding = 2
+                onClick = onClick@{
+                    if (path.get() == file.absolutePath) return@onClick
 
-                path.set(file.absolutePath)
-                if (enabled) client.reloadResourcePacks()
-            }.setImagePadding(2)(x + width - 21, y + 7, 14, 14))
-            addRenderable(ImageButton(createIdentifier("bewisclient", "textures/gui/sprites/delete.png")) {
-                OptionScreen.currentInstance?.openPopup(
-                    ConfirmPopup(confirmPanoramaDelete(), {
-                        if (catch { file.deleteRecursively() } == true) {
-                            NotificationManager.addNotification(SimpleTextNotification(deletedPanoramaText()))
-                        } else {
-                            NotificationManager.addNotification(SimpleTextNotification(Screenshot.deleteFailedNotifText()))
+                    path.set(file.absolutePath)
+                    if (enabled) client.reloadResourcePacks()
+                }
+            }(x + width - 21, y + 7, 14, 14))
+            addRenderable(ImageButton {
+                image = createIdentifier("bewisclient", "textures/gui/sprites/delete.png")
+                imagePadding = 2
+                onClick = {
+                    OptionScreen.currentInstance?.openPopup(
+                        ConfirmPopup {
+                            text = confirmPanoramaDelete()
+                            onClick = {
+                                if (catch { file.deleteRecursively() } == true) {
+                                    NotificationManager.addNotification(SimpleTextNotification { text = deletedPanoramaText() })
+                                } else {
+                                    NotificationManager.addNotification(SimpleTextNotification { text = Screenshot.deleteFailedNotifText() })
+                                }
+                                OptionScreen.currentInstance?.goBack(instant = true)
+                                OptionScreen.currentInstance?.openPage(title(), getPane(), enabledSetting, true)
+                            }
                         }
-                        OptionScreen.currentInstance?.goBack(instant = true)
-                        OptionScreen.currentInstance?.openPage(title(), getPane(), enabledSetting, true)
+                    )
+                }
+            }(x + width - 21, y + 25, 14, 14))
+            addRenderable(ImageButton {
+                image = createIdentifier("bewisclient", "textures/gui/sprites/rename.png")
+                imagePadding = 2
+                onClick = onClick@{
+                    OptionScreen.currentInstance?.openPopup(InputTextPopup {
+                        text = renamePanoramaText()
+                        default = file.name
+                        onConfirm = onConfirm@{ newName ->
+                            if (newName.isBlank()) {
+                                NotificationManager.addNotification(SimpleTextNotification { text = noEmptyNameText() })
+                                return@onConfirm
+                            }
+
+                            if (newName == file.name) return@onConfirm
+
+                            if (FabricLoader.getInstance().gameDir.resolve("screenshots").resolve(newName).exists()) {
+                                NotificationManager.addNotification(SimpleTextNotification { text = nameAlreadyExistsText() })
+                                return@onConfirm
+                            }
+
+                            if (catch { Files.move(file.toPath(), file.parentFile.resolve(newName).toPath(), StandardCopyOption.REPLACE_EXISTING) } != null) {
+                                OptionScreen.currentInstance?.goBack(instant = true)
+                                OptionScreen.currentInstance?.openPage(title(), getPane(), enabledSetting, instant = true)
+                                if (path.get() == file.absolutePath) {
+                                    path.set(file.parentFile.resolve(newName).absolutePath)
+                                }
+                                OptionScreen.currentInstance?.resize()
+                                NotificationManager.addNotification(SimpleTextNotification { text = renameSuccessText() })
+                            } else {
+                                NotificationManager.addNotification(SimpleTextNotification { text = renameFailedText() })
+                            }
+                        }
                     })
-                )
-            }.setImagePadding(2)(x + width - 21, y + 25, 14, 14))
-            addRenderable(ImageButton(createIdentifier("bewisclient", "textures/gui/sprites/rename.png")) {
-                OptionScreen.currentInstance?.openPopup(InputTextPopup(renamePanoramaText(), default = file.name, onConfirm = { newName ->
-                    if (newName.isBlank()) {
-                        NotificationManager.addNotification(SimpleTextNotification(noEmptyNameText()))
-                        return@InputTextPopup
-                    }
-
-                    if (newName == file.name) return@InputTextPopup
-
-                    if (FabricLoader.getInstance().gameDir.resolve("screenshots").resolve(newName).exists()) {
-                        NotificationManager.addNotification(SimpleTextNotification(nameAlreadyExistsText()))
-                        return@InputTextPopup
-                    }
-
-                    if (catch { Files.move(file.toPath(), file.parentFile.resolve(newName).toPath(), StandardCopyOption.REPLACE_EXISTING) } != null) {
-                        OptionScreen.currentInstance?.goBack(instant = true)
-                        OptionScreen.currentInstance?.openPage(title(), getPane(), enabledSetting, instant = true)
-                        if (path.get() == file.absolutePath) {
-                            path.set(file.parentFile.resolve(newName).absolutePath)
-                        }
-                        OptionScreen.currentInstance?.resize()
-                        NotificationManager.addNotification(SimpleTextNotification(renameSuccessText()))
-                    } else {
-                        NotificationManager.addNotification(SimpleTextNotification(renameFailedText()))
-                    }
-                }))
-            }.setImagePadding(2)(x + width - 21, y + 43, 14, 14))
+                }
+            }(x + width - 21, y + 43, 14, 14))
         }
     }
 

@@ -1,14 +1,22 @@
 package net.bewis09.bewisclient.drawable.renderables.components.setting
 
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
-import net.bewis09.bewisclient.drawable.renderables.components.logic.Hoverable
+import net.bewis09.renderite.components.Hoverable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.util.interfaces.Gettable
 import net.bewis09.bewisclient.util.number.Precision
 
-class Fader(val value: Gettable<Float>, val precision: Precision, val onChange: (new: Float) -> Unit) : Hoverable(100, 14) {
-    override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        super.render(screenDrawing, mouseX, mouseY)
+class Fader(p: Props<Fader>) : Hoverable<Fader>(p + {
+    width = 100
+    height = 14
+}) {
+    lateinit var value: Gettable<Float>
+    lateinit var precision: Precision
+    var onChange: (new: Float) -> Unit = {}
+
+    init { props() }
+
+    override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         val normalizedValue = precision.normalize(value.get())
         SelectiveScreenDrawer.renderFader(screenDrawing, x, y, width, height, hoverAnimation.get(), normalizedValue, mouseX, mouseY)
     }

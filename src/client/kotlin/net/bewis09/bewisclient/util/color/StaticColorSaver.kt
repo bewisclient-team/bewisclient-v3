@@ -3,13 +3,15 @@ package net.bewis09.bewisclient.util.color
 import com.google.gson.JsonElement
 import com.google.gson.JsonPrimitive
 import net.bewis09.bewisclient.common.toText
-import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.drawable.SimpleRenderable
 import net.bewis09.bewisclient.drawable.renderables.components.element.Rectangle
-import net.bewis09.bewisclient.drawable.renderables.components.element.TextElement
+import net.bewis09.bewisclient.drawable.renderables.components.element.Text
+import net.bewis09.bewisclient.drawable.renderables.components.logic.Direction
+import net.bewis09.bewisclient.drawable.renderables.components.logic.TextAlign
 import net.bewis09.bewisclient.drawable.renderables.components.logic.TooltipHoverable
 import net.bewis09.bewisclient.drawable.renderables.components.setting.ColorPicker
 import net.bewis09.bewisclient.drawable.renderables.components.setting.Fader
-import net.bewis09.bewisclient.drawable.renderables.components.structure.HorizontalScrollGrid
+import net.bewis09.bewisclient.drawable.renderables.components.structure.Grid
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.features.sidebar.General
@@ -17,7 +19,6 @@ import net.bewis09.bewisclient.util.number.Precision
 import net.bewis09.bewisclient.util.string
 import net.bewis09.renderite.logic.Color
 import net.bewis09.renderite.logic.color
-import net.minecraft.network.chat.Component
 
 open class StaticColorSaver(private val color: Color) : ColorSaver {
     companion object {
@@ -77,12 +78,19 @@ open class StaticColorSaver(private val color: Color) : ColorSaver {
         return infoTranslation(getColorString()).string
     }
 
-    class SettingRenderable(val get: () -> StaticColorSaver, val set: (ColorSaver) -> Unit) : Renderable() {
-        val colorPicker = ColorPicker({ get().getColor() }) { hue, sat -> set(StaticColorSaver(Color(hue, sat, get().getColor().brightness))) }
-        val fader = Fader({ get().getColor().brightness }, Precision(0f, 1f, 0.01f, 2)) { bri ->
-            set(StaticColorSaver(get().getColor().withBrightness(bri)))
+    class SettingRenderable(val get: () -> StaticColorSaver, val set: (ColorSaver) -> Unit) : SimpleRenderable() {
+        val colorPicker = ColorPicker {
+            get = { this@SettingRenderable.get().getColor() }
+            set = { hue, sat -> this@SettingRenderable.set(StaticColorSaver(Color(hue, sat, this@SettingRenderable.get().getColor().brightness))) }
         }
-        val text = TextElement(changeBrightnessText(), centered = true)
+        val fader = Fader {
+            value = { get().getColor().brightness }
+            precision = Precision(0f, 1f, 0.01f, 2)
+            onChange = { bri ->
+                set(StaticColorSaver(get().getColor().withBrightness(bri)))
+            }
+        }
+        val text = Text { text = changeBrightnessText(); textAlign = TextAlign.CENTER }
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             renderRenderables(screenDrawing, mouseX, mouseY)
@@ -92,31 +100,47 @@ open class StaticColorSaver(private val color: Color) : ColorSaver {
             addRenderable(colorPicker(x, y, height, height))
             addRenderable(text(x + height + 6, y + 2, width - height - 5, 9))
             addRenderable(fader(x + height + 6, y + 11, width - height - 6, 14))
-            addRenderable(Rectangle { if (General.isMinecrafty) Color.WHITE alpha 0.3f else General.getThemeColor(alpha = 0.3f) }(x + height + 5, y + 30, width - height - 5, 1))
-            addRenderable(ColorButton(x + height + 5, y + 36, 27, 27, { get().getColor() }, String.format("#%06X", get().getColor().argb).toText()))
-            addRenderable(Rectangle { if (General.isMinecrafty) Color.WHITE alpha 0.3f else General.getThemeColor(alpha = 0.3f) }(x + height + 37, y + 36, 1, 27))
+            addRenderable(Rectangle { colorProvider = { if (General.isMinecrafty) Color.WHITE alpha 0.3f else General.getThemeColor(alpha = 0.3f) } }(x + height + 5, y + 30, width - height - 5, 1))
+            addRenderable(ColorButton {
+                color = { get().getColor() }
+                tooltip = String.format("#%06X", get().getColor().argb).toText()
+            })(x + height + 5, y + 36, 27, 27)
+            addRenderable(Rectangle { colorProvider = { if (General.isMinecrafty) Color.WHITE alpha 0.3f else General.getThemeColor(alpha = 0.3f) } }(x + height + 37, y + 36, 1, 27))
 
             addRenderable(
-                HorizontalScrollGrid({
-                    return@HorizontalScrollGrid colors.map { color ->
-                        ColorButton(0, 0, 12, 12, { color.color }, color.translation(), { newColor ->
-                            set(StaticColorSaver(newColor))
-                        })
+                Grid {
+                    init = {
+                        colors.map { color ->
+                            ColorButton {
+                                x = 0
+                                y = 0
+                                width = 12
+                                height = 12
+                                this.color = { color.color }
+                                tooltip = color.translation()
+                                this.onClick = { newColor ->
+                                    set(StaticColorSaver(newColor))
+                                }
+                            }
+                        }
                     }
-                }, 3, 12)(x + height + 43, y + 36, width - height - 43, 27)
+                    gap = 3
+                    minElementSize = 12
+                    lines = 2
+                    direction = Direction.HORIZONTAL
+                    lineType = Grid.LineType.SIZED
+                    fitType = Grid.FitType.SCROLL
+                }(x + height + 43, y + 36, width - height - 43, 27)
             )
         }
 
-        class ColorButton(x: Int, y: Int, width: Int, height: Int, val color: () -> Color, tooltip: Component? = null, val onClick: ((Color) -> Unit)? = null) : TooltipHoverable(tooltip) {
-            init {
-                this.internalX = x
-                this.internalY = y
-                this.internalWidth = width
-                this.internalHeight = height
-            }
+        class ColorButton(p: Props<ColorButton>) : TooltipHoverable<ColorButton>(p) {
+            lateinit var color: () -> Color
+            var onClick: ((Color) -> Unit)? = null
 
-            override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-                super.render(screenDrawing, mouseX, mouseY)
+            init { props() }
+
+            override fun renderBackground(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
                 screenDrawing.fillWithBorderRounded(x, y, width, height, if (General.isMinecrafty) 0 else 3, color(), if (General.isMinecrafty) Color.WHITE alpha 0.3f else General.getThemeColor(alpha = 0.3f))
             }
 

@@ -6,7 +6,11 @@ import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.renderite.logic.Color
 import net.minecraft.network.chat.Component
 
-class ProgressNotification(val text: Component) : Notification() {
+class ProgressNotification(p: Props<ProgressNotification>) : Notification<ProgressNotification>(p) {
+    lateinit var text: Component
+
+    init { props() }
+
     override var progress: Float = 0f
         set(value) {
             if (value >= 1f) {

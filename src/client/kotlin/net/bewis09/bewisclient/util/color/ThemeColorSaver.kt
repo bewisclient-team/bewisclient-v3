@@ -5,8 +5,10 @@ import com.google.gson.JsonPrimitive
 import net.bewis09.renderite.logic.Color
 import net.bewis09.bewisclient.common.then
 import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.drawable.SimpleRenderable
 import net.bewis09.bewisclient.drawable.renderables.components.button.ResetButton
-import net.bewis09.bewisclient.drawable.renderables.components.element.TextElement
+import net.bewis09.bewisclient.drawable.renderables.components.element.Text
+import net.bewis09.bewisclient.drawable.renderables.components.logic.TextAlign
 import net.bewis09.bewisclient.drawable.renderables.components.setting.Fader
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.translations.Translation
@@ -70,11 +72,15 @@ class ThemeColorSaver : ColorSaver {
         return brightness.hashCode()
     }
 
-    class SettingRenderable(val get: () -> ThemeColorSaver, val set: (ColorSaver) -> Unit) : Renderable() {
-        val fader = Fader({ get().getBrightness() }, Precision(0f, 1f, 0.01f, 2)) { brightness ->
-            set(ThemeColorSaver(brightness))
+    class SettingRenderable(val get: () -> ThemeColorSaver, val set: (ColorSaver) -> Unit) : SimpleRenderable() {
+        val fader = Fader {
+            value = { get().getBrightness() }
+            precision = Precision(0f, 1f, 0.01f, 2)
+            onChange = { brightness ->
+                set(ThemeColorSaver(brightness))
+            }
         }
-        val text = TextElement({ StaticColorSaver.changeBrightnessText() }, centered = true)
+        val text = Text { textProvider = { StaticColorSaver.changeBrightnessText() }; textAlign = TextAlign.CENTER }
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             renderRenderables(screenDrawing, mouseX, mouseY)
@@ -83,7 +89,10 @@ class ThemeColorSaver : ColorSaver {
         override fun init() {
             addRenderable(text(x, y + 2, width, 9))
             addRenderable(fader(x, y + 11, width - 18, 14))
-            addRenderable(ResetButton<Nothing>({ set(ThemeColorSaver()) }) { get().brightness == get().getDefault() }.setPosition(x2 - 14, y + 11))
+            addRenderable(ResetButton<Nothing> {
+                settable = ({ set(ThemeColorSaver()) })
+                isDefault = { get().brightness == get().getDefault() }
+            }.updatePosition(x2 - 14, y + 11))
         }
     }
 }

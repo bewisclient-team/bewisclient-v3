@@ -7,7 +7,6 @@ import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
 import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSettingsRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.renderite.drawer.translate
 import net.bewis09.bewisclient.features.sidebar.Widgets
 import net.bewis09.bewisclient.mixin.client.accessor.KeyMappingAccessor
 import net.bewis09.bewisclient.settings.types.BooleanSetting
@@ -18,6 +17,7 @@ import net.bewis09.bewisclient.widget.logic.TOP
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
 import net.bewis09.bewisclient.widget.types.ScalableWidget
+import net.bewis09.renderite.drawer.translate
 import net.bewis09.renderite.logic.Color
 import net.minecraft.client.KeyMapping
 import org.lwjgl.glfw.GLFW
@@ -153,13 +153,14 @@ object KeyWidget : ScalableWidget(
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
         list.add(
-            MultipleBooleanSettingsRenderable(
-                createTranslation("keys", "Select which keys should be shown"), null, listOf(
-                    showMovementKeys.createRenderablePart(this, "show_movement_keys", "Movement Keys"),
-                    showAttackUseKeys.createRenderablePart(this, "show_attack_use_keys", "Attack/Use Keys"),
-                    showJumpKey.createRenderablePart(this, "show_jump_key", "Jump Key")
-                ).staticFun()
-            ).addToQuickSettings(this, "shown_keys")
+            MultipleBooleanSettingsRenderable {
+                title = createTranslation("keys", "Select which keys should be shown")
+                settings = listOf(
+                    showMovementKeys.createRenderablePart(this@KeyWidget, "show_movement_keys", "Movement Keys"),
+                    showAttackUseKeys.createRenderablePart(this@KeyWidget, "show_attack_use_keys", "Attack/Use Keys"),
+                    showJumpKey.createRenderablePart(this@KeyWidget, "show_jump_key", "Jump Key")
+                )
+            }.addToQuickSettings(this, "shown_keys")
         )
 
         list.menuQuick(showCPS, "Show CPS", "Shows your clicks per second (CPS) for the attack/use keys")

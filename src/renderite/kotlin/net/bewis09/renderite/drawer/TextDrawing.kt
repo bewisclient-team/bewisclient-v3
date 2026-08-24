@@ -209,5 +209,5 @@ interface TextDrawing<I, T, F> : RectDrawing<I, T, F> {
      */
     fun getTextHeight(): Int
 
-    fun getTextYCenter(renderable: RenderiteElement<*>): Float = renderable.exactCenterY - getTextHeight() / 2f
+    fun getTextYCenter(renderable: RenderiteElement<*, *>): Float = renderable.exactCenterY - getTextHeight() / 2f
 }

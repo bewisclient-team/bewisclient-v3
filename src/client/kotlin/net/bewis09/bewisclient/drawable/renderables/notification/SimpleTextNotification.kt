@@ -1,12 +1,18 @@
 package net.bewis09.bewisclient.drawable.renderables.notification
 
 import net.bewis09.bewisclient.common.toText
+import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.renderite.drawer.translate
 import net.bewis09.bewisclient.features.sidebar.General
 import net.minecraft.network.chat.Component
 
-class SimpleTextNotification(val text: Component, val duration: Long = 5000) : Notification() {
+class SimpleTextNotification(p: Props<SimpleTextNotification>) : Notification<SimpleTextNotification>(p) {
+    lateinit var text: Component
+    val duration: Long = 5000
+
+    init { props() }
+
     val start = System.currentTimeMillis()
 
     override val progress: Float

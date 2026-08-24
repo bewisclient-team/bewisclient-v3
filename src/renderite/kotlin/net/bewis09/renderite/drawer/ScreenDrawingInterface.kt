@@ -54,6 +54,12 @@ interface ScreenDrawingInterface<I, T, F> {
 
     fun disableScissors()
 
+    fun enableScissors(x: Int, y: Int, width: Int, height: Int, func: () -> Unit) {
+        enableScissors(x, y, width, height)
+        func()
+        disableScissors()
+    }
+
     fun scissorContains(x: Int, y: Int): Boolean
 
     fun pointerIfWithin(x: Int, y: Int, width: Int, height: Int, mouseX: Int, mouseY: Int) {

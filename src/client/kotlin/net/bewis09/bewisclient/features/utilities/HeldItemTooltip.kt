@@ -25,9 +25,11 @@ object HeldItemTooltip : ImageFeature("held_item_tooltip", "Held Item Info") {
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
         super.appendSettingsRenderables(list)
-        list.add(MultipleBooleanSettingsRenderable.create(
-            this, "multiple_boolean_settings", "Data Component Tooltips:", "Select which information to show in the held item tooltip"
-        ) { componentRenderableParts })
+        list.add(
+            MultipleBooleanSettingsRenderable.create(
+                this, "multiple_boolean_settings", "Data Component Tooltips:", "Select which information to show in the held item tooltip", componentRenderableParts
+            )
+        )
     }
 
     fun lookup() {
@@ -64,8 +66,9 @@ object HeldItemTooltip : ImageFeature("held_item_tooltip", "Held Item Info") {
         }) {
             val id = BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(componentType).toString()
             parts.add(
-                MultipleBooleanSettingsRenderable.Part(
-                    Component.literal(toReadableString(id)), null, object : SettingInterfaceWithDefault<Boolean> {
+                MultipleBooleanSettingsRenderable.Part {
+                    title = Component.literal(toReadableString(id))
+                    setting = object : SettingInterfaceWithDefault<Boolean> {
                         override fun get(): Boolean {
                             return showMap[id, !defaultOff.contains(componentType)]
                         }
@@ -78,7 +81,7 @@ object HeldItemTooltip : ImageFeature("held_item_tooltip", "Held Item Info") {
                             return !defaultOff.contains(componentType)
                         }
                     }
-                )
+                }
             )
         }
         parts

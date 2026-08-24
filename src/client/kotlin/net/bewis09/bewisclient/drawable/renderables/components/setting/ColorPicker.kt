@@ -3,13 +3,18 @@ package net.bewis09.bewisclient.drawable.renderables.components.setting
 import net.bewis09.renderite.logic.Color
 import net.bewis09.bewisclient.common.Identifier
 import net.bewis09.bewisclient.common.createIdentifier
-import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.renderite.drawer.pushColor
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.util.Bewisclient
 
-class ColorPicker(val get: () -> Color, val set: (hue: Float, sat: Float) -> Unit) : Renderable() {
+class ColorPicker(p: Props<ColorPicker>) : PropedRenderable<ColorPicker>(p) {
+    lateinit var get: () -> Color
+    lateinit var set: (hue: Float, sat: Float) -> Unit
+
+    init { props() }
+
     companion object {
         val colorPickerCache = mutableMapOf<Int, Identifier>()
     }
@@ -33,7 +38,7 @@ class ColorPicker(val get: () -> Color, val set: (hue: Float, sat: Float) -> Uni
         return identifier
     }
 
-    override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+    override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         screenDrawing.drawBorder(x, y, width, height, General.getThemeColor(alpha = 0.3f))
         get().brightness.let {
             screenDrawing.pushColor(it, it, it, 1f) {

@@ -137,16 +137,16 @@ object ArmorWidget : ScalableWidget(
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
         list.add(
-            MultipleBooleanSettingsRenderable(
-                createTranslation("armor_slots", "Armor Slots"), null,
-                listOf(
-                    showHead.createRenderablePart(this, "show_head", "Show Head"),
-                    showChest.createRenderablePart(this, "show_chest", "Show Chest"),
-                    showLegs.createRenderablePart(this, "show_legs", "Show Legs"),
-                    showFeet.createRenderablePart(this, "show_feet", "Show Feet"),
-                    showOffHand.createRenderablePart(this, "show_off_hand", "Show Off-Hand")
-                ).staticFun()
-            ).addToQuickSettings(this, "armor_slots")
+            MultipleBooleanSettingsRenderable {
+                title = createTranslation("armor_slots", "Armor Slots")
+                settings = listOf(
+                    showHead.createRenderablePart(this@ArmorWidget, "show_head", "Show Head"),
+                    showChest.createRenderablePart(this@ArmorWidget, "show_chest", "Show Chest"),
+                    showLegs.createRenderablePart(this@ArmorWidget, "show_legs", "Show Legs"),
+                    showFeet.createRenderablePart(this@ArmorWidget, "show_feet", "Show Feet"),
+                    showOffHand.createRenderablePart(this@ArmorWidget, "show_off_hand", "Show Off-Hand")
+                )
+            }.addToQuickSettings(this, "armor_slots")
         )
 
         list.menuQuick(showDurability, "Show Durability", "Toggle whether to show armor durability")

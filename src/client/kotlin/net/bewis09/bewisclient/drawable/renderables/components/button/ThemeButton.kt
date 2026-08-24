@@ -8,22 +8,12 @@ import net.bewis09.renderite.drawer.transform
 import net.bewis09.bewisclient.features.sidebar.General
 import net.minecraft.network.chat.Component
 
-class ThemeButton : TooltipHoverable {
-    val text: Component
-    val selected: () -> Boolean
-    val onClick: (ThemeButton) -> Unit
+class ThemeButton(p: Props<ThemeButton>) : TooltipHoverable<ThemeButton>(p) {
+    lateinit var text: Component
+    var selected: () -> Boolean = { false }
+    var onClick: (ThemeButton) -> Unit = {}
 
-    constructor(text: Component, selected: () -> Boolean, onClick: (ThemeButton) -> Unit, tooltip: Component? = null) : super(tooltip) {
-        this.text = text
-        this.selected = selected
-        this.onClick = onClick
-    }
-
-    constructor(text: Component, onClick: (ThemeButton) -> Unit) {
-        this.text = text
-        this.selected = { clickAnimation.get() < 1f && clickAnimation.getWithoutInterpolation() == 0f }
-        this.onClick = onClick
-    }
+    init { props() }
 
     val clickAnimation: Animator = Animator({ General.animationDuration }, Animator.EASE_IN_OUT, 1f)
     val colorAnimation: Animator = Animator({ General.animationDuration }, Animator.EASE_IN_OUT, 0f)

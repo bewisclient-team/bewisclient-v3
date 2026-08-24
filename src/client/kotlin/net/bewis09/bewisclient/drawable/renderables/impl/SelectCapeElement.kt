@@ -5,7 +5,7 @@ import net.bewis09.bewisclient.cosmetics.CosmeticIdentifier
 import net.bewis09.bewisclient.cosmetics.CosmeticType
 import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
-import net.bewis09.bewisclient.drawable.renderables.components.logic.Hoverable
+import net.bewis09.renderite.components.Hoverable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.renderite.drawer.darken
 import net.bewis09.bewisclient.features.cosmetics.Cosmetic
@@ -16,7 +16,12 @@ import net.bewis09.renderite.logic.Color
 import net.bewis09.renderite.logic.not
 import net.bewis09.renderite.logic.within
 
-class SelectCapeElement(val identifier: CosmeticIdentifier, val cosmetic: Cosmetic) : Hoverable() {
+class SelectCapeElement(p: Props<SelectCapeElement>) : Hoverable<SelectCapeElement>(p) {
+    lateinit var identifier: CosmeticIdentifier
+    lateinit var cosmetic: Cosmetic
+
+    init { props() }
+
     val selected = Animator({ General.animationDuration }, Animator.EASE_IN_OUT, 0f)
 
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
@@ -65,7 +70,7 @@ class SelectCapeElement(val identifier: CosmeticIdentifier, val cosmetic: Cosmet
 
     override fun init() {
         super.init()
-        internalHeight = (width - 16) * 16 / 10 + 25
+        height = (width - 16) * 16 / 10 + 25
     }
 
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {

@@ -4,17 +4,19 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonPrimitive
 import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.bewisclient.drawable.renderables.components.setting.Fader
+import net.bewis09.bewisclient.drawable.SimpleRenderable
 import net.bewis09.bewisclient.drawable.renderables.components.button.ImageButton
 import net.bewis09.bewisclient.drawable.renderables.components.element.Rectangle
-import net.bewis09.bewisclient.drawable.renderables.components.element.TextElement
+import net.bewis09.bewisclient.drawable.renderables.components.element.Text
+import net.bewis09.bewisclient.drawable.renderables.components.logic.TextAlign
+import net.bewis09.bewisclient.drawable.renderables.components.setting.Fader
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.renderite.drawer.translate
-import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.features.sidebar.General
+import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.util.Bewisclient
 import net.bewis09.bewisclient.util.int
 import net.bewis09.bewisclient.util.number.Precision
+import net.bewis09.renderite.drawer.translate
 import net.bewis09.renderite.logic.Color
 
 class ChangingColorSaver : ColorSaver {
@@ -77,13 +79,18 @@ class ChangingColorSaver : ColorSaver {
         return result
     }
 
-    class SettingRenderable(val get: () -> ChangingColorSaver, val set: (ColorSaver) -> Unit) : Renderable() {
-        val fader = Fader({ get().changingSpeed.toFloat() }, Precision(1000f, 20000f, 100f, -2)) { speed ->
-            set(ChangingColorSaver(speed.toInt(), System.currentTimeMillis(), get().getHue()))
+    class SettingRenderable(val get: () -> ChangingColorSaver, val set: (ColorSaver) -> Unit) : SimpleRenderable() {
+        val fader = Fader {
+            value = { get().changingSpeed.toFloat() }
+            precision = Precision(1000f, 20000f, 100f, -2)
+            onChange = { speed ->
+                set(ChangingColorSaver(speed.toInt(), System.currentTimeMillis(), get().getHue()))
+            }
         }
-        val text = TextElement({ changeDuration(get().changingSpeed / 1000f) }, centered = true)
-        val spectrumButton = ImageButton(texture) {}.setImagePadding(0)
-        val actionButton = Rectangle { get().getColor() }
+
+        val text = Text { textProvider = { changeDuration(get().changingSpeed / 1000f) }; textAlign = TextAlign.CENTER }
+        val spectrumButton = ImageButton { image = texture; imagePadding = 0 }
+        val actionButton = Rectangle { colorProvider = { get().getColor() } }
 
         companion object {
             val texture = Bewisclient.createTexture(createIdentifier("bewisclient", "color_strip_selector_190"), 190, 14) { image ->
@@ -106,9 +113,9 @@ class ChangingColorSaver : ColorSaver {
         override fun init() {
             addRenderable(text(x, y + 2, width, 9))
             addRenderable(fader(x, y + 11, width, 14))
-            addRenderable(Rectangle { General.getThemeColor(alpha = 0.3f) }(x, y + 29, width, 1))
+            addRenderable(Rectangle { colorProvider = { General.getThemeColor(alpha = 0.3f) } }(x, y + 29, width, 1))
             addRenderable(spectrumButton(x, y + 36, width, 8))
-            addRenderable(Rectangle { General.getThemeColor(alpha = 0.3f) }(x, y + 49, width, 1))
+            addRenderable(Rectangle { colorProvider = { General.getThemeColor(alpha = 0.3f) } }(x, y + 49, width, 1))
             addRenderable(actionButton(x, y + 55, width, 8))
         }
     }

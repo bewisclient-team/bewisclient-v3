@@ -1,12 +1,20 @@
 package net.bewis09.bewisclient.drawable.renderables.settings
 
-import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.renderite.logic.Color
 import net.bewis09.bewisclient.features.sidebar.General
+import net.bewis09.renderite.logic.Color
 import net.minecraft.network.chat.Component
 
-class InfoTextRenderable(val text: Component, val color: Color = General.getThemeColor(), val centered: Boolean = false, val selfResize: Boolean = true, val padding: Int = 5) : Renderable() {
+class InfoTextRenderable(p: Props<InfoTextRenderable>) : PropedRenderable<InfoTextRenderable>(p) {
+    lateinit var text: Component
+    var color: Color = General.getThemeColor()
+    var centered: Boolean = false
+    var selfResize: Boolean = true
+    var padding: Int = 5
+
+    init { props() }
+
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         val lines = screenDrawing.wrapText(text.string, width)
         lines.forEachIndexed { index, line ->
@@ -16,6 +24,6 @@ class InfoTextRenderable(val text: Component, val color: Color = General.getThem
                 screenDrawing.drawText(line, x, y + index * screenDrawing.getTextHeight() + padding, color)
             }
         }
-        if (selfResize) setHeight(lines.size * screenDrawing.getTextHeight() + padding * 2)
+        if (selfResize) updateHeight(lines.size * screenDrawing.getTextHeight() + padding * 2)
     }
 }

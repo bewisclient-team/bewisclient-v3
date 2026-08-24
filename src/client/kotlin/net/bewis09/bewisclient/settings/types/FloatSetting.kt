@@ -20,26 +20,29 @@ class FloatSetting(default: () -> Float, val precision: Precision) : Setting<Flo
 
     override fun createRenderable(
         feature: Feature, id: String, title: String, description: String?
-    ) = FloatSettingRenderable(
-        feature.createTranslation(id, title), description?.let { Translation("$id.description", it) }, this, precision
-    )
+    ) = FloatSettingRenderable {
+        this.title = feature.createTranslation(id, title)
+        tooltip = description?.let { Translation("$id.description", it)() }
+        setting = this@FloatSetting
+        precision = this@FloatSetting.precision
+    }
 
     fun createIntRenderable(
         feature: Feature, id: String, title: String, description: String? = null
     ): IntegerSettingRenderable = IntegerSettingRenderable(
-        feature.createTranslation(id, title), description?.let { feature.createTranslation("$id.description", it) }, object : SettingInterfaceWithDefault<Int> {
-            override fun set(value: Int?) {
-                this@FloatSetting.set(value?.toFloat())
-            }
+        {
+            this.title = feature.createTranslation(id, title)
+            tooltip = description?.let { feature.createTranslation("$id.description", it)() }
+            setting = object : SettingInterfaceWithDefault<Int> {
+                override fun set(value: Int?) = this@FloatSetting.set(value?.toFloat())
 
-            override fun get(): Int {
-                return this@FloatSetting.get().toInt()
-            }
+                override fun get(): Int = this@FloatSetting.get().toInt()
 
-            override fun getDefault(): Int {
-                return this@FloatSetting.getDefault().toInt()
+                override fun getDefault(): Int = this@FloatSetting.getDefault().toInt()
             }
-        }, precision.min.toInt(), precision.max.toInt()
+            min = this@FloatSetting.precision.min.toInt()
+            max = this@FloatSetting.precision.max.toInt()
+        }
     )
 
     override fun processChange(value: Float?): Float? = value?.let {

@@ -11,7 +11,12 @@ import net.bewis09.renderite.logic.color
 import net.fabricmc.loader.api.ModContainer
 import kotlin.math.roundToInt
 
-class ExtensionListRenderable(val modContainer: ModContainer, val entrypoint: BewisclientAPIEntrypoint) : SettingRenderable(null, 22) {
+class ExtensionListRenderable(p: Props<ExtensionListRenderable>) : SettingRenderable<ExtensionListRenderable>(p + { height = 22 }) {
+    lateinit var modContainer: ModContainer
+    lateinit var entrypoint: BewisclientAPIEntrypoint
+
+    init { props() }
+
     val notFoundIdentifier: Identifier = createIdentifier("textures/misc/unknown_pack.png")
 
     val menuAnimation = Animator({ General.animationDuration }, Animator.EASE_IN_OUT, 0f)
@@ -24,6 +29,6 @@ class ExtensionListRenderable(val modContainer: ModContainer, val entrypoint: Be
         val lines = screenDrawing.drawWrappedText(entrypoint.getExtensionDescription(modContainer), x + 32, y + 10, width - 40, 0xAAAAAA.color alpha 0.8f)
         screenDrawing.pop()
         screenDrawing.drawTexture(entrypoint.getIcon(modContainer) ?: notFoundIdentifier, x + 8, centerY - 8, 0f, 0f, 16, 16, 16, 16)
-        internalHeight = 22 + lines.size * 9 + 1 + (menuAnimation.get() * 19).roundToInt()
+        height = 22 + lines.size * 9 + 1 + (menuAnimation.get() * 19).roundToInt()
     }
 }

@@ -1,32 +1,47 @@
 package net.bewis09.bewisclient.drawable.renderables.settings
 
+import net.bewis09.bewisclient.common.toText
 import net.bewis09.bewisclient.drawable.renderables.components.button.ResetButton
+import net.bewis09.bewisclient.drawable.renderables.components.element.Text
+import net.bewis09.bewisclient.drawable.renderables.components.logic.TextAlign
 import net.bewis09.bewisclient.drawable.renderables.components.setting.Fader
-import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.translations.Translation
-import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.settings.logic.SettingInterfaceWithDefault
 import net.bewis09.bewisclient.util.number.Precision
 
-open class FaderSettingRenderable<T : Number>(val title: Translation, val description: Translation?, val setting: SettingInterfaceWithDefault<T>, val precision: Precision, val parser: (original: Float) -> T) : SettingRenderable(description, 22) {
-    val fader = Fader(
-        value = { setting.get().toFloat() }, onChange = { value ->
-            setting.set(parser(value))
-        }, precision = precision
-    )
+open class FaderSettingRenderable<T : Number, P: FaderSettingRenderable<T, P>>(p: Props<P>) : SettingRenderable<P>(p + {
+    height = 22
+}) {
+    lateinit var title: Translation
+    lateinit var setting: SettingInterfaceWithDefault<T>
+    lateinit var precision: Precision
+    lateinit var parser: (original: Float) -> T
 
-    val resetButton = ResetButton(setting) { setting.get() == setting.getDefault() }
+    val fader by lazy {
+        Fader {
+            value = { setting.get().toFloat() }
+            onChange = { value ->
+                setting.set(parser(value))
+            }
+            precision = this@FaderSettingRenderable.precision
+        }
+    }
 
-    override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        super.render(screenDrawing, mouseX, mouseY)
-        drawVerticalCenteredText(screenDrawing, title)
-        renderRenderables(screenDrawing, mouseX, mouseY)
-        screenDrawing.drawRightAlignedText(precision.roundToString(setting.get().toFloat()), x2 - fader.width - 12 - resetButton.width, screenDrawing.getTextYCenter(this), General.getTextThemeColor())
+    val resetButton by lazy {
+        ResetButton {
+            settable = setting
+            isDefault = { setting.get() == setting.getDefault() }
+        }
     }
 
     override fun init() {
         super.init()
-        addRenderable(resetButton.setPosition(x2 - resetButton.width - 4, y + 4))
-        addRenderable(fader.setWidth(if (this.width > 200) 100 else 50).setPosition(x2 - fader.width - 8 - resetButton.width, y + 4))
+        addRenderable(resetButton.updatePosition(x2 - resetButton.width - 4, y + 4))
+        addRenderable(fader.updateWidth(if (this.width > 200) 100 else 50).updatePosition(x2 - fader.width - 8 - resetButton.width, y + 4))
+        addSettingText { title() }
+        addRenderable(Text {
+            textAlign = TextAlign.END
+            textProvider = { precision.roundToString(setting.get().toFloat()).toText() }
+        }(x2 - fader.width - 12 - resetButton.width, y, width, height))
     }
 }

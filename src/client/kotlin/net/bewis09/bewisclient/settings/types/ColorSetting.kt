@@ -33,11 +33,23 @@ class ColorSetting(default: () -> ColorSaver, vararg types: String) : Setting<Co
     override fun convertFromElement(data: JsonElement?): ColorSaver? = ColorSaver.fromJson(data)
 
     override fun createRenderable(feature: Feature, id: String, title: String, description: String?): ColorSettingRenderable {
-        return ColorSettingRenderable(feature.createTranslation(id, title), description?.let { feature.createTranslation("$id.description", it) }, this, types.map { it }.toTypedArray())
+        return ColorSettingRenderable {
+            this.title = feature.createTranslation(id, title)
+            tooltip = description?.let { feature.createTranslation("$id.description", it)() }
+            setting = this@ColorSetting
+            types = this@ColorSetting.types.map { it }.toTypedArray()
+        }
     }
 
     fun createRenderableWithFader(feature: Feature, id: String, title: String, description: String? = null, faderSetting: FloatSetting): ColorFaderSettingRenderable {
-        return ColorFaderSettingRenderable(feature.createTranslation(id, title), description?.let { feature.createTranslation("$id.description", it) }, this, types.map { it }.toTypedArray(), faderSetting, opacityTranslation)
+        return ColorFaderSettingRenderable {
+            this.title = feature.createTranslation(id, title)
+            tooltip = description?.let { feature.createTranslation("$id.description", it)() }
+            setting = this@ColorSetting
+            types = this@ColorSetting.types.map { it }.toTypedArray()
+            setting2 = faderSetting
+            title2 = opacityTranslation
+        }
     }
 
     override fun processChange(value: ColorSaver?): ColorSaver? {

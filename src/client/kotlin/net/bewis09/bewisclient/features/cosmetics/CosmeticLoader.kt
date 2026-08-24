@@ -9,15 +9,14 @@ import net.bewis09.bewisclient.cosmetics.CosmeticIdentifier
 import net.bewis09.bewisclient.cosmetics.CosmeticType
 import net.bewis09.bewisclient.data.Constants
 import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.drawable.SimpleRenderable
 import net.bewis09.bewisclient.drawable.renderables.components.element.Rectangle
-import net.bewis09.bewisclient.drawable.renderables.components.element.TextElement
-import net.bewis09.bewisclient.drawable.renderables.components.structure.Plane
-import net.bewis09.bewisclient.drawable.renderables.components.structure.VerticalAlignPlane
-import net.bewis09.bewisclient.drawable.renderables.components.structure.VerticalAlignScrollPlane
-import net.bewis09.bewisclient.drawable.renderables.components.structure.VerticalGrid
+import net.bewis09.bewisclient.drawable.renderables.components.element.Text
+import net.bewis09.bewisclient.drawable.renderables.components.logic.TextAlign
+import net.bewis09.bewisclient.drawable.renderables.components.structure.Grid
 import net.bewis09.bewisclient.drawable.renderables.impl.SelectCapeElement
-import net.bewis09.bewisclient.server.Authorization
 import net.bewis09.bewisclient.features.sidebar.General
+import net.bewis09.bewisclient.server.Authorization
 import net.bewis09.bewisclient.settings.structure.SidebarFeature
 import net.bewis09.bewisclient.settings.types.StringMapSetting
 import net.bewis09.bewisclient.util.EventEntrypoint
@@ -59,11 +58,13 @@ object CosmeticLoader : SidebarFeature(createIdentifier("bewisclient", "cosmetic
 
     var lastCosmeticChange: Long = 0
 
-    override fun getRenderable(): Renderable = Plane { x, y, width, height ->
-        listOf(
-            elytra.createRenderable(this, "elytra", "Apply cape to elytra", "Some capes include a unique texture for the elytra, which can be disabled here if desired.")(x, y, width, 22),
-            getCosmeticGrid()(x, y + 27, width, height - 27)
-        )
+    val elytraButton = elytra.createRenderable(this@CosmeticLoader, "elytra", "Apply cape to elytra", "Some capes include a unique texture for the elytra, which can be disabled here if desired.")
+
+    override fun getRenderable(): Renderable = object: SimpleRenderable() {
+        override fun init() {
+            addRenderable(elytraButton(x, y, width, 22))
+            addRenderable(getCosmeticGrid()(x, y + 27, width, height - 27))
+        }
     }
 
     fun getStatus(identifier: CosmeticIdentifier): DownloadStatus {
@@ -300,19 +301,36 @@ object CosmeticLoader : SidebarFeature(createIdentifier("bewisclient", "cosmetic
 
         val setCategories = categories.filter { it.second.isNotEmpty() }
 
-        val value = VerticalAlignScrollPlane(setCategories.mapIndexed { i, category ->
-            VerticalAlignPlane(
-                listOfNotNull(
-                    TextElement(category.first.replaceFirstChar { it.uppercase() }.toText(), Color.WHITE, centered = true).setHeight(9),
-                    VerticalGrid(category.second.mapNotNull { id ->
-                        if (id.type == CosmeticType.CAPE && allowedCosmetics.contains(id) && cosmetics[id] != null) {
-                            SelectCapeElement(id, cosmetics[id]!!)
-                        } else null
-                    }.let { a -> { _ -> a } }, 5, 65),
-                    if (i != setCategories.size - 1) Rectangle { General.getTextThemeColor().withBrightness(0.3f) }.setHeight(1) else null
-                ), 5
-            )
-        }, 5)
+        val value = Grid {
+            gap = 5
+            fitType = Grid.FitType.SCROLL
+            children = setCategories.mapIndexed { i, category ->
+                Grid {
+                    gap = 5
+                    children = listOfNotNull(
+                        Text {
+                            text = category.first.replaceFirstChar { it.uppercase() }.toText()
+                            color = Color.WHITE
+                            textAlign = TextAlign.CENTER
+                        }.updateHeight(9),
+                        Grid {
+                            gap = 5
+                            minElementSize = 65
+                            lineType = Grid.LineType.SIZED
+                            children = category.second.mapNotNull { id ->
+                                if (id.type == CosmeticType.CAPE && allowedCosmetics.contains(id) && cosmetics[id] != null) {
+                                    SelectCapeElement {
+                                        identifier = id
+                                        cosmetic = cosmetics[id]!!
+                                    }
+                                } else null
+                            }
+                        },
+                        if (i != setCategories.size - 1) Rectangle { colorProvider = { General.getTextThemeColor().withBrightness(0.3f) } }.updateHeight(1) else null
+                    )
+                }
+            }
+        }
 
         return value
     }

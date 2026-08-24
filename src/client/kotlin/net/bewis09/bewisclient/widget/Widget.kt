@@ -14,7 +14,7 @@ import net.bewis09.bewisclient.widget.logic.WidgetPosition
 abstract class Widget(id: Identifier, title: String, description: String) : DescriptionFeature(id, title, description) {
     var position: WidgetPositionSetting = create("position", WidgetPositionSetting(defaultPosition()))
 
-    override fun createTranslation(key: String, @Suppress("LocalVariableName") en_us: String) = Translation(id.namespace, "widget.${id.path}.$key", en_us)
+    override fun createTranslation(key: String, translation: String) = Translation(id.namespace, "widget.${id.path}.$key", translation)
 
     open fun isEnabledByDefault(): Boolean = true
 

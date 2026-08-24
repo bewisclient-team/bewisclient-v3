@@ -7,7 +7,7 @@ import net.bewis09.bewisclient.drawable.Animator
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.ThemeButton
-import net.bewis09.bewisclient.drawable.renderables.components.structure.VerticalAlignScrollPlane
+import net.bewis09.bewisclient.drawable.renderables.components.structure.Grid
 import net.bewis09.bewisclient.drawable.renderables.notification.NotificationManager
 import net.bewis09.bewisclient.drawable.renderables.notification.SimpleTextNotification
 import net.bewis09.bewisclient.settings.structure.SidebarFeature
@@ -23,17 +23,48 @@ object Contact : SidebarFeature(
     var hoveredElement: ContactLinkElement? = null
 
     override fun getRenderable(): Renderable {
-        return VerticalAlignScrollPlane(
-            listOf(
-                ContactLinkElement("modrinth", Constants.MODRINTH_URL, "Modrinth", "The official download page of Bewisclient on Modrinth."),
-                ContactLinkElement("github", Constants.GITHUB_URL, "GitHub", "The source code of Bewisclient is available on GitHub."),
-                ContactLinkElement("issues", "${Constants.GITHUB_URL}/issues", "Issue Tracker", "Report bugs or request features on our GitHub issue tracker."),
-                ContactLinkElement("discord", Constants.DISCORD_URL, "Discord", "Join our Discord server to chat with the community and get support."),
-            ), 1
-        )
+        return Grid {
+            gap = 1
+            fitType = Grid.FitType.SCROLL
+            children = listOf(
+                ContactLinkElement {
+                    id = "modrinth"
+                    url = Constants.MODRINTH_URL
+                    title = "Modrinth"
+                    description = "The official download page of Bewisclient on Modrinth."
+                },
+                ContactLinkElement {
+                    id = "github"
+                    url = Constants.GITHUB_URL
+                    title = "GitHub"
+                    description = "The source code of Bewisclient is available on GitHub."
+                },
+                ContactLinkElement {
+                    id = "issues"
+                    url = "${Constants.GITHUB_URL}/issues"
+                    title = "Issue Tracker"
+                    description = "Report bugs or request features on our GitHub issue tracker."
+                },
+                ContactLinkElement {
+                    id = "discord"
+                    url = Constants.DISCORD_URL
+                    title = "Discord"
+                    description = "Join our Discord server to chat with the community and get support."
+                }
+            )
+        }
     }
 
-    class ContactLinkElement(val id: String, val url: String, val title: String, val description: String) : SettingRenderable(null, 22) {
+    class ContactLinkElement(p: Props<ContactLinkElement>) : SettingRenderable<ContactLinkElement>(p + {
+        height = 22
+    }) {
+        lateinit var id: String
+        lateinit var url: String
+        lateinit var title: String
+        lateinit var description: String
+
+        init { props() }
+
         companion object {
             val copyToClipboardText = createTranslation("copy_to_clipboard", "Copy to clipboard")
             val openLinkText = createTranslation("open_link", "Open link in browser")
@@ -50,7 +81,6 @@ object Contact : SidebarFeature(
 
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             super.render(screenDrawing, mouseX, mouseY)
-            screenDrawing.enableScissors(x, y, width, height)
             screenDrawing.push()
             screenDrawing.translate(0f, 11 - screenDrawing.getTextHeight() / 2f + 0.5f)
             screenDrawing.drawText(titleTranslation.getTranslatedString(), x + 32, y, Color.WHITE)
@@ -59,18 +89,21 @@ object Contact : SidebarFeature(
             screenDrawing.drawTexture(identifier, x + 8, y + height / 2 - 8, 0f, 0f, 16, 16, 16, 16)
             renderRenderables(screenDrawing, mouseX, mouseY)
             simpleHeight = 22 + lines.size * 9 + 1
-            setHeight(simpleHeight + (menuAnimation.get() * (5 + SelectiveScreenDrawer.getSideButtonHeight())).roundToInt())
-            screenDrawing.disableScissors()
+            updateHeight(simpleHeight + (menuAnimation.get() * (5 + SelectiveScreenDrawer.getSideButtonHeight())).roundToInt())
         }
 
         override fun init() {
             super.init()
-            addRenderable(ThemeButton(copyToClipboardText()) {
-                client.keyboardHandler.clipboard = this.url
-                NotificationManager.addNotification(SimpleTextNotification(copyLinkSuccessText()))
+            addRenderable(ThemeButton {
+                text = copyToClipboardText()
+                onClick = {
+                    client.keyboardHandler.clipboard = this@ContactLinkElement.url
+                    NotificationManager.addNotification(SimpleTextNotification { text = copyLinkSuccessText() })
+                }
             }(x + width - 210, y + simpleHeight, 100, SelectiveScreenDrawer.getSideButtonHeight()))
-            addRenderable(ThemeButton(openLinkText()) {
-                Util.getPlatform().openUri(url)
+            addRenderable(ThemeButton {
+                text = openLinkText()
+                onClick = { Util.getPlatform().openUri(url) }
             }(x + width - 105, y + simpleHeight, 100, SelectiveScreenDrawer.getSideButtonHeight()))
         }
 

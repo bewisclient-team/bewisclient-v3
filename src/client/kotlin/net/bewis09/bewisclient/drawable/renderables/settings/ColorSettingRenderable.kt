@@ -7,22 +7,30 @@ import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.settings.types.Setting
 import net.bewis09.bewisclient.util.color.ColorSaver
 
-class ColorSettingRenderable(val title: Translation, val description: Translation?, val setting: Setting<ColorSaver>, val types: Array<String>) : SettingRenderable(description, 22) {
-    val colorInfoButton = ColorInfoButton(
-        state = setting::get, onChange = setting::set, types = types
-    )
+class ColorSettingRenderable(p: Props<ColorSettingRenderable>) : SettingRenderable<ColorSettingRenderable>(p + {
+    height = 22
+}) {
+    lateinit var title: Translation
+    lateinit var setting: Setting<ColorSaver>
+    lateinit var types: Array<String>
 
-    val resetButton = ResetButton(setting, setting::isDefault)
+    init { props() }
 
-    override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        super.render(screenDrawing, mouseX, mouseY)
-        drawVerticalCenteredText(screenDrawing, title)
-        renderRenderables(screenDrawing, mouseX, mouseY)
+    val colorInfoButton = ColorInfoButton {
+        state = { setting.get() }
+        onChange = setting::set
+        types = this@ColorSettingRenderable.types
+    }
+
+    val resetButton = ResetButton {
+        settable = this@ColorSettingRenderable.setting
+        isDefault = { this@ColorSettingRenderable.setting.isDefault() }
     }
 
     override fun init() {
         super.init()
-        addRenderable(resetButton.setPosition(x2 - resetButton.width - 4, y + 4))
-        addRenderable(colorInfoButton.setPosition(x2 - colorInfoButton.width - 8 - resetButton.width, y + 4))
+        addRenderable(resetButton.updatePosition(x2 - resetButton.width - 4, y + 4))
+        addRenderable(colorInfoButton.updatePosition(x2 - colorInfoButton.width - 8 - resetButton.width, y + 4))
+        addSettingText { title() }
     }
 }

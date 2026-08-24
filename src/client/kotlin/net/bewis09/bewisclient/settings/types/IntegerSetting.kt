@@ -15,9 +15,13 @@ class IntegerSetting(default: () -> Int, val min: Int, val max: Int) : Setting<I
 
     override fun convertFromElement(data: JsonElement?): Int? = data?.int()
 
-    override fun createRenderable(feature: Feature, id: String, title: String, description: String?) = IntegerSettingRenderable(
-        feature.createTranslation(id, title), description?.let { Translation("$id.description", it) }, this, min, max
-    )
+    override fun createRenderable(feature: Feature, id: String, title: String, description: String?) = IntegerSettingRenderable {
+        this.title = feature.createTranslation(id, title)
+        tooltip = description?.let { Translation("$id.description", it)() }
+        setting = this@IntegerSetting
+        this.min = this@IntegerSetting.min
+        this.max = this@IntegerSetting.max
+    }
 
     fun cloneWithDefault(): IntegerSetting = IntegerSetting(::get, min, max)
 }

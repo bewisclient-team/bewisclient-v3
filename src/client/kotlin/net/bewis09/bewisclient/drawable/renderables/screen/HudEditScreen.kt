@@ -139,14 +139,20 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
 
     override fun init() {
         super.init()
-        addRenderable(ImageButton(createIdentifier("bewisclient", "textures/gui/sprites/add.png")) {
-            openPopup(AddWidgetPopup(), Color.BLACK alpha 0.625f)
-        }.setImagePadding(0)(width - 16, height - 16, 14, 14))
-        addRenderable(ImageButton(createIdentifier("bewisclient", "textures/gui/sprites/settings.png")) {
-            Bewisclient.setRenderableScreen(OptionScreen.getOrCreateInstance().apply {
-                changeCategory(Widgets, instant = true)
-            })
-        }.setImagePadding(2)(width - 32, height - 16, 14, 14))
+        addRenderable(ImageButton {
+            image = createIdentifier("bewisclient", "textures/gui/sprites/add.png")
+            onClick = { openPopup(AddWidgetPopup(), Color.BLACK alpha 0.625f) }
+            imagePadding = 0
+        }(width - 16, height - 16, 14, 14))
+        addRenderable(ImageButton {
+            image = createIdentifier("bewisclient", "textures/gui/sprites/settings.png")
+            onClick = {
+                Bewisclient.setRenderableScreen(OptionScreen.getOrCreateInstance().apply {
+                    changeCategory(Widgets, instant = true)
+                })
+            }
+            imagePadding = 2
+        }(width - 32, height - 16, 14, 14))
     }
 
     override fun onMouseDrag(mouseX: Double, mouseY: Double, startX: Double, startY: Double, button: Int): Boolean {

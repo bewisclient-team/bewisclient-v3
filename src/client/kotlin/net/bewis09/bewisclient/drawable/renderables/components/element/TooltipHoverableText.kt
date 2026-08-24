@@ -6,9 +6,21 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.renderite.logic.within
 import net.minecraft.network.chat.Component
 
-class TooltipHoverableText(val text: Component, val color: Color, val hoverColor: Color = color, tooltip: Component? = null, val centered: Boolean = false, val onClick: (() -> Unit)? = null) : TooltipHoverable(tooltip) {
+class TooltipHoverableText(p: Props<TooltipHoverableText>) : TooltipHoverable<TooltipHoverableText>(p) {
+    lateinit var text: Component
+    var color: Color? = null
+    var hoverColor: Color? = null
+    var centered: Boolean = false
+    var onClick: (() -> Unit)? = null
+
+    init { props() }
+
     override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+        val color = require { color }
+        val hoverColor = require { hoverColor }
+
         super.render(screenDrawing, mouseX, mouseY)
+
         if (centered) {
             screenDrawing.drawCenteredText(text, exactCenterX, screenDrawing.getTextYCenter(this), hoverFactor within (color to hoverColor))
         } else {

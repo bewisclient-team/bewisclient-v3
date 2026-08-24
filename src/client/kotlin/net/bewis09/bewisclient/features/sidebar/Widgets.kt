@@ -3,11 +3,10 @@ package net.bewis09.bewisclient.features.sidebar
 import net.bewis09.bewisclient.api.APIEntrypointLoader
 import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.drawable.SimpleRenderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.Button
-import net.bewis09.bewisclient.drawable.renderables.components.structure.Plane
-import net.bewis09.bewisclient.drawable.renderables.components.structure.VerticalAlignScrollPlane
-import net.bewis09.bewisclient.drawable.renderables.components.structure.VerticalScrollGrid
+import net.bewis09.bewisclient.drawable.renderables.components.structure.Grid
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.settings.structure.CategorizedFeature
 import net.bewis09.bewisclient.settings.structure.Feature
@@ -27,18 +26,26 @@ object Widgets : SidebarFeature(createIdentifier("bewisclient", "widgets"), "Wid
 
     val generalWidgetSettings = APIEntrypointLoader.mapEntrypoint { it.getGeneralWidgetSettings() }.flatten()
 
-    val widgetsPlane = Plane { x, y, width, height ->
-        listOf(
-            Button(createTranslation("general_setting", "General Widget Settings")()) {
-                OptionScreen.currentInstance?.openPage(
-                    createTranslation("general_setting", "General Widget Settings")(), VerticalAlignScrollPlane({ generalWidgetSettings }, 1)
-                )
-            }(x, y, width, SelectiveScreenDrawer.getSideButtonHeight()),
-//            Button(Translation("menu.widgets.presets", "Presets")()) {
-//
-//            }(x + width - 55, 37, 55, 14),
-            VerticalScrollGrid({ widgetRenderables.map { a -> a.setHeight(90) } }, 5, 80).invoke(x, y + SelectiveScreenDrawer.getSideButtonHeight() + 5, width, height - SelectiveScreenDrawer.getSideButtonHeight() - 5)
-        )
+    val generalWidgetButton = Button {
+        text = createTranslation("general_setting", "General Widget Settings")()
+        onClick = {
+            OptionScreen.currentInstance?.openPage(
+                createTranslation("general_setting", "General Widget Settings")(), Grid { init = { generalWidgetSettings }; gap = 1; fitType = Grid.FitType.SCROLL }
+            )
+        }
+    }
+
+    val widgetsPlane = object : SimpleRenderable() {
+        override fun init() {
+            addRenderable(generalWidgetButton(x, y, width, SelectiveScreenDrawer.getSideButtonHeight()))
+            addRenderable(Grid {
+                init = { widgetRenderables.map { a -> a.updateHeight(90) } }
+                gap = 5
+                minElementSize = 80
+                lineType = Grid.LineType.SIZED
+                fitType = Grid.FitType.SCROLL
+            }.invoke(x, y + SelectiveScreenDrawer.getSideButtonHeight() + 5, width, height - SelectiveScreenDrawer.getSideButtonHeight() - 5))
+        }
     }
 
     override fun getRenderable(): Renderable = widgetsPlane

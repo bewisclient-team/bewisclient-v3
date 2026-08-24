@@ -1,42 +1,29 @@
 package net.bewis09.bewisclient.drawable.renderables.components.logic
 
 import net.bewis09.bewisclient.drawable.Animator
-import net.bewis09.renderite.RenderiteElement
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.util.Bewisclient
 import net.bewis09.renderite.drawer.pushAlpha
 import net.bewis09.bewisclient.version.translateToTopOptional
+import net.bewis09.renderite.components.Hoverable
 import net.bewis09.renderite.logic.Color
 import net.minecraft.network.chat.Component
 
-open class TooltipHoverable(
-    val tooltip: () -> Component?,
-    minWidth: Int = 0,
-    minHeight: Int = 0,
-    widthProvider: (RenderiteElement<ScreenDrawing>.() -> Int)? = null,
-    heightProvider: (RenderiteElement<ScreenDrawing>.() -> Int)? = null
-) : Hoverable(minWidth, minHeight, widthProvider, heightProvider) {
-    constructor(
-        tooltip: Component? = null,
-        minWidth: Int = 0,
-        minHeight: Int = 0,
-        widthProvider: (RenderiteElement<ScreenDrawing>.() -> Int)? = null,
-        heightProvider: (RenderiteElement<ScreenDrawing>.() -> Int)? = null
-    ) : this({ tooltip }, minWidth, minHeight, widthProvider, heightProvider)
-
+abstract class TooltipHoverable<P: TooltipHoverable<P>>(p: Props<P>) : Hoverable<P>(p) {
     val tooltipAnimation = Animator(200, Animator.EASE_IN_OUT, 0f)
     var wasActuallyDrawn: Boolean? = null
     var isActuallyDrawn: Boolean? = null
 
-    override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        super.render(screenDrawing, mouseX, mouseY)
+    var tooltipProvider: () -> Component? = { tooltip }
+    var tooltip: Component? = null
 
+    override fun renderAccessories(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         wasActuallyDrawn = isActuallyDrawn
         isActuallyDrawn = null
 
-        val tooltip = tooltip()
+        val tooltip = tooltipProvider()
 
         if (tooltip != null && hoverFactor > 0f) {
             if (hoverFactor == 1f && wasActuallyDrawn != false) tooltipAnimation.set(1f)
@@ -81,6 +68,10 @@ open class TooltipHoverable(
             if (tooltipAnimation.get() != 0f) tooltipAnimation.pauseForOnce()
             tooltipAnimation.set(0f)
         }
+    }
+
+    override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+        super.render(screenDrawing, mouseX, mouseY)
     }
 
     override fun init() {

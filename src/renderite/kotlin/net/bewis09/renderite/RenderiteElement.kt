@@ -1,47 +1,89 @@
 package net.bewis09.renderite
 
 import net.bewis09.renderite.drawer.RenderiteDrawer
+import net.bewis09.renderite.drawer.pushColor
+import net.bewis09.renderite.logic.Color
 
-abstract class RenderiteElement<S: RenderiteDrawer<*, *, *>>(
-    val minWidth: Int = 0,
-    val minHeight: Int = 0,
-    widthProvider: (RenderiteElement<S>.() -> Int)? = null,
-    heightProvider: (RenderiteElement<S>.() -> Int)? = null
-) {
-    protected var internalX: Int = 0
-    protected var internalY: Int = 0
-    protected var internalWidth: Int = 0
-    protected var internalHeight: Int = 0
+abstract class RenderiteElement<S: RenderiteDrawer<*, *, *>, P: RenderiteElement<S, P>>(val props: Props<P> = {}) {
+    typealias Props<P> = P.() -> Unit
 
-    val widthProvider = widthProvider ?: { this.internalWidth }
-    val heightProvider = heightProvider ?: { this.internalHeight }
+    companion object {
+        operator fun <P> Props<P>.plus(p: Props<P>): Props<P> = { this@plus(); p() }
+    }
 
-    val x: Int
-        get() = internalX
-    val y: Int
-        get() = internalY
-    val width: Int
-        get() = this.widthProvider().coerceAtLeast(minWidth)
-    val height: Int
-        get() = this.heightProvider().coerceAtLeast(minHeight)
+    var minWidth: Int = 0
+    var minHeight: Int = 0
+    var maxWidth: Int = Int.MAX_VALUE
+    var maxHeight: Int = Int.MAX_VALUE
+    var widthProvider: (RenderiteElement<*, *>.() -> Int)? = null
+    var heightProvider: (RenderiteElement<*, *>.() -> Int)? = null
+
+    var shouldUsePointer = false
+    var overflowVisible = false
+
+    var colorModifier = { Color(1f, 1f, 1f, 1f) }
+
+    val internalWidthProvider = { it: Int, s: RenderiteElement<*, *> -> widthProvider?.invoke(s) ?: it }
+    val internalHeightProvider = { it: Int, s: RenderiteElement<*, *> -> heightProvider?.invoke(s) ?: it }
+
+    var x: Int = 0
+    var y: Int = 0
+    var width: Int = 0
+        get() = this.internalWidthProvider(field, this).coerceAtLeast(minWidth).coerceAtMost(maxWidth)
+        set(value) = run { field = value }
+    var height: Int = 0
+        get() = this.internalHeightProvider(field, this).coerceAtLeast(minHeight).coerceAtMost(maxHeight)
+        set(value) = run { field = value }
     val x2: Int
-        get() = internalX + width
+        get() = x + width
     val y2: Int
-        get() = internalY + height
+        get() = y + height
     val centerX: Int
-        get() = internalX + width / 2
+        get() = x + width / 2
     val centerY: Int
-        get() = internalY + height / 2
+        get() = y + height / 2
     val exactCenterX: Float
-        get() = internalX + width / 2f
+        get() = x + width / 2f
     val exactCenterY: Float
-        get() = internalY + height / 2f
+        get() = y + height / 2f
 
-    val renderables = mutableListOf<RenderiteElement<S>>()
+    val renderables = mutableListOf<RenderiteElement<S, *>>()
 
-    var selectedElement: RenderiteElement<S>? = null
+    var selectedElement: RenderiteElement<S, *>? = null
 
-    abstract fun render(screenDrawing: S, mouseX: Int, mouseY: Int)
+    open fun render(screenDrawing: S, mouseX: Int, mouseY: Int) {
+        screenDrawing.push()
+        if (!overflowVisible) {
+            screenDrawing.enableScissors(x, y, width, height)
+        }
+
+        val color = colorModifier()
+        screenDrawing.pushColor(color.red / 255f, color.green / 255f, color.blue / 255f, color.alpha / 255f) {
+            this.renderLogic(screenDrawing, mouseX, mouseY)
+            this.renderBackground(screenDrawing, mouseX, mouseY)
+            this.renderElement(screenDrawing, mouseX, mouseY)
+            this.renderRenderables(screenDrawing, mouseX, mouseY)
+            this.renderAccessories(screenDrawing, mouseX, mouseY)
+            this.cleanup(screenDrawing, mouseX, mouseY)
+        }
+
+        if (!overflowVisible) {
+            screenDrawing.disableScissors()
+        }
+        screenDrawing.pop()
+
+        if (shouldUsePointer) usePointer(screenDrawing, mouseX, mouseY)
+    }
+
+    open fun renderElement(screenDrawing: S, mouseX: Int, mouseY: Int) {}
+
+    open fun renderBackground(screenDrawing: S, mouseX: Int, mouseY: Int) {}
+
+    open fun renderLogic(screenDrawing: S, mouseX: Int, mouseY: Int) {}
+
+    open fun renderAccessories(screenDrawing: S, mouseX: Int, mouseY: Int) {}
+
+    open fun cleanup(screenDrawing: S, mouseX: Int, mouseY: Int) {}
 
     /**
      * Renders all the renderables in this Renderable.
@@ -49,9 +91,10 @@ abstract class RenderiteElement<S: RenderiteDrawer<*, *, *>>(
      */
     open fun renderRenderables(screenDrawing: S, mouseX: Int, mouseY: Int) {
         ArrayList(renderables).forEach { it.render(screenDrawing, mouseX, mouseY) }
+//        renderables.forEach { screenDrawing.fill(it.x, it.y, it.width, it.height, Color.RED alpha 0.2f) }
     }
 
-    fun <T : RenderiteElement<S>> addRenderable(renderable: T): T = renderable.also { renderables.add(it) }
+    fun <T : RenderiteElement<S, *>> addRenderable(renderable: T): T = renderable.also { renderables.add(it) }
 
     fun resize() {
         renderables.clear()
@@ -59,71 +102,71 @@ abstract class RenderiteElement<S: RenderiteDrawer<*, *, *>>(
         ArrayList(renderables).forEach { it.resize() }
     }
 
-    fun setX(x: Int): RenderiteElement<S> {
+    fun updateX(x: Int): RenderiteElement<S, P> {
         if (x == this.x) return this
 
-        this.internalX = x
+        this.x = x
         resize()
         return this
     }
 
-    fun setY(y: Int): RenderiteElement<S> {
+    fun updateY(y: Int): RenderiteElement<S, P> {
         if (y == this.y) return this
 
-        this.internalY = y
+        this.y = y
         resize()
         return this
     }
 
-    fun setPosition(x: Int, y: Int): RenderiteElement<S> {
+    fun updatePosition(x: Int, y: Int): RenderiteElement<S, P> {
         if (x == this.x && y == this.y) return this
 
-        this.internalX = x
-        this.internalY = y
+        this.x = x
+        this.y = y
         resize()
         return this
     }
 
-    fun setSize(width: Int, height: Int): RenderiteElement<S> {
+    fun updateSize(width: Int, height: Int): RenderiteElement<S, P> {
         if (width < 0) throw IllegalArgumentException("Width cannot be negative")
         if (height < 0) throw IllegalArgumentException("Height cannot be negative")
         if (width == this.width && height == this.height) return this
 
-        this.internalWidth = width
-        this.internalHeight = height
+        this.width = width
+        this.height = height
         resize()
         return this
     }
 
-    fun setWidth(width: Int): RenderiteElement<S> {
+    fun updateWidth(width: Int): RenderiteElement<S, P> {
         if (width < 0) throw IllegalArgumentException("Width cannot be negative")
         if (width == this.width) return this
 
-        this.internalWidth = width
+        this.width = width
         resize()
         return this
     }
 
-    fun setHeight(height: Int): RenderiteElement<S> {
+    fun updateHeight(height: Int): RenderiteElement<S, P> {
         if (height < 0) throw IllegalArgumentException("Height cannot be negative")
         if (height == this.height) return this
 
-        this.internalHeight = height
+        this.height = height
         resize()
         return this
     }
 
-    fun setBounds(x: Int, y: Int, width: Int, height: Int): RenderiteElement<S> {
+    fun setBounds(x: Int, y: Int, width: Int, height: Int): RenderiteElement<S, P> {
         if (x == this.x && y == this.y && width == this.width && height == this.height) return this
 
         if (width < 0) throw IllegalArgumentException("Width cannot be negative")
         if (height < 0) throw IllegalArgumentException("Height cannot be negative")
 
-        this.internalX = x
-        this.internalY = y
+        this.x = x
+        this.y = y
 
-        this.internalWidth = width
-        this.internalHeight = height
+        this.width = width
+        this.height = height
 
         resize()
 
@@ -201,7 +244,7 @@ abstract class RenderiteElement<S: RenderiteDrawer<*, *, *>>(
 
     fun usePointer(screenDrawing: S, mouseX: Number, mouseY: Number) = if (isMouseOver(mouseX, mouseY) && screenDrawing.scissorContains(mouseX.toInt(), mouseY.toInt())) screenDrawing.setCursorPointer() else Unit
 
-    operator fun invoke(x: Int, y: Int, width: Int, height: Int): RenderiteElement<S> {
+    operator fun invoke(x: Int, y: Int, width: Int, height: Int): RenderiteElement<S, P> {
         setBounds(x, y, width, height)
         return this
     }
@@ -209,4 +252,8 @@ abstract class RenderiteElement<S: RenderiteDrawer<*, *, *>>(
     fun isMouseOver(mouseX: Int, mouseY: Int, x: Int, y: Int, width: Int, height: Int): Boolean {
         return mouseX >= x && mouseX < x + width && mouseY >= y && mouseY < y + height
     }
+
+    fun <T> require(p: P.() -> T?): T =
+        @Suppress("UNCHECKED_CAST")
+        p(this as P) ?: throw IllegalArgumentException("Required property is missing")
 }

@@ -37,11 +37,13 @@ class PackSelectionScreenMixin(title: Component) : Screen(title) {
     fun bewisclientInit(ci: CallbackInfo) {
         if (!PackAdder.enabled) return
 
-        addResourcePackButton = addRenderableWidget(TexturedButtonWidget(width / 2 - 215, height - 49, 200, 18, buttonTexture, buttonTexture, { b: Button? ->
+        addResourcePackButton = addRenderableWidget(TexturedButtonWidget(width / 2 - 215, height - 49, 200, 18, buttonTexture, buttonTexture, {
             Bewisclient.setRenderableScreen(
-                PackListScreen(
-                    if (packDir.endsWith(Path.of("resourcepacks"))) Modrinth.Type.RESOURCE_PACK else Modrinth.Type.DATA_PACK, this, this.packDir
-                )
+                PackListScreen {
+                    type = if (packDir.endsWith(Path.of("resourcepacks"))) Modrinth.Type.RESOURCE_PACK else Modrinth.Type.DATA_PACK
+                    parent = this@PackSelectionScreenMixin
+                    this.folder = packDir
+                }
             )
         }, (if (packDir!!.endsWith(Path.of("resourcepacks"))) Modrinth.addResourcePackText.getTranslatedText() else Modrinth.addDataPackText.getTranslatedText()).append("...")))
     }

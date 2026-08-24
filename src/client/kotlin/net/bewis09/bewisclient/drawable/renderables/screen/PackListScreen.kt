@@ -1,11 +1,11 @@
 package net.bewis09.bewisclient.drawable.renderables.screen
 
 import net.bewis09.bewisclient.common.*
-import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.drawable.PropedRenderable
+import net.bewis09.bewisclient.drawable.SimpleRenderable
 import net.bewis09.bewisclient.drawable.renderables.components.setting.Input
 import net.bewis09.bewisclient.drawable.renderables.components.button.MinecraftButton
-import net.bewis09.bewisclient.drawable.renderables.components.structure.Plane
-import net.bewis09.bewisclient.drawable.renderables.components.structure.VerticalAlignScrollPlane
+import net.bewis09.bewisclient.drawable.renderables.components.structure.Grid
 import net.bewis09.bewisclient.drawable.renderables.notification.NotificationManager
 import net.bewis09.bewisclient.drawable.renderables.notification.ProgressNotification
 import net.bewis09.bewisclient.drawable.renderables.notification.SimpleTextNotification
@@ -24,14 +24,22 @@ import java.net.URI
 import java.nio.file.Path
 import kotlin.io.path.writeBytes
 
-class PackListScreen(val type: Modrinth.Type, val parent: Screen, val folder: Path) : Renderable() {
-    var index = 0
-    var hasLoaded = false
-    var lastTyped = Long.MAX_VALUE
+class PackListScreen(p: Props<PackListScreen>) : PropedRenderable<PackListScreen>(p) {
+    lateinit var type: Modrinth.Type
+    lateinit var parent: Screen
+    lateinit var folder: Path
 
-    val search = Input(font = ScreenDrawing.DEFAULT_FONT, maxWidth = 200, onChange = {
-        lastTyped = System.currentTimeMillis()
-    })
+    init { props() }
+
+    private var index = 0
+    private var hasLoaded = false
+    private var lastTyped = Long.MAX_VALUE
+
+    val search = Input {
+        font = ScreenDrawing.DEFAULT_FONT
+        maxTextLength = 200
+        onChange = { lastTyped = System.currentTimeMillis() }
+    }
 
     var query: String = search.text
 
@@ -73,33 +81,40 @@ class PackListScreen(val type: Modrinth.Type, val parent: Screen, val folder: Pa
     }
 
     override fun init() {
-        addRenderable(VerticalAlignScrollPlane({
-            Modrinth.getPageOfType(type, index, query)?.map {
-                PackEntry(it)
-            }?.also {
-                hasLoaded = true
-            }?.let {
-                listOf(Plane { _, _, _, _ -> listOf() }, *it.toTypedArray(), Plane { _, _, _, _ -> listOf() })
-            } ?: emptyList()
-        }, 4)(width / 2 - 150, 49, 300, height - 49 - 33))
+        addRenderable(Grid {
+            init = {
+                Modrinth.getPageOfType(type, index, query)?.map(::PackEntry)?.also { hasLoaded = true }?.let {
+                    listOf(SimpleRenderable(), *it.toTypedArray(), SimpleRenderable())
+                } ?: emptyList()
+            }
+            gap = 4
+            fitType = Grid.FitType.SCROLL
+        }(width / 2 - 150, 49, 300, height - 49 - 33))
 
-        addRenderable(MinecraftButton(CommonComponents.GUI_DONE) {
-            setScreen(parent)
+        addRenderable(MinecraftButton {
+            text = CommonComponents.GUI_DONE
+            onClick = { setScreen(parent) }
         }(centerX - 100, y2 - 26, 200, 20))
 
-        addRenderable(MinecraftButton(Component.literal(">")) {
-            if (index < (Modrinth.typeMaps[type to query]?.second ?: 0) / 20) {
-                index++
-                hasLoaded = false
-                resize()
+        addRenderable(MinecraftButton {
+            text = Component.literal(">")
+            onClick = {
+                if (index < (Modrinth.typeMaps[type to query]?.second ?: 0) / 20) {
+                    index++
+                    hasLoaded = false
+                    resize()
+                }
             }
         }(centerX + 136, 31, 14, 14))
 
-        addRenderable(MinecraftButton(Component.literal("<")) {
-            if (index > 0) {
-                index--
-                hasLoaded = false
-                resize()
+        addRenderable(MinecraftButton {
+            text = Component.literal("<")
+            onClick = {
+                if (index > 0) {
+                    index--
+                    hasLoaded = false
+                    resize()
+                }
             }
         }(centerX + 66, 31, 14, 14))
 
@@ -114,11 +129,7 @@ class PackListScreen(val type: Modrinth.Type, val parent: Screen, val folder: Pa
         return super.onKeyPress(key, scanCode, modifiers)
     }
 
-    inner class PackEntry(val pack: Modrinth.ListPack) : Renderable() {
-        init {
-            internalHeight = 32
-        }
-
+    inner class PackEntry(val pack: Modrinth.ListPack) : SimpleRenderable({ height = 32 }) {
         override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             screenDrawing.drawText(pack.title.toText(), x + 38, y + 1, Color.WHITE)
             val lists = screenDrawing.wrapText(pack.description, width - 40)
@@ -152,20 +163,20 @@ class PackListScreen(val type: Modrinth.Type, val parent: Screen, val folder: Pa
                     Modrinth.loadVersions(p) { map ->
                         map.values.filter { it.loaders.contains(type.loader) && it.game_versions.contains(getModrinthVersion()) }.maxByOrNull { it.date_published }?.let { version ->
                             version.files.firstOrNull { it.primary }?.also { file ->
-                                val progressNotification = ProgressNotification(Modrinth.downloading(pack.title))
+                                val progressNotification = ProgressNotification { text = Modrinth.downloading(pack.title) }
                                 NotificationManager.addNotification(progressNotification)
                                 Bewisclient.downloadFileWithProgress(URI(file.url), {
                                     progressNotification.progress = it
                                 }, {
                                     folder.resolve(file.filename).writeBytes(it)
                                 }) {
-                                    NotificationManager.addNotification(SimpleTextNotification(Modrinth.downloadFailedReason(it.message ?: "Unknown error")))
+                                    NotificationManager.addNotification(SimpleTextNotification { text = Modrinth.downloadFailedReason(it.message ?: "Unknown error") })
                                 }
                             } ?: run {
-                                NotificationManager.addNotification(SimpleTextNotification(Modrinth.downloadFailed()))
+                                NotificationManager.addNotification(SimpleTextNotification { text = Modrinth.downloadFailed() })
                             }
                         } ?: run {
-                            NotificationManager.addNotification(SimpleTextNotification(Modrinth.downloadFailed()))
+                            NotificationManager.addNotification(SimpleTextNotification { text = Modrinth.downloadFailed() })
                         }
                     }
                 }

@@ -1,5 +1,3 @@
-// @VersionReplacement
-
 package net.bewis09.bewisclient.features.utilities
 
 import net.bewis09.bewisclient.api.APIEntrypointLoader
@@ -24,14 +22,20 @@ object TntTimer : ImageFeature("tnt_timer", "TNT Timer") {
     fun getFuseForEntity(entity: Entity) = entityTypes.firstOrNull { it.type == entity.type }?.invoke(entity)
 
     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
-        list.add(MultipleBooleanSettingsRenderable(createTranslation("entities", "Show Timer For:"), null) {
-            entityTypes.map { MultipleBooleanSettingsRenderable.Part(Component.translatable(it.type.toString()), null, it) }
+        list.add(MultipleBooleanSettingsRenderable {
+            title = createTranslation("entities", "Show Timer For:")
+            settings = entityTypes.map {
+                MultipleBooleanSettingsRenderable.Part {
+                    title = Component.translatable(it.type.toString())
+                    setting = it
+                }
+            }
         })
     }
 
     val entityTypes = APIEntrypointLoader.mapEntrypoint { it.getTntTimerEntities() }.flatten()
 
-    class FuseProvider<T : Entity>(val type: EntityType<T>, val defaultEnabled: Boolean, val fuseProvider: (T) -> Int): SettingInterfaceWithDefault<Boolean> {
+    class FuseProvider<T : Entity>(val type: EntityType<T>, val defaultEnabled: Boolean, val fuseProvider: (T) -> Int) : SettingInterfaceWithDefault<Boolean> {
         fun invoke(entity: Entity): Int? {
             if (!get()) return null
             @Suppress("UNCHECKED_CAST")
