@@ -1,4 +1,4 @@
-package net.bewis09.bewisclient.drawable
+package net.bewis09.renderite.logic
 
 /**
  * Animator class to handle animations of drawable properties.
@@ -83,6 +83,11 @@ class Animator(val duration: () -> Long, val interpolationType: (delta: Float) -
         this.startTime = if (paused) 0 else System.currentTimeMillis()
 
         executeFinishAction()
+    }
+
+    fun setInstant(value: Float) {
+        pauseForOnce()
+        set(value)
     }
 
     fun set(value: Float, onFinish: Animator.() -> Unit) {

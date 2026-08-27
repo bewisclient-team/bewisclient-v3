@@ -2,8 +2,8 @@ package net.bewis09.bewisclient.drawable.renderables.settings
 
 import net.bewis09.bewisclient.common.toText
 import net.bewis09.bewisclient.drawable.renderables.components.button.ResetButton
-import net.bewis09.bewisclient.drawable.renderables.components.element.Text
-import net.bewis09.bewisclient.drawable.renderables.components.logic.TextAlign
+import net.bewis09.renderite.components.Text
+import net.bewis09.renderite.logic.TextAlign
 import net.bewis09.bewisclient.drawable.renderables.components.setting.Fader
 import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.settings.logic.SettingInterfaceWithDefault
@@ -34,14 +34,26 @@ open class FaderSettingRenderable<T : Number, P: FaderSettingRenderable<T, P>>(p
         }
     }
 
-    override fun init() {
-        super.init()
-        addRenderable(resetButton.updatePosition(x2 - resetButton.width - 4, y + 4))
-        addRenderable(fader.updateWidth(if (this.width > 200) 100 else 50).updatePosition(x2 - fader.width - 8 - resetButton.width, y + 4))
-        addSettingText { title() }
-        addRenderable(Text {
+    override fun Init.init() {
+        ResetButton {
+            settable = setting
+            isDefault = { setting.get() == setting.getDefault() }
+        }.updatePosition(x2 - resetButton.width - 4, y + 4)
+        Fader {
+            value = { setting.get().toFloat() }
+            precision = this@FaderSettingRenderable.precision
+            widthProvider = { if (this@FaderSettingRenderable.width > 200) 100 else 50 }
+            onChange = { value ->
+                setting.set(parser(value))
+            }
+        }.updatePosition(x2 - fader.width - 8 - resetButton.width, y + 4)
+        SettingText {
+            textProvider = { title() }
+        }
+        Text {
             textAlign = TextAlign.END
             textProvider = { precision.roundToString(setting.get().toFloat()).toText() }
-        }(x2 - fader.width - 12 - resetButton.width, y, width, height))
+            paddingRight = 126
+        }
     }
 }

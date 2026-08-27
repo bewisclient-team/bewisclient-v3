@@ -1,14 +1,18 @@
 package net.bewis09.bewisclient.drawable.renderables.components.button
 
-import net.bewis09.bewisclient.drawable.Animator
+import net.bewis09.bewisclient.drawable.Init
+import net.bewis09.renderite.logic.Animator
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.logic.TooltipHoverable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.renderite.drawer.transform
 import net.bewis09.bewisclient.features.sidebar.General
+import net.bewis09.renderite.RenderiteElement
 import net.minecraft.network.chat.Component
 
-class ThemeButton(p: Props<ThemeButton>) : TooltipHoverable<ThemeButton>(p) {
+class ThemeButton(p: Props<ThemeButton>) : TooltipHoverable<ThemeButton>(p + {
+    shouldUsePointer = true
+}) {
     lateinit var text: Component
     var selected: () -> Boolean = { false }
     var onClick: (ThemeButton) -> Unit = {}
@@ -18,17 +22,22 @@ class ThemeButton(p: Props<ThemeButton>) : TooltipHoverable<ThemeButton>(p) {
     val clickAnimation: Animator = Animator({ General.animationDuration }, Animator.EASE_IN_OUT, 1f)
     val colorAnimation: Animator = Animator({ General.animationDuration }, Animator.EASE_IN_OUT, 0f)
 
-    override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        super.render(screenDrawing, mouseX, mouseY)
+    override fun renderLogic(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+        super.renderLogic(screenDrawing, mouseX, mouseY)
         colorAnimation.set(if (selected()) 1f else 0f)
-        val click = if (General.isMinecrafty) 1f else clickAnimation.get()
-        SelectiveScreenDrawer.renderButtonBackground(screenDrawing, hoverFactor, colorAnimation.get(), x, y, width, height, click, mouseX, mouseY)
+    }
 
-        usePointer(screenDrawing, mouseX, mouseY)
+    override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+        val click = if (General.isMinecrafty) 1f else clickAnimation.get()
 
         screenDrawing.transform(exactCenterX, exactCenterY, 0.95f + 0.05f * click, 0.95f + 0.05f * click) {
             screenDrawing.drawCenteredText(text, 0, screenDrawing.getTextHeight() / -2f, General.getTextThemeColor())
         }
+    }
+
+    override fun renderBackground(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+        val click = if (General.isMinecrafty) 1f else clickAnimation.get()
+        SelectiveScreenDrawer.renderButtonBackground(screenDrawing, hoverFactor, colorAnimation.get(), x, y, width, height, click)
     }
 
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
@@ -40,3 +49,5 @@ class ThemeButton(p: Props<ThemeButton>) : TooltipHoverable<ThemeButton>(p) {
         return true
     }
 }
+
+fun Init.ThemeButton(p: RenderiteElement.Props<ThemeButton>): ThemeButton = net.bewis09.bewisclient.drawable.renderables.components.button.ThemeButton(p).also(::addRenderable)

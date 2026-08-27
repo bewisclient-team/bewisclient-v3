@@ -10,6 +10,7 @@ import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.settings.structure.SidebarFeature
 import net.bewis09.bewisclient.features.sidebar.Contact
 import net.bewis09.bewisclient.features.cosmetics.CosmeticLoader
+import net.bewis09.bewisclient.features.sidebar.Debug
 import net.bewis09.bewisclient.features.sidebar.Extensions
 import net.bewis09.bewisclient.features.sidebar.Screenshot
 import net.bewis09.bewisclient.features.sidebar.Utilities
@@ -73,7 +74,7 @@ class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint() {
     )
 
     override fun getSidebarCategories(): List<SidebarFeature> = listOf(
-        Widgets, Utilities, General, CosmeticLoader, Extensions, Screenshot, Contact
+        Widgets, Utilities, General, CosmeticLoader, Extensions, Screenshot, Contact, Debug
     )
 
     override fun getTiwylaEntityExtraInfoProviders(): List<TiwylaWidget.EntityInfoProvider<*>> = listOf(

@@ -1,10 +1,12 @@
 package net.bewis09.bewisclient.drawable.renderables.components.button
 
 import net.bewis09.bewisclient.common.Identifier
+import net.bewis09.bewisclient.drawable.Init
 import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.util.Bewisclient
 import net.bewis09.bewisclient.version.drawGuiTexture
+import net.bewis09.renderite.RenderiteElement
 import net.bewis09.renderite.logic.Color
 import net.minecraft.network.chat.Component
 
@@ -30,3 +32,5 @@ class MinecraftButton(p: Props<MinecraftButton>) : PropedRenderable<MinecraftBut
         return true
     }
 }
+
+fun Init.MinecraftButton(p: RenderiteElement.Props<MinecraftButton>) = net.bewis09.bewisclient.drawable.renderables.components.button.MinecraftButton(p).add()

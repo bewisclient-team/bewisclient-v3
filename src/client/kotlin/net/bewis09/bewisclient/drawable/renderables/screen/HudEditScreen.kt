@@ -20,6 +20,7 @@ import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.types.ScalableWidget
 import net.bewis09.renderite.logic.Color
 import net.bewis09.renderite.logic.alpha
+import net.minecraft.network.chat.Component
 import org.lwjgl.glfw.GLFW
 import kotlin.math.abs
 
@@ -94,7 +95,6 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
                 screenDrawing.popColor()
             }
         }
-        renderRenderables(screenDrawing, mouseX, mouseY)
         renderTooltip(screenDrawing, mouseX, mouseY)
     }
 
@@ -103,14 +103,14 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
             if (it.isInBox(mouseX.toDouble(), mouseY.toDouble())) {
                 screenDrawing.setBewisclientFont()
 
-                val lines = mutableListOf<String>()
-                lines.add(it.title.getTranslatedString())
-                lines.add("")
+                val lines = mutableListOf<Component>()
+                lines.add(it.title())
+                lines.add(Component.empty())
                 if (it is ScalableWidget) {
-                    lines.add(scrollToZoom(Precision(0.5f, 2f, 0.01f, 2).roundToString(it.scale.get())).string)
+                    lines.add(scrollToZoom(Precision(0.5f, 2f, 0.01f, 2).roundToString(it.scale.get())))
                 }
-                lines.add(rightClickForOptions().string)
-                lines.add(shiftForNoSnapping().string)
+                lines.add(rightClickForOptions())
+                lines.add(shiftForNoSnapping())
 
                 val textHeight = screenDrawing.getTextHeight()
                 val tooltipHeight = lines.size * textHeight + 10
@@ -137,14 +137,13 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
         }
     }
 
-    override fun init() {
-        super.init()
-        addRenderable(ImageButton {
+    override fun Init.init() {
+        ImageButton {
             image = createIdentifier("bewisclient", "textures/gui/sprites/add.png")
             onClick = { openPopup(AddWidgetPopup(), Color.BLACK alpha 0.625f) }
             imagePadding = 0
-        }(width - 16, height - 16, 14, 14))
-        addRenderable(ImageButton {
+        }(width - 16, height - 16, 14, 14)
+        ImageButton {
             image = createIdentifier("bewisclient", "textures/gui/sprites/settings.png")
             onClick = {
                 Bewisclient.setRenderableScreen(OptionScreen.getOrCreateInstance().apply {
@@ -152,7 +151,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
                 })
             }
             imagePadding = 2
-        }(width - 32, height - 16, 14, 14))
+        }(width - 32, height - 16, 14, 14)
     }
 
     override fun onMouseDrag(mouseX: Double, mouseY: Double, startX: Double, startY: Double, button: Int): Boolean {

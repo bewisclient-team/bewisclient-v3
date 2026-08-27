@@ -3,8 +3,7 @@ package net.bewis09.bewisclient.features.cosmetics
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.Button
 import net.bewis09.bewisclient.drawable.renderables.components.button.ResetButton
-import net.bewis09.bewisclient.drawable.renderables.components.element.Text
-import net.bewis09.bewisclient.drawable.renderables.components.logic.TextAlign
+import net.bewis09.renderite.logic.TextAlign
 import net.bewis09.bewisclient.drawable.renderables.components.setting.Switch
 import net.bewis09.bewisclient.drawable.renderables.settings.SettingRenderable
 import net.bewis09.bewisclient.game.translations.Translation
@@ -18,43 +17,38 @@ class EnableOnlineModeSettingsRenderable(p: Props<EnableOnlineModeSettingsRender
 
     init { props() }
 
-    val switch = Switch{
-        state = { setting.get() }
-        onChange = { if (!it || General.acceptedEULA()) setting.set(it) else AcceptPrivacyPage.openPrivacyPage() }
-    }
-
     companion object {
         val reloadWarning = Translation("menu.cosmetics.online_mode_reload_warning", "⚠ You need to restart the game for this setting to take effect.")
         val readPrivacyNotice = Translation("menu.cosmetics.read_privacy_notice", "Privacy Notice")
         val needToAccept = Translation("menu.cosmetics.need_to_accept_privacy_notice", "You need to accept the privacy notice to enable online mode.")
     }
 
-    val resetButton = ResetButton {
-        settable = setting
-        isDefault = setting::isDefault
-    }
-
-    override fun init() {
-        super.init()
-        addRenderable(resetButton.updatePosition(x2 - resetButton.width - 4, y + 4))
-        addRenderable(switch.updatePosition(x2 - switch.width - 8 - resetButton.width, y + 5))
-        addRenderable(Button {
+    override fun Init.init() {
+        ResetButton {
+            settable = setting
+            isDefault = setting::isDefault
+        }.updatePosition(x2 - 18, y + 4)
+        Switch {
+            state = { setting.get() }
+            onChange = { if (!it || General.acceptedEULA()) setting.set(it) else AcceptPrivacyPage.openPrivacyPage() }
+        }.updatePosition(x2 - 46, y + 5)
+        Button {
             text = readPrivacyNotice()
             onClick = { AcceptPrivacyPage.openPrivacyPage() }
-        }(x2 - 104, y + height - SelectiveScreenDrawer.getSideButtonHeight() * 2 + 14, 100, SelectiveScreenDrawer.getSideButtonHeight()))
-        addRenderable(Text {
+        }(x2 - 104, y + height - SelectiveScreenDrawer.getSideButtonHeight() * 2 + 14, 100, SelectiveScreenDrawer.getSideButtonHeight())
+        Text {
             text = title()
-        }).updatePosition(x + 8, y + 11)
+        }.updatePosition(x + 8, y + 11)
         if (Authorization.onlineModeEnabled != setting.get()) {
-            addRenderable(Text {
+            Text {
                 text = reloadWarning()
                 color = General.getTextThemeColor() alpha 0.7f
-            }).updatePosition(x + 8, y + 22)
+            }.updatePosition(x + 8, y + 22)
         }
-        addRenderable(Text {
+        Text {
             text = needToAccept()
             verticalAlign = TextAlign.START
             color = General.getTextThemeColor() alpha 0.7f
-        }).updatePosition(x + 8, y + 33)
+        }.updatePosition(x + 8, y + 33)
     }
 }

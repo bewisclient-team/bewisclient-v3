@@ -15,7 +15,7 @@ abstract class Notification<T: Notification<T>>(p: Props<T>) : PropedRenderable<
         width = 128 + if (General.isMinecrafty) 2 else 0
 
         if (General.isMinecrafty) {
-            SelectiveScreenDrawer.renderButtonBackground(screenDrawing, 0f, 0f, x, y, width + 4, height, 0f, mouseX, mouseY)
+            SelectiveScreenDrawer.renderButtonBackground(screenDrawing, 0f, 0f, x, y, width + 4, height, 0f)
         } else {
             screenDrawing.fill(x, y, width, height, Color.BLACK alpha 0.5f)
         }

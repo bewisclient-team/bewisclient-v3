@@ -2,7 +2,6 @@ package net.bewis09.bewisclient.widget.impl
 
 import com.mojang.blaze3d.platform.InputConstants
 import net.bewis09.bewisclient.common.createIdentifier
-import net.bewis09.bewisclient.common.staticFun
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
 import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSettingsRenderable

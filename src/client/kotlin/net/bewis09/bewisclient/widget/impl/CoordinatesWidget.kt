@@ -20,9 +20,9 @@ object CoordinatesWidget : LineWidget(
     val showCoordinateChange = boolean("show_coordinate_change", false)
 
     override fun getLines(): List<Component> = listOfNotNull(
-        "X: ${client.cameraEntity?.onPos?.x ?: 137} ${getAdditionString(0)}".toText(),
-        "Y: ${client.cameraEntity?.onPos?.y ?: 69}".toText(),
-        "Z: ${client.cameraEntity?.onPos?.z ?: 420} ${getAdditionString(2)}".toText(),
+        "X: ${client.cameraEntity?.blockPosition()?.x ?: 137} ${getAdditionString(0)}".toText(),
+        "Y: ${client.cameraEntity?.blockPosition()?.y ?: 69}".toText(),
+        "Z: ${client.cameraEntity?.blockPosition()?.z ?: 420} ${getAdditionString(2)}".toText(),
         if (showBiome.get()) BiomeWidget.getText(colorCodeBiome.get()) else null,
     )
 

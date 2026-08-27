@@ -21,7 +21,7 @@ class Input(p: Props<Input>) : PropedRenderable<Input>(p) {
     var cursor: Int = text.length
     var scrollX = 0
 
-    override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+    override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         if (screenDrawing.getTextWidth(text.substring(0, cursor), font) - scrollX > width - 5) {
             scrollX = screenDrawing.getTextWidth(text.substring(0, cursor), font) - (width - 5)
         } else if (screenDrawing.getTextWidth(text.substring(0, cursor), font) - scrollX < 0) {

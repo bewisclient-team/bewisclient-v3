@@ -24,7 +24,7 @@ class ProgressNotification(p: Props<ProgressNotification>) : Notification<Progre
 
     var removeStartTime = Long.MAX_VALUE
 
-    override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+    override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         screenDrawing.translate(((System.currentTimeMillis() - removeStartTime) / 400f).coerceIn(0f, 1f) * 120, 0f) {
             val lines = screenDrawing.wrapText(text.string, 120).map(Component::literal) + Component.literal("${((if (progress == -1f) 1f else progress) * 100).toInt()}%").withColor(Color.GRAY.argb)
             renderNotifLines(screenDrawing, lines, mouseX, mouseY)

@@ -6,7 +6,7 @@ import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.SimpleRenderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.Button
-import net.bewis09.bewisclient.drawable.renderables.components.structure.Grid
+import net.bewis09.renderite.components.Div
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.settings.structure.CategorizedFeature
 import net.bewis09.bewisclient.settings.structure.Feature
@@ -15,6 +15,8 @@ import net.bewis09.bewisclient.settings.types.ColorSetting
 import net.bewis09.bewisclient.util.color.StaticColorSaver
 import net.bewis09.bewisclient.widget.WidgetLoader
 import net.bewis09.bewisclient.widget.WidgetLoader.widgets
+import net.bewis09.renderite.logic.FitType
+import net.bewis09.renderite.logic.LineType
 
 object Widgets : SidebarFeature(createIdentifier("bewisclient", "widgets"), "Widgets") {
     init {
@@ -26,29 +28,32 @@ object Widgets : SidebarFeature(createIdentifier("bewisclient", "widgets"), "Wid
 
     val generalWidgetSettings = APIEntrypointLoader.mapEntrypoint { it.getGeneralWidgetSettings() }.flatten()
 
-    val generalWidgetButton = Button {
-        text = createTranslation("general_setting", "General Widget Settings")()
-        onClick = {
-            OptionScreen.currentInstance?.openPage(
-                createTranslation("general_setting", "General Widget Settings")(), Grid { init = { generalWidgetSettings }; gap = 1; fitType = Grid.FitType.SCROLL }
-            )
-        }
-    }
-
-    val widgetsPlane = object : SimpleRenderable() {
-        override fun init() {
-            addRenderable(generalWidgetButton(x, y, width, SelectiveScreenDrawer.getSideButtonHeight()))
-            addRenderable(Grid {
-                init = { widgetRenderables.map { a -> a.updateHeight(90) } }
+    override fun getRenderable(): Renderable = Div {
+        fitType = FitType.ENLARGE
+        gap = 5
+        onInit = {
+            Button {
+                text = createTranslation("general_setting", "General Widget Settings")()
+                onClick = {
+                    OptionScreen.currentInstance?.openPage(
+                        createTranslation("general_setting", "General Widget Settings")(),
+                        net.bewis09.renderite.components.Div {
+                            onInit = { addRenderables(generalWidgetSettings) }
+                            gap = 1
+                            fitType = FitType.SCROLL
+                        }
+                    )
+                }
+            }(x, y, width, SelectiveScreenDrawer.getSideButtonHeight())
+            Div {
+                initForEach(widgetRenderables) { it.add() }
                 gap = 5
                 minElementSize = 80
-                lineType = Grid.LineType.SIZED
-                fitType = Grid.FitType.SCROLL
-            }.invoke(x, y + SelectiveScreenDrawer.getSideButtonHeight() + 5, width, height - SelectiveScreenDrawer.getSideButtonHeight() - 5))
+                lineType = LineType.SIZED
+                fitType = FitType.SCROLL
+            }(x, y + SelectiveScreenDrawer.getSideButtonHeight() + 5, width, height - SelectiveScreenDrawer.getSideButtonHeight() - 5)
         }
     }
-
-    override fun getRenderable(): Renderable = widgetsPlane
 
     object Default : Feature(createIdentifier("bewisclient", "widgets_defaults")) {
         val backgroundColor = color("background_color", StaticColorSaver(0f, 0f, 0f), ColorSetting.STATIC, ColorSetting.CHANGING, ColorSetting.THEME)

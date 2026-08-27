@@ -20,20 +20,6 @@ class ConfirmPopup(p: Props<ConfirmPopup>) : PropedRenderable<ConfirmPopup>(p + 
 
     init { props() }
 
-    val cancelButton = Button {
-        text = cancelText
-        onClick = { OptionScreen.currentInstance?.closePopup() }
-    }
-
-    val confirmButton = Button {
-        text = confirmText
-        selected = { true }
-        onClick = {
-            onConfirm()
-            OptionScreen.currentInstance?.closePopup()
-        }
-    }
-
     override fun renderLogic(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         val lines = screenDrawing.wrapText(text.string, width - 20)
         updateHeight(40 + lines.size * 9)
@@ -49,8 +35,18 @@ class ConfirmPopup(p: Props<ConfirmPopup>) : PropedRenderable<ConfirmPopup>(p + 
         }
     }
 
-    override fun init() {
-        addRenderable(cancelButton(x + 6, y + height - SelectiveScreenDrawer.getSideButtonHeight() - 6, (width - 18) / 2, SelectiveScreenDrawer.getSideButtonHeight()))
-        addRenderable(confirmButton(x + width / 2 + 3, y + height - SelectiveScreenDrawer.getSideButtonHeight() - 6, (width - 18) / 2, SelectiveScreenDrawer.getSideButtonHeight()))
+    override fun Init.init() {
+        Button {
+            text = cancelText
+            onClick = { OptionScreen.currentInstance?.closePopup() }
+        }(x + 6, y + height - SelectiveScreenDrawer.getSideButtonHeight() - 6, (width - 18) / 2, SelectiveScreenDrawer.getSideButtonHeight())
+        Button {
+            text = confirmText
+            selected = { true }
+            onClick = {
+                onConfirm()
+                OptionScreen.currentInstance?.closePopup()
+            }
+        }(x + width / 2 + 3, y + height - SelectiveScreenDrawer.getSideButtonHeight() - 6, (width - 18) / 2, SelectiveScreenDrawer.getSideButtonHeight())
     }
 }

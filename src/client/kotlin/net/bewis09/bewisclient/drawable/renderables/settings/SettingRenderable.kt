@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.drawable.renderables.settings
 
+import net.bewis09.bewisclient.drawable.Text
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
-import net.bewis09.bewisclient.drawable.renderables.components.element.Text
 import net.bewis09.bewisclient.drawable.renderables.components.logic.TooltipHoverable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.renderite.drawer.pushColor
@@ -14,9 +14,9 @@ abstract class SettingRenderable<P: SettingRenderable<P>>(p: Props<P>) : Tooltip
         }
     }
 
-    fun addSettingText(text: () -> Component) {
-        addRenderable(Text {
-            textProvider = text
-        }(x + 8, y, width - 8, height))
+    fun Init.SettingText(p: Props<Text>) {
+        Text(p + {
+            paddingLeft = 8
+        })
     }
 }

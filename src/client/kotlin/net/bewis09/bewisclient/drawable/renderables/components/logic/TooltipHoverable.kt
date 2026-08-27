@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.drawable.renderables.components.logic
 
-import net.bewis09.bewisclient.drawable.Animator
+import net.bewis09.renderite.logic.Animator
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.features.sidebar.General
@@ -29,8 +29,7 @@ abstract class TooltipHoverable<P: TooltipHoverable<P>>(p: Props<P>) : Hoverable
             if (hoverFactor == 1f && wasActuallyDrawn != false) tooltipAnimation.set(1f)
 
             if (wasActuallyDrawn == false) {
-                tooltipAnimation.pauseForOnce()
-                tooltipAnimation.set(0f)
+                tooltipAnimation.setInstant(0f)
             }
 
             isActuallyDrawn = false
@@ -43,7 +42,7 @@ abstract class TooltipHoverable<P: TooltipHoverable<P>>(p: Props<P>) : Hoverable
                 screenDrawing.setBewisclientFont()
 
                 val textHeight = screenDrawing.getTextHeight()
-                val wrappedText = screenDrawing.wrapText(tooltip.string, 200)
+                val wrappedText = screenDrawing.wrapText(tooltip, 200)
                 val tooltipHeight = wrappedText.size * textHeight + 10
 
                 val width = wrappedText.maxOfOrNull { screenDrawing.getTextWidth(it) }?.plus(10) ?: 210
@@ -56,7 +55,7 @@ abstract class TooltipHoverable<P: TooltipHoverable<P>>(p: Props<P>) : Hoverable
                 screenDrawing.guiGraphics.translateToTopOptional()
                 if (General.isMinecrafty) {
                     screenDrawing.pushAlpha(tooltipAnimation.get() * 0.9f) {
-                        SelectiveScreenDrawer.renderButtonBackground(screenDrawing, 1f, 0f, mouseX, mouseY - tooltipHeight, width, tooltipHeight, 1f, mouseX, mouseY, true)
+                        SelectiveScreenDrawer.renderButtonBackground(screenDrawing, 1f, 0f, mouseX, mouseY - tooltipHeight, width, tooltipHeight, 1f, true)
                     }
                 } else {
                     screenDrawing.fillRounded(mouseX, mouseY - tooltipHeight, width, tooltipHeight, 5, Color.BLACK alpha tooltipAnimation.get() * 0.8f)
@@ -70,13 +69,8 @@ abstract class TooltipHoverable<P: TooltipHoverable<P>>(p: Props<P>) : Hoverable
         }
     }
 
-    override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        super.render(screenDrawing, mouseX, mouseY)
-    }
-
-    override fun init() {
-        tooltipAnimation.pauseForOnce()
-        tooltipAnimation.set(0f)
-        super.init()
+    override fun initLogic() {
+        tooltipAnimation.setInstant(0f)
+        super.initLogic()
     }
 }

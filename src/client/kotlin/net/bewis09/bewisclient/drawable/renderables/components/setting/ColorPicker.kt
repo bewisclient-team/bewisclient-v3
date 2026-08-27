@@ -38,12 +38,15 @@ class ColorPicker(p: Props<ColorPicker>) : PropedRenderable<ColorPicker>(p) {
         return identifier
     }
 
-    override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+    override fun renderBackground(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         screenDrawing.drawBorder(x, y, width, height, General.getThemeColor(alpha = 0.3f))
-        get().brightness.let {
-            screenDrawing.pushColor(it, it, it, 1f) {
-                screenDrawing.drawTexture(getColorPickerImage((width - 2).coerceAtMost((height - 2))), x + 1, y + 1, width - 2, height - 2)
-            }
+    }
+
+    override fun Init.init() {
+        Image {
+            colorProvider = { Color(get().brightness, get().brightness, get().brightness, 1f) }
+            image = getColorPickerImage((width - 2).coerceAtMost((height - 2)))
+            padding = 1
         }
     }
 

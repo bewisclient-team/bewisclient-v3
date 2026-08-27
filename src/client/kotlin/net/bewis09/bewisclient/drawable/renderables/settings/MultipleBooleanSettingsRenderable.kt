@@ -1,12 +1,9 @@
 package net.bewis09.bewisclient.drawable.renderables.settings
 
 import net.bewis09.bewisclient.drawable.renderables.components.button.ResetButton
-import net.bewis09.bewisclient.drawable.renderables.components.element.Rectangle
-import net.bewis09.bewisclient.drawable.renderables.components.element.Text
-import net.bewis09.bewisclient.drawable.renderables.components.logic.TextAlign
+import net.bewis09.renderite.logic.TextAlign
 import net.bewis09.bewisclient.drawable.renderables.components.setting.Switch
 import net.bewis09.bewisclient.drawable.renderables.components.logic.TooltipHoverable
-import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.settings.logic.SettingInterfaceWithDefault
 import net.bewis09.bewisclient.settings.structure.Feature
@@ -19,20 +16,18 @@ class MultipleBooleanSettingsRenderable(p: Props<MultipleBooleanSettingsRenderab
 
     init { props() }
 
-    override fun init() {
-        super.init()
+    override fun Init.init() {
         var yOffset = 18
         for (setting in settings) {
-            val renderable = setting.updatePosition(x, y + 4 + yOffset).updateWidth(width)
-            addRenderable(renderable)
+            val renderable = setting.updatePosition(x, y + 4 + yOffset).updateWidth(width).add()
             yOffset += renderable.height + 2
         }
         height = yOffset + 4
-        addRenderable(Text {
+        Text {
             text = this@MultipleBooleanSettingsRenderable.title()
             verticalAlign = TextAlign.START
             textAlign = TextAlign.CENTER
-        }(x, y + 6, width, 0))
+        }(x, y + 6, width, 10)
     }
 
     class Part(p: Props<Part>) : TooltipHoverable<Part>(p + {
@@ -45,22 +40,21 @@ class MultipleBooleanSettingsRenderable(p: Props<MultipleBooleanSettingsRenderab
 
         init { props() }
 
-        val switch = Switch {
-            state = { setting.get() }
-            onChange = setting::set
-        }
-
-        val resetButton = ResetButton {
-            settable = setting
-            isDefault = { setting.get() == setting.getDefault() }
-        }
-
-        override fun init() {
-            super.init()
-            addRenderable(resetButton.updatePosition(x2 - resetButton.width - 4, y + 1))
-            addRenderable(switch.updatePosition(x2 - switch.width - 8 - resetButton.width, y + 2))
-            addRenderable(Rectangle { color = 0xAAAAAA alpha 0.2F }(x + 5, y - 2, width - 10, 1))
-            addRenderable(Text { text = title }(x + 8, y, 0, height))
+        override fun Init.init() {
+            ResetButton {
+                settable = setting
+                isDefault = { setting.get() == setting.getDefault() }
+            }.updatePosition(x2 - 18, y + 1)
+            Switch {
+                state = { setting.get() }
+                onChange = setting::set
+            }.updatePosition(x2 - 46, y + 2)
+            Rectangle {
+                color = 0xAAAAAA alpha 0.2F
+            }(x + 5, y - 2, width - 10, 1)
+            Text {
+                text = title
+            }(x + 8, y, width, height)
         }
     }
 

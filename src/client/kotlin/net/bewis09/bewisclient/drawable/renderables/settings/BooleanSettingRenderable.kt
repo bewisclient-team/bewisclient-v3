@@ -2,7 +2,6 @@ package net.bewis09.bewisclient.drawable.renderables.settings
 
 import net.bewis09.bewisclient.drawable.renderables.components.button.ResetButton
 import net.bewis09.bewisclient.drawable.renderables.components.setting.Switch
-import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.settings.types.Setting
 
@@ -14,20 +13,17 @@ class BooleanSettingRenderable(p: Props<BooleanSettingRenderable>) : SettingRend
 
     init { props() }
 
-    val switch = Switch {
-        state = { setting.get() }
-        onChange = setting::set
-    }
-
-    val resetButton = ResetButton {
-        this.settable = setting
-        this.isDefault = setting::isDefault
-    }
-
-    override fun init() {
-        super.init()
-        addRenderable(resetButton.updatePosition(x2 - resetButton.width - 4, y + 4))
-        addRenderable(switch.updatePosition(x2 - switch.width - 8 - resetButton.width, y + 5))
-        addSettingText { title() }
+    override fun Init.init() {
+        ResetButton {
+            this.settable = setting
+            this.isDefault = setting::isDefault
+        }.updatePosition(x2 - 18, y + 4)
+        Switch {
+            state = { setting.get() }
+            onChange = setting::set
+        }.updatePosition(x2 - 46, y + 5)
+        SettingText {
+            textProvider = { title() }
+        }
     }
 }

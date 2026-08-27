@@ -7,7 +7,7 @@ import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.SimpleRenderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.Button
-import net.bewis09.bewisclient.drawable.renderables.components.structure.Grid
+import net.bewis09.renderite.components.Div
 import net.bewis09.bewisclient.drawable.renderables.notification.NotificationManager
 import net.bewis09.bewisclient.drawable.renderables.notification.SimpleTextNotification
 import net.bewis09.bewisclient.drawable.renderables.popup.ConfirmPopup
@@ -22,6 +22,8 @@ import net.bewis09.renderite.drawer.pushColor
 import net.bewis09.renderite.drawer.scale
 import net.bewis09.renderite.drawer.transform
 import net.bewis09.renderite.logic.Color
+import net.bewis09.renderite.logic.FitType
+import net.bewis09.renderite.logic.LineType
 import net.bewis09.renderite.logic.alpha
 import net.minecraft.client.Minecraft
 import java.io.ByteArrayInputStream
@@ -124,29 +126,6 @@ object Screenshot : SidebarFeature(createIdentifier("bewisclient", "screenshot")
             }
         }
 
-        val elementGrid by lazy {
-            load()
-            Grid {
-                gap = 5
-                minElementSize = 100
-                lineType = Grid.LineType.SIZED
-                fitType = Grid.FitType.SCROLL
-                init = { width ->
-                    contents.toSortedMap().map { ScreenshotViewElement { file = it.key } }.toList().ifEmpty {
-                        listOf(
-                            object : SimpleRenderable() {
-                                override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-                                    screenDrawing.fillWithBorder(x, y, width, height, if (isMinecrafty) 0x333333 alpha 0.7f else General.getThemeColor(alpha = 0.7f, black = 0.2f), if (isMinecrafty) Color.WHITE alpha 0.5f else General.getThemeColor(alpha = 0.5f))
-                                    val lines = screenDrawing.wrapText(noScreenshotsYet().string, width - 8)
-                                    screenDrawing.drawCenteredWrappedText(lines, x + width / 2, y + height / 2 - lines.size * screenDrawing.getTextHeight() / 2, if (isMinecrafty) Color.WHITE alpha 0.7f else General.getThemeColor(white = 0.3f, alpha = 0.7f))
-                                }
-                            }.updateHeight((width - 2) * 9 / 16 + 2)
-                        )
-                    }
-                }
-            }
-        }
-
         fun loadFileData(file: File) {
             if (contents[file]?.nativeImage != null || contents[file]?.failed == true) return
             contents[file] = catch {
@@ -158,13 +137,29 @@ object Screenshot : SidebarFeature(createIdentifier("bewisclient", "screenshot")
             } ?: ScreenshotFileData(null, null, true)
         }
 
-        override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-            renderRenderables(screenDrawing, mouseX, mouseY)
-        }
+        override fun Init.init() {
+            Div(0) {
+                load()
+                gap = 5
+                minElementSize = 100
+                lineType = LineType.SIZED
+                fitType = FitType.SCROLL
+                onInit = onInit@{ width ->
+                    contents.toSortedMap().map { ScreenshotViewElement { file = it.key }.add() }.ifEmpty {
+                        object : SimpleRenderable() {
+                            override fun renderBackground(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+                                screenDrawing.fillWithBorder(x, y, width, height, if (isMinecrafty) 0x333333 alpha 0.7f else General.getThemeColor(alpha = 0.7f, black = 0.2f), if (isMinecrafty) Color.WHITE alpha 0.5f else General.getThemeColor(alpha = 0.5f))
+                            }
 
-        override fun init() {
-            addRenderable(redirectElement(x, y, width, 22))
-            addRenderable(elementGrid(x, y + 27, width, height - 27))
+                            override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+                                val lines = screenDrawing.wrapText(noScreenshotsYet(), width - 8)
+                                screenDrawing.drawCenteredWrappedText(lines, x + width / 2, y + height / 2 - lines.size * screenDrawing.getTextHeight() / 2, if (isMinecrafty) Color.WHITE alpha 0.7f else General.getThemeColor(white = 0.3f, alpha = 0.7f))
+                            }
+                        }.updateHeight((width - 2) * 9 / 16 + 2).add()
+                    }
+                }
+            }(x, y + 27, width, height - 27)
+            redirectElement(x, y, width, 22).add()
         }
     }
 
@@ -175,16 +170,18 @@ object Screenshot : SidebarFeature(createIdentifier("bewisclient", "screenshot")
 
         init { props() }
 
-        override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-            super.render(screenDrawing, mouseX, mouseY)
-
+        override fun renderBackground(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             screenDrawing.transform(x + width / 2f, y + height / 2f, if (isMinecrafty) 1f else 1f - hoverFactor * 0.1f) {
                 if (isMinecrafty) {
-                    SelectiveScreenDrawer.renderButtonBackground(screenDrawing, hoverFactor, 1f, -width / 2, -height / 2, width, height, 1f, mouseX, mouseY)
+                    SelectiveScreenDrawer.renderButtonBackground(screenDrawing, hoverFactor, 1f, -width / 2, -height / 2, width, height, 1f)
                 } else {
                     screenDrawing.fillWithBorder(-width / 2, -height / 2, width, height, General.getThemeColor(alpha = 0.7f, black = 0.2f), General.getThemeColor(white = 1f - hoverFactor * .5f, alpha = 0.5f + hoverFactor * .5f))
                 }
+            }
+        }
 
+        override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+            screenDrawing.transform(x + width / 2f, y + height / 2f, if (isMinecrafty) 1f else 1f - hoverFactor * 0.1f) {
                 val data = contents.getOrDefault(file, null) ?: return
 
                 data.identifier?.also {
@@ -213,7 +210,7 @@ object Screenshot : SidebarFeature(createIdentifier("bewisclient", "screenshot")
             }
         }
 
-        override fun init() {
+        override fun Init.init() {
             height = (width - 2) * 9 / 16 + 2
         }
 
@@ -246,10 +243,10 @@ object Screenshot : SidebarFeature(createIdentifier("bewisclient", "screenshot")
     fun openBigScreenshot(file: File, screen: OptionScreen? = OptionScreen.currentInstance, instant: Boolean = false) {
         screen?.openPage(
             ScreenshotElement.screenshotName(file.name),
-            Grid {
-                init = { listOf(BigScreenshotViewElement { this.file = file }.updateWidth(it)) }
+            Div {
+                onInit = { BigScreenshotViewElement { this.file = file }.updateWidth(it).add() }
                 gap = 5
-                fitType = Grid.FitType.SCROLL
+                fitType = FitType.SCROLL
             },
             instant = instant
         )
@@ -267,14 +264,16 @@ object Screenshot : SidebarFeature(createIdentifier("bewisclient", "screenshot")
         }
     }
 
-    class BigScreenshotViewElement(p: Props<BigScreenshotViewElement>) : PropedRenderable<BigScreenshotViewElement>(p) {
+    class BigScreenshotViewElement(p: Props<BigScreenshotViewElement>) : PropedRenderable<BigScreenshotViewElement>(p + {
+        heightProvider = { (width - 2) * 9 / 16 + SelectiveScreenDrawer.getSideButtonHeight() + 7 }
+    }) {
         lateinit var file: File
 
         init { props() }
 
         override fun renderBackground(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             if (isMinecrafty) {
-                SelectiveScreenDrawer.renderButtonBackground(screenDrawing, 0f, 0f, x, y, width, height - SelectiveScreenDrawer.getSideButtonHeight() - 5, 1f, mouseX, mouseY)
+                SelectiveScreenDrawer.renderButtonBackground(screenDrawing, 0f, 0f, x, y, width, height - SelectiveScreenDrawer.getSideButtonHeight() - 5, 1f)
             } else {
                 screenDrawing.fillWithBorder(x, y, width, height - SelectiveScreenDrawer.getSideButtonHeight() - 5, if (isMinecrafty) Color.BLACK alpha 0.7f else General.getThemeColor(black = 0.2f, alpha = 0.7f), if (isMinecrafty) Color.WHITE alpha 0.5f else General.getThemeColor(alpha = 0.5f))
             }
@@ -300,23 +299,22 @@ object Screenshot : SidebarFeature(createIdentifier("bewisclient", "screenshot")
             }
         }
 
-        override fun init() {
-            height = (width - 2) * 9 / 16 + SelectiveScreenDrawer.getSideButtonHeight() + 7
-
-            addRenderable(Grid {
+        override fun Init.init() {
+            Div(0) {
                 lines = 4
-                lineType = Grid.LineType.DEFINITE
-                fitType = Grid.FitType.FIT
+                lineType = LineType.DEFINITE
+                fitType = FitType.FIT
                 gap = 5
-                children = listOf(
+                cacheChildren = true
+                onInit = {
                     Button {
                         text = openButtonText()
                         onClick = { Util.getPlatform().openFile(file) }
-                    },
+                    }
                     Button {
                         text = openFolderButtonText()
                         onClick = { Util.getPlatform().openFile(file.parentFile) }
-                    },
+                    }
                     Button {
                         text = copyButtonText()
                         onClick = { button ->
@@ -332,7 +330,7 @@ object Screenshot : SidebarFeature(createIdentifier("bewisclient", "screenshot")
                                 }
                             }
                         }
-                    },
+                    }
                     Button {
                         text = deleteButtonText()
                         onClick = {
@@ -349,8 +347,8 @@ object Screenshot : SidebarFeature(createIdentifier("bewisclient", "screenshot")
                             })
                         }
                     }
-                )
-            })(x, y + height - SelectiveScreenDrawer.getSideButtonHeight(), width, SelectiveScreenDrawer.getSideButtonHeight())
+                }
+            }(x, y + height - SelectiveScreenDrawer.getSideButtonHeight(), width, SelectiveScreenDrawer.getSideButtonHeight())
         }
     }
 }

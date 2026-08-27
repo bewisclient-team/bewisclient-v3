@@ -24,6 +24,7 @@ import net.bewis09.renderite.drawer.RenderiteDrawer
 import net.bewis09.renderite.drawer.transform
 import net.minecraft.client.gui.Font
 import net.minecraft.network.chat.Component
+import net.minecraft.network.chat.MutableComponent
 import net.minecraft.world.item.ItemStack
 import java.awt.image.BufferedImage
 
@@ -53,7 +54,7 @@ class ScreenDrawing(val guiGraphics: GuiGraphics, val font: Font): RenderiteDraw
         guiGraphics.drawItemOverlay(font, itemStack, x, y)
     }
 
-    override fun String.convert(): Component = this.toText()
+    override fun String.convert(): MutableComponent = this.toText()
 
     override fun Component.convert(): String = this.string
 
@@ -80,8 +81,6 @@ class ScreenDrawing(val guiGraphics: GuiGraphics, val font: Font): RenderiteDraw
     }
 
     override fun getTextHeight(): Int = this.font.lineHeight
-
-    override fun getCenterTextOffset(font: Identifier?): Float = if ((font == BEWISCLIENT_FONT || (font == null && this.overwrittenFont == BEWISCLIENT_FONT)) && General.isMinecrafty) 1f else 0f
 
     override val fillCache: MutableMap<Pair<Int, Int>, Identifier>
         get() = roundFillCache
@@ -122,5 +121,39 @@ class ScreenDrawing(val guiGraphics: GuiGraphics, val font: Font): RenderiteDraw
 
     override fun drawTextureIntern(texture: Identifier, x: Int, y: Int, u: Float, v: Float, width: Int, height: Int, regionWidth: Int, regionHeight: Int, textureWidth: Int, textureHeight: Int, color: Int) {
         guiGraphics.drawTexture(texture, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, color)
+    }
+
+    override fun wrapText(text: Component, maxWidth: Int, font: Identifier?): List<Component> {
+        val texts = text.copy().setFont(font).toFlatList().flatMap {
+            it.convert().replace("\r", "").replace("\n", "\uFDD0\n\uFDD0").replace(" ", "\uFDD0 \uFDD0").split("\uFDD0").map { str ->
+                str.convert().setStyle(it.style)
+            }
+        }
+
+        val lines = arrayListOf(Component.empty())
+
+        for (i in texts.indices) {
+            val l = texts[i]
+
+            if (l.string == "\n") {
+                lines.add(Component.empty())
+            } else if (l.string == " ") {
+                if (i == texts.indices.last) {
+                    lines.last().append(l)
+                } else {
+                    val added = lines.last().copy().append(l).append(texts[i + 1])
+
+                    if (getTextWidth(added, font) > maxWidth) {
+                        lines.add(Component.empty())
+                    } else {
+                        lines.last().append(l)
+                    }
+                }
+            } else {
+                lines.last().append(l)
+            }
+        }
+
+        return lines
     }
 }

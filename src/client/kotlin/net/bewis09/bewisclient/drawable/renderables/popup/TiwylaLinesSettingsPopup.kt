@@ -4,15 +4,15 @@ import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.Button
-import net.bewis09.bewisclient.drawable.renderables.components.element.Text
-import net.bewis09.bewisclient.drawable.renderables.components.logic.TextAlign
-import net.bewis09.bewisclient.drawable.renderables.components.structure.Grid
+import net.bewis09.renderite.logic.TextAlign
 import net.bewis09.bewisclient.drawable.renderables.impl.TiwylaLinesSettingsRenderable
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.settings.types.ListSetting
 import net.bewis09.bewisclient.widget.impl.TiwylaWidget
+import net.bewis09.bewisclient.drawable.Div
+import net.bewis09.renderite.logic.FitType
 import net.minecraft.network.chat.Component
 
 class TiwylaLinesSettingsPopup<T>(p: Props<TiwylaLinesSettingsPopup<T>>) : PropedRenderable<TiwylaLinesSettingsPopup<T>>(p + {
@@ -28,16 +28,6 @@ class TiwylaLinesSettingsPopup<T>(p: Props<TiwylaLinesSettingsPopup<T>>) : Prope
 
     companion object {
         val selectText = Translation("popup.tiwyla_lines_settings.title", "Select Information")
-    }
-
-    val plane = Grid {
-        gap = 2
-        fitType = Grid.FitType.SCROLL
-        init = {
-            mutableListOf(updateButton(TiwylaLinesSettingsRenderable.none(), null)).apply {
-                this += options.map { updateButton(it.translation(), it) }
-            }
-        }
     }
 
     fun updateButton(text: Component, option: TiwylaWidget.Line<T>?): Renderable {
@@ -63,11 +53,18 @@ class TiwylaLinesSettingsPopup<T>(p: Props<TiwylaLinesSettingsPopup<T>>) : Prope
         SelectiveScreenDrawer.renderPopupBackground(screenDrawing, x, y, width, height, 5, 0.3f)
     }
 
-    override fun init() {
-        addRenderable(Text {
+    override fun Init.init() {
+        Text {
             text = selectText()
             textAlign = TextAlign.CENTER
-        }(x, y + 6, width, 14))
-        addRenderable(plane(x + 5, y + 25, width - 10, height - 30))
+        }(x, y + 6, width, 14)
+        Div(0) {
+            gap = 2
+            fitType = FitType.SCROLL
+            onInit = {
+                updateButton(TiwylaLinesSettingsRenderable.none(), null).add()
+                addRenderables(options.map { (updateButton(it.translation(), it)) })
+            }
+        }(x + 5, y + 25, width - 10, height - 30)
     }
 }

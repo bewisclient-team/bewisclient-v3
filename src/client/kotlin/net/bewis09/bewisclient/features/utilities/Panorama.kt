@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.NativeImage
 import net.bewis09.bewisclient.common.*
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.components.button.ImageButton
-import net.bewis09.bewisclient.drawable.renderables.components.structure.Grid
+import net.bewis09.renderite.components.Div
 import net.bewis09.bewisclient.drawable.renderables.notification.NotificationManager
 import net.bewis09.bewisclient.drawable.renderables.notification.SimpleTextNotification
 import net.bewis09.bewisclient.drawable.renderables.popup.ConfirmPopup
@@ -22,6 +22,7 @@ import net.bewis09.bewisclient.util.EventEntrypoint
 import net.bewis09.bewisclient.version.registerTexture
 import net.bewis09.bewisclient.version.takePanoramaFull
 import net.bewis09.renderite.components.Hoverable
+import net.bewis09.renderite.logic.FitType
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.network.chat.Component
 import net.minecraft.server.packs.resources.IoSupplier
@@ -69,9 +70,10 @@ object Panorama : ImageFeature("panorama", "Panorama"), EventEntrypoint, Bewiscl
     }
 
     override fun getPane(): Renderable {
-        return Grid {
-            children = getSettingRenderables().toMutableList().apply {
-                addAll(FabricLoader.getInstance().gameDir.resolve("screenshots").toFile().listFiles {
+        return Div {
+            onInit = {
+                addRenderables(getSettingRenderables())
+                FabricLoader.getInstance().gameDir.resolve("screenshots").toFile().listFiles {
                     it.isDirectory && it.resolve("screenshots").exists() && it.resolve("screenshots").listFiles().map { f -> f.name }.let { name ->
                         name.contains("panorama_0.png") && name.contains("panorama_1.png") && name.contains("panorama_2.png") && name.contains("panorama_3.png") && name.contains("panorama_4.png") && name.contains("panorama_5.png")
                     }
@@ -80,11 +82,11 @@ object Panorama : ImageFeature("panorama", "Panorama"), EventEntrypoint, Bewiscl
                         this.file = file
                         this.index = index
                         this.length = size
-                    }
-                })
+                    }.add()
+                }
             }
             gap = 1
-            fitType = Grid.FitType.SCROLL
+            fitType = FitType.SCROLL
         }
     }
 
@@ -99,14 +101,12 @@ object Panorama : ImageFeature("panorama", "Panorama"), EventEntrypoint, Bewiscl
 
         init { props() }
 
-        override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+        override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             if (!images.containsKey(file)) {
                 images[file] = PanoramaScreenshots(file).apply { Util.ioPool().execute(::loadAll) }
             }
 
             images[file]?.registerAll()
-
-            super.render(screenDrawing, mouseX, mouseY)
 
             if (path.get() == file.absolutePath) screenDrawing.fillWithBorderRounded(x, y, width, height, 5, General.getThemeColor(alpha = 0.25f), General.getThemeColor(alpha = 0.5f), topLeft = index == 0, topRight = index == 0, bottomLeft = index == length - 1, bottomRight = index == length - 1)
             else screenDrawing.fillRounded(x, y, width, height, 5, General.getThemeColor(alpha = hoverFactor * 0.15f + 0.1f), topLeft = index == 0, topRight = index == 0, bottomLeft = index == length - 1, bottomRight = index == length - 1)
@@ -117,13 +117,10 @@ object Panorama : ImageFeature("panorama", "Panorama"), EventEntrypoint, Bewiscl
                     screenDrawing.drawTexture(identifier, x + 8 + index * 36, y + 24, 32, 32)
                 }
             }
-
-            renderRenderables(screenDrawing, mouseX, mouseY)
         }
 
-        override fun init() {
-            super.init()
-            addRenderable(ImageButton {
+        override fun Init.init() {
+            ImageButton {
                 image = createIdentifier("bewisclient", "textures/gui/sprites/select.png")
                 imagePadding = 2
                 onClick = onClick@{
@@ -132,8 +129,8 @@ object Panorama : ImageFeature("panorama", "Panorama"), EventEntrypoint, Bewiscl
                     path.set(file.absolutePath)
                     if (enabled) client.reloadResourcePacks()
                 }
-            }(x + width - 21, y + 7, 14, 14))
-            addRenderable(ImageButton {
+            }(x + width - 21, y + 7, 14, 14)
+            ImageButton {
                 image = createIdentifier("bewisclient", "textures/gui/sprites/delete.png")
                 imagePadding = 2
                 onClick = {
@@ -152,8 +149,8 @@ object Panorama : ImageFeature("panorama", "Panorama"), EventEntrypoint, Bewiscl
                         }
                     )
                 }
-            }(x + width - 21, y + 25, 14, 14))
-            addRenderable(ImageButton {
+            }(x + width - 21, y + 25, 14, 14)
+            ImageButton {
                 image = createIdentifier("bewisclient", "textures/gui/sprites/rename.png")
                 imagePadding = 2
                 onClick = onClick@{
@@ -187,7 +184,7 @@ object Panorama : ImageFeature("panorama", "Panorama"), EventEntrypoint, Bewiscl
                         }
                     })
                 }
-            }(x + width - 21, y + 43, 14, 14))
+            }(x + width - 21, y + 43, 14, 14)
         }
     }
 

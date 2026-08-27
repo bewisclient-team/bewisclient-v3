@@ -7,14 +7,15 @@ import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.SimpleRenderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.Button
-import net.bewis09.bewisclient.drawable.renderables.components.structure.Grid
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.settings.structure.SidebarFeature
 import net.bewis09.bewisclient.settings.types.ListSetting
 import net.bewis09.bewisclient.util.string
+import net.bewis09.renderite.components.Div
 import net.bewis09.renderite.logic.Color
+import net.bewis09.renderite.logic.FitType
 import net.minecraft.network.chat.Component
 
 object Home : SidebarFeature(createIdentifier("bewisclient", "home"), "Bewisclient") {
@@ -32,87 +33,84 @@ object Home : SidebarFeature(createIdentifier("bewisclient", "home"), "Bewisclie
 
         val checkTexture = createIdentifier("bewisclient", "textures/gui/sprites/check.png")
 
-        override fun init() {
-            val button = Button {
-                text = editQuickSettings()
-                onClick = {
-                    OptionScreen.currentInstance?.openPage(
-                        editQuickSettings(),
-                        Grid {
-                            init = { width ->
-                                quickSettingsOptions.map {
-                                    listOf(
-                                        SimpleRenderable { height = 5 },
-                                        InfoTextRenderable {
-                                            text = Component.translatable(it.key)
-                                            centered = true
-                                            color = General.getTextThemeColor()
-                                            padding = 0
-                                        },
-                                        SimpleRenderable { height = 3 },
-                                    ) + it.value.map { a ->
-                                        ConfigureRenderableVisibilityPlane {
-                                            category = it.key
-                                            id = a.key
-                                            renderable = a.value
-                                            this.width = width
-                                        }
-                                    }
-                                }.flatten()
+        val editButton = Button {
+            text = editQuickSettings()
+            onClick = {
+                OptionScreen.currentInstance?.openPage(
+                    editQuickSettings(),
+                    Div.create {
+                        initForEach(quickSettingsOptions) {
+                            Empty {
+                                height = 5
                             }
-                            gap = 1
-                            fitType = Grid.FitType.SCROLL
+                            InfoTextRenderable {
+                                text = Component.translatable(it.key)
+                                centered = true
+                                color = General.getTextThemeColor()
+                                padding = 0
+                            }.add()
+                            Empty {
+                                height = 3
+                            }
+                            it.value.forEach { a ->
+                                ConfigureRenderableVisibilityPlane {
+                                    category = it.key
+                                    id = a.key
+                                    renderable = a.value
+                                }.add()
+                            }
                         }
-                    )
-                }
-            }
-
-            val innerList = quickSettings.asSequence().filter { it.split("/").size >= 2 }.groupBy { it.split("/")[0] }.mapNotNull {
-                (listOf(
-                    SimpleRenderable { height = 5 },
-                    InfoTextRenderable {
-                        text = Component.translatable(it.key)
-                        centered = true
-                        color = General.getTextThemeColor()
-                        padding = 0
-                    }.updateHeight(14),
-                    SimpleRenderable { height = 3 },
-                ) + it.value.mapNotNull { a ->
-                    quickSettingsOptions[it.key]?.get(a.split("/")[1])
-                }).run { if (size == 3) null else this }
-            }.flatten().toList()
-
-            if (innerList.isEmpty()) {
-                addRenderable(object : SimpleRenderable() {
-                    override fun init() {
-                        addRenderable(InfoTextRenderable {
-                            text = no_quick_settings()
-                            centered = true
-                            color = General.getTextThemeColor() alpha 0.66f
-                        }(x + width / 2 - 100, y + height / 4, 200, 0))
-                        addRenderable(button(x + width / 2 - 50, y + height / 2, 100, SelectiveScreenDrawer.getSideButtonHeight()))
+                        gap = 1
+                        fitType = FitType.SCROLL
                     }
-                }(x, y, width, height))
-                return
+                )
             }
-
-            addRenderable(
-                Grid {
-                    children = mutableListOf(
-                        Grid { children = innerList; gap = 1 },
-                        object : SimpleRenderable() {
-                            override fun init() {
-                                addRenderable(button(x + width / 2 - 50, y, 100, height))
-                            }
-                        }.updateHeight(SelectiveScreenDrawer.getSideButtonHeight())
-                    )
-                    gap = 5
-                    fitType = Grid.FitType.SCROLL
-                }(x, y, width, height)
-            )
         }
 
-        class ConfigureRenderableVisibilityPlane(p: Props<ConfigureRenderableVisibilityPlane>) : PropedRenderable<ConfigureRenderableVisibilityPlane>(p) {
+        override fun Init.init() {
+            Div {
+                gap = 5
+                fitType = FitType.SCROLL
+                onInit = {
+                    Div {
+                        gap = 1
+                        cacheChildren = true
+                        onInit = {
+                            (quickSettings.asSequence().filter { it.split("/").size >= 2 }.groupBy { it.split("/")[0] }).forEach {
+                                val options = it.value.mapNotNull { a -> quickSettingsOptions[it.key]?.get(a.split("/")[1]) }.ifEmpty { return@forEach }
+
+                                Empty { height = 5 }
+                                InfoTextRenderable {
+                                    text = Component.translatable(it.key)
+                                    centered = true
+                                    color = General.getTextThemeColor()
+                                    padding = 0
+                                }.updateHeight(14)
+                                Empty { height = 3 }
+                                addRenderables(options)
+                            }
+
+                            renderables.ifEmpty {
+                                InfoTextRenderable {
+                                    text = no_quick_settings()
+                                    centered = true
+                                    color = General.getTextThemeColor() alpha 0.66f
+                                }(x + width / 2 - 100, y + height / 4, 200, 0)
+                            }
+                        }
+                    }
+                    object : SimpleRenderable() {
+                        override fun Init.init() {
+                            editButton.add(x + width / 2 - 50, y, 100, height)
+                        }
+                    }.updateHeight(SelectiveScreenDrawer.getSideButtonHeight()).add()
+                }
+            }(x, y, width, height)
+        }
+
+        class ConfigureRenderableVisibilityPlane(p: Props<ConfigureRenderableVisibilityPlane>) : PropedRenderable<ConfigureRenderableVisibilityPlane>(p + {
+            minWidth = 20
+        }) {
             lateinit var category: String
             lateinit var id: String
             lateinit var renderable: Renderable
@@ -127,13 +125,15 @@ object Home : SidebarFeature(createIdentifier("bewisclient", "home"), "Bewisclie
 
             override fun renderBackground(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
                 if (isMinecrafty) {
-                    SelectiveScreenDrawer.renderButtonBackground(screenDrawing, 0f, 0f, x, y + height / 2 - 9, 18, 18, 0f, mouseX, mouseY)
+                    SelectiveScreenDrawer.renderButtonBackground(screenDrawing, 0f, 0f, x, y + height / 2 - 9, 18, 18, 0f)
                 } else {
                     screenDrawing.fillWithBorderRounded(x, y + height / 2 - 8, 16, 16, 5, General.getThemeColor(alpha = 0.15f), General.getThemeColor(alpha = 0.15f))
                 }
             }
 
             override fun renderAccessories(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+                if (!quickSettings.contains("$category/$id")) return
+
                 screenDrawing.afterDraw("selection:$category/$id", {
                     screenDrawing.enableScissors(this@HomePlane.x, this@HomePlane.y, this@HomePlane.width, this@HomePlane.height) {
                         screenDrawing.drawTexture(checkTexture, x + if (isMinecrafty) 2 else 1, y + height / 2 - 7, 14, 14, if (isMinecrafty) Color.WHITE else General.getThemeColor())
@@ -141,10 +141,9 @@ object Home : SidebarFeature(createIdentifier("bewisclient", "home"), "Bewisclie
                 })
             }
 
-            override fun init() {
+            override fun Init.init() {
                 renderable.updateWidth(width - 20)
-                renderable.updatePosition(x + 20, y)
-                addRenderable(renderable)
+                renderable.addPositioned(x + 20, y)
             }
 
             override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {

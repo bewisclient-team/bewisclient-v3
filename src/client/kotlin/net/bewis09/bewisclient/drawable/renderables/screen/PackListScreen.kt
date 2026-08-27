@@ -5,7 +5,7 @@ import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.bewisclient.drawable.SimpleRenderable
 import net.bewis09.bewisclient.drawable.renderables.components.setting.Input
 import net.bewis09.bewisclient.drawable.renderables.components.button.MinecraftButton
-import net.bewis09.bewisclient.drawable.renderables.components.structure.Grid
+import net.bewis09.renderite.components.Div
 import net.bewis09.bewisclient.drawable.renderables.notification.NotificationManager
 import net.bewis09.bewisclient.drawable.renderables.notification.ProgressNotification
 import net.bewis09.bewisclient.drawable.renderables.notification.SimpleTextNotification
@@ -15,6 +15,7 @@ import net.bewis09.bewisclient.server.Modrinth
 import net.bewis09.bewisclient.util.Bewisclient
 import net.bewis09.bewisclient.version.setScreen
 import net.bewis09.renderite.logic.Color
+import net.bewis09.renderite.logic.FitType
 import net.bewis09.renderite.logic.color
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.network.chat.CommonComponents
@@ -47,7 +48,7 @@ class PackListScreen(p: Props<PackListScreen>) : PropedRenderable<PackListScreen
         val downloadFromModrinthText = Translation("menu.pack.download_from_modrinth", "Select and download packs from Modrinth")
     }
 
-    override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+    override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         screenDrawing.drawHorizontalLine(centerX - 150, 47, 300, Color.WHITE alpha (51 / 255f))
         screenDrawing.drawHorizontalLine(centerX - 150, y2 - 32, 300, Color.WHITE alpha (51 / 255f))
         screenDrawing.drawHorizontalLine(centerX - 150, 48, 300, Color.BLACK alpha (191 / 255f))
@@ -58,8 +59,6 @@ class PackListScreen(p: Props<PackListScreen>) : PropedRenderable<PackListScreen
         screenDrawing.drawCenteredTextWithShadow(downloadFromModrinthText(), centerX, 17, Color.LIGHT_GRAY)
 
         screenDrawing.fillWithBorder(centerX - 63, 30, 126, 15, Color.BLACK, if (this.selectedElement != search) Color.LIGHT_GRAY else Color.WHITE)
-
-        renderRenderables(screenDrawing, mouseX, mouseY)
 
         if (!hasLoaded) {
             screenDrawing.drawCenteredText("Loading...", width / 2, height / 2, Color.WHITE)
@@ -80,23 +79,27 @@ class PackListScreen(p: Props<PackListScreen>) : PropedRenderable<PackListScreen
         }
     }
 
-    override fun init() {
-        addRenderable(Grid {
-            init = {
-                Modrinth.getPageOfType(type, index, query)?.map(::PackEntry)?.also { hasLoaded = true }?.let {
-                    listOf(SimpleRenderable(), *it.toTypedArray(), SimpleRenderable())
-                } ?: emptyList()
+    override fun Init.init() {
+        Div {
+            onInit = onInit@{
+                val page = Modrinth.getPageOfType(type, index, query)?.map(::PackEntry) ?: return@onInit
+
+                hasLoaded = true
+
+                Empty()
+                addRenderables(page)
+                Empty()
             }
             gap = 4
-            fitType = Grid.FitType.SCROLL
-        }(width / 2 - 150, 49, 300, height - 49 - 33))
+            fitType = FitType.SCROLL
+        }(width / 2 - 150, 49, 300, height - 49 - 33)
 
-        addRenderable(MinecraftButton {
+        MinecraftButton {
             text = CommonComponents.GUI_DONE
             onClick = { setScreen(parent) }
-        }(centerX - 100, y2 - 26, 200, 20))
+        }(centerX - 100, y2 - 26, 200, 20)
 
-        addRenderable(MinecraftButton {
+        MinecraftButton {
             text = Component.literal(">")
             onClick = {
                 if (index < (Modrinth.typeMaps[type to query]?.second ?: 0) / 20) {
@@ -105,9 +108,9 @@ class PackListScreen(p: Props<PackListScreen>) : PropedRenderable<PackListScreen
                     resize()
                 }
             }
-        }(centerX + 136, 31, 14, 14))
+        }(centerX + 136, 31, 14, 14)
 
-        addRenderable(MinecraftButton {
+        MinecraftButton {
             text = Component.literal("<")
             onClick = {
                 if (index > 0) {
@@ -116,7 +119,7 @@ class PackListScreen(p: Props<PackListScreen>) : PropedRenderable<PackListScreen
                     resize()
                 }
             }
-        }(centerX + 66, 31, 14, 14))
+        }(centerX + 66, 31, 14, 14)
 
         addRenderable(search(centerX - 60, 33, 120, 14))
     }
@@ -130,7 +133,7 @@ class PackListScreen(p: Props<PackListScreen>) : PropedRenderable<PackListScreen
     }
 
     inner class PackEntry(val pack: Modrinth.ListPack) : SimpleRenderable({ height = 32 }) {
-        override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+        override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             screenDrawing.drawText(pack.title.toText(), x + 38, y + 1, Color.WHITE)
             val lists = screenDrawing.wrapText(pack.description, width - 40)
             for (i in 0 until minOf(2, lists.size)) {

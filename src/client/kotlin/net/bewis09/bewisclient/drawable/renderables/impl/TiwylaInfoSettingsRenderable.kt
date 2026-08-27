@@ -2,7 +2,6 @@ package net.bewis09.bewisclient.drawable.renderables.impl
 
 import net.bewis09.bewisclient.common.*
 import net.bewis09.bewisclient.drawable.PropedRenderable
-import net.bewis09.bewisclient.drawable.renderables.components.element.Rectangle
 import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSettingsRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.translations.Translation
@@ -13,7 +12,11 @@ import net.bewis09.renderite.logic.alpha
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
 
-class TiwylaInfoSettingsRenderable : PropedRenderable<TiwylaInfoSettingsRenderable>() {
+class TiwylaInfoSettingsRenderable : PropedRenderable<TiwylaInfoSettingsRenderable>({
+    minWidth = 22
+}) {
+    init { props() }
+
     val blockInfoList = MultipleBooleanSettingsRenderable {
         this.title = Translation("settings.tiwyla_info.title", "Special Block Information")
         settings = TiwylaWidget.blockStateInfoMap.map {
@@ -54,10 +57,10 @@ class TiwylaInfoSettingsRenderable : PropedRenderable<TiwylaInfoSettingsRenderab
         updateHeight(blockInfoList.height.coerceAtLeast(entityInfoList.height) + 5)
     }
 
-    override fun init() {
-        if (width < 12) return
-
-        addRenderable(Rectangle { color = 0xFFFFFF alpha 0.25f }(centerX, y + 5, 1, height))
+    override fun Init.init() {
+        Rectangle {
+            color = 0xFFFFFF alpha 0.25f
+        }(centerX, y + 5, 1, height)
         addRenderable(entityInfoList.updatePosition(x, y + 5).updateWidth((width - 11) / 2))
         addRenderable(blockInfoList.updatePosition(x2 - (width - 11) / 2, y + 5).updateWidth((width - 11) / 2))
     }

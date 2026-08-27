@@ -2,7 +2,7 @@ package net.bewis09.bewisclient.features.sidebar
 
 import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.bewisclient.drawable.renderables.components.structure.Grid
+import net.bewis09.renderite.components.Div
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSettingsRenderable
 import net.bewis09.bewisclient.settings.structure.SidebarFeature
@@ -12,11 +12,12 @@ import net.bewis09.bewisclient.util.Bewisclient
 import net.bewis09.bewisclient.util.color.StaticColorSaver
 import net.bewis09.bewisclient.util.color.ThemeColorSaver
 import net.bewis09.renderite.logic.Color
+import net.bewis09.renderite.logic.FitType
 import net.bewis09.renderite.logic.not
 import net.bewis09.renderite.logic.within
 
 object General : SidebarFeature(createIdentifier("bewisclient", "options_menu"), "Settings") {
-    val animationTime = int("animation_time", 150, 0 to 500)
+    val animationTime = int("animation_time", 150, 0 to 1000)
     val blurBackground = boolean("blur_background", true)
     val buttonInTitleScreen = boolean("button_in_title_screen", true)
     val buttonInGameScreen = boolean("button_in_game_screen", true)
@@ -42,11 +43,10 @@ object General : SidebarFeature(createIdentifier("bewisclient", "options_menu"),
     fun getTextThemeColor() = if (!minecraftyOptionsMenu) (0.5f within (Color.WHITE to themeColor.get().getColor())) else Color.WHITE
 
     override fun getRenderable(): Renderable {
-        return Grid {
+        return Div {
             gap = 1
-            fitType = Grid.FitType.SCROLL
-            children = listOfNotNull(
-//            OptionsMenuSettings.animationTime.createRenderable("menu.settings.animation_time", "Animation Time", "The time (in milliseconds) it takes for animations to complete"),
+            fitType = FitType.SCROLL
+            onInit = {
                 MultipleBooleanSettingsRenderable {
                     title = createTranslation("menu_options", "Menu Options")
                     settings = listOf(
@@ -57,18 +57,17 @@ object General : SidebarFeature(createIdentifier("bewisclient", "options_menu"),
                         buttonInTitleScreen.createRenderablePart(this@General, "button_in_title_screen", "Button in Title Screen", "Whether to show the Bewisclient button in the title screen").addToQuickSettings(this@General, "title"),
                         buttonInGameScreen.createRenderablePart(this@General, "button_in_game_screen", "Button in Game Screen", "Whether to show the Bewisclient button in the in-game pause menu").addToQuickSettings(this@General, "in-game")
                     )
-                },
-                themeColor.createRenderable(this@General, "theme_color", "Theme Color", "The theme color used throughout the client").addToQuickSettings(this@General, "theme_color"),
-                backgroundColor.createRenderableWithFader(this@General, "background_color", "Background Color", "The background color used for menus. Reset to use the theme color.", backgroundOpacity).addToQuickSettings(this@General, "background"),
+                }.add()
+                themeColor.createRenderable(this@General, "theme_color", "Theme Color", "The theme color used throughout the client").addToQuickSettings(this@General, "theme_color").add()
+                backgroundColor.createRenderableWithFader(this@General, "background_color", "Background Color", "The background color used for menus. Reset to use the theme color.", backgroundOpacity).addToQuickSettings(this@General, "background").add()
                 if (System.getProperty("os.name").lowercase().contains("win"))
-                    autoUpdate.createRenderable(this@General, "auto_update", "Automatic Updates", "Whether to automatically check for updates and update the client when an update is found")
-                else null,
+                    autoUpdate.createRenderable(this@General, "auto_update", "Automatic Updates", "Whether to automatically check for updates and update the client when an update is found").add()
 //                EnableOnlineModeSettingsRenderable(
 //                    createTranslation("online_mode", "Online Mode"),
 //                    createTranslation("online_mode.description", "Whether to enable online features such as special cosmetics and cosmetic syncing. Needs to be enabled if you want other players to see your cosmetics or if you want to see other players' cosmetics. Requires restarting the client to take effect."),
 //                    onlineMode
 //                ),
-            )
+            }
         }
     }
 }

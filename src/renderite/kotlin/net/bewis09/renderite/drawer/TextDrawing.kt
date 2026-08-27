@@ -2,6 +2,7 @@ package net.bewis09.renderite.drawer
 
 import net.bewis09.renderite.logic.Color
 import net.bewis09.renderite.RenderiteElement
+import net.minecraft.network.chat.Component
 
 interface TextDrawing<I, T, F> : RectDrawing<I, T, F> {
     fun drawText(text: String, x: Number, y: Number, color: Color, font: F? = this.overwrittenFont) {
@@ -66,12 +67,10 @@ interface TextDrawing<I, T, F> : RectDrawing<I, T, F> {
 
     fun drawCenteredText(text: T, centerX: Number, y: Number, color: Color, font: F? = this.overwrittenFont, shadow: Boolean = false) {
         val textWidth = getTextWidth(text, font)
-        translate(-textWidth / 2f + getCenterTextOffset(font), 0f) {
+        translate(-textWidth / 2f, 0f) {
             drawText(text, centerX, y, color, font, shadow)
         }
     }
-
-    fun getCenterTextOffset(font: F?) = 0f
 
     fun drawCenteredTextWithShadow(text: T, centerX: Number, y: Number, color: Color, font: F? = this.overwrittenFont) {
         drawCenteredText(text, centerX, y, color, font, true)
@@ -101,23 +100,27 @@ interface TextDrawing<I, T, F> : RectDrawing<I, T, F> {
         drawTextWithShadow(text, rightX.toFloat() - textWidth, y, color, font)
     }
 
-    fun drawWrappedText(text: String, x: Number, y: Number, maxWidth: Int, color: Color, font: F? = this.overwrittenFont): List<String> {
-        return wrapText(text, maxWidth, font).also { drawWrappedText(it, x, y, color, font) }
+    fun drawWrappedText(text: String, x: Number, y: Number, maxWidth: Int, color: Color, font: F? = this.overwrittenFont, lineHeight: Int = getTextHeight()): List<String> {
+        return wrapText(text, maxWidth, font).also { drawWrappedText(it.map { a -> a.convert() }, x, y, color, font, lineHeight) }
     }
 
-    fun drawWrappedText(lines: List<String>, x: Number, y: Number, color: Color, font: F? = this.overwrittenFont) {
-        val lineHeight = getTextHeight()
+    fun drawCenteredWrappedText(lines: List<T>, centerX: Number, y: Number, color: Color, font: F? = this.overwrittenFont, lineHeight: Int = getTextHeight()) {
+        for (i in lines.indices) {
+            drawCenteredText(lines[i], centerX, y.toFloat() + i * lineHeight, color, font)
+        }
+    }
+
+    fun drawWrappedText(lines: List<T>, x: Number, y: Number, color: Color, font: F? = this.overwrittenFont, lineHeight: Int = getTextHeight()) {
         for (i in lines.indices) {
             drawText(lines[i], x, y.toFloat() + i * lineHeight, color, font)
         }
     }
 
-    fun drawWrappedText(text: T, x: Number, y: Number, maxWidth: Int, color: Color, font: F? = this.overwrittenFont): List<String> {
-        return drawWrappedText(text.convert(), x, y, maxWidth, color, font)
+    fun drawWrappedText(text: T, x: Number, y: Number, maxWidth: Int, color: Color, font: F? = this.overwrittenFont, lineHeight: Int = getTextHeight()): List<String> {
+        return drawWrappedText(text.convert(), x, y, maxWidth, color, font, lineHeight)
     }
 
-    fun drawCenteredWrappedText(lines: List<String>, centerX: Number, y: Number, color: Color, font: F? = this.overwrittenFont, shadow: Boolean = false) {
-        val lineHeight = getTextHeight()
+    fun drawCenteredWrappedText(lines: List<String>, centerX: Number, y: Number, color: Color, font: F? = this.overwrittenFont, shadow: Boolean = false, lineHeight: Int = getTextHeight()) {
         for (i in lines.indices) {
             if (shadow) {
                 drawCenteredTextWithShadow(
@@ -131,13 +134,22 @@ interface TextDrawing<I, T, F> : RectDrawing<I, T, F> {
         }
     }
 
-    fun drawCenteredWrappedText(text: String, centerX: Int, y: Int, maxWidth: Int, color: Color, font: F? = this.overwrittenFont, shadow: Boolean = false): List<String> {
-        return wrapText(text, maxWidth, font).also { drawCenteredWrappedText(it, centerX, y, color, font, shadow) }
+    fun drawCenteredWrappedText(text: String, centerX: Int, y: Int, maxWidth: Int, color: Color, font: F? = this.overwrittenFont, shadow: Boolean = false, lineHeight: Int = getTextHeight()): List<String> {
+        return wrapText(text, maxWidth, font).also { drawCenteredWrappedText(it, centerX, y, color, font, shadow, lineHeight) }
     }
 
-    fun drawCenteredWrappedText(text: T, centerX: Int, y: Int, maxWidth: Int, color: Color, font: F? = this.overwrittenFont, shadow: Boolean = false): List<String> {
-        return drawCenteredWrappedText(text.convert(), centerX, y, maxWidth, color, font, shadow)
+    fun drawCenteredWrappedText(text: T, centerX: Int, y: Int, maxWidth: Int, color: Color, font: F? = this.overwrittenFont, shadow: Boolean = false, lineHeight: Int = getTextHeight()): List<String> {
+        return drawCenteredWrappedText(text.convert(), centerX, y, maxWidth, color, font, shadow, lineHeight)
     }
+
+    fun drawRightAlignedWrappedText(lines: List<T>, x: Number, y: Number, color: Color, font: F? = this.overwrittenFont, lineHeight: Int = getTextHeight()) {
+        val lineHeight = getTextHeight()
+        for (i in lines.indices) {
+            drawRightAlignedText(lines[i], x, y.toFloat() + i * lineHeight, color, font)
+        }
+    }
+
+    fun wrapText(text: T, maxWidth: Int, font: F? = this.overwrittenFont): List<T> { TODO() }
 
     /**
      * Wraps text to fit within the specified width.
@@ -209,5 +221,5 @@ interface TextDrawing<I, T, F> : RectDrawing<I, T, F> {
      */
     fun getTextHeight(): Int
 
-    fun getTextYCenter(renderable: RenderiteElement<*, *>): Float = renderable.exactCenterY - getTextHeight() / 2f
+    fun getTextYCenter(renderable: RenderiteElement<*, *, *, *, *>): Float = renderable.exactCenterY - getTextHeight() / 2f
 }

@@ -1,11 +1,11 @@
 package net.bewis09.bewisclient.settings.structure
 
 import net.bewis09.bewisclient.common.Identifier
-import net.bewis09.bewisclient.drawable.Animator
+import net.bewis09.renderite.logic.Animator
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.element.TooltipHoverableText
-import net.bewis09.bewisclient.drawable.renderables.components.structure.Grid
+import net.bewis09.renderite.components.Div
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.renderables.settings.BooleanSettingRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
@@ -15,9 +15,8 @@ import net.bewis09.bewisclient.settings.types.ColorSetting
 import net.bewis09.bewisclient.settings.types.FloatSetting
 import net.bewis09.bewisclient.settings.types.Setting
 import net.bewis09.renderite.components.Hoverable
-import net.bewis09.renderite.drawer.pushColor
-import net.bewis09.renderite.drawer.translate
 import net.bewis09.renderite.logic.Color
+import net.bewis09.renderite.logic.FitType
 import net.bewis09.renderite.logic.color
 
 abstract class CategorizedFeature(id: Identifier, titleText: String) : Feature(id) {
@@ -36,7 +35,7 @@ abstract class CategorizedFeature(id: Identifier, titleText: String) : Feature(i
     val enabledSetting = boolean("enabled", enabledByDefault) { oldValue, newValue -> enabledListener(oldValue, newValue) }
     var enabled by enabledSetting
 
-    fun getSettingRenderables(): Array<Renderable> = arrayListOf<Renderable>().also(::appendSettingsRenderables).toTypedArray()
+    fun getSettingRenderables(): List<Renderable> = arrayListOf<Renderable>().also(::appendSettingsRenderables)
 
     open fun appendSettingsRenderables(list: ArrayList<Renderable>) {
         settingAppliers.forEach { it(list) }
@@ -67,13 +66,20 @@ abstract class CategorizedFeature(id: Identifier, titleText: String) : Feature(i
 
     abstract fun createRenderable(): SettingCategory
 
-    open fun getPane(): Renderable = Grid {
-        children = getSettingRenderables().toList()
+    open fun getPane(): Renderable = Div {
+        onInit = { addRenderables(getSettingRenderables()) }
         gap = 1
-        fitType = Grid.FitType.SCROLL
+        fitType = FitType.SCROLL
     }
 
-    abstract inner class SettingCategory : Hoverable<SettingCategory>({}) {
+    abstract inner class SettingCategory : Hoverable<SettingCategory>({
+        this.height = 90
+        colorModifier = { val t = 1 - (1f - (state.get().coerceAtLeast(hoverFactor / 3))) / 2.5f; Color(t, t, t, 1f) }
+    }) {
+        init {
+            props()
+        }
+
         val state = Animator({ animationDuration }, Animator.EASE_IN_OUT, if (enabled) 1f else 0f)
 
         init {
@@ -83,45 +89,36 @@ abstract class CategorizedFeature(id: Identifier, titleText: String) : Feature(i
         override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
             if (getSettingRenderables().isEmpty()) {
                 enabled = !enabled
-                resize()
-                return true
+            } else {
+                OptionScreen.currentInstance?.openPage(title(), getPane(), enabledSetting)
             }
-
-            OptionScreen.currentInstance?.openPage(title(), getPane(), enabledSetting)
 
             return true
         }
 
-        abstract fun renderContent(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int)
-
-        override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+        override fun renderLogic(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+            super.renderLogic(screenDrawing, mouseX, mouseY)
             state.set(if (enabled) 1f else 0f)
-            super.render(screenDrawing, mouseX, mouseY)
-
-            val s = (state.get().coerceAtLeast(hoverFactor / 3)) * 1f
-
-            SelectiveScreenDrawer.renderSettingsCategoryBackground(screenDrawing, x, y, width, height, state.get(), hoverFactor, mouseX, mouseY)
-
-            val t = 1 - (1 - s) / 2.5f
-
-            screenDrawing.translate(0f, if (isMinecrafty) -3f else 0f) {
-                screenDrawing.pushColor(t, t, t, 1f) {
-                    renderContent(screenDrawing, mouseX, mouseY)
-                    renderRenderables(screenDrawing, mouseX, mouseY)
-                }
-            }
         }
 
-        override fun init() {
-            super.init()
-            addRenderable(TooltipHoverableText {
-                text = if (enabled) enabledText() else disabledText()
+        override fun renderBackground(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+            SelectiveScreenDrawer.renderSettingsCategoryBackground(screenDrawing, x, y, width, height, state.get(), hoverFactor, mouseX, mouseY)
+        }
+
+        override fun initLogic() {
+            super.initLogic()
+            state.pauseForOnce()
+        }
+
+        fun Init.EnableButton() {
+            TooltipHoverableText {
+                textProvider = { if (enabled) enabledText() else disabledText() }
                 color = 0xAAAAAA.color
                 hoverColor = Color.WHITE
-                tooltip = if (enabled) clickToDisableText() else clickToEnableText()
+                tooltipProvider = { if (enabled) clickToDisableText() else clickToEnableText() }
                 centered = true
-                onClick = { enabled = !enabled; resize() }
-            }(x, y2 - 14, width, 14))
+                onClick = { enabled = !enabled }
+            }(x, y2 - 14 - if (isMinecrafty) 3 else 0, width, 14)
         }
     }
 

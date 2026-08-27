@@ -1,14 +1,15 @@
-package net.bewis09.bewisclient.drawable.renderables.components.structure
+package net.bewis09.renderite.components
 
-import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.bewisclient.drawable.renderables.components.logic.Direction
-import net.bewis09.bewisclient.drawable.renderables.components.logic.Scrollable
-import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
+import net.bewis09.bewisclient.util.BewisclientDataGenerator
+import net.bewis09.renderite.RenderiteElement
+import net.bewis09.renderite.drawer.RenderiteDrawer
+import net.bewis09.renderite.logic.Direction
+import net.bewis09.renderite.logic.FitType
+import net.bewis09.renderite.logic.LineType
 import kotlin.math.roundToInt
 
-open class Grid(p: Props<Grid>) : Scrollable<Grid>(fun Grid.() { direction = Direction.VERTICAL } + p) {
-    var init: (Int) -> List<Renderable> = { children }
-    var children: List<Renderable> = emptyList()
+open class Div<S: RenderiteDrawer<I, A, F>, A: Any, F, I: Any>(p: Props<Div<S, A, F, I>>) : Scrollable<S, Div<S, A, F, I>, A, F, I>(fun Div<S, A, F, I>.() { direction = Direction.VERTICAL } + p) {
+    var onInit: Init.(Int) -> Unit = {}
     var gap: Int = 0
     var minElementSize: Int = 100
     var paddingBottom: Int = 0
@@ -16,12 +17,24 @@ open class Grid(p: Props<Grid>) : Scrollable<Grid>(fun Grid.() { direction = Dir
     var lineType: LineType = LineType.DEFINITE
     var fitType: FitType = FitType.ENLARGE
     var elementsPerLine = 1
+    var cacheChildren = false
+
+    private var elementCache: List<RenderiteElement<S, *, A, F, I>>? = null
 
     init {
         props()
+        if (BewisclientDataGenerator.datagenEnabled) {
+            width = 1000
+            height = 1000
+            resize()
+        }
     }
 
-    override fun renderLogic(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+    companion object {
+        fun <S: RenderiteDrawer<I, A, F>, A: Any, F, I: Any> create(p: Props<Div<S, A, F, I>>): Div<S, A, F, I> = Div(p)
+    }
+
+    override fun renderLogic(screenDrawing: S, mouseX: Int, mouseY: Int) {
         updateSizeAndPosition()
     }
 
@@ -60,12 +73,12 @@ open class Grid(p: Props<Grid>) : Scrollable<Grid>(fun Grid.() { direction = Dir
         }
 
         if (fitType == FitType.SCROLL) {
-            innerSize = (linePosition.max() - gap + paddingBottom) - startScroll
+            innerSize = ((linePosition.maxOrNull() ?: 0f) - gap + paddingBottom) - startScroll
         } else if (fitType == FitType.ENLARGE) {
             if (direction == Direction.HORIZONTAL)
-                width = linePosition.max().toInt() - gap + paddingBottom
+                width = (linePosition.maxOrNull() ?: 0f).toInt() - gap + paddingBottom
             else
-                height = linePosition.max().toInt() - gap + paddingBottom
+                height = (linePosition.maxOrNull() ?: 0f).toInt() - gap + paddingBottom
         }
     }
 
@@ -77,8 +90,16 @@ open class Grid(p: Props<Grid>) : Scrollable<Grid>(fun Grid.() { direction = Dir
 
     fun getElementsInLine(): Int = if (lineType == LineType.DEFINITE) lines else (getTotalLinesSpan() / (minElementSize + gap)).coerceAtLeast(1)
 
-    override fun init() {
-        this.init.invoke(getElementSize().toInt()).forEach(::addRenderable)
+    override fun Init.init() {
+        val cache = elementCache
+
+        if (cacheChildren && cache != null) {
+            addRenderables(cache)
+        } else {
+            onInit.invoke(this, getElementSize().toInt())
+            elementCache = ArrayList(renderables)
+        }
+
         updateSizeAndPosition()
     }
 
@@ -102,14 +123,15 @@ open class Grid(p: Props<Grid>) : Scrollable<Grid>(fun Grid.() { direction = Dir
         return super.onMouseDrag(mouseX, mouseY, startX, startY, button)
     }
 
-    enum class LineType {
-        DEFINITE,
-        SIZED
+    fun <T> initForEach(collection: Collection<T>?, func: Init.(item: T) -> Unit) {
+        onInit = { collection?.forEach { this.func(it) } }
     }
 
-    enum class FitType {
-        ENLARGE,
-        FIT,
-        SCROLL
+    fun <T, L> initForEach(map: Map<T, L>?, func: Init.(item: Map.Entry<T, L>) -> Unit) {
+        onInit = { map?.forEach { this.func(it) } }
+    }
+
+    fun <T> initForEachIndexed(collection: Collection<T>?, func: Init.(i: Int, item: T) -> Unit) {
+        onInit = { collection?.forEachIndexed { i, item -> this.func(i, item) } }
     }
 }

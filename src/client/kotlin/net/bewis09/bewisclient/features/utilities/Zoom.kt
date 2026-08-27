@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.features.utilities
 
-import net.bewis09.bewisclient.drawable.Animator
+import net.bewis09.renderite.logic.Animator
 import net.bewis09.bewisclient.game.keybinds.Keybind
 import net.bewis09.bewisclient.settings.structure.ImageFeature
 import org.lwjgl.glfw.GLFW

@@ -1,10 +1,12 @@
 package net.bewis09.bewisclient.drawable.renderables.components.button
 
 import net.bewis09.bewisclient.common.Identifier
+import net.bewis09.bewisclient.drawable.Init
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.logic.TooltipHoverable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.features.sidebar.General
+import net.bewis09.renderite.RenderiteElement
 import net.bewis09.renderite.logic.Color
 
 open class ImageButton(p: Props<ImageButton>) : TooltipHoverable<ImageButton>(p + {
@@ -19,7 +21,7 @@ open class ImageButton(p: Props<ImageButton>) : TooltipHoverable<ImageButton>(p 
     init { props() }
 
     override fun renderBackground(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        SelectiveScreenDrawer.renderButtonBackground(screenDrawing, hoverFactor, 0f, x, y, width, height, 1f, mouseX, mouseY, small = small)
+        SelectiveScreenDrawer.renderButtonBackground(screenDrawing, hoverFactor, 0f, x, y, width, height, 1f, small = small)
     }
 
     override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
@@ -28,3 +30,5 @@ open class ImageButton(p: Props<ImageButton>) : TooltipHoverable<ImageButton>(p 
 
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean = onClick(this).let { true }
 }
+
+fun Init.ImageButton(p: RenderiteElement.Props<ImageButton>) = addRenderable(net.bewis09.bewisclient.drawable.renderables.components.button.ImageButton(p))

@@ -17,7 +17,7 @@ class IntegerSetting(default: () -> Int, val min: Int, val max: Int) : Setting<I
 
     override fun createRenderable(feature: Feature, id: String, title: String, description: String?) = IntegerSettingRenderable {
         this.title = feature.createTranslation(id, title)
-        tooltip = description?.let { Translation("$id.description", it)() }
+        tooltip = description?.let { feature.createTranslation("$id.description", it)() }
         setting = this@IntegerSetting
         this.min = this@IntegerSetting.min
         this.max = this@IntegerSetting.max

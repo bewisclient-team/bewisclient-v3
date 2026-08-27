@@ -1,10 +1,12 @@
 package net.bewis09.bewisclient.drawable.renderables.components.setting
 
+import net.bewis09.bewisclient.drawable.Init
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.renderite.components.Hoverable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.util.interfaces.Gettable
 import net.bewis09.bewisclient.util.number.Precision
+import net.bewis09.renderite.RenderiteElement
 
 class Fader(p: Props<Fader>) : Hoverable<Fader>(p + {
     width = 100
@@ -17,8 +19,7 @@ class Fader(p: Props<Fader>) : Hoverable<Fader>(p + {
     init { props() }
 
     override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        val normalizedValue = precision.normalize(value.get())
-        SelectiveScreenDrawer.renderFader(screenDrawing, x, y, width, height, hoverAnimation.get(), normalizedValue, mouseX, mouseY)
+        SelectiveScreenDrawer.renderFader(screenDrawing, x, y, width, height, hoverAnimation.get(), precision.normalize(value.get()), mouseX, mouseY)
     }
 
     override fun onMouseDrag(mouseX: Double, mouseY: Double, startX: Double, startY: Double, button: Int): Boolean {
@@ -37,3 +38,5 @@ class Fader(p: Props<Fader>) : Hoverable<Fader>(p + {
         return true
     }
 }
+
+fun Init.Fader(p: RenderiteElement.Props<Fader>) = net.bewis09.bewisclient.drawable.renderables.components.setting.Fader(p).add()

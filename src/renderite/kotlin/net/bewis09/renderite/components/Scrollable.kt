@@ -1,10 +1,12 @@
-package net.bewis09.bewisclient.drawable.renderables.components.logic
+package net.bewis09.renderite.components
 
-import net.bewis09.bewisclient.drawable.Animator
-import net.bewis09.bewisclient.drawable.PropedRenderable
+import net.bewis09.renderite.logic.Animator
+import net.bewis09.renderite.logic.Direction
+import net.bewis09.renderite.RenderiteElement
+import net.bewis09.renderite.drawer.RenderiteDrawer
 import kotlin.math.abs
 
-abstract class Scrollable<T: Scrollable<T>>(p: Props<T>) : PropedRenderable<T>(p) {
+abstract class Scrollable<S: RenderiteDrawer<I, A, F>, T: Scrollable<S, T, A, F, I>, A: Any, F, I: Any>(p: Props<T>) : RenderiteElement<S, T, A, F, I>(p) {
     lateinit var direction: Direction
 
     val scrollAnimation = Animator(200, Animator.EASE_OUT, 0f)

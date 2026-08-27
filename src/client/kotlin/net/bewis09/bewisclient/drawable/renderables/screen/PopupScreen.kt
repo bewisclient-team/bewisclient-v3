@@ -1,26 +1,26 @@
 package net.bewis09.bewisclient.drawable.renderables.screen
 
-import net.bewis09.bewisclient.drawable.Animator
+import net.bewis09.renderite.logic.Animator
 import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.bewisclient.drawable.SimpleRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.features.sidebar.General
-import net.bewis09.renderite.drawer.pushAlpha
 import net.bewis09.bewisclient.version.translateToTopOptional
-import net.bewis09.renderite.RenderiteElement
 import net.bewis09.renderite.logic.Color
 import org.lwjgl.glfw.GLFW
 
-abstract class PopupScreen : SimpleRenderable() {
+abstract class PopupScreen(p: Props<PopupScreen> = {}) : PropedRenderable<PopupScreen>(p) {
     var popup: Popup? = null
     var backgroundColor: Color = Color.BLACK alpha 0.5f
 
-    override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        val mx = if (popup != null) Integer.MIN_VALUE else mouseX
-        val my = if (popup != null) Integer.MAX_VALUE else mouseY
+    init { props() }
 
-        renderScreen(screenDrawing, mx, my)
+    override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+        renderScreen(screenDrawing, if (popup != null) Integer.MIN_VALUE else mouseX, if (popup != null) Integer.MIN_VALUE else mouseY)
+    }
+
+    override fun renderRenderables(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+        ArrayList(renderables).forEach { if(it != popup) it.render(screenDrawing, if (popup != null) Integer.MIN_VALUE else mouseX, if (popup != null) Integer.MIN_VALUE else mouseY) }
         popup?.render(screenDrawing, mouseX, mouseY)
     }
 
@@ -67,8 +67,8 @@ abstract class PopupScreen : SimpleRenderable() {
             screenDrawing.setDefaultFont()
         }
 
-        override fun init() {
-            addRenderable(child.updatePosition((width - child.width) / 2, (height - child.height) / 2))
+        override fun Init.init() {
+            child.addPositioned((width - child.width) / 2, (height - child.height) / 2)
         }
 
         override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
@@ -88,8 +88,8 @@ abstract class PopupScreen : SimpleRenderable() {
         override fun onCharTyped(character: Char, modifiers: Int) = true
     }
 
-    override fun init() {
-        popup?.invoke(0, 0, width, height)?.let { addRenderable(it) }
+    override fun Init.init() {
+        popup?.invoke(0, 0, width, height)?.add()
     }
 
     fun closePopup() {
@@ -113,9 +113,5 @@ abstract class PopupScreen : SimpleRenderable() {
         renderables.addFirst(popup!!)
         popup?.invoke(0, 0, width, height)?.resize()
         selectedElement = popup
-    }
-
-    override fun renderRenderables(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        ArrayList(renderables).forEach { if (it == popup) return@forEach; it.render(screenDrawing, mouseX, mouseY) }
     }
 }

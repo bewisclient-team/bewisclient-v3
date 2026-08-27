@@ -7,6 +7,7 @@ import com.mojang.blaze3d.platform.NativeImage
 import net.bewis09.renderite.logic.Color
 import net.bewis09.bewisclient.common.Identifier
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
+import net.bewis09.bewisclient.features.sidebar.General
 import net.minecraft.ChatFormatting
 import net.minecraft.client.KeyMapping
 import net.minecraft.client.Minecraft
@@ -125,8 +126,9 @@ val model by lazy {
 fun GuiGraphics.translateToTopOptional() = /*[@]*/Unit/*[!@]*/
 
 fun Component.setFont(id: Identifier?): MutableComponent {
-    // @[1.21.8] id ?: ScreenDrawingInterface.BEWISCLIENT_FONT @[] net.minecraft.network.chat.FontDescription.Resource((id ?: ScreenDrawing.BEWISCLIENT_FONT))
-    return (this as? MutableComponent ?: this.copy()).withStyle { it.withFont(/*[@]*/net.minecraft.network.chat.FontDescription.Resource((id ?: ScreenDrawing.BEWISCLIENT_FONT))/*[!@]*/) }
+    val font = (id ?: ScreenDrawing.BEWISCLIENT_FONT).let { if (General.isMinecrafty) ScreenDrawing.DEFAULT_FONT else it }
+    // @[1.21.8] font @[] net.minecraft.network.chat.FontDescription.Resource(font)
+    return (this as? MutableComponent ?: this.copy()).withStyle { it.withFont(/*[@]*/net.minecraft.network.chat.FontDescription.Resource(font)/*[!@]*/) }
 }
 
 fun GuiGraphics.drawItemOverlay(textRenderer: Font, itemStack: ItemStack, x: Int, y: Int) {

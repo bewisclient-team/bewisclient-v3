@@ -2,7 +2,7 @@ package net.bewis09.bewisclient.drawable.renderables.impl
 
 import net.bewis09.bewisclient.api.BewisclientAPIEntrypoint
 import net.bewis09.bewisclient.common.*
-import net.bewis09.bewisclient.drawable.Animator
+import net.bewis09.renderite.logic.Animator
 import net.bewis09.bewisclient.drawable.renderables.settings.SettingRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.features.sidebar.General
@@ -21,8 +21,7 @@ class ExtensionListRenderable(p: Props<ExtensionListRenderable>) : SettingRender
 
     val menuAnimation = Animator({ General.animationDuration }, Animator.EASE_IN_OUT, 0f)
 
-    override fun render(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        super.render(screenDrawing, mouseX, mouseY)
+    override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         screenDrawing.push()
         screenDrawing.translate(0f, 11 - screenDrawing.getTextHeight() / 2f + 0.5f)
         screenDrawing.drawText(("${entrypoint.getExtensionTitle(modContainer)} ").toText().append(("(${modContainer.metadata.id})").toText().setColor(0xAAAAAA)), x + 32, y, Color.WHITE)

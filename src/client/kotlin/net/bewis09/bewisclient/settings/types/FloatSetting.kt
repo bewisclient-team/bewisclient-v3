@@ -22,7 +22,7 @@ class FloatSetting(default: () -> Float, val precision: Precision) : Setting<Flo
         feature: Feature, id: String, title: String, description: String?
     ) = FloatSettingRenderable {
         this.title = feature.createTranslation(id, title)
-        tooltip = description?.let { Translation("$id.description", it)() }
+        tooltip = description?.let { feature.createTranslation("$id.description", it)() }
         setting = this@FloatSetting
         precision = this@FloatSetting.precision
     }

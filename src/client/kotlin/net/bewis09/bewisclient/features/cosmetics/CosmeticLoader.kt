@@ -8,12 +8,10 @@ import net.bewis09.bewisclient.cosmetics.CommonCosmeticLoader.cosmeticData
 import net.bewis09.bewisclient.cosmetics.CosmeticIdentifier
 import net.bewis09.bewisclient.cosmetics.CosmeticType
 import net.bewis09.bewisclient.data.Constants
+import net.bewis09.bewisclient.drawable.Div
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.SimpleRenderable
-import net.bewis09.bewisclient.drawable.renderables.components.element.Rectangle
-import net.bewis09.bewisclient.drawable.renderables.components.element.Text
-import net.bewis09.bewisclient.drawable.renderables.components.logic.TextAlign
-import net.bewis09.bewisclient.drawable.renderables.components.structure.Grid
+import net.bewis09.renderite.logic.TextAlign
 import net.bewis09.bewisclient.drawable.renderables.impl.SelectCapeElement
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.server.Authorization
@@ -21,6 +19,8 @@ import net.bewis09.bewisclient.settings.structure.SidebarFeature
 import net.bewis09.bewisclient.settings.types.StringMapSetting
 import net.bewis09.bewisclient.util.EventEntrypoint
 import net.bewis09.renderite.logic.Color
+import net.bewis09.renderite.logic.FitType
+import net.bewis09.renderite.logic.LineType
 import net.minecraft.client.multiplayer.PlayerInfo
 import net.minecraft.world.item.Items
 import java.net.URI
@@ -61,7 +61,7 @@ object CosmeticLoader : SidebarFeature(createIdentifier("bewisclient", "cosmetic
     val elytraButton = elytra.createRenderable(this@CosmeticLoader, "elytra", "Apply cape to elytra", "Some capes include a unique texture for the elytra, which can be disabled here if desired.")
 
     override fun getRenderable(): Renderable = object: SimpleRenderable() {
-        override fun init() {
+        override fun Init.init() {
             addRenderable(elytraButton(x, y, width, 22))
             addRenderable(getCosmeticGrid()(x, y + 27, width, height - 27))
         }
@@ -301,33 +301,40 @@ object CosmeticLoader : SidebarFeature(createIdentifier("bewisclient", "cosmetic
 
         val setCategories = categories.filter { it.second.isNotEmpty() }
 
-        val value = Grid {
+        val value = Div {
             gap = 5
-            fitType = Grid.FitType.SCROLL
-            children = setCategories.mapIndexed { i, category ->
-                Grid {
+            fitType = FitType.SCROLL
+            cacheChildren = true
+            initForEachIndexed(setCategories) { i, category ->
+                Div {
                     gap = 5
-                    children = listOfNotNull(
+                    cacheChildren = true
+                    onInit = {
                         Text {
                             text = category.first.replaceFirstChar { it.uppercase() }.toText()
                             color = Color.WHITE
                             textAlign = TextAlign.CENTER
-                        }.updateHeight(9),
-                        Grid {
+                        }.updateHeight(9)
+                        Div {
                             gap = 5
                             minElementSize = 65
-                            lineType = Grid.LineType.SIZED
-                            children = category.second.mapNotNull { id ->
+                            lineType = LineType.SIZED
+                            cacheChildren = true
+                            initForEach(category.second) { id ->
                                 if (id.type == CosmeticType.CAPE && allowedCosmetics.contains(id) && cosmetics[id] != null) {
                                     SelectCapeElement {
                                         identifier = id
                                         cosmetic = cosmetics[id]!!
-                                    }
-                                } else null
+                                    }.add()
+                                }
                             }
-                        },
-                        if (i != setCategories.size - 1) Rectangle { colorProvider = { General.getTextThemeColor().withBrightness(0.3f) } }.updateHeight(1) else null
-                    )
+                        }
+                        if (i != setCategories.size - 1) {
+                            Rectangle {
+                                colorProvider = { General.getTextThemeColor().withBrightness(0.3f) }
+                            }.updateHeight(1)
+                        }
+                    }
                 }
             }
         }
