@@ -5,7 +5,6 @@ import net.bewis09.bewisclient.common.Identifier
 import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.renderite.drawer.pushColor
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.util.Bewisclient
 
@@ -44,7 +43,7 @@ class ColorPicker(p: Props<ColorPicker>) : PropedRenderable<ColorPicker>(p) {
 
     override fun Init.init() {
         Image {
-            colorProvider = { Color(get().brightness, get().brightness, get().brightness, 1f) }
+            colorModifier = { Color(get().brightness, get().brightness, get().brightness, 1f) }
             image = getColorPickerImage((width - 2).coerceAtMost((height - 2)))
             padding = 1
         }

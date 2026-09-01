@@ -3,7 +3,7 @@ package net.bewis09.bewisclient.drawable.renderables.popup
 import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
-import net.bewis09.bewisclient.drawable.renderables.components.button.Button
+import net.bewis09.bewisclient.drawable.renderables.components.button.ButtonElement
 import net.bewis09.renderite.logic.TextAlign
 import net.bewis09.bewisclient.drawable.renderables.impl.TiwylaLinesSettingsRenderable
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
@@ -11,7 +11,6 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.settings.types.ListSetting
 import net.bewis09.bewisclient.widget.impl.TiwylaWidget
-import net.bewis09.bewisclient.drawable.Div
 import net.bewis09.renderite.logic.FitType
 import net.minecraft.network.chat.Component
 
@@ -31,7 +30,7 @@ class TiwylaLinesSettingsPopup<T>(p: Props<TiwylaLinesSettingsPopup<T>>) : Prope
     }
 
     fun updateButton(text: Component, option: TiwylaWidget.Line<T>?): Renderable {
-        return Button {
+        return ButtonElement {
             this.text = text
             onClick = {
                 if (yIndex >= setting.size && option != null) setting.add(TiwylaWidget.Information(option, null))

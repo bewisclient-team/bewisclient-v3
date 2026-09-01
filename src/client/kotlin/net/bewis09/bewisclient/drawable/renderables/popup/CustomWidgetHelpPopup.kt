@@ -2,7 +2,6 @@ package net.bewis09.bewisclient.drawable.renderables.popup
 
 import net.bewis09.bewisclient.common.setColor
 import net.bewis09.bewisclient.common.toText
-import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.SimpleRenderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable

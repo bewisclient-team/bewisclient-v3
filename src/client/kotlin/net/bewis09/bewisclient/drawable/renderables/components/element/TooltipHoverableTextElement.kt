@@ -8,7 +8,7 @@ import net.bewis09.renderite.RenderiteElement.Props
 import net.bewis09.renderite.logic.within
 import net.minecraft.network.chat.Component
 
-class TooltipHoverableText(p: Props<TooltipHoverableText>) : TooltipHoverable<TooltipHoverableText>(p) {
+class TooltipHoverableTextElement(p: Props<TooltipHoverableTextElement>) : TooltipHoverable<TooltipHoverableTextElement>(p) {
     var textProvider = { text }
     lateinit var text: Component
     var color: Color? = null
@@ -32,4 +32,4 @@ class TooltipHoverableText(p: Props<TooltipHoverableText>) : TooltipHoverable<To
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean = onClick?.let { it() } != null
 }
 
-fun Init.TooltipHoverableText(p: Props<TooltipHoverableText>) = net.bewis09.bewisclient.drawable.renderables.components.element.TooltipHoverableText(p).add()
+fun Init.TooltipHoverableText(p: Props<TooltipHoverableTextElement>) = TooltipHoverableTextElement(p).add()

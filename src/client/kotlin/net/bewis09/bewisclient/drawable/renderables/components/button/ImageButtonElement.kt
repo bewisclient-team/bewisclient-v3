@@ -9,11 +9,8 @@ import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.renderite.RenderiteElement
 import net.bewis09.renderite.logic.Color
 
-open class ImageButton(p: Props<ImageButton>) : TooltipHoverable<ImageButton>(p + {
-    shouldUsePointer = true
-}) {
+open class ImageButtonElement(p: Props<ImageButtonElement>) : AbstractButtonElement<ImageButtonElement>(p) {
     lateinit var image: Identifier
-    var onClick: (ImageButton) -> Unit = {}
     var small: Boolean = false
     var imageColor: () -> Color = { General.getTextThemeColor() }
     var imagePadding: Int = 8
@@ -27,8 +24,6 @@ open class ImageButton(p: Props<ImageButton>) : TooltipHoverable<ImageButton>(p 
     override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         screenDrawing.drawTexture(image, x + imagePadding, y + imagePadding, width - imagePadding * 2, height - imagePadding * 2, imageColor())
     }
-
-    override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean = onClick(this).let { true }
 }
 
-fun Init.ImageButton(p: RenderiteElement.Props<ImageButton>) = addRenderable(net.bewis09.bewisclient.drawable.renderables.components.button.ImageButton(p))
+fun Init.ImageButton(p: RenderiteElement.Props<ImageButtonElement>) = ImageButtonElement(p).add()

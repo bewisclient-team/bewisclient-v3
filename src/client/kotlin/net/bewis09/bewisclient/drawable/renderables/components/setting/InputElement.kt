@@ -9,7 +9,7 @@ import net.bewis09.renderite.logic.Color
 import net.minecraft.client.Minecraft
 import org.lwjgl.glfw.GLFW
 
-class Input(p: Props<Input>) : PropedRenderable<Input>(p) {
+class InputElement(p: Props<InputElement>) : PropedRenderable<InputElement>(p) {
     var maxTextLength: Int = -1
     var text: String = ""
     var color: Color = Color.WHITE
@@ -35,7 +35,7 @@ class Input(p: Props<Input>) : PropedRenderable<Input>(p) {
             screenDrawing.drawVerticalLine(screenDrawing.getTextWidth(text.substring(0, cursor), font) + x - scrollX, y - 1, 12, color)
     }
 
-    fun setText(text: String): Input {
+    fun setText(text: String): InputElement {
         if (this.text == text) return this
 
         cursor = text.length
@@ -43,7 +43,7 @@ class Input(p: Props<Input>) : PropedRenderable<Input>(p) {
         return this
     }
 
-    fun insertChar(char: Char): Input {
+    fun insertChar(char: Char): InputElement {
         text = text.substring(0, cursor) + char + text.substring(cursor)
         cursor++
         return this

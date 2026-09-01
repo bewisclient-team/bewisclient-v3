@@ -9,7 +9,7 @@ import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.util.interfaces.Gettable
 import net.bewis09.renderite.RenderiteElement
 
-class Switch(p: Props<Switch>) : Hoverable<Switch>(p + {
+class SwitchElement(p: Props<SwitchElement>) : Hoverable<SwitchElement>(p + {
     width = 24
     height = 12
 }) {
@@ -36,4 +36,4 @@ class Switch(p: Props<Switch>) : Hoverable<Switch>(p + {
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean = onChange(!state.get()).let { true }
 }
 
-fun Init.Switch(p: RenderiteElement.Props<Switch>) = net.bewis09.bewisclient.drawable.renderables.components.setting.Switch(p).add()
+fun Init.Switch(p: RenderiteElement.Props<SwitchElement>) = SwitchElement(p).add()

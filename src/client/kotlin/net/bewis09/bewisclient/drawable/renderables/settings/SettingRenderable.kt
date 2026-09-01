@@ -5,7 +5,6 @@ import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.logic.TooltipHoverable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.renderite.drawer.pushColor
-import net.minecraft.network.chat.Component
 
 abstract class SettingRenderable<P: SettingRenderable<P>>(p: Props<P>) : TooltipHoverable<P>(p) {
     override fun renderBackground(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {

@@ -4,7 +4,7 @@ import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.features.sidebar.General.animationTime
 import net.bewis09.bewisclient.settings.structure.SidebarFeature
-import net.bewis09.renderite.components.Div
+import net.bewis09.renderite.components.DivElement
 import net.bewis09.renderite.logic.Color
 import net.bewis09.renderite.logic.FitType
 
@@ -21,7 +21,7 @@ object Debug: SidebarFeature(createIdentifier("bewisclient", "debug"), "Debug") 
     val updateBorderColor = color("update_border_color", Color.RED)
     val updateBorderAlpha = float("update_border_alpha", 0.2f, 0f, 1f, 0.01f, 2)
 
-    override fun getRenderable(): Renderable = Div {
+    override fun getRenderable(): Renderable = DivElement {
         gap = 1
         fitType = FitType.SCROLL
         cacheChildren = true

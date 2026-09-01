@@ -6,7 +6,7 @@ import net.bewis09.bewisclient.drawable.Div
 import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.bewisclient.drawable.renderables.components.button.Button
 import net.bewis09.bewisclient.drawable.renderables.components.button.ImageButton
-import net.bewis09.bewisclient.drawable.renderables.components.setting.Input
+import net.bewis09.bewisclient.drawable.renderables.components.setting.InputElement
 import net.bewis09.bewisclient.drawable.renderables.popup.CustomWidgetHelpPopup
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
@@ -43,8 +43,8 @@ class CustomWidgetLineRenderable : PropedRenderable<CustomWidgetLineRenderable>(
         direction = Direction.HORIZONTAL
     }
 
-    fun computeLines(): MutableList<Input> = MutableList(CustomWidget.lines.size) { i ->
-        Input {
+    fun computeLines(): MutableList<InputElement> = MutableList(CustomWidget.lines.size) { i ->
+        InputElement {
             onChange = { CustomWidget.lines[i] = it }
             maxTextLength = 1000
         }

@@ -6,14 +6,14 @@ import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.SimpleRenderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
-import net.bewis09.bewisclient.drawable.renderables.components.button.Button
+import net.bewis09.bewisclient.drawable.renderables.components.button.ButtonElement
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.settings.structure.SidebarFeature
 import net.bewis09.bewisclient.settings.types.ListSetting
 import net.bewis09.bewisclient.util.string
-import net.bewis09.renderite.components.Div
+import net.bewis09.renderite.components.DivElement
 import net.bewis09.renderite.logic.Color
 import net.bewis09.renderite.logic.FitType
 import net.minecraft.network.chat.Component
@@ -33,12 +33,12 @@ object Home : SidebarFeature(createIdentifier("bewisclient", "home"), "Bewisclie
 
         val checkTexture = createIdentifier("bewisclient", "textures/gui/sprites/check.png")
 
-        val editButton = Button {
+        val editButton = ButtonElement {
             text = editQuickSettings()
             onClick = {
                 OptionScreen.currentInstance?.openPage(
                     editQuickSettings(),
-                    Div.create {
+                    DivElement.create {
                         initForEach(quickSettingsOptions) {
                             Empty {
                                 height = 5

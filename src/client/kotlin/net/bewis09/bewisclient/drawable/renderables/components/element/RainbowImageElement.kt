@@ -8,7 +8,7 @@ import net.bewis09.renderite.logic.Color
 import net.bewis09.renderite.logic.not
 import net.bewis09.renderite.logic.within
 
-class RainbowImage(p: Props<RainbowImage> = {}) : Hoverable<RainbowImage>(p) {
+class RainbowImageElement(p: Props<RainbowImageElement> = {}) : Hoverable<RainbowImageElement>(p) {
     init { props() }
 
     val colors = listOf(!0xCC3333, !0xCC8833, !0xCCCC33, !0x33CC66, !0x3366CC, !0x7F33A6)
@@ -21,4 +21,4 @@ class RainbowImage(p: Props<RainbowImage> = {}) : Hoverable<RainbowImage>(p) {
     }
 }
 
-fun Init.RainbowImage() = net.bewis09.bewisclient.drawable.renderables.components.element.RainbowImage().add()
+fun Init.RainbowImage() = RainbowImageElement().add()

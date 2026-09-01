@@ -8,7 +8,7 @@ import net.bewis09.bewisclient.util.interfaces.Gettable
 import net.bewis09.bewisclient.util.number.Precision
 import net.bewis09.renderite.RenderiteElement
 
-class Fader(p: Props<Fader>) : Hoverable<Fader>(p + {
+class FaderElement(p: Props<FaderElement>) : Hoverable<FaderElement>(p + {
     width = 100
     height = 14
 }) {
@@ -39,4 +39,4 @@ class Fader(p: Props<Fader>) : Hoverable<Fader>(p + {
     }
 }
 
-fun Init.Fader(p: RenderiteElement.Props<Fader>) = net.bewis09.bewisclient.drawable.renderables.components.setting.Fader(p).add()
+fun Init.Fader(p: RenderiteElement.Props<FaderElement>) = FaderElement(p).add()

@@ -86,7 +86,7 @@ open class StaticColorSaver(private val color: Color) : ColorSaver {
         override fun Init.init() {
             addRenderable(colorPicker(x, y, height, height))
             Text {
-                text = changeBrightnessText();
+                text = changeBrightnessText()
                 textAlign = TextAlign.CENTER
             }(x + height + 6, y + 2, width - height - 5, 9)
             Fader {

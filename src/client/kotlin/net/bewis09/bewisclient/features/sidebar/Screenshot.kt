@@ -1,13 +1,19 @@
 package net.bewis09.bewisclient.features.sidebar
 
 import com.mojang.blaze3d.platform.NativeImage
-import net.bewis09.bewisclient.common.*
+import net.bewis09.bewisclient.common.Util
+import net.bewis09.bewisclient.common.catch
+import net.bewis09.bewisclient.common.createIdentifier
+import net.bewis09.bewisclient.common.then
 import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.SimpleRenderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.Button
-import net.bewis09.renderite.components.Div
+import net.bewis09.bewisclient.drawable.renderables.components.element.ExternalImage
+import net.bewis09.bewisclient.drawable.renderables.components.element.ExternalImageElement
+import net.bewis09.bewisclient.drawable.renderables.components.element.ExternalImageElement.Companion.contents
+import net.bewis09.bewisclient.drawable.renderables.components.element.ExternalImageElement.Companion.loadTexture
 import net.bewis09.bewisclient.drawable.renderables.notification.NotificationManager
 import net.bewis09.bewisclient.drawable.renderables.notification.SimpleTextNotification
 import net.bewis09.bewisclient.drawable.renderables.popup.ConfirmPopup
@@ -16,7 +22,7 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.process.CopyImage
 import net.bewis09.bewisclient.process.ProcessCreator
 import net.bewis09.bewisclient.settings.structure.SidebarFeature
-import net.bewis09.bewisclient.version.registerTexture
+import net.bewis09.renderite.components.DivElement
 import net.bewis09.renderite.components.Hoverable
 import net.bewis09.renderite.drawer.pushColor
 import net.bewis09.renderite.drawer.scale
@@ -25,7 +31,6 @@ import net.bewis09.renderite.logic.Color
 import net.bewis09.renderite.logic.FitType
 import net.bewis09.renderite.logic.LineType
 import net.bewis09.renderite.logic.alpha
-import net.minecraft.client.Minecraft
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.nio.file.FileSystems
@@ -50,10 +55,6 @@ object Screenshot : SidebarFeature(createIdentifier("bewisclient", "screenshot")
 
     override fun getRenderable(): Renderable = ScreenshotElement
 
-    val contents = mutableMapOf<File, ScreenshotFileData>()
-
-    class ScreenshotFileData(val nativeImage: NativeImage?, val identifier: Identifier?, val failed: Boolean)
-
     object ScreenshotElement : PropedRenderable<ScreenshotElement>({
         minHeight = 27
     }) {
@@ -75,7 +76,7 @@ object Screenshot : SidebarFeature(createIdentifier("bewisclient", "screenshot")
                             screenshotFile.listFiles()?.filter { it.isFile && (it.extension == "png") }?.sortedBy { it.name }?.apply {
                                 this.forEach {
                                     if (!contents.containsKey(it))
-                                        contents[it] = ScreenshotFileData(null, null, false)
+                                        contents[it] = ExternalImageElement.ImageFileData(null, null, false)
                                 }
                                 resize()
                             }?.forEach(::loadFileData)
@@ -100,13 +101,13 @@ object Screenshot : SidebarFeature(createIdentifier("bewisclient", "screenshot")
                                 val file = screenshotDir.resolve(fileName).toFile()
                                 if (kind == StandardWatchEventKinds.ENTRY_CREATE) {
                                     if (file.isFile && (file.extension == "png") && !contents.containsKey(file)) {
-                                        contents[file] = ScreenshotFileData(null, null, false)
+                                        contents[file] = ExternalImageElement.ImageFileData(null, null, false)
                                         resize()
                                         loadFileData(file)
                                     }
                                 } else if (kind == StandardWatchEventKinds.ENTRY_MODIFY) {
                                     if (file.isFile && (file.extension == "png")) {
-                                        contents[file] = ScreenshotFileData(null, null, false)
+                                        contents[file] = ExternalImageElement.ImageFileData(null, null, false)
                                         resize()
                                         loadFileData(file)
                                     }
@@ -131,10 +132,10 @@ object Screenshot : SidebarFeature(createIdentifier("bewisclient", "screenshot")
             contents[file] = catch {
                 val data = file.readBytes()
                 return@catch if (data.size < 8)
-                    ScreenshotFileData(null, null, false)
+                    ExternalImageElement.ImageFileData(null, null, false)
                 else
-                    ScreenshotFileData(NativeImage.read(ByteArrayInputStream(data)), null, false)
-            } ?: ScreenshotFileData(null, null, true)
+                    ExternalImageElement.ImageFileData(NativeImage.read(ByteArrayInputStream(data)), null, false)
+            } ?: ExternalImageElement.ImageFileData(null, null, true)
         }
 
         override fun Init.init() {
@@ -228,7 +229,7 @@ object Screenshot : SidebarFeature(createIdentifier("bewisclient", "screenshot")
 
         if (!contents.containsKey(file)) {
             Util.ioPool().execute {
-                contents[file] = ScreenshotFileData(null, null, false)
+                contents[file] = ExternalImageElement.ImageFileData(null, null, false)
                 ScreenshotElement.loadFileData(file)
             }
         }
@@ -243,25 +244,13 @@ object Screenshot : SidebarFeature(createIdentifier("bewisclient", "screenshot")
     fun openBigScreenshot(file: File, screen: OptionScreen? = OptionScreen.currentInstance, instant: Boolean = false) {
         screen?.openPage(
             ScreenshotElement.screenshotName(file.name),
-            Div {
+            DivElement {
                 onInit = { BigScreenshotViewElement { this.file = file }.updateWidth(it).add() }
                 gap = 5
                 fitType = FitType.SCROLL
             },
             instant = instant
         )
-    }
-
-    fun loadTexture(file: File, nativeImage: NativeImage) {
-        createIdentifier("bewisclient", "screenshot/${file.nameWithoutExtension}_" + (Math.random() * 0x10000).toInt().toString(16)).also {
-            try {
-                Minecraft.getInstance().registerTexture(it, nativeImage)
-                contents[file] = ScreenshotFileData(nativeImage, it, false)
-            } catch (e: Exception) {
-                contents[file] = ScreenshotFileData(null, null, true)
-                e.printStackTrace()
-            }
-        }
     }
 
     class BigScreenshotViewElement(p: Props<BigScreenshotViewElement>) : PropedRenderable<BigScreenshotViewElement>(p + {
@@ -271,84 +260,74 @@ object Screenshot : SidebarFeature(createIdentifier("bewisclient", "screenshot")
 
         init { props() }
 
-        override fun renderBackground(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-            if (isMinecrafty) {
-                SelectiveScreenDrawer.renderButtonBackground(screenDrawing, 0f, 0f, x, y, width, height - SelectiveScreenDrawer.getSideButtonHeight() - 5, 1f)
-            } else {
-                screenDrawing.fillWithBorder(x, y, width, height - SelectiveScreenDrawer.getSideButtonHeight() - 5, if (isMinecrafty) Color.BLACK alpha 0.7f else General.getThemeColor(black = 0.2f, alpha = 0.7f), if (isMinecrafty) Color.WHITE alpha 0.5f else General.getThemeColor(alpha = 0.5f))
-            }
-        }
-
-        override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-            val data = contents.getOrDefault(file, null) ?: return
-
-            data.identifier?.also {
-                val nativeImage = data.nativeImage ?: return@also
-
-                val aspectRatio = nativeImage.width.toFloat() / nativeImage.height.toFloat()
-
-                val imgHeight = ((width - if (isMinecrafty) 6 else 2) * (1 / aspectRatio)).coerceAtMost(height - if (isMinecrafty) 29f else 21f)
-                val imgWidth = (imgHeight * aspectRatio).toInt()
-
-                screenDrawing.drawTexture(it, (x + width / 2 - imgWidth / 2), (y + (height - SelectiveScreenDrawer.getSideButtonHeight() - 5) / 2 - imgHeight.toInt() / 2), imgWidth, imgHeight.toInt())
-            } ?: run {
-                screenDrawing.drawCenteredText((data.failed then { ScreenshotElement.loadingFailed() }) ?: ScreenshotElement.loading(), x + width / 2, y + (height - 19) / 2 - 5, Color.WHITE)
-                if (!data.failed && (data.nativeImage != null)) {
-                    loadTexture(file, data.nativeImage)
-                }
-            }
-        }
-
         override fun Init.init() {
             Div(0) {
-                lines = 4
-                lineType = LineType.DEFINITE
-                fitType = FitType.FIT
                 gap = 5
-                cacheChildren = true
                 onInit = {
-                    Button {
-                        text = openButtonText()
-                        onClick = { Util.getPlatform().openFile(file) }
+                    ExternalImage {
+                        background = { screenDrawing ->
+                            if (isMinecrafty) {
+                                SelectiveScreenDrawer.renderButtonBackground(screenDrawing, 0f, 0f, x, y, width, height, 1f)
+                            } else {
+                                screenDrawing.fillWithBorder(x, y, width, height, if (isMinecrafty) Color.BLACK alpha 0.7f else General.getThemeColor(black = 0.2f, alpha = 0.7f), if (isMinecrafty) Color.WHITE alpha 0.5f else General.getThemeColor(alpha = 0.5f))
+                            }
+                        }
+                        file = this@BigScreenshotViewElement.file
+                        height = this@BigScreenshotViewElement.height - 5 - SelectiveScreenDrawer.getSideButtonHeight()
+                        verticalPadding = if (General.isMinecrafty) 3 else 1
                     }
-                    Button {
-                        text = openFolderButtonText()
-                        onClick = { Util.getPlatform().openFile(file.parentFile) }
-                    }
-                    Button {
-                        text = copyButtonText()
-                        onClick = { button ->
-                            button.text = copyingButtonText()
-                            ProcessCreator.create(CopyImage::class.java, file.path) {
-                                if (it != 0) {
-                                    println("Failed to copy image to clipboard, exit code: $it")
-                                    NotificationManager.addNotification(SimpleTextNotification { text = copyFailedNotifText(it) })
-                                    button.text = copyButtonText()
-                                } else {
-                                    NotificationManager.addNotification(SimpleTextNotification { text = copySuccessNotifText() })
-                                    button.text = copyButtonText()
+                    Div {
+                        lines = 4
+                        lineType = LineType.DEFINITE
+                        fitType = FitType.FIT
+                        gap = 5
+                        cacheChildren = true
+                        height = SelectiveScreenDrawer.getSideButtonHeight()
+                        onInit = {
+                            Button {
+                                text = openButtonText()
+                                onClick = { Util.getPlatform().openFile(file) }
+                            }
+                            Button {
+                                text = openFolderButtonText()
+                                onClick = { Util.getPlatform().openFile(file.parentFile) }
+                            }
+                            Button {
+                                text = copyButtonText()
+                                onClick = { button ->
+                                    button.text = copyingButtonText()
+                                    ProcessCreator.create(CopyImage::class.java, file.path) {
+                                        if (it != 0) {
+                                            println("Failed to copy image to clipboard, exit code: $it")
+                                            NotificationManager.addNotification(SimpleTextNotification { text = copyFailedNotifText(it) })
+                                            button.text = copyButtonText()
+                                        } else {
+                                            NotificationManager.addNotification(SimpleTextNotification { text = copySuccessNotifText() })
+                                            button.text = copyButtonText()
+                                        }
+                                    }
+                                }
+                            }
+                            Button {
+                                text = deleteButtonText()
+                                onClick = {
+                                    OptionScreen.currentInstance?.openPopup(ConfirmPopup {
+                                        text = confirmDeletePopupText()
+                                        onConfirm = {
+                                            if (catch { file.delete() } == true) {
+                                                NotificationManager.addNotification(SimpleTextNotification { text = deleteSuccessNotifText() })
+                                            } else {
+                                                NotificationManager.addNotification(SimpleTextNotification { text = deleteFailedNotifText() })
+                                            }
+                                            OptionScreen.currentInstance?.goBack()
+                                        }
+                                    })
                                 }
                             }
                         }
                     }
-                    Button {
-                        text = deleteButtonText()
-                        onClick = {
-                            OptionScreen.currentInstance?.openPopup(ConfirmPopup {
-                                text = confirmDeletePopupText()
-                                onConfirm = {
-                                    if (catch { file.delete() } == true) {
-                                        NotificationManager.addNotification(SimpleTextNotification { text = deleteSuccessNotifText() })
-                                    } else {
-                                        NotificationManager.addNotification(SimpleTextNotification { text = deleteFailedNotifText() })
-                                    }
-                                    OptionScreen.currentInstance?.goBack()
-                                }
-                            })
-                        }
-                    }
                 }
-            }(x, y + height - SelectiveScreenDrawer.getSideButtonHeight(), width, SelectiveScreenDrawer.getSideButtonHeight())
+            }(x, y, width, height)
         }
     }
 }

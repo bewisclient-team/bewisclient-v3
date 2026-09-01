@@ -97,7 +97,7 @@ class ChangingColorSaver : ColorSaver {
 
         override fun Init.init() {
             Text {
-                textProvider = { changeDuration(get().changingSpeed / 1000f) };
+                textProvider = { changeDuration(get().changingSpeed / 1000f) }
                 textAlign = TextAlign.CENTER
             }(x, y + 2, width, 9)
             Fader {
@@ -111,7 +111,7 @@ class ChangingColorSaver : ColorSaver {
                 colorProvider = { General.getThemeColor(alpha = 0.3f) }
             }(x, y + 29, width, 1)
             ImageButton {
-                image = texture;
+                image = texture
                 imagePadding = 0
             }(x, y + 36, width, 8)
             Rectangle {

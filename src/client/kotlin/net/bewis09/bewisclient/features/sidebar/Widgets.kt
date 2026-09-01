@@ -3,10 +3,9 @@ package net.bewis09.bewisclient.features.sidebar
 import net.bewis09.bewisclient.api.APIEntrypointLoader
 import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.bewisclient.drawable.SimpleRenderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.Button
-import net.bewis09.renderite.components.Div
+import net.bewis09.renderite.components.DivElement
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.settings.structure.CategorizedFeature
 import net.bewis09.bewisclient.settings.structure.Feature
@@ -28,7 +27,7 @@ object Widgets : SidebarFeature(createIdentifier("bewisclient", "widgets"), "Wid
 
     val generalWidgetSettings = APIEntrypointLoader.mapEntrypoint { it.getGeneralWidgetSettings() }.flatten()
 
-    override fun getRenderable(): Renderable = Div {
+    override fun getRenderable(): Renderable = DivElement {
         fitType = FitType.ENLARGE
         gap = 5
         onInit = {
@@ -37,7 +36,7 @@ object Widgets : SidebarFeature(createIdentifier("bewisclient", "widgets"), "Wid
                 onClick = {
                     OptionScreen.currentInstance?.openPage(
                         createTranslation("general_setting", "General Widget Settings")(),
-                        net.bewis09.renderite.components.Div {
+                        net.bewis09.renderite.components.DivElement {
                             onInit = { addRenderables(generalWidgetSettings) }
                             gap = 1
                             fitType = FitType.SCROLL

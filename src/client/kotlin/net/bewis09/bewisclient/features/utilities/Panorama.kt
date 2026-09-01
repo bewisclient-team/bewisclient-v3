@@ -4,7 +4,7 @@ import com.mojang.blaze3d.platform.NativeImage
 import net.bewis09.bewisclient.common.*
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.components.button.ImageButton
-import net.bewis09.renderite.components.Div
+import net.bewis09.renderite.components.DivElement
 import net.bewis09.bewisclient.drawable.renderables.notification.NotificationManager
 import net.bewis09.bewisclient.drawable.renderables.notification.SimpleTextNotification
 import net.bewis09.bewisclient.drawable.renderables.popup.ConfirmPopup
@@ -70,7 +70,7 @@ object Panorama : ImageFeature("panorama", "Panorama"), EventEntrypoint, Bewiscl
     }
 
     override fun getPane(): Renderable {
-        return Div {
+        return DivElement {
             onInit = {
                 addRenderables(getSettingRenderables())
                 FabricLoader.getInstance().gameDir.resolve("screenshots").toFile().listFiles {

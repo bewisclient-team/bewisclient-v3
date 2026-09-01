@@ -10,11 +10,8 @@ import net.bewis09.renderite.RenderiteElement
 import net.bewis09.renderite.logic.Color
 import net.minecraft.network.chat.Component
 
-class MinecraftButton(p: Props<MinecraftButton>) : PropedRenderable<MinecraftButton>(p + {
-    shouldUsePointer = true
-}) {
+class MinecraftButtonElement(p: Props<MinecraftButtonElement>) : AbstractButtonElement<MinecraftButtonElement>(p) {
     lateinit var text: Component
-    lateinit var onClick: (MinecraftButton) -> Unit
 
     init { props() }
 
@@ -25,12 +22,6 @@ class MinecraftButton(p: Props<MinecraftButton>) : PropedRenderable<MinecraftBut
         )
         screenDrawing.drawCenteredTextWithShadow(text, exactCenterX, exactCenterY - 4, Color.WHITE)
     }
-
-    override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
-        onClick(this)
-        Bewisclient.playClickSound()
-        return true
-    }
 }
 
-fun Init.MinecraftButton(p: RenderiteElement.Props<MinecraftButton>) = net.bewis09.bewisclient.drawable.renderables.components.button.MinecraftButton(p).add()
+fun Init.MinecraftButton(p: RenderiteElement.Props<MinecraftButtonElement>) = MinecraftButtonElement(p).add()

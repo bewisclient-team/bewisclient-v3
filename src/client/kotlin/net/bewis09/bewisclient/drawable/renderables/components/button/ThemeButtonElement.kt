@@ -10,12 +10,16 @@ import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.renderite.RenderiteElement
 import net.minecraft.network.chat.Component
 
-class ThemeButton(p: Props<ThemeButton>) : TooltipHoverable<ThemeButton>(p + {
-    shouldUsePointer = true
+class ThemeButtonElement(p: Props<ThemeButtonElement>) : AbstractButtonElement<ThemeButtonElement>(p + {
+    val oldClick = onClick
+    onClick = {
+        if (!General.isMinecrafty) colorAnimation.set(1f)
+        oldClick(this)
+        if (!General.isMinecrafty) clickAnimation.set(0f) { set(1f) }
+    }
 }) {
     lateinit var text: Component
     var selected: () -> Boolean = { false }
-    var onClick: (ThemeButton) -> Unit = {}
 
     init { props() }
 
@@ -39,15 +43,6 @@ class ThemeButton(p: Props<ThemeButton>) : TooltipHoverable<ThemeButton>(p + {
         val click = if (General.isMinecrafty) 1f else clickAnimation.get()
         SelectiveScreenDrawer.renderButtonBackground(screenDrawing, hoverFactor, colorAnimation.get(), x, y, width, height, click)
     }
-
-    override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
-        if (!General.isMinecrafty)
-            colorAnimation.set(1f)
-        onClick(this)
-        if (!General.isMinecrafty)
-            clickAnimation.set(0f) { set(1f) }
-        return true
-    }
 }
 
-fun Init.ThemeButton(p: RenderiteElement.Props<ThemeButton>): ThemeButton = net.bewis09.bewisclient.drawable.renderables.components.button.ThemeButton(p).also(::addRenderable)
+fun Init.ThemeButton(p: RenderiteElement.Props<ThemeButtonElement>): ThemeButtonElement = ThemeButtonElement(p).add()

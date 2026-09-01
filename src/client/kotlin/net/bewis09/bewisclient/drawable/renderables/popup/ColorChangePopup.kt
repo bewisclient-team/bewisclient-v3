@@ -2,7 +2,7 @@ package net.bewis09.bewisclient.drawable.renderables.popup
 
 import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
-import net.bewis09.bewisclient.drawable.renderables.components.button.ThemeButton
+import net.bewis09.bewisclient.drawable.renderables.components.button.ThemeButtonElement
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.util.color.ColorSaver
@@ -18,7 +18,7 @@ class ColorChangePopup(val state: Gettable<ColorSaver>, val onChange: (ColorSave
 
     val buttons = types.map { type ->
         ColorSaver.getType(type)?.let {
-            ThemeButton {
+            ThemeButtonElement {
                 text = it.getTranslation()()
                 selected = { state.get().getType() == type }
                 tooltip = it.getDescription()?.invoke()

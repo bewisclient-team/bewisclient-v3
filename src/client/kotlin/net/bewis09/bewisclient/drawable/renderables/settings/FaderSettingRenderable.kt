@@ -2,9 +2,10 @@ package net.bewis09.bewisclient.drawable.renderables.settings
 
 import net.bewis09.bewisclient.common.toText
 import net.bewis09.bewisclient.drawable.renderables.components.button.ResetButton
-import net.bewis09.renderite.components.Text
+import net.bewis09.bewisclient.drawable.renderables.components.button.ResetButtonElement
 import net.bewis09.renderite.logic.TextAlign
 import net.bewis09.bewisclient.drawable.renderables.components.setting.Fader
+import net.bewis09.bewisclient.drawable.renderables.components.setting.FaderElement
 import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.settings.logic.SettingInterfaceWithDefault
 import net.bewis09.bewisclient.util.number.Precision
@@ -18,7 +19,7 @@ open class FaderSettingRenderable<T : Number, P: FaderSettingRenderable<T, P>>(p
     lateinit var parser: (original: Float) -> T
 
     val fader by lazy {
-        Fader {
+        FaderElement {
             value = { setting.get().toFloat() }
             onChange = { value ->
                 setting.set(parser(value))
@@ -28,7 +29,7 @@ open class FaderSettingRenderable<T : Number, P: FaderSettingRenderable<T, P>>(p
     }
 
     val resetButton by lazy {
-        ResetButton {
+        ResetButtonElement {
             settable = setting
             isDefault = { setting.get() == setting.getDefault() }
         }

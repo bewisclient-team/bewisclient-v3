@@ -6,7 +6,7 @@ import net.bewis09.renderite.RenderiteElement
 import net.bewis09.renderite.drawer.RenderiteDrawer
 import net.bewis09.renderite.logic.Color
 
-class Text<S: RenderiteDrawer<I, T, F>, T: Any, F, I: Any>(p: Props<Text<S, T, F, I>>) : RenderiteElement<S, Text<S, T, F, I>, T, F, I>(p) {
+class TextElement<S: RenderiteDrawer<I, T, F>, T: Any, F, I: Any>(p: Props<TextElement<S, T, F, I>>) : RenderiteElement<S, TextElement<S, T, F, I>, T, F, I>(p) {
     var textProvider: () -> T = { text }
     var colorProvider: () -> Color = { require { color } }
     lateinit var text: T

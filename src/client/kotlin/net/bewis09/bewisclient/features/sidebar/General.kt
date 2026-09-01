@@ -2,7 +2,7 @@ package net.bewis09.bewisclient.features.sidebar
 
 import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.renderite.components.Div
+import net.bewis09.renderite.components.DivElement
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSettingsRenderable
 import net.bewis09.bewisclient.settings.structure.SidebarFeature
@@ -43,7 +43,7 @@ object General : SidebarFeature(createIdentifier("bewisclient", "options_menu"),
     fun getTextThemeColor() = if (!minecraftyOptionsMenu) (0.5f within (Color.WHITE to themeColor.get().getColor())) else Color.WHITE
 
     override fun getRenderable(): Renderable {
-        return Div {
+        return DivElement {
             gap = 1
             fitType = FitType.SCROLL
             onInit = {

@@ -3,7 +3,6 @@ package net.bewis09.bewisclient.settings.types
 import com.google.gson.JsonElement
 import com.google.gson.JsonPrimitive
 import net.bewis09.bewisclient.drawable.renderables.settings.IntegerSettingRenderable
-import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.settings.logic.RenderableCreator
 import net.bewis09.bewisclient.settings.structure.Feature
 import net.bewis09.bewisclient.util.int

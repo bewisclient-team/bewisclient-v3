@@ -1,10 +1,10 @@
 package net.bewis09.renderite
 
 import net.bewis09.bewisclient.features.sidebar.Debug
-import net.bewis09.renderite.components.Div
-import net.bewis09.renderite.components.Image
-import net.bewis09.renderite.components.Rectangle
-import net.bewis09.renderite.components.Text
+import net.bewis09.renderite.components.DivElement
+import net.bewis09.renderite.components.ImageElement
+import net.bewis09.renderite.components.RectangleElement
+import net.bewis09.renderite.components.TextElement
 import net.bewis09.renderite.drawer.RenderiteDrawer
 import net.bewis09.renderite.drawer.pushColor
 import net.bewis09.renderite.logic.Color
@@ -295,20 +295,20 @@ abstract class RenderiteElement<S : RenderiteDrawer<I, T, F>, P : RenderiteEleme
         fun <A: RenderiteElement<S, *, T, F, I>> A.add(): A = this@RenderiteElement.addRenderable(this)
     }
 
-    fun Init.Div(recreateId: Number, p: Props<Div<S, T, F, I>>): RenderiteElement<S, *, T, F, I> {
+    fun Init.Div(recreateId: Number, p: Props<DivElement<S, T, F, I>>): RenderiteElement<S, *, T, F, I> {
         if (recreationMap.containsKey(recreateId)) {
             return addRenderable(recreationMap[recreateId]!!)
         }
 
-        return addRenderable(Div<S, T, F, I>(p)).apply {
+        return addRenderable(DivElement<S, T, F, I>(p)).apply {
             this@RenderiteElement.recreationMap[recreateId] = this
         }
     }
 
-    fun Init.Div(p: Props<Div<S, T, F, I>>) = addRenderable(Div<S, T, F, I>(p))
-    fun Init.Text(p: Props<Text<S, T, F, I>>) = addRenderable(Text<S, T, F, I>(fullSizeProps() + p))
-    fun Init.Rectangle(p: Props<Rectangle<S, T, F, I>>) = addRenderable(Rectangle<S, T, F, I>(fullSizeProps() + p))
-    fun Init.Image(p: Props<Image<S, T, F, I>>) = addRenderable(Image<S, T, F, I>(fullSizeProps() + p))
+    fun Init.Div(p: Props<DivElement<S, T, F, I>>) = addRenderable(DivElement<S, T, F, I>(p))
+    fun Init.Text(p: Props<TextElement<S, T, F, I>>) = addRenderable(TextElement<S, T, F, I>(fullSizeProps() + p))
+    fun Init.Rectangle(p: Props<RectangleElement<S, T, F, I>>) = addRenderable(RectangleElement<S, T, F, I>(fullSizeProps() + p))
+    fun Init.Image(p: Props<ImageElement<S, T, F, I>>) = addRenderable(ImageElement<S, T, F, I>(fullSizeProps() + p))
     fun <L> Init.Empty(p: Props<EmptyElement<S, L, T, F, I>> = {}) where L : RenderiteElement<S, L, T, F, I> = addRenderable(EmptyElement(fullSizeProps() + p))
 
     class EmptyElement<S: RenderiteDrawer<I, T, F>, L: RenderiteElement<S, L, T, F, I>, T: Any, F, I: Any>(p: Props<EmptyElement<S, L, T, F, I>> = {}) : RenderiteElement<S, EmptyElement<S, L, T, F, I>, T, F, I>(p) {

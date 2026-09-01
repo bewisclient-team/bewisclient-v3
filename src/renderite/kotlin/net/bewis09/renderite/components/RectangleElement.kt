@@ -4,7 +4,7 @@ import net.bewis09.renderite.RenderiteElement
 import net.bewis09.renderite.drawer.RenderiteDrawer
 import net.bewis09.renderite.logic.Color
 
-class Rectangle<S: RenderiteDrawer<I, T, F>, T: Any, F, I: Any>(p: Props<Rectangle<S, T, F, I>>) : RenderiteElement<S, Rectangle<S, T, F, I>, T, F, I>(p) {
+class RectangleElement<S: RenderiteDrawer<I, T, F>, T: Any, F, I: Any>(p: Props<RectangleElement<S, T, F, I>>) : RenderiteElement<S, RectangleElement<S, T, F, I>, T, F, I>(p) {
     var colorProvider = { require { color } }
     var color: Color = Color.TRANSPARENT
 

@@ -5,7 +5,7 @@ import net.bewis09.renderite.logic.Animator
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.element.TooltipHoverableText
-import net.bewis09.renderite.components.Div
+import net.bewis09.renderite.components.DivElement
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.renderables.settings.BooleanSettingRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
@@ -66,7 +66,7 @@ abstract class CategorizedFeature(id: Identifier, titleText: String) : Feature(i
 
     abstract fun createRenderable(): SettingCategory
 
-    open fun getPane(): Renderable = Div {
+    open fun getPane(): Renderable = DivElement {
         onInit = { addRenderables(getSettingRenderables()) }
         gap = 1
         fitType = FitType.SCROLL

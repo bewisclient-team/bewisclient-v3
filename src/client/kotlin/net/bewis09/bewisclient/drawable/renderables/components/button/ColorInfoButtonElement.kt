@@ -3,7 +3,6 @@ package net.bewis09.bewisclient.drawable.renderables.components.button
 import net.bewis09.bewisclient.common.toText
 import net.bewis09.bewisclient.drawable.Init
 import net.bewis09.renderite.logic.TextAlign
-import net.bewis09.bewisclient.drawable.renderables.components.logic.TooltipHoverable
 import net.bewis09.bewisclient.drawable.renderables.popup.ColorChangePopup
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
@@ -14,11 +13,11 @@ import net.bewis09.bewisclient.util.interfaces.Gettable
 import net.bewis09.renderite.RenderiteElement
 import net.bewis09.renderite.logic.Color
 
-class ColorInfoButton(p: Props<ColorInfoButton>) : TooltipHoverable<ColorInfoButton>(p + {
+class ColorInfoButtonElement(p: Props<ColorInfoButtonElement>) : AbstractButtonElement<ColorInfoButtonElement>(p + {
     tooltip = changeColorTranslation()
     height = 14
     width = 160
-    shouldUsePointer = true
+    onClick = { OptionScreen.currentInstance?.openPopup(ColorChangePopup(state, onChange, types)) }
 }) {
     companion object {
         val changeColorTranslation = Translation("menu.color.change_color", "Change Color")
@@ -35,11 +34,6 @@ class ColorInfoButton(p: Props<ColorInfoButton>) : TooltipHoverable<ColorInfoBut
         screenDrawing.fillWithBorderRounded(x, y, width, height, if (General.isMinecrafty) 0 else 5, colorSaver.getColor() alpha hoverFactor * 0.3f + 0.3f, colorSaver.getColor() alpha hoverFactor * 0.5f + 0.5f)
     }
 
-    override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
-        OptionScreen.currentInstance?.openPopup(ColorChangePopup(state, onChange, types))
-        return true
-    }
-
     override fun Init.init() {
         Text {
             textProvider = { state.get().toInfoString().toText() }
@@ -49,4 +43,4 @@ class ColorInfoButton(p: Props<ColorInfoButton>) : TooltipHoverable<ColorInfoBut
     }
 }
 
-fun Init.ColorInfoButton(p: RenderiteElement.Props<ColorInfoButton>) = net.bewis09.bewisclient.drawable.renderables.components.button.ColorInfoButton(p).add()
+fun Init.ColorInfoButton(p: RenderiteElement.Props<ColorInfoButtonElement>) = ColorInfoButtonElement(p).add()

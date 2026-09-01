@@ -73,7 +73,7 @@ class ThemeColorSaver : ColorSaver {
     class SettingRenderable(val get: () -> ThemeColorSaver, val set: (ColorSaver) -> Unit) : SimpleRenderable() {
         override fun Init.init() {
             Text {
-                textProvider = { StaticColorSaver.changeBrightnessText() };
+                textProvider = { StaticColorSaver.changeBrightnessText() }
                 textAlign = TextAlign.CENTER
             }(x, y + 2, width, 9)
             Fader {

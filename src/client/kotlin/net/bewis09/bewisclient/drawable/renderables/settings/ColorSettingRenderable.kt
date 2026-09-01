@@ -1,7 +1,9 @@
 package net.bewis09.bewisclient.drawable.renderables.settings
 
 import net.bewis09.bewisclient.drawable.renderables.components.button.ColorInfoButton
+import net.bewis09.bewisclient.drawable.renderables.components.button.ColorInfoButtonElement
 import net.bewis09.bewisclient.drawable.renderables.components.button.ResetButton
+import net.bewis09.bewisclient.drawable.renderables.components.button.ResetButtonElement
 import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.settings.types.Setting
 import net.bewis09.bewisclient.util.color.ColorSaver
@@ -15,13 +17,13 @@ class ColorSettingRenderable(p: Props<ColorSettingRenderable>) : SettingRenderab
 
     init { props() }
 
-    val colorInfoButton = ColorInfoButton {
+    val colorInfoButton = ColorInfoButtonElement {
         state = { setting.get() }
         onChange = setting::set
         types = this@ColorSettingRenderable.types
     }
 
-    val resetButton = ResetButton {
+    val resetButton = ResetButtonElement {
         settable = this@ColorSettingRenderable.setting
         isDefault = { this@ColorSettingRenderable.setting.isDefault() }
     }

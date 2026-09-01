@@ -2,7 +2,6 @@ package net.bewis09.renderite.drawer
 
 import net.bewis09.renderite.logic.Color
 import net.bewis09.renderite.RenderiteElement
-import net.minecraft.network.chat.Component
 
 interface TextDrawing<I, T, F> : RectDrawing<I, T, F> {
     fun drawText(text: String, x: Number, y: Number, color: Color, font: F? = this.overwrittenFont) {

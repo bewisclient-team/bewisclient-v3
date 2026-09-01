@@ -10,7 +10,6 @@ import net.bewis09.bewisclient.drawable.renderables.impl.TiwylaInfoSettingsRende
 import net.bewis09.bewisclient.drawable.renderables.impl.TiwylaLinesSettingsRenderable
 import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.renderite.drawer.transform
 import net.bewis09.bewisclient.features.sidebar.Widgets
 import net.bewis09.bewisclient.mixin.client.MultiPlayerGameModeMixin
 import net.bewis09.bewisclient.settings.types.BooleanMapSetting
@@ -21,6 +20,7 @@ import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
 import net.bewis09.bewisclient.widget.types.ScalableWidget
+import net.bewis09.renderite.drawer.transform
 import net.bewis09.renderite.logic.color
 import net.minecraft.core.BlockPos
 import net.minecraft.core.registries.BuiltInRegistries
@@ -65,37 +65,19 @@ object TiwylaWidget : ScalableWidget(
 
     val healthInfoText = createTranslation("information.health_information", "The Information of the health of the entity that you are looking at is not available on multiplayer servers due to cheating concerns. In singleplayer worlds it is still available.")
 
-    val entityLines: ListSetting<Information<Entity>>
-    val blockLines: ListSetting<Information<BlockData>>
+    val blockInformation: List<Line<BlockData>> = listOf(BlockLines.tool, BlockLines.miningLevel, BlockLines.breakTime, BlockLines.progress, BlockLines.blockProperty)
+    val entityInformation: List<Line<Entity>> = listOf(EntityLines.entityId, EntityLines.health, EntityLines.specialEntityInfo)
 
-    val blockInformation: List<Line<BlockData>>
-    val entityInformation: List<Line<Entity>>
-
-    init {
-        blockInformation = listOf(
-            BlockLines.tool, BlockLines.miningLevel, BlockLines.breakTime, BlockLines.progress, BlockLines.blockProperty
+    val entityLines: ListSetting<Information<Entity>> = create(
+        "entity_lines", createListSetting(
+            listOf(loadEntityInformation("health"), loadEntityInformation("entity_id", "special_entity_info")), ::loadEntityInformation
         )
-
-        entityInformation = listOf(
-            EntityLines.entityId, EntityLines.health, EntityLines.specialEntityInfo
+    )
+    val blockLines: ListSetting<Information<BlockData>> = create(
+        "block_lines", createListSetting(
+            listOf(loadBlockInformation("tool"), loadBlockInformation("mining_level", "block_property"), loadBlockInformation("break_time", "progress")), ::loadBlockInformation
         )
-
-        entityLines = create(
-            "entity_lines", createListSetting(
-                listOf(
-                    loadEntityInformation("health"), loadEntityInformation("entity_id", "special_entity_info")
-                ), ::loadEntityInformation
-            )
-        )
-
-        blockLines = create(
-            "block_lines", createListSetting(
-                listOf(
-                    loadBlockInformation("tool"), loadBlockInformation("mining_level", "block_property"), loadBlockInformation("break_time", "progress")
-                ), ::loadBlockInformation
-            )
-        )
-    }
+    )
 
     fun <T> createListSetting(default: List<Information<T>>, load: (first: String, second: String?) -> Information<T>) = ListSetting(default, {
         val arr = catch { it.asJsonArray } ?: return@ListSetting null

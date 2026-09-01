@@ -8,7 +8,7 @@ import net.bewis09.renderite.logic.FitType
 import net.bewis09.renderite.logic.LineType
 import kotlin.math.roundToInt
 
-open class Div<S: RenderiteDrawer<I, A, F>, A: Any, F, I: Any>(p: Props<Div<S, A, F, I>>) : Scrollable<S, Div<S, A, F, I>, A, F, I>(fun Div<S, A, F, I>.() { direction = Direction.VERTICAL } + p) {
+open class DivElement<S: RenderiteDrawer<I, A, F>, A: Any, F, I: Any>(p: Props<DivElement<S, A, F, I>>) : Scrollable<S, DivElement<S, A, F, I>, A, F, I>(fun DivElement<S, A, F, I>.() { direction = Direction.VERTICAL } + p) {
     var onInit: Init.(Int) -> Unit = {}
     var gap: Int = 0
     var minElementSize: Int = 100
@@ -31,7 +31,7 @@ open class Div<S: RenderiteDrawer<I, A, F>, A: Any, F, I: Any>(p: Props<Div<S, A
     }
 
     companion object {
-        fun <S: RenderiteDrawer<I, A, F>, A: Any, F, I: Any> create(p: Props<Div<S, A, F, I>>): Div<S, A, F, I> = Div(p)
+        fun <S: RenderiteDrawer<I, A, F>, A: Any, F, I: Any> create(p: Props<DivElement<S, A, F, I>>): DivElement<S, A, F, I> = DivElement(p)
     }
 
     override fun renderLogic(screenDrawing: S, mouseX: Int, mouseY: Int) {
@@ -45,7 +45,7 @@ open class Div<S: RenderiteDrawer<I, A, F>, A: Any, F, I: Any>(p: Props<Div<S, A
 
         val fitHeight = (getOtherSpan() + gap) / elementsPerLine.toDouble() - gap
 
-        for (it in renderables) {
+        for (it in ArrayList(renderables)) {
             val min = linePosition.minOrNull()?.toInt() ?: 0
             val lineIndex = linePosition.indexOf(min.toFloat())
 

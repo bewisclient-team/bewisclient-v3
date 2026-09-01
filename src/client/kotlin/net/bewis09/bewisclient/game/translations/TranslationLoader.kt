@@ -13,7 +13,6 @@ import net.bewis09.bewisclient.game.BewisclientResourcePack
 import net.bewis09.bewisclient.server.Modrinth
 import net.bewis09.bewisclient.settings.structure.CategorizedFeature
 import net.bewis09.bewisclient.settings.structure.SidebarFeature
-import net.bewis09.bewisclient.settings.types.ColorSetting
 import net.bewis09.bewisclient.util.EventEntrypoint
 import net.bewis09.bewisclient.util.color.colors
 

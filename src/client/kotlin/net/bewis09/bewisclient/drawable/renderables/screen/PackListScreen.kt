@@ -3,9 +3,8 @@ package net.bewis09.bewisclient.drawable.renderables.screen
 import net.bewis09.bewisclient.common.*
 import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.bewisclient.drawable.SimpleRenderable
-import net.bewis09.bewisclient.drawable.renderables.components.setting.Input
+import net.bewis09.bewisclient.drawable.renderables.components.setting.InputElement
 import net.bewis09.bewisclient.drawable.renderables.components.button.MinecraftButton
-import net.bewis09.renderite.components.Div
 import net.bewis09.bewisclient.drawable.renderables.notification.NotificationManager
 import net.bewis09.bewisclient.drawable.renderables.notification.ProgressNotification
 import net.bewis09.bewisclient.drawable.renderables.notification.SimpleTextNotification
@@ -36,7 +35,7 @@ class PackListScreen(p: Props<PackListScreen>) : PropedRenderable<PackListScreen
     private var hasLoaded = false
     private var lastTyped = Long.MAX_VALUE
 
-    val search = Input {
+    val search = InputElement {
         font = ScreenDrawing.DEFAULT_FONT
         maxTextLength = 200
         onChange = { lastTyped = System.currentTimeMillis() }

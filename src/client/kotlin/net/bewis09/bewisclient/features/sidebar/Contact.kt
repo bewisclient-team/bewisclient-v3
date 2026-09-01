@@ -13,7 +13,7 @@ import net.bewis09.bewisclient.drawable.renderables.settings.SettingRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.settings.structure.SidebarFeature
 import net.bewis09.renderite.RenderiteElement
-import net.bewis09.renderite.components.Div
+import net.bewis09.renderite.components.DivElement
 import net.bewis09.renderite.logic.Animator
 import net.bewis09.renderite.logic.Color
 import net.bewis09.renderite.logic.FitType
@@ -25,7 +25,7 @@ object Contact : SidebarFeature(
 ) {
     var hoveredElement: ContactLinkElement? = null
 
-    override fun getRenderable(): Renderable = Div {
+    override fun getRenderable(): Renderable = DivElement {
         gap = 1
         fitType = FitType.SCROLL
         cacheChildren = true
