@@ -21,6 +21,7 @@ import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
 import net.bewis09.bewisclient.widget.types.ScalableWidget
 import net.bewis09.renderite.drawer.transform
+import net.bewis09.renderite.logic.TextAlign
 import net.bewis09.renderite.logic.color
 import net.minecraft.core.BlockPos
 import net.minecraft.core.registries.BuiltInRegistries
@@ -126,17 +127,17 @@ object TiwylaWidget : ScalableWidget(
     override fun render(screenDrawing: ScreenDrawing) {
         val title = getTiwylaTitle() ?: return
 
-        lineWidth = screenDrawing.getTextWidth(title) + 2 * paddingSize()
+        lineWidth = screenDrawing.getTextWidth(title).toInt() + 2 * paddingSize()
 
         screenDrawing.fillWithBorderRounded(
             0, 0, getWidth(), getHeight(), borderRadius(), backgroundColor().getColor() alpha backgroundOpacity(), borderColor().getColor() alpha borderOpacity()
         )
 
-        screenDrawing.drawCenteredText(title, getWidth() / 2, paddingSize(), topTextColor().getColor(), shadow())
+        screenDrawing.drawText(title, getWidth() / 2, paddingSize(), { color = topTextColor().getColor(); shadow = TiwylaWidget.shadow(); textAlign = TextAlign.CENTER })
 
         getSublines().forEachIndexed { i, line ->
             screenDrawing.transform(getWidth() / 2f, paddingSize() + 9f + lineSpacing() + (i * (6 + lineSpacing())), 0.77f) {
-                screenDrawing.drawCenteredText(line, 0, 0, bottomTextColor().getColor(), shadow())
+                screenDrawing.drawText(line, 0, 0) { color = bottomTextColor().getColor(); shadow = TiwylaWidget.shadow(); textAlign = TextAlign.CENTER }
             }
         }
     }

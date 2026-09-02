@@ -1,15 +1,11 @@
 package net.bewis09.bewisclient.drawable.renderables.screen
 
 import net.bewis09.bewisclient.api.APIEntrypointLoader
-import net.bewis09.bewisclient.common.Identifier
-import net.bewis09.bewisclient.common.Util
-import net.bewis09.bewisclient.common.createIdentifier
-import net.bewis09.bewisclient.common.then
+import net.bewis09.bewisclient.common.*
 import net.bewis09.bewisclient.data.Constants
 import net.bewis09.bewisclient.drawable.BackgroundEffectProvider
 import net.bewis09.bewisclient.drawable.ImageIdentifier.setRenderableScreen
 import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.bewisclient.drawable.SimpleRenderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.ImageButton
 import net.bewis09.bewisclient.drawable.renderables.components.button.MinecraftButton
@@ -21,19 +17,21 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing.Companion.D
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.features.sidebar.Home
 import net.bewis09.bewisclient.game.translations.Translation
-import net.bewis09.bewisclient.generated.BuildInfo
 import net.bewis09.bewisclient.server.Security
 import net.bewis09.bewisclient.settings.structure.SidebarFeature
 import net.bewis09.bewisclient.settings.types.Setting
 import net.bewis09.bewisclient.util.Bewisclient
 import net.bewis09.bewisclient.version.setScreen
-import net.bewis09.renderite.drawer.transform
+import net.bewis09.renderite.components.TextElement
 import net.bewis09.renderite.logic.Animator
 import net.bewis09.renderite.logic.Color
+import net.bewis09.renderite.logic.Direction
 import net.bewis09.renderite.logic.FitType
+import net.bewis09.renderite.logic.TextAlign
 import net.minecraft.network.chat.CommonComponents
 import net.minecraft.network.chat.Component
 import org.lwjgl.glfw.GLFW
+import net.bewis09.bewisclient.drawable.Initializer
 
 class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(), BackgroundEffectProvider {
     val editHudTranslation = Translation("options.edit_hud", "Edit HUD")
@@ -97,39 +95,39 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
         screenDrawing.setDefaultFont()
     }
 
-    override fun renderScreen(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        renderVersionText(screenDrawing)
-    }
-
     override fun renderBackground(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         SelectiveScreenDrawer.renderMenuBackground(screenDrawing, width, height)
-    }
-
-    fun renderVersionText(screenDrawing: ScreenDrawing) {
-        screenDrawing.transform(width - 5f, height - 11f, 0.7f) {
-            screenDrawing.drawRightAlignedText("Bewisclient ${BuildInfo.VERSION} by Bewis09", 0, 0, if (General.isMinecrafty) Color.WHITE alpha 0.5f else General.getThemeColor(alpha = 0.5f))
-        }
     }
 
     fun checkValidVersion() {
         if (!Security.verificationState.allowed) setRenderableScreen(VersionInvalidScreen)
     }
 
-    object VersionInvalidScreen : SimpleRenderable() {
+    object VersionInvalidScreen : PopupScreen() {
         const val SECURITY_MESSAGE =
             "Your version of Bewisclient could not be verified. This probably means that the file your are using was changed after downloading or the version you are using was removed from Modrinth due to a critical bug.\n\nPlease download the newest version from Modrinth to ensure you are using a safe version.\n\nIf you believe this is an error, please let us know on GitHub."
 
         override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-            screenDrawing.wrapText(SECURITY_MESSAGE + "\n\nError message: ${(Security.verificationState as? Security.ILLEGAL)?.reason ?: "Unknown"}", 300).let {
-                screenDrawing.drawCenteredWrappedText(it, width / 2, height / 2 - it.size * 9 / 2 - 30, Color.WHITE, DEFAULT_FONT, true)
-            }
-
-            screenDrawing.transform(width - 5f, height - 11f, 0.7f) {
-                screenDrawing.drawRightAlignedText("Bewisclient ${BuildInfo.VERSION} by Bewis09", 0, 0, General.getThemeColor(alpha = 0.5f))
+            screenDrawing.wrapText((SECURITY_MESSAGE + "\n\nError message: ${(Security.verificationState as? Security.ILLEGAL)?.reason ?: "Unknown"}").toText(), 300).let {
+                screenDrawing.drawWrappedText(it, width / 2, height / 2 - it.size * 9 / 2 - 30) {
+                    textAlign = TextAlign.CENTER
+                    color = Color.WHITE
+                    font = DEFAULT_FONT
+                    shadow = true
+                }
             }
         }
 
         override fun Init.init() {
+            Text {
+                text = (SECURITY_MESSAGE + "\n\nError message: ${(Security.verificationState as? Security.ILLEGAL)?.reason ?: "Unknown"}").toText()
+                textAlign = TextAlign.CENTER
+                color = Color.WHITE
+                font = DEFAULT_FONT
+                shadow = true
+                paddingBottom = 60
+                width = 300
+            }.updateX(width / 2 - 150)
             MinecraftButton {
                 text = CommonComponents.GUI_BACK
                 onClick = { setScreen(null) }
@@ -138,6 +136,7 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
                 text = modrinthButtonText()
                 onClick = { Util.getPlatform().openUri(Constants.MODRINTH_URL) }
             }(width / 2 + 2, height / 2 + 50, 100, 20)
+            VersionText()
         }
 
         override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {
@@ -149,33 +148,35 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
         }
     }
 
+    fun Initializer.createTopButton(identifier: Identifier, padding: Int, onClick: () -> Unit) = ImageButton {
+        image = identifier
+        this.onClick = { onClick() }
+        imagePadding = padding
+        width = SelectiveScreenDrawer.getSideButtonHeight()
+        height = SelectiveScreenDrawer.getSideButtonHeight()
+    }
+
     override fun Init.init() {
         Div(0) {
             cacheChildren = true
             gap = (General.isMinecrafty then 2) ?: 5
             fitType = FitType.SCROLL
             onInit = {
-                Home.createButton().let { button ->
-                    object : SimpleRenderable() {
-                        fun Init.createTopButton(identifier: Identifier, padding: Int, x: Int, y: Int, onClick: () -> Unit) = ImageButton {
-                            image = identifier
-                            this.onClick = { onClick() }
-                            imagePadding = padding
-                        }(x, y, SelectiveScreenDrawer.getSideButtonHeight(), SelectiveScreenDrawer.getSideButtonHeight())
-
-                        override fun Init.init() {
-                            createTopButton(backIdentifier, 1, x, y, ::goBack)
-                            button(x + 19, y, 82, SelectiveScreenDrawer.getSideButtonHeight()).add()
-                            createTopButton(closeIdentifier, 3, x + 106 - ((General.isMinecrafty then 4) ?: 0), y, ::close)
-                        }
-                    }.updateHeight(SelectiveScreenDrawer.getSideButtonHeight())
-                }.add()
+                Div {
+                    gap = if (General.isMinecrafty) 1 else 5
+                    direction = Direction.HORIZONTAL
+                    onInit = {
+                        createTopButton(backIdentifier, 1, ::goBack)
+                        Home.createButton().updateWidth(82).add()
+                        createTopButton(closeIdentifier, 3, ::close)
+                    }
+                }.updateHeight(SelectiveScreenDrawer.getSideButtonHeight())
                 Rectangle {
-                    colorProvider = { General.getThemeColor(alpha = 0.3f) }
+                     backgroundColor = { General.getThemeColor(alpha = 0.3f) }
                 }.updateHeight(1)
                 APIEntrypointLoader.mapEntrypoint { a -> a.getSidebarCategories().forEach { b -> b.createButton().add() } }
                 Rectangle {
-                    colorProvider = { General.getThemeColor(alpha = 0.3f) }
+                    backgroundColor = { General.getThemeColor(alpha = 0.3f) }
                 }.updateHeight(1)
                 ThemeButton {
                     text = editHudTranslation()
@@ -199,6 +200,8 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
 
         page.header.colorModifier = { Color(1f, 1f, 1f, insideMainAnimation.get()) }
         page.pane.colorModifier = { Color(1f, 1f, 1f, insideMainAnimation.get()) }
+
+        VersionText()
     }
 
     fun changeCategory(category: SidebarFeature, instant: Boolean = false) {
@@ -254,15 +257,12 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
         }
     }
 
-    class Page(header: Component, val pane: Renderable, val setting: Setting<Boolean>? = null) {
-        val header = Header(header).updateHeight(if(General.isMinecrafty) 18 else 14)
-    }
-
-    class Header(val header: Component): SimpleRenderable() {
-        override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-            screenDrawing.transform(exactCenterX, screenDrawing.getTextYCenter(this) - if (General.isMinecrafty) 2 else 0, if(General.isMinecrafty) 1.3f else 1f) {
-                screenDrawing.drawCenteredText(header, 0, 0, General.getTextThemeColor())
-            }
+    class Page(header: Component, val pane: Renderable, val setting: Setting<Boolean>? = null, ) {
+        val header: Renderable = TextElement {
+            text = header
+            fontSize = if (General.isMinecrafty) 12f else 9f
+            textAlign = TextAlign.CENTER
+            height = if (General.isMinecrafty) 18 else 14
         }
     }
 

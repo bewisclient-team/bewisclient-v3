@@ -1,11 +1,12 @@
 package net.bewis09.bewisclient.drawable.renderables.settings
 
-import net.bewis09.bewisclient.drawable.Init
+import net.bewis09.bewisclient.drawable.Initializer
 import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.renderite.RenderiteElement
 import net.bewis09.renderite.logic.Color
+import net.bewis09.renderite.logic.TextAlign
 import net.minecraft.network.chat.Component
 import kotlin.also
 
@@ -19,20 +20,20 @@ class InfoTextRenderable(p: Props<InfoTextRenderable>) : PropedRenderable<InfoTe
     init { props() }
 
     override fun renderLogic(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        val lines = screenDrawing.wrapText(text.string, width - padding * 2)
-        if (selfResize) updateHeight(lines.size * screenDrawing.getTextHeight() + padding * 2)
+        val lines = screenDrawing.wrapText(text, width - padding * 2)
+        if (selfResize) updateHeight(lines.size * 9 + padding * 2)
     }
 
-    override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        val lines = screenDrawing.wrapText(text.string, width - padding * 2)
-        lines.forEachIndexed { index, line ->
-            if (centered) {
-                screenDrawing.drawCenteredText(line, centerX, y + index * screenDrawing.getTextHeight() + padding, color)
-            } else {
-                screenDrawing.drawText(line, x, y + index * screenDrawing.getTextHeight() + padding, color)
-            }
+    override fun Init.init() {
+        Text {
+            text = this@InfoTextRenderable.text
+            wrap = true
+            padding = this@InfoTextRenderable.padding
+            color = this@InfoTextRenderable.color
+            textAlign = if (centered) TextAlign.CENTER else TextAlign.START
+            verticalAlign = TextAlign.START
         }
     }
 }
 
-fun Init.InfoTextRenderable(p: RenderiteElement.Props<InfoTextRenderable>) = net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable(p).also(::addRenderable)
+fun Initializer.InfoTextRenderable(p: RenderiteElement.Props<InfoTextRenderable>) = net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable(p).also(::addRenderable)

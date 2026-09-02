@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.drawable.renderables.components.button
 
-import net.bewis09.bewisclient.drawable.Init
+import net.bewis09.bewisclient.drawable.Initializer
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.renderite.RenderiteElement
@@ -11,12 +11,11 @@ class ButtonElement(p: Props<ButtonElement>) : AbstractButtonElement<ButtonEleme
     lateinit var text: Component
     var selected: (() -> Boolean)? = null
     var dark: Boolean = false
-    var small: Boolean = false
 
     init { props() }
 
     override fun renderBackground(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        SelectiveScreenDrawer.renderButtonBackground(screenDrawing, hoverAnimation.get(), if (selected?.invoke() == true) 1f else 0f, x, y, width, height, 1f, dark, small)
+        SelectiveScreenDrawer.renderButtonBackground(screenDrawing, hoverAnimation.get(), if (selected?.invoke() == true) 1f else 0f, x, y, width, height, 1f, dark, false)
     }
 
     override fun Init.init() {
@@ -27,4 +26,4 @@ class ButtonElement(p: Props<ButtonElement>) : AbstractButtonElement<ButtonEleme
     }
 }
 
-fun Init.Button(p: RenderiteElement.Props<ButtonElement>): ButtonElement = ButtonElement(p).add()
+fun Initializer.Button(p: RenderiteElement.Props<ButtonElement>): ButtonElement = ButtonElement(p).add()

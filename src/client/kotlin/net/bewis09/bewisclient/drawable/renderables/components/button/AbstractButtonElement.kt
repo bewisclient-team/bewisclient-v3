@@ -1,9 +1,9 @@
 package net.bewis09.bewisclient.drawable.renderables.components.button
 
-import net.bewis09.bewisclient.drawable.renderables.components.logic.TooltipHoverable
+import net.bewis09.bewisclient.drawable.renderables.components.logic.TooltipElement
 import net.bewis09.bewisclient.util.Bewisclient
 
-abstract class AbstractButtonElement<T: AbstractButtonElement<T>>(p: Props<T>): TooltipHoverable<T>(p + {
+abstract class AbstractButtonElement<T: AbstractButtonElement<T>>(p: Props<T>): TooltipElement<T>(p + {
     shouldUsePointer = true
 }) {
     var onClick: (T) -> Unit = {}

@@ -22,11 +22,12 @@ class ExtensionListRenderable(p: Props<ExtensionListRenderable>) : SettingRender
     val menuAnimation = Animator({ General.animationDuration }, Animator.EASE_IN_OUT, 0f)
 
     override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        screenDrawing.push()
-        screenDrawing.translate(0f, 11 - screenDrawing.getTextHeight() / 2f + 0.5f)
-        screenDrawing.drawText(("${entrypoint.getExtensionTitle(modContainer)} ").toText().append(("(${modContainer.metadata.id})").toText().setColor(0xAAAAAA)), x + 32, y, Color.WHITE)
-        val lines = screenDrawing.drawWrappedText(entrypoint.getExtensionDescription(modContainer), x + 32, y + 10, width - 40, 0xAAAAAA.color alpha 0.8f)
-        screenDrawing.pop()
+        screenDrawing.drawText(("${entrypoint.getExtensionTitle(modContainer)} ").toText().append(("(${modContainer.metadata.id})").toText().setColor(0xAAAAAA)), x + 32, y + 7) {
+            color = Color.WHITE
+        }
+        val lines = screenDrawing.drawWrappedText(entrypoint.getExtensionDescription(modContainer).toText(), x + 32, y + 17, width - 40) {
+            color = 0xAAAAAA.color alpha 0.8f
+        }
         screenDrawing.drawTexture(entrypoint.getIcon(modContainer) ?: notFoundIdentifier, x + 8, centerY - 8, 0f, 0f, 16, 16, 16, 16)
         height = 22 + lines.size * 9 + 1 + (menuAnimation.get() * 19).roundToInt()
     }

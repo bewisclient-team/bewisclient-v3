@@ -59,7 +59,7 @@ class TiwylaInfoSettingsRenderable : PropedRenderable<TiwylaInfoSettingsRenderab
 
     override fun Init.init() {
         Rectangle {
-            color = 0xFFFFFF alpha 0.25f
+            backgroundColor = { 0xFFFFFF alpha 0.25f }
         }(centerX, y + 5, 1, height)
         addRenderable(entityInfoList.updatePosition(x, y + 5).updateWidth((width - 11) / 2))
         addRenderable(blockInfoList.updatePosition(x2 - (width - 11) / 2, y + 5).updateWidth((width - 11) / 2))

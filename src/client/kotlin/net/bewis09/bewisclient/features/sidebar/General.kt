@@ -22,7 +22,7 @@ object General : SidebarFeature(createIdentifier("bewisclient", "options_menu"),
     val buttonInTitleScreen = boolean("button_in_title_screen", true)
     val buttonInGameScreen = boolean("button_in_game_screen", true)
     val themeColor = color("theme_color", StaticColorSaver(!0xFFFFFF), ColorSetting.STATIC)
-    val backgroundColor = color("background_color", ThemeColorSaver(0.2f), ColorSetting.STATIC, ColorSetting.THEME)
+    val menuBackgroundColor = color("background_color", ThemeColorSaver(0.2f), ColorSetting.STATIC, ColorSetting.THEME)
     val backgroundOpacity = float("background_opacity", 0.8f, 0f, 1f, 0.01f, 2)
     val minecraftyOptionsMenu: BooleanSetting = boolean("minecrafty_options_menu", true) { _, _ ->
         if (Bewisclient.getCurrentRenderableScreen()?.renderable !is OptionScreen) return@boolean
@@ -37,7 +37,7 @@ object General : SidebarFeature(createIdentifier("bewisclient", "options_menu"),
     val goBackEscape: BooleanSetting = boolean("go_back_escape", false)
     val restoreTab: BooleanSetting = boolean("reopen_tab", false)
 
-    fun getBackgroundColor(): Color = 0.3f within (Color.BLACK to backgroundColor.get().getColor()) alpha backgroundOpacity.get()
+    fun getBackgroundColor(): Color = 0.3f within (Color.BLACK to menuBackgroundColor.get().getColor()) alpha backgroundOpacity.get()
 
     fun getThemeColor(white: Float = 1f, alpha: Float = 1f, black: Float = 1f) = (black within (Color.BLACK to if (isMinecrafty) Color.WHITE else (white within (Color.WHITE to themeColor.get().getColor())))) alpha alpha
     fun getTextThemeColor() = if (!minecraftyOptionsMenu) (0.5f within (Color.WHITE to themeColor.get().getColor())) else Color.WHITE
@@ -59,7 +59,7 @@ object General : SidebarFeature(createIdentifier("bewisclient", "options_menu"),
                     )
                 }.add()
                 themeColor.createRenderable(this@General, "theme_color", "Theme Color", "The theme color used throughout the client").addToQuickSettings(this@General, "theme_color").add()
-                backgroundColor.createRenderableWithFader(this@General, "background_color", "Background Color", "The background color used for menus. Reset to use the theme color.", backgroundOpacity).addToQuickSettings(this@General, "background").add()
+                menuBackgroundColor.createRenderableWithFader(this@General, "background_color", "Background Color", "The background color used for menus. Reset to use the theme color.", backgroundOpacity).addToQuickSettings(this@General, "background").add()
                 if (System.getProperty("os.name").lowercase().contains("win"))
                     autoUpdate.createRenderable(this@General, "auto_update", "Automatic Updates", "Whether to automatically check for updates and update the client when an update is found").add()
 //                EnableOnlineModeSettingsRenderable(

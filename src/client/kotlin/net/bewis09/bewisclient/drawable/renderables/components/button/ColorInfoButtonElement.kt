@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.drawable.renderables.components.button
 
 import net.bewis09.bewisclient.common.toText
-import net.bewis09.bewisclient.drawable.Init
+import net.bewis09.bewisclient.drawable.Initializer
 import net.bewis09.renderite.logic.TextAlign
 import net.bewis09.bewisclient.drawable.renderables.popup.ColorChangePopup
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
@@ -43,4 +43,4 @@ class ColorInfoButtonElement(p: Props<ColorInfoButtonElement>) : AbstractButtonE
     }
 }
 
-fun Init.ColorInfoButton(p: RenderiteElement.Props<ColorInfoButtonElement>) = ColorInfoButtonElement(p).add()
+fun Initializer.ColorInfoButton(p: RenderiteElement.Props<ColorInfoButtonElement>) = ColorInfoButtonElement(p).add()

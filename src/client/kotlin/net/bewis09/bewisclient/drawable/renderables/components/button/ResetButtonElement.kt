@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.drawable.renderables.components.button
 
 import net.bewis09.bewisclient.common.createIdentifier
-import net.bewis09.bewisclient.drawable.Init
+import net.bewis09.bewisclient.drawable.Initializer
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.translations.Translation
@@ -42,4 +42,4 @@ class ResetButtonElement<T>(p: Props<ResetButtonElement<T>>) : AbstractButtonEle
     }
 }
 
-fun <T> Init.ResetButton(p: RenderiteElement.Props<ResetButtonElement<T>>) = ResetButtonElement(p).add()
+fun <T> Initializer.ResetButton(p: RenderiteElement.Props<ResetButtonElement<T>>) = ResetButtonElement(p).add()

@@ -45,7 +45,7 @@ object Widgets : SidebarFeature(createIdentifier("bewisclient", "widgets"), "Wid
                 }
             }(x, y, width, SelectiveScreenDrawer.getSideButtonHeight())
             Div {
-                initForEach(widgetRenderables) { it.add() }
+                onInit = { addRenderables(widgetRenderables) }
                 gap = 5
                 minElementSize = 80
                 lineType = LineType.SIZED

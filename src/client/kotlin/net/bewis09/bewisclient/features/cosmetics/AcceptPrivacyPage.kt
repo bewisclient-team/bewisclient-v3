@@ -1,6 +1,5 @@
 package net.bewis09.bewisclient.features.cosmetics
 
-import net.bewis09.bewisclient.drawable.Div
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.Button
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
@@ -8,6 +7,7 @@ import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.util.Bewisclient
+import net.bewis09.renderite.components.DivElement
 import net.bewis09.renderite.logic.FitType
 import net.minecraft.network.chat.Component
 
@@ -42,7 +42,7 @@ object AcceptPrivacyPage {
 
         screen.openPage(
             headerText(),
-            Div {
+            DivElement {
                 gap = 2
                 fitType = FitType.SCROLL
                 cacheChildren = true

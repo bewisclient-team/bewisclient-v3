@@ -20,8 +20,6 @@ abstract class Notification<T: Notification<T>>(p: Props<T>) : PropedRenderable<
             screenDrawing.fill(x, y, width, height, Color.BLACK alpha 0.5f)
         }
 
-        lines.forEachIndexed { index, line ->
-            screenDrawing.drawText(line, x + if (General.isMinecrafty) 5 else 4, y + index * 9 + 4, General.getTextThemeColor())
-        }
+        screenDrawing.drawWrappedText(lines, x + if (General.isMinecrafty) 5 else 4, y + 4) { color = General.getTextThemeColor() }
     }
 }

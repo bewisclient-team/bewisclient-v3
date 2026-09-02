@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.drawable.renderables.components.logic
 
+import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.renderite.logic.Animator
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
@@ -7,11 +8,10 @@ import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.util.Bewisclient
 import net.bewis09.renderite.drawer.pushAlpha
 import net.bewis09.bewisclient.version.translateToTopOptional
-import net.bewis09.renderite.components.Hoverable
 import net.bewis09.renderite.logic.Color
 import net.minecraft.network.chat.Component
 
-abstract class TooltipHoverable<P: TooltipHoverable<P>>(p: Props<P>) : Hoverable<P>(p) {
+abstract class TooltipElement<P: TooltipElement<P>>(p: Props<P>) : PropedRenderable<P>(p) {
     val tooltipAnimation = Animator(200, Animator.EASE_IN_OUT, 0f)
     var wasActuallyDrawn: Boolean? = null
     var isActuallyDrawn: Boolean? = null
@@ -41,11 +41,10 @@ abstract class TooltipHoverable<P: TooltipHoverable<P>>(p: Props<P>) : Hoverable
 
                 screenDrawing.setBewisclientFont()
 
-                val textHeight = screenDrawing.getTextHeight()
                 val wrappedText = screenDrawing.wrapText(tooltip, 200)
-                val tooltipHeight = wrappedText.size * textHeight + 10
+                val tooltipHeight = wrappedText.size * 9 + 10
 
-                val width = wrappedText.maxOfOrNull { screenDrawing.getTextWidth(it) }?.plus(10) ?: 210
+                val width = wrappedText.maxOfOrNull { screenDrawing.getTextWidth(it).toInt() }?.plus(10) ?: 210
 
                 if (mouseX + width > Bewisclient.screenWidth) {
                     screenDrawing.translate(-width.toFloat(), 0f)
@@ -60,7 +59,9 @@ abstract class TooltipHoverable<P: TooltipHoverable<P>>(p: Props<P>) : Hoverable
                 } else {
                     screenDrawing.fillRounded(mouseX, mouseY - tooltipHeight, width, tooltipHeight, 5, Color.BLACK alpha tooltipAnimation.get() * 0.8f)
                 }
-                screenDrawing.drawWrappedText(wrappedText, mouseX + 5, mouseY - tooltipHeight + 5, Color.WHITE alpha tooltipAnimation.get())
+                screenDrawing.drawWrappedText(wrappedText, mouseX + 5, mouseY - tooltipHeight + 5) {
+                    color = Color.WHITE alpha tooltipAnimation.get()
+                }
                 screenDrawing.pop()
             })
         } else {
@@ -71,6 +72,5 @@ abstract class TooltipHoverable<P: TooltipHoverable<P>>(p: Props<P>) : Hoverable
 
     override fun initLogic() {
         tooltipAnimation.setInstant(0f)
-        super.initLogic()
     }
 }

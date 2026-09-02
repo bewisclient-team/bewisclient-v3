@@ -11,11 +11,11 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.features.cosmetics.Cosmetic
 import net.bewis09.bewisclient.features.cosmetics.CosmeticLoader
 import net.bewis09.bewisclient.features.sidebar.General
-import net.bewis09.renderite.components.Hoverable
+import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.renderite.drawer.darken
 import net.bewis09.renderite.logic.*
 
-class SelectCapeElement(p: Props<SelectCapeElement>) : Hoverable<SelectCapeElement>(p + {
+class SelectCapeElement(p: Props<SelectCapeElement>) : PropedRenderable<SelectCapeElement>(p + {
     heightProvider = { (width - 16) * 16 / 10 + 25 }
 }) {
     lateinit var identifier: CosmeticIdentifier
@@ -50,7 +50,7 @@ class SelectCapeElement(p: Props<SelectCapeElement>) : Hoverable<SelectCapeEleme
             overflowVisible = true
             verticalAlign = TextAlign.END
             textAlign = TextAlign.CENTER
-            lineHeight = 7 / 9f
+            lineHeight = 0.8f
             wrap = true
         }(x + 4, y2 - 7, width - 8, 0)
         Rectangle {

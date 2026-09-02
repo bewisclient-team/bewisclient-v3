@@ -65,12 +65,9 @@ object CoordinatesWidget : LineWidget(
         if (showDirection.get()) {
             val direction = getCardinalDirection()
             val text = "- $direction -"
-            if (shadow.get()) screenDrawing.drawRightAlignedTextWithShadow(
-                text, getWidth() - paddingSize.get(), paddingSize.get(), textColor.get().getColor()
-            )
-            else screenDrawing.drawRightAlignedText(
-                text, getWidth() - paddingSize.get(), paddingSize.get(), textColor.get().getColor()
-            )
+            if (shadow.get()) screenDrawing.drawText(
+                text.toText(), getWidth() - paddingSize.get(), paddingSize.get()
+            ) { color = textColor.get().getColor(); shadow = CoordinatesWidget.shadow() }
         }
     }
 

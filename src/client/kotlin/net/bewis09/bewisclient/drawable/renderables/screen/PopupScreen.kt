@@ -1,17 +1,20 @@
 package net.bewis09.bewisclient.drawable.renderables.screen
 
+import net.bewis09.bewisclient.common.toText
 import net.bewis09.renderite.logic.Animator
 import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.features.sidebar.General
+import net.bewis09.bewisclient.generated.BuildInfo
 import net.bewis09.bewisclient.version.translateToTopOptional
 import net.bewis09.renderite.logic.Color
+import net.bewis09.renderite.logic.TextAlign
 import org.lwjgl.glfw.GLFW
 
 abstract class PopupScreen(p: Props<PopupScreen> = {}) : PropedRenderable<PopupScreen>(p) {
     var popup: Popup? = null
-    var backgroundColor: Color = Color.BLACK alpha 0.5f
+    var popupBackground: Color = Color.BLACK alpha 0.5f
 
     init { props() }
 
@@ -24,7 +27,7 @@ abstract class PopupScreen(p: Props<PopupScreen> = {}) : PropedRenderable<PopupS
         popup?.render(screenDrawing, mouseX, mouseY)
     }
 
-    abstract fun renderScreen(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int)
+    open fun renderScreen(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {}
 
     class Popup(p: Props<Popup>) : PropedRenderable<Popup>(p + {
         colorModifier = { Color.WHITE alpha alphaAnimation.get() }
@@ -60,7 +63,7 @@ abstract class PopupScreen(p: Props<PopupScreen> = {}) : PropedRenderable<PopupS
         }
 
         override fun renderBackground(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-            screenDrawing.fill(0, 0, width, height, screen.backgroundColor)
+            screenDrawing.fill(0, 0, width, height, screen.popupBackground)
         }
 
         override fun cleanup(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
@@ -102,7 +105,7 @@ abstract class PopupScreen(p: Props<PopupScreen> = {}) : PropedRenderable<PopupS
     }
 
     fun openPopup(popupRenderable: Renderable, backgroundColor: Color = Color.BLACK alpha 0.5f) {
-        this.backgroundColor = backgroundColor
+        this.popupBackground = backgroundColor
         if (popup != null) {
             popup?.let { renderables.remove(it) }
         }
@@ -113,5 +116,15 @@ abstract class PopupScreen(p: Props<PopupScreen> = {}) : PropedRenderable<PopupS
         renderables.addFirst(popup!!)
         popup?.invoke(0, 0, width, height)?.resize()
         selectedElement = popup
+    }
+
+    fun Init.VersionText() {
+        Text {
+            text = "Bewisclient ${BuildInfo.VERSION} by Bewis09".toText()
+            color = General.getThemeColor(alpha = 0.5f)
+            textAlign = TextAlign.END
+            fontSize = 7f
+            overflowVisible = true
+        }.updatePosition(width - 5, height - 11)
     }
 }

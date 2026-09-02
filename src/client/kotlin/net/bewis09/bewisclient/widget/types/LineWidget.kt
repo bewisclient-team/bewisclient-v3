@@ -15,6 +15,7 @@ import net.bewis09.bewisclient.settings.types.BooleanSetting
 import net.bewis09.bewisclient.settings.types.ColorSetting
 import net.bewis09.bewisclient.settings.types.FloatSetting
 import net.bewis09.bewisclient.settings.types.IntegerSetting
+import net.bewis09.renderite.logic.TextAlign
 import net.minecraft.network.chat.Component
 
 abstract class LineWidget(id: Identifier, title: String, description: String) : ScalableWidget(id, title, description) {
@@ -75,7 +76,7 @@ abstract class LineWidget(id: Identifier, title: String, description: String) : 
         val lines = getLines()
         if (lines.isEmpty()) return
 
-        lineWidth = lines.maxOfOrNull { screenDrawing.getTextWidth(it) }?.plus(2 * paddingSize()) ?: 0
+        lineWidth = lines.maxOfOrNull { screenDrawing.getTextWidth(it).toInt() }?.plus(2 * paddingSize()) ?: 0
 
         screenDrawing.fillWithBorderRounded(
             0, 0, getWidth(), getHeight(), borderRadius(), backgroundColor().getColor() alpha backgroundOpacity(), borderColor().getColor() alpha borderOpacity()
@@ -86,9 +87,9 @@ abstract class LineWidget(id: Identifier, title: String, description: String) : 
         lines.forEachIndexed { i, line ->
             val y = (i * (9 + lineSpacing())) + paddingSize()
             if (isCentered()) {
-                screenDrawing.drawCenteredText(line, getWidth() / 2, y, textColor().getColor(), shadow())
+                screenDrawing.drawText(line, getWidth() / 2, y) { color = textColor().getColor(); shadow = this@LineWidget.shadow(); textAlign = TextAlign.CENTER }
             } else {
-                screenDrawing.drawText(line, paddingSize(), y, textColor().getColor(), shadow())
+                screenDrawing.drawText(line, paddingSize(), y) { color = textColor().getColor(); shadow = this@LineWidget.shadow() }
             }
         }
     }

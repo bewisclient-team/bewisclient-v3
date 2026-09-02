@@ -112,15 +112,14 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
                 lines.add(rightClickForOptions())
                 lines.add(shiftForNoSnapping())
 
-                val textHeight = screenDrawing.getTextHeight()
-                val tooltipHeight = lines.size * textHeight + 10
-                val width = lines.maxOfOrNull { line -> screenDrawing.getTextWidth(line) }?.plus(10) ?: 210
+                val tooltipHeight = lines.size * 9 + 10
+                val width = lines.maxOfOrNull { line -> screenDrawing.getTextWidth(line) }?.plus(10f) ?: 210f
 
                 var drawX = mouseX
                 var drawY = mouseY - tooltipHeight
 
                 if (drawX + width > Bewisclient.screenWidth) {
-                    drawX -= width
+                    drawX -= width.toInt()
                 }
                 if (drawY < 0) {
                     drawY = mouseY
@@ -129,8 +128,8 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
                 screenDrawing.afterDraw("tooltip", {
                     screenDrawing.push()
                     screenDrawing.guiGraphics.translateToTopOptional()
-                    screenDrawing.fillRounded(drawX, drawY, width, tooltipHeight, 5, 0x000000 alpha 0.8f)
-                    screenDrawing.drawWrappedText(lines, drawX + 5, drawY + 5, Color.WHITE)
+                    screenDrawing.fillRounded(drawX, drawY, width.toInt(), tooltipHeight, 5, 0x000000 alpha 0.8f)
+                    screenDrawing.drawWrappedText(lines, drawX + 5, drawY + 5) { color = Color.WHITE }
                     screenDrawing.pop()
                 })
             }

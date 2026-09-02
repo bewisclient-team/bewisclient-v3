@@ -3,32 +3,19 @@ package net.bewis09.bewisclient.drawable.screen_drawing
 import net.bewis09.bewisclient.common.Identifier
 import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.common.toText
-import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.mixin.client.accessor.ScissorStackAccessor
 import net.bewis09.bewisclient.util.logic.ClientInterface
-import net.bewis09.bewisclient.version.GuiGraphics
-import net.bewis09.bewisclient.version.drawItem
-import net.bewis09.bewisclient.version.drawItemOverlay
-import net.bewis09.bewisclient.version.drawTexture
-import net.bewis09.bewisclient.version.pop
-import net.bewis09.bewisclient.version.push
-import net.bewis09.bewisclient.version.rotate
-import net.bewis09.bewisclient.version.scale
-import net.bewis09.bewisclient.version.setCursorPointer
-import net.bewis09.bewisclient.version.setFont
-import net.bewis09.bewisclient.version.string
-import net.bewis09.bewisclient.version.translate
-import net.bewis09.renderite.logic.Color
-import net.bewis09.renderite.logic.color
+import net.bewis09.bewisclient.version.*
 import net.bewis09.renderite.drawer.RenderiteDrawer
-import net.bewis09.renderite.drawer.transform
+import net.bewis09.renderite.drawer.TextDrawing
+import net.bewis09.renderite.logic.color
 import net.minecraft.client.gui.Font
 import net.minecraft.network.chat.Component
 import net.minecraft.network.chat.MutableComponent
 import net.minecraft.world.item.ItemStack
 import java.awt.image.BufferedImage
 
-class ScreenDrawing(val guiGraphics: GuiGraphics, val font: Font): RenderiteDrawer<Identifier, Component, Identifier>(DEFAULT_FONT), ClientInterface {
+class ScreenDrawing(val guiGraphics: GuiGraphics, val font: Font) : RenderiteDrawer<Identifier, Component, Identifier>(DEFAULT_FONT), ClientInterface {
     fun setBewisclientFont() = setFont(BEWISCLIENT_FONT)
     fun setDefaultFont() = setFont(DEFAULT_FONT)
 
@@ -54,33 +41,20 @@ class ScreenDrawing(val guiGraphics: GuiGraphics, val font: Font): RenderiteDraw
         guiGraphics.drawItemOverlay(font, itemStack, x, y)
     }
 
-    override fun String.convert(): MutableComponent = this.toText()
-
-    override fun Component.convert(): String = this.string
-
-    override fun drawTextIntern(text: Component, color: Color, font: Identifier?, shadow: Boolean) {
-        if ((font == BEWISCLIENT_FONT || (font == null && this.overwrittenFont == BEWISCLIENT_FONT)) && General.isMinecrafty) {
-            val color = applyAlpha(color)
-            if (color.toLong().color.alpha < 4) return
-            transform(0f, getTextHeight() / 2f + 0.7f, 0.85f, 0.85f) {
-                translate(0f, -getTextHeight() / 2f)
-                guiGraphics.string(this.font, text.copy().setFont(DEFAULT_FONT), 0, 0, color, shadow)
-            }
-        } else {
-            val color = applyAlpha(color)
-            if (color.toLong().color.alpha < 4) return
-            guiGraphics.string(this.font, text.copy().setFont(font), 0, 0, color, shadow)
-        }
+    override fun drawTextIntern(text: Component, font: TextDrawing.Properties<Identifier>) {
+        translate(0f, font().fontSize / 2)
+        scale(getTextScale(font), getTextScale(font))
+        val color = applyAlpha(font().color)
+        if (color.toLong().color.alpha < 4) return
+        translate(0.5f, (if (font.getFont() == BEWISCLIENT_FONT && isMinecrafty) font().fontSize / 9f else 0f) - font().fontSize / 2f)
+        guiGraphics.string(this.font, text.copy().setFont(font.getFont()), 0, 0, color, font().shadow)
     }
 
-    override fun getTextWidth(text: Component, font: Identifier?): Int {
-        if ((font == BEWISCLIENT_FONT || (font == null && this.overwrittenFont == BEWISCLIENT_FONT)) && General.isMinecrafty) {
-            return this.font.width(text.setFont(DEFAULT_FONT)) * 85 / 100
-        }
-        return this.font.width(text.setFont(font))
+    override fun getTextWidth(text: Component, font: TextDrawing.Properties<Identifier>): Float {
+        return (this.font.width(text.setFont(font.getFont())) * getTextScale(font))
     }
 
-    override fun getTextHeight(): Int = this.font.lineHeight
+    fun getTextScale(font: TextDrawing.Properties<Identifier>): Float = font().fontSize / 9f * if (font.getFont() == BEWISCLIENT_FONT && isMinecrafty) 0.85f else 1f
 
     override val fillCache: MutableMap<Pair<Int, Int>, Identifier>
         get() = roundFillCache
@@ -123,10 +97,10 @@ class ScreenDrawing(val guiGraphics: GuiGraphics, val font: Font): RenderiteDraw
         guiGraphics.drawTexture(texture, x, y, u, v, width, height, regionWidth, regionHeight, textureWidth, textureHeight, color)
     }
 
-    override fun wrapText(text: Component, maxWidth: Int, font: Identifier?): List<Component> {
-        val texts = text.copy().setFont(font).toFlatList().flatMap {
-            it.convert().replace("\r", "").replace("\n", "\uFDD0\n\uFDD0").replace(" ", "\uFDD0 \uFDD0").split("\uFDD0").map { str ->
-                str.convert().setStyle(it.style)
+    override fun wrapText(text: Component, maxWidth: Int, font: TextDrawing.Properties<Identifier>): List<Component> {
+        val texts = text.copy().setFont(font().font).toFlatList().flatMap {
+            it.string.replace("\r", "").replace("\n", "\uFDD0\n\uFDD0").replace(" ", "\uFDD0 \uFDD0").split("\uFDD0").map { str ->
+                str.toText().setStyle(it.style)
             }
         }
 

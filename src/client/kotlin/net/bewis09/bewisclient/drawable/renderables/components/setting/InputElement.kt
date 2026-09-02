@@ -22,17 +22,24 @@ class InputElement(p: Props<InputElement>) : PropedRenderable<InputElement>(p) {
     var scrollX = 0
 
     override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        if (screenDrawing.getTextWidth(text.substring(0, cursor), font) - scrollX > width - 5) {
-            scrollX = screenDrawing.getTextWidth(text.substring(0, cursor), font) - (width - 5)
-        } else if (screenDrawing.getTextWidth(text.substring(0, cursor), font) - scrollX < 0) {
-            scrollX = screenDrawing.getTextWidth(text.substring(0, cursor), font) - 5
+        val textWidthToCurser = screenDrawing.getTextWidth(text.substring(0, cursor).toText()) {
+            font = this@InputElement.font
+        }.toInt()
+
+        if (textWidthToCurser - scrollX > width - 5) {
+            scrollX = textWidthToCurser - (width - 5)
+        } else if (textWidthToCurser - scrollX < 0) {
+            scrollX = textWidthToCurser - 5
             if (scrollX < 0) scrollX = 0
         }
-        if (cursor == text.length) scrollX = scrollX.coerceAtMost(screenDrawing.getTextWidth(text, font) - width + 5).coerceAtLeast(0)
+        if (cursor == text.length) scrollX = scrollX.coerceAtMost(screenDrawing.getTextWidth(text.toText()) { font = this@InputElement.font }.toInt() - width + 5).coerceAtLeast(0)
         val shouldShow = System.currentTimeMillis() % 1000 < 500 && Bewisclient.getCurrentRenderableScreen()?.getSelectedRenderable() == this
-        screenDrawing.drawText((text + if (cursor == text.length && shouldShow) "_" else "").toText(), x - scrollX, y + 1, color, font)
+        screenDrawing.drawText((text + if (cursor == text.length && shouldShow) "_" else "").toText(), x - scrollX, y + 1) {
+            color = this@InputElement.color
+            font = this@InputElement.font
+        }
         if (cursor != text.length && shouldShow)
-            screenDrawing.drawVerticalLine(screenDrawing.getTextWidth(text.substring(0, cursor), font) + x - scrollX, y - 1, 12, color)
+            screenDrawing.drawVerticalLine(textWidthToCurser + x - scrollX, y - 1, 12, color)
     }
 
     fun setText(text: String): InputElement {

@@ -11,6 +11,7 @@ import net.bewis09.bewisclient.version.Profiler
 import net.bewis09.bewisclient.version.appendTooltip
 import net.bewis09.bewisclient.version.getItemFormattedName
 import net.bewis09.renderite.logic.Color
+import net.bewis09.renderite.logic.TextAlign
 import net.minecraft.core.component.DataComponents
 import net.minecraft.core.registries.BuiltInRegistries
 import net.minecraft.network.chat.Component
@@ -132,7 +133,7 @@ object HeldItemTooltip : ImageFeature("held_item_tooltip", "Held Item Info") {
 
             if (l > 0) {
                 for ((index, text) in texts.withIndex()) {
-                    screenDrawing.drawCenteredTextWithShadow(text, screenWidth / 2, y + (index - texts.size + 1) * 10, Color.WHITE alpha (l / 255f))
+                    screenDrawing.drawText(text, screenWidth / 2, y + (index - texts.size + 1) * 10) { color = Color.WHITE alpha (l / 255f); shadow = true; textAlign = TextAlign.CENTER }
                 }
             }
             isRendering = false

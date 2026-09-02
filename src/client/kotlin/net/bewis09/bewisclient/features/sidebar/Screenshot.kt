@@ -7,7 +7,6 @@ import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.common.then
 import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.bewisclient.drawable.SimpleRenderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.Button
 import net.bewis09.bewisclient.drawable.renderables.components.element.ExternalImage
@@ -23,13 +22,13 @@ import net.bewis09.bewisclient.process.CopyImage
 import net.bewis09.bewisclient.process.ProcessCreator
 import net.bewis09.bewisclient.settings.structure.SidebarFeature
 import net.bewis09.renderite.components.DivElement
-import net.bewis09.renderite.components.Hoverable
 import net.bewis09.renderite.drawer.pushColor
 import net.bewis09.renderite.drawer.scale
 import net.bewis09.renderite.drawer.transform
 import net.bewis09.renderite.logic.Color
 import net.bewis09.renderite.logic.FitType
 import net.bewis09.renderite.logic.LineType
+import net.bewis09.renderite.logic.TextAlign
 import net.bewis09.renderite.logic.alpha
 import java.io.ByteArrayInputStream
 import java.io.File
@@ -147,16 +146,17 @@ object Screenshot : SidebarFeature(createIdentifier("bewisclient", "screenshot")
                 fitType = FitType.SCROLL
                 onInit = onInit@{ width ->
                     contents.toSortedMap().map { ScreenshotViewElement { file = it.key }.add() }.ifEmpty {
-                        object : SimpleRenderable() {
-                            override fun renderBackground(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+                        Text {
+                            background = { screenDrawing ->
                                 screenDrawing.fillWithBorder(x, y, width, height, if (isMinecrafty) 0x333333 alpha 0.7f else General.getThemeColor(alpha = 0.7f, black = 0.2f), if (isMinecrafty) Color.WHITE alpha 0.5f else General.getThemeColor(alpha = 0.5f))
                             }
-
-                            override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-                                val lines = screenDrawing.wrapText(noScreenshotsYet(), width - 8)
-                                screenDrawing.drawCenteredWrappedText(lines, x + width / 2, y + height / 2 - lines.size * screenDrawing.getTextHeight() / 2, if (isMinecrafty) Color.WHITE alpha 0.7f else General.getThemeColor(white = 0.3f, alpha = 0.7f))
-                            }
-                        }.updateHeight((width - 2) * 9 / 16 + 2).add()
+                            wrap = true
+                            textAlign = TextAlign.CENTER
+                            text = noScreenshotsYet()
+                            padding = 8
+                            color = if (isMinecrafty) Color.WHITE alpha 0.7f else General.getThemeColor(white = 0.3f, alpha = 0.7f)
+                            heightProvider = { (width - 2) * 9 / 16 + 2 }
+                        }
                     }
                 }
             }(x, y + 27, width, height - 27)
@@ -164,7 +164,7 @@ object Screenshot : SidebarFeature(createIdentifier("bewisclient", "screenshot")
         }
     }
 
-    class ScreenshotViewElement(p: Props<ScreenshotViewElement>) : Hoverable<ScreenshotViewElement>(p + {
+    class ScreenshotViewElement(p: Props<ScreenshotViewElement>) : PropedRenderable<ScreenshotViewElement>(p + {
         minWidth = 100
     }) {
         lateinit var file: File
@@ -203,7 +203,7 @@ object Screenshot : SidebarFeature(createIdentifier("bewisclient", "screenshot")
                         }
                     }
                 } ?: run {
-                    screenDrawing.drawCenteredText((data.failed then { ScreenshotElement.loadingFailed() }) ?: ScreenshotElement.loading(), 0, -5, Color.WHITE)
+                    screenDrawing.drawText((data.failed then { ScreenshotElement.loadingFailed() }) ?: ScreenshotElement.loading(), 0, -5) { color = Color.WHITE; textAlign = TextAlign.CENTER }
                     if (!data.failed && (data.nativeImage != null)) {
                         loadTexture(file, data.nativeImage)
                     }

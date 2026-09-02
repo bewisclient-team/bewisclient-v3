@@ -14,7 +14,7 @@ import net.bewis09.bewisclient.settings.logic.RenderableCreator
 import net.bewis09.bewisclient.settings.types.ColorSetting
 import net.bewis09.bewisclient.settings.types.FloatSetting
 import net.bewis09.bewisclient.settings.types.Setting
-import net.bewis09.renderite.components.Hoverable
+import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.renderite.logic.Color
 import net.bewis09.renderite.logic.FitType
 import net.bewis09.renderite.logic.color
@@ -72,7 +72,7 @@ abstract class CategorizedFeature(id: Identifier, titleText: String) : Feature(i
         fitType = FitType.SCROLL
     }
 
-    abstract inner class SettingCategory : Hoverable<SettingCategory>({
+    abstract inner class SettingCategory : PropedRenderable<SettingCategory>({
         this.height = 90
         colorModifier = { val t = 1 - (1f - (state.get().coerceAtLeast(hoverFactor / 3))) / 2.5f; Color(t, t, t, 1f) }
     }) {
@@ -106,7 +106,6 @@ abstract class CategorizedFeature(id: Identifier, titleText: String) : Feature(i
         }
 
         override fun initLogic() {
-            super.initLogic()
             state.pauseForOnce()
         }
 

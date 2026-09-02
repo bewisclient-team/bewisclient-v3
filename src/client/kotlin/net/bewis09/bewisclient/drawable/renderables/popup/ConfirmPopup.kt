@@ -5,7 +5,7 @@ import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.Button
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.features.sidebar.General
+import net.bewis09.renderite.logic.TextAlign
 import net.minecraft.network.chat.CommonComponents
 import net.minecraft.network.chat.Component
 
@@ -21,18 +21,11 @@ class ConfirmPopup(p: Props<ConfirmPopup>) : PropedRenderable<ConfirmPopup>(p + 
     init { props() }
 
     override fun renderLogic(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        val lines = screenDrawing.wrapText(text.string, width - 20)
-        updateHeight(40 + lines.size * 9)
+        updateHeight(40 + screenDrawing.wrapText(text, width - 20).size * 9)
     }
 
     override fun renderBackground(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         SelectiveScreenDrawer.renderPopupBackground(screenDrawing, x, y, width, height, 5, 0.3f)
-    }
-
-    override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        screenDrawing.wrapText(text.string, width - 20).forEachIndexed { index, line ->
-            screenDrawing.drawCenteredText(line, x + width / 2, y + 10 + index * 9, General.getTextThemeColor())
-        }
     }
 
     override fun Init.init() {
@@ -48,5 +41,11 @@ class ConfirmPopup(p: Props<ConfirmPopup>) : PropedRenderable<ConfirmPopup>(p + 
                 OptionScreen.currentInstance?.closePopup()
             }
         }(x + width / 2 + 3, y + height - SelectiveScreenDrawer.getSideButtonHeight() - 6, (width - 18) / 2, SelectiveScreenDrawer.getSideButtonHeight())
+        Text {
+            text = this@ConfirmPopup.text
+            wrap = true
+            textAlign = TextAlign.CENTER
+            verticalAlign = TextAlign.START
+        }(x + 10, y + 10, width - 20, height)
     }
 }

@@ -41,7 +41,7 @@ class ColorChangePopup(val state: Gettable<ColorSaver>, val onChange: (ColorSave
             button?.updateSize((width - ((buttons.size - 1) * 5) - 10) / buttons.size, 14)
             button?.addPositioned(x + 5 + index * (button.width + 5), y + height - 20)
         }
-        Rectangle { colorProvider = { General.getThemeColor(alpha = 0.3f) } }(x + 5, y + height - 26, width - 11, 1)
+        Rectangle { backgroundColor = { General.getThemeColor(alpha = 0.3f) } }(x + 5, y + height - 26, width - 11, 1)
         ColorSaver.getFactory(state.get())?.getSettingsRenderable({ state.get() }, onChange)(x + 5, y + 6, width - 11, height - 37)?.let {
             addRenderable(it); it.resize()
         }

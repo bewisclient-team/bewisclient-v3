@@ -4,13 +4,14 @@ import com.mojang.blaze3d.platform.NativeImage
 import net.bewis09.bewisclient.common.Identifier
 import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.common.then
-import net.bewis09.bewisclient.drawable.Init
+import net.bewis09.bewisclient.drawable.Initializer
 import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.features.sidebar.Screenshot.ScreenshotElement
 import net.bewis09.bewisclient.version.registerTexture
 import net.bewis09.renderite.RenderiteElement
 import net.bewis09.renderite.logic.Color
+import net.bewis09.renderite.logic.TextAlign
 import net.minecraft.client.Minecraft
 import java.io.File
 
@@ -60,18 +61,17 @@ class ExternalImageElement(p: Props<ExternalImageElement>): PropedRenderable<Ext
 
             screenDrawing.drawTexture(it, (x + width / 2 - imgWidth / 2) + paddingLeft / 2 - paddingRight / 2, (y + height / 2 - imgHeight.toInt() / 2) + paddingTop / 2 - paddingBottom / 2, imgWidth, imgHeight.toInt())
         } ?: run {
-            screenDrawing.drawCenteredText((data.failed then { ScreenshotElement.loadingFailed() }) ?: ScreenshotElement.loading(), x + width / 2, y + (height - 19) / 2 - 5, Color.WHITE)
+            screenDrawing.drawText((data.failed then { ScreenshotElement.loadingFailed() }) ?: ScreenshotElement.loading(), x + width / 2, y + (height - 19) / 2 - 5, {
+                color = Color.WHITE
+                textAlign = TextAlign.CENTER
+            })
             if (!data.failed && (data.nativeImage != null)) {
                 loadTexture(file, data.nativeImage)
             }
         }
     }
 
-    override fun Init.init() {
-
-    }
-
     class ImageFileData(val nativeImage: NativeImage?, val identifier: Identifier?, val failed: Boolean)
 }
 
-fun Init.ExternalImage(p: RenderiteElement.Props<ExternalImageElement>) = ExternalImageElement(p).add()
+fun Initializer.ExternalImage(p: RenderiteElement.Props<ExternalImageElement>) = ExternalImageElement(p).add()

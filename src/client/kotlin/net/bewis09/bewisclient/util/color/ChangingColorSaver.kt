@@ -108,17 +108,17 @@ class ChangingColorSaver : ColorSaver {
                 }
             }(x, y + 11, width, 14)
             Rectangle {
-                colorProvider = { General.getThemeColor(alpha = 0.3f) }
+                backgroundColor = { General.getThemeColor(alpha = 0.3f) }
             }(x, y + 29, width, 1)
             ImageButton {
                 image = texture
                 imagePadding = 0
             }(x, y + 36, width, 8)
             Rectangle {
-                colorProvider = { General.getThemeColor(alpha = 0.3f) }
+                backgroundColor = { General.getThemeColor(alpha = 0.3f) }
             }(x, y + 49, width, 1)
             Rectangle {
-                colorProvider = { get().getColor() }
+                backgroundColor = { get().getColor() }
             }(x, y + 55, width, 8)
         }
     }

@@ -21,7 +21,7 @@ import net.bewis09.bewisclient.settings.structure.ImageFeature
 import net.bewis09.bewisclient.util.EventEntrypoint
 import net.bewis09.bewisclient.version.registerTexture
 import net.bewis09.bewisclient.version.takePanoramaFull
-import net.bewis09.renderite.components.Hoverable
+import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.renderite.logic.FitType
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.network.chat.Component
@@ -94,7 +94,7 @@ object Panorama : ImageFeature("panorama", "Panorama"), EventEntrypoint, Bewiscl
         return this.mapIndexed { index, element -> this.transform(index, element) }
     }
 
-    class PanoramaElement(p: Props<PanoramaElement>) : Hoverable<PanoramaElement>(p + { height = 64 }) {
+    class PanoramaElement(p: Props<PanoramaElement>) : PropedRenderable<PanoramaElement>(p + { height = 64 }) {
         lateinit var file: File
         var index: Int = -1
         var length: Int = -1
@@ -110,7 +110,7 @@ object Panorama : ImageFeature("panorama", "Panorama"), EventEntrypoint, Bewiscl
 
             if (path.get() == file.absolutePath) screenDrawing.fillWithBorderRounded(x, y, width, height, 5, General.getThemeColor(alpha = 0.25f), General.getThemeColor(alpha = 0.5f), topLeft = index == 0, topRight = index == 0, bottomLeft = index == length - 1, bottomRight = index == length - 1)
             else screenDrawing.fillRounded(x, y, width, height, 5, General.getThemeColor(alpha = hoverFactor * 0.15f + 0.1f), topLeft = index == 0, topRight = index == 0, bottomLeft = index == length - 1, bottomRight = index == length - 1)
-            screenDrawing.drawText(file.name, x + 8, y + 8, General.getTextThemeColor())
+            screenDrawing.drawText(file.name.toText(), x + 8, y + 8) { color = General.getTextThemeColor() }
 
             images[file]?.identifiers?.forEachIndexed { index, identifier ->
                 if (identifier != null) {

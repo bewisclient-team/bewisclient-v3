@@ -95,7 +95,7 @@ object ArmorWidget : ScalableWidget(
             }
 
             screenDrawing.translate(0f, 0.5f) {
-                screenDrawing.drawText(getTextForArmor(slot), paddingSize() + 24, y + 4, textColor().getColor(), shadow())
+                screenDrawing.drawText(getTextForArmor(slot), paddingSize() + 24, y + 4) { color = textColor().getColor(); shadow = ArmorWidget.shadow() }
             }
         }
     }

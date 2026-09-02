@@ -8,7 +8,6 @@ import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.util.Bewisclient
 import net.bewis09.bewisclient.widget.Widget
 import net.bewis09.bewisclient.widget.WidgetLoader
-import net.bewis09.renderite.components.Hoverable
 import net.bewis09.renderite.logic.FitType
 import net.bewis09.renderite.logic.LineType
 import net.bewis09.renderite.logic.TextAlign
@@ -37,8 +36,8 @@ class AddWidgetPopup : PropedRenderable<AddWidgetPopup>({
             paddingTop = 9
         }
         Div(0) {
-            initForEach(WidgetLoader.widgets.filter { !it.enabled }) { widget ->
-                addRenderable(WidgetElement(widget))
+            onInit = {
+                addRenderables(WidgetLoader.widgets.filter { !it.enabled }.map(::WidgetElement))
             }
             gap = 5
             minElementSize = 80
@@ -48,7 +47,7 @@ class AddWidgetPopup : PropedRenderable<AddWidgetPopup>({
         }(x + 10, y + 24, width - 20, height - 31)
     }
 
-    inner class WidgetElement(val widget: Widget) : Hoverable<WidgetElement>({
+    inner class WidgetElement(val widget: Widget) : PropedRenderable<WidgetElement>({
         height = 90
     }) {
         init { props() }

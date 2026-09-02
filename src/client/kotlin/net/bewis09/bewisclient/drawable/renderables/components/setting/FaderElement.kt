@@ -1,14 +1,14 @@
 package net.bewis09.bewisclient.drawable.renderables.components.setting
 
-import net.bewis09.bewisclient.drawable.Init
+import net.bewis09.bewisclient.drawable.Initializer
+import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
-import net.bewis09.renderite.components.Hoverable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.util.interfaces.Gettable
 import net.bewis09.bewisclient.util.number.Precision
 import net.bewis09.renderite.RenderiteElement
 
-class FaderElement(p: Props<FaderElement>) : Hoverable<FaderElement>(p + {
+class FaderElement(p: Props<FaderElement>) : PropedRenderable<FaderElement>(p + {
     width = 100
     height = 14
 }) {
@@ -39,4 +39,4 @@ class FaderElement(p: Props<FaderElement>) : Hoverable<FaderElement>(p + {
     }
 }
 
-fun Init.Fader(p: RenderiteElement.Props<FaderElement>) = FaderElement(p).add()
+fun Initializer.Fader(p: RenderiteElement.Props<FaderElement>) = FaderElement(p).add()

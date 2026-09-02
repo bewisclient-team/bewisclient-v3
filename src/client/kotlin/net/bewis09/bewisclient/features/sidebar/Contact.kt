@@ -3,7 +3,7 @@ package net.bewis09.bewisclient.features.sidebar
 import net.bewis09.bewisclient.common.Util
 import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.data.Constants
-import net.bewis09.bewisclient.drawable.Init
+import net.bewis09.bewisclient.drawable.Initializer
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.ThemeButton
@@ -84,11 +84,8 @@ object Contact : SidebarFeature(
         var simpleHeight = 22
 
         override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-            screenDrawing.push()
-            screenDrawing.translate(0f, 11 - screenDrawing.getTextHeight() / 2f + 0.5f)
-            screenDrawing.drawText(titleTranslation.getTranslatedString(), x + 32, y, Color.WHITE)
-            val lines = screenDrawing.drawWrappedText(descriptionTranslation.getTranslatedString(), x + 32, y + 10, width - 40, 0xAAAAAA alpha 0.8f)
-            screenDrawing.pop()
+            screenDrawing.drawText(titleTranslation(), x + 32, y + 7, { color = Color.WHITE })
+            val lines = screenDrawing.drawWrappedText(descriptionTranslation(), x + 32, y + 17, width - 40) { color = 0xAAAAAA alpha 0.8f }
             screenDrawing.drawTexture(identifier, x + 8, y + height / 2 - 8, 0f, 0f, 16, 16, 16, 16)
             simpleHeight = 22 + lines.size * 9 + 1
             updateHeight(simpleHeight + (menuAnimation.get() * (5 + SelectiveScreenDrawer.getSideButtonHeight())).roundToInt())
@@ -116,5 +113,5 @@ object Contact : SidebarFeature(
         }
     }
 
-    fun Init.ContactLinkElement(p: RenderiteElement.Props<ContactLinkElement>): ContactLinkElement = Contact.ContactLinkElement(p).also(::addRenderable)
+    fun Initializer.ContactLinkElement(p: RenderiteElement.Props<ContactLinkElement>): ContactLinkElement = Contact.ContactLinkElement(p).also(::addRenderable)
 }

@@ -23,7 +23,7 @@ abstract class SidebarFeature(id: Identifier, titleText: String) : Feature(id) {
 
     fun createGrid(renderables: List<Renderable>): Renderable {
         return DivElement {
-            initForEach(renderables) { it.add() }
+            onInit = { addRenderables(renderables) }
             gap = 5
             minElementSize = 80
             lineType = LineType.SIZED

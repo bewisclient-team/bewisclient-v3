@@ -148,7 +148,6 @@ sourceSets {
         java {
             srcDir('src/dependent/' + project.property("like_version_" + project.minecraft_version.replace('.', '_')).replace('.', '_') + "/java")
             srcDir('src/dependent/' + project.property("like_version_" + project.minecraft_version.replace('.', '_')).replace('.', '_') + "/kotlin")
-            srcDir('src/renderite/kotlin')
             srcDir('src/generated/kotlin')
         }
         resources {
@@ -183,6 +182,7 @@ dependencies {
 
     implementation 'com.twelvemonkeys.imageio:imageio-core:3.12.0'
     implementation 'com.twelvemonkeys.imageio:imageio-webp:3.12.0'
+    implementation 'com.github.bewis09:renderite:v0.0.4'
 }
 
 processResources {
@@ -213,6 +213,10 @@ java {
 
     sourceCompatibility = JavaVersion.VERSION_21
     targetCompatibility = JavaVersion.VERSION_21
+}
+
+repositories {
+    maven { url = 'https://jitpack.io' }
 }
 
 jar {

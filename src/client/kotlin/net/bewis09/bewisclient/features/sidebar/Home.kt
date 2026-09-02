@@ -4,7 +4,6 @@ import com.google.gson.JsonPrimitive
 import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.bewisclient.drawable.SimpleRenderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.ButtonElement
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
@@ -16,6 +15,7 @@ import net.bewis09.bewisclient.util.string
 import net.bewis09.renderite.components.DivElement
 import net.bewis09.renderite.logic.Color
 import net.bewis09.renderite.logic.FitType
+import net.bewis09.renderite.logic.ItemAlign
 import net.minecraft.network.chat.Component
 
 object Home : SidebarFeature(createIdentifier("bewisclient", "home"), "Bewisclient") {
@@ -38,30 +38,32 @@ object Home : SidebarFeature(createIdentifier("bewisclient", "home"), "Bewisclie
             onClick = {
                 OptionScreen.currentInstance?.openPage(
                     editQuickSettings(),
-                    DivElement.create {
-                        initForEach(quickSettingsOptions) {
-                            Empty {
-                                height = 5
-                            }
-                            InfoTextRenderable {
-                                text = Component.translatable(it.key)
-                                centered = true
-                                color = General.getTextThemeColor()
-                                padding = 0
-                            }.add()
-                            Empty {
-                                height = 3
-                            }
-                            it.value.forEach { a ->
-                                ConfigureRenderableVisibilityPlane {
-                                    category = it.key
-                                    id = a.key
-                                    renderable = a.value
+                    DivElement {
+                        onInit = {
+                            quickSettingsOptions.forEach {
+                                Empty {
+                                    height = 5
+                                }
+                                InfoTextRenderable {
+                                    text = Component.translatable(it.key)
+                                    centered = true
+                                    color = General.getTextThemeColor()
+                                    padding = 0
                                 }.add()
+                                Empty {
+                                    height = 3
+                                }
+                                it.value.forEach { a ->
+                                    ConfigureRenderableVisibilityPlane {
+                                        category = it.key
+                                        id = a.key
+                                        renderable = a.value
+                                    }.add()
+                                }
                             }
+                            gap = 1
+                            fitType = FitType.SCROLL
                         }
-                        gap = 1
-                        fitType = FitType.SCROLL
                     }
                 )
             }
@@ -99,11 +101,10 @@ object Home : SidebarFeature(createIdentifier("bewisclient", "home"), "Bewisclie
                             }
                         }
                     }
-                    object : SimpleRenderable() {
-                        override fun Init.init() {
-                            editButton.add(x + width / 2 - 50, y, 100, height)
-                        }
-                    }.updateHeight(SelectiveScreenDrawer.getSideButtonHeight()).add()
+                    Div {
+                        itemAlign = ItemAlign.CENTER
+                        onInit = { editButton.updateSize(100, SelectiveScreenDrawer.getSideButtonHeight()).add() }
+                    }
                 }
             }(x, y, width, height)
         }

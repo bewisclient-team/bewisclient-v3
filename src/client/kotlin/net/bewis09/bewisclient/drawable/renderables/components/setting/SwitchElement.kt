@@ -1,15 +1,15 @@
 package net.bewis09.bewisclient.drawable.renderables.components.setting
 
-import net.bewis09.bewisclient.drawable.Init
+import net.bewis09.bewisclient.drawable.Initializer
+import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.renderite.logic.Animator
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
-import net.bewis09.renderite.components.Hoverable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.util.interfaces.Gettable
 import net.bewis09.renderite.RenderiteElement
 
-class SwitchElement(p: Props<SwitchElement>) : Hoverable<SwitchElement>(p + {
+class SwitchElement(p: Props<SwitchElement>) : PropedRenderable<SwitchElement>(p + {
     width = 24
     height = 12
 }) {
@@ -36,4 +36,4 @@ class SwitchElement(p: Props<SwitchElement>) : Hoverable<SwitchElement>(p + {
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean = onChange(!state.get()).let { true }
 }
 
-fun Init.Switch(p: RenderiteElement.Props<SwitchElement>) = SwitchElement(p).add()
+fun Initializer.Switch(p: RenderiteElement.Props<SwitchElement>) = SwitchElement(p).add()

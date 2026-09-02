@@ -6,7 +6,6 @@ import net.bewis09.bewisclient.drawable.renderables.components.button.Button
 import net.bewis09.bewisclient.drawable.renderables.components.setting.InputElement
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.features.sidebar.General
 import net.minecraft.network.chat.CommonComponents
 import net.minecraft.network.chat.Component
 
@@ -29,12 +28,7 @@ class InputTextPopup(p: Props<InputTextPopup>) : PropedRenderable<InputTextPopup
     }
 
     override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        val lines = screenDrawing.wrapText(text.string, width - 20)
-        updateHeight(60 + lines.size * 9)
-
-        lines.forEachIndexed { index, line ->
-            screenDrawing.drawCenteredText(line, x + width / 2, y + 10 + index * 9, General.getTextThemeColor())
-        }
+        updateHeight(60 + screenDrawing.drawWrappedText(text, x + width / 2, y + 10, width - 20).size * 9)
     }
 
     override fun Init.init() {

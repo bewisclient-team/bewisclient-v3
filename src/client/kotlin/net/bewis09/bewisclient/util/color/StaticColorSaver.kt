@@ -4,7 +4,7 @@ import com.google.gson.JsonElement
 import com.google.gson.JsonPrimitive
 import net.bewis09.bewisclient.common.toText
 import net.bewis09.bewisclient.drawable.SimpleRenderable
-import net.bewis09.bewisclient.drawable.renderables.components.logic.TooltipHoverable
+import net.bewis09.bewisclient.drawable.renderables.components.logic.TooltipElement
 import net.bewis09.bewisclient.drawable.renderables.components.setting.ColorPicker
 import net.bewis09.bewisclient.drawable.renderables.components.setting.Fader
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
@@ -97,14 +97,14 @@ open class StaticColorSaver(private val color: Color) : ColorSaver {
                 }
             }(x + height + 6, y + 11, width - height - 6, 14)
             Rectangle {
-                colorProvider = { if (General.isMinecrafty) Color.WHITE alpha 0.3f else General.getThemeColor(alpha = 0.3f) }
+                backgroundColor = { if (General.isMinecrafty) Color.WHITE alpha 0.3f else General.getThemeColor(alpha = 0.3f) }
             }(x + height + 5, y + 30, width - height - 5, 1)
             ColorButton {
                 color = { get().getColor() }
                 tooltip = String.format("#%06X", get().getColor().argb).toText()
             }(x + height + 5, y + 36, 27, 27).add()
             Rectangle {
-                colorProvider = { if (General.isMinecrafty) Color.WHITE alpha 0.3f else General.getThemeColor(alpha = 0.3f) }
+                backgroundColor = { if (General.isMinecrafty) Color.WHITE alpha 0.3f else General.getThemeColor(alpha = 0.3f) }
             }(x + height + 37, y + 36, 1, 27)
             Div {
                 onInit = {
@@ -131,7 +131,7 @@ open class StaticColorSaver(private val color: Color) : ColorSaver {
             }(x + height + 43, y + 36, width - height - 43, 27)
         }
 
-        class ColorButton(p: Props<ColorButton>) : TooltipHoverable<ColorButton>(p) {
+        class ColorButton(p: Props<ColorButton>) : TooltipElement<ColorButton>(p) {
             lateinit var color: () -> Color
             var onClick: ((Color) -> Unit)? = null
 

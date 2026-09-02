@@ -1,18 +1,22 @@
 package net.bewis09.bewisclient.drawable.renderables.impl
 
 import net.bewis09.bewisclient.common.createIdentifier
+import net.bewis09.bewisclient.common.setColor
 import net.bewis09.bewisclient.common.toText
-import net.bewis09.bewisclient.drawable.Div
 import net.bewis09.bewisclient.drawable.PropedRenderable
+import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.Button
 import net.bewis09.bewisclient.drawable.renderables.components.button.ImageButton
 import net.bewis09.bewisclient.drawable.renderables.components.setting.InputElement
-import net.bewis09.bewisclient.drawable.renderables.popup.CustomWidgetHelpPopup
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
+import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.game.translations.Translation
+import net.bewis09.bewisclient.util.Bewisclient
 import net.bewis09.bewisclient.widget.impl.CustomWidget
+import net.bewis09.renderite.components.DivElement
 import net.bewis09.renderite.logic.Color
 import net.bewis09.renderite.logic.Direction
 import net.bewis09.renderite.logic.FitType
@@ -21,22 +25,26 @@ import net.bewis09.renderite.logic.TextAlign
 class CustomWidgetLineRenderable : PropedRenderable<CustomWidgetLineRenderable>({
     minWidth = 66
 }) {
-    init { props() }
+    init {
+        props()
+    }
 
     val addLine = Translation("widget.tiwyla_widget.add_line", "Add Line")
 
     var lines = computeLines()
     var centered = CustomWidget.centered.get()
 
-    val textDisplay = Div {
-        initForEach(this@CustomWidgetLineRenderable.lines) { input ->
-            Text {
-                textProvider = { CustomWidget.computeLine(input.text).toText() }
-                color = Color.WHITE
-                textAlign = if (CustomWidget.centered.get()) TextAlign.CENTER else TextAlign.START
-                font = ScreenDrawing.DEFAULT_FONT
-                minWidth = (this@CustomWidgetLineRenderable.width / 2 - 3)
-            }.updateHeight(10)
+    val textDisplay: Renderable = DivElement {
+        onInit = {
+            this@CustomWidgetLineRenderable.lines.forEach { input ->
+                Text {
+                    textProvider = { CustomWidget.computeLine(input.text).toText() }
+                    color = Color.WHITE
+                    textAlign = if (CustomWidget.centered.get()) TextAlign.CENTER else TextAlign.START
+                    font = ScreenDrawing.DEFAULT_FONT
+                    minWidth = (this@CustomWidgetLineRenderable.width / 2 - 3)
+                }.updateHeight(10)
+            }
         }
         lines = this@CustomWidgetLineRenderable.lines.size
         fitType = FitType.SCROLL
@@ -54,8 +62,10 @@ class CustomWidgetLineRenderable : PropedRenderable<CustomWidgetLineRenderable>(
         textDisplay(x + width / 2 + 3, y + 7, (width / 2 - 3), lines.size * 10)
         textDisplay.renderables.forEach { renderable ->
             renderable.updateWidth((CustomWidget.lines.maxOfOrNull {
-                screenDrawing.getTextWidth(CustomWidget.computeLine(it), ScreenDrawing.DEFAULT_FONT)
-            }?.toFloat() ?: 0f).coerceAtLeast(((width / 2 - 3).toFloat())).toInt())
+                screenDrawing.getTextWidth(CustomWidget.computeLine(it).toText()) {
+                    font = ScreenDrawing.DEFAULT_FONT
+                }
+            } ?: 0f).coerceAtLeast(((width / 2 - 3).toFloat())).toInt())
         }
         if (centered != CustomWidget.centered.get()) {
             centered = CustomWidget.centered.get()
@@ -66,10 +76,10 @@ class CustomWidgetLineRenderable : PropedRenderable<CustomWidgetLineRenderable>(
 
     override fun Init.init() {
         Rectangle {
-            colorProvider = { General.getThemeColor(alpha = 0.5f) }
+            backgroundColor = { General.getThemeColor(alpha = 0.5f) }
         }(x, y + 3, width, 1)
         Rectangle {
-            colorProvider = { General.getThemeColor(alpha = 0.5f) }
+            backgroundColor = { General.getThemeColor(alpha = 0.5f) }
         }(x, y + 27 + lines.size * 10 - if (CustomWidget.lines.isEmpty()) 1 else 0, width, 1)
         lines.forEachIndexed { index, input ->
             ImageButton {
@@ -129,5 +139,44 @@ class CustomWidgetLineRenderable : PropedRenderable<CustomWidgetLineRenderable>(
             }
             imagePadding = 2
         }(x + width - 14, y + 9 + lines.size * 10 - if (CustomWidget.lines.isEmpty()) 1 else 0, 14, 14)
+    }
+
+    fun CustomWidgetHelpPopup() = DivElement {
+        gap = 3
+        fitType = FitType.SCROLL
+        background = { SelectiveScreenDrawer.renderPopupBackground(it, x, y, width, height, 10, 0.15f) }
+        padding = 10
+        width = 200
+        heightProvider = { Bewisclient.screenHeight - 100 }
+        paddingOverflowVisible = false
+        onInit = {
+            InfoTextRenderable {
+                text = CustomWidget.customWidgetParamInfo()
+                centered = true
+                padding = 0
+            }
+            CustomWidget.widgetStringDataPoints.forEach { dataPoint ->
+                Empty { height = 0 }
+                Text {
+                    text = dataPoint.name().append(" ".toText()).append(("{${dataPoint.id}}").toText().setColor((General.getThemeColor(black = 0.5f)).argb))
+                    verticalAlign = TextAlign.START
+                    heightResize = true
+                }
+                Text {
+                    text = dataPoint.description()
+                    wrap = true
+                    color = General.getThemeColor(alpha = 0.7f)
+                    heightResize = true
+                }
+                if (dataPoint.param != null) {
+                    Text {
+                        text = "Param: ".toText().append(dataPoint.param())
+                        color = General.getThemeColor(alpha = 0.4f)
+                        wrap = true
+                        heightResize = true
+                    }
+                }
+            }
+        }
     }
 }

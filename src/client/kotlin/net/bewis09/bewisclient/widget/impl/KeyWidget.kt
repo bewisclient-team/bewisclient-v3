@@ -2,6 +2,7 @@ package net.bewis09.bewisclient.widget.impl
 
 import com.mojang.blaze3d.platform.InputConstants
 import net.bewis09.bewisclient.common.createIdentifier
+import net.bewis09.bewisclient.common.toText
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.screen.HudEditScreen
 import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSettingsRenderable
@@ -18,6 +19,7 @@ import net.bewis09.bewisclient.widget.types.LineWidget
 import net.bewis09.bewisclient.widget.types.ScalableWidget
 import net.bewis09.renderite.drawer.translate
 import net.bewis09.renderite.logic.Color
+import net.bewis09.renderite.logic.TextAlign
 import net.minecraft.client.KeyMapping
 import org.lwjgl.glfw.GLFW
 
@@ -123,8 +125,8 @@ object KeyWidget : ScalableWidget(
             x, y, width, height, borderRadius, backgroundColor alpha backgroundOpacity, borderColor alpha borderOpacity
         )
 
-        screenDrawing.translate(0f, height / 2f - screenDrawing.getTextHeight() / 2f + 1f) {
-            screenDrawing.drawCenteredText(text, x + width / 2 + 1, y, textColor, shadow.get())
+        screenDrawing.translate(0f, height / 2f - 3.5f) {
+            screenDrawing.drawText(text.toText(), x + width / 2 + 1, y) { color = textColor; shadow = KeyWidget.shadow(); textAlign = TextAlign.CENTER }
         }
     }
 

@@ -24,7 +24,7 @@ class TiwylaLinesSettingsRenderable : PropedRenderable<TiwylaLinesSettingsRender
 
     override fun Init.init() {
         Rectangle {
-            color = Color.WHITE alpha 0.25f
+            backgroundColor = { Color.WHITE alpha 0.25f }
         }(centerX, y + 5, 1, height - 5)
         Text {
             text = entityText()
