@@ -13,5 +13,3 @@ open class SimpleRenderable(p: Props<SimpleRenderable> = {}): PropedRenderable<S
         props()
     }
 }
-
-typealias Initializer = RenderiteElement<ScreenDrawing, *, Component, Identifier, Identifier>.Init

@@ -11,9 +11,9 @@ import net.minecraft.network.chat.Component
 abstract class SettingRenderable<P: SettingRenderable<P>>(p: Props<P>) : TooltipElement<P>(p) {
     override fun renderBackground(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         screenDrawing.pushColor(0.7f, 0.7f, 0.7f, 1f) {
-            SelectiveScreenDrawer.renderSettingRenderableBackground(screenDrawing, hoverAnimation.get(), x, y, width, height, mouseX, mouseY)
+            SelectiveScreenDrawer.renderSettingRenderableBackground(screenDrawing, hoverAnimation.get(), x, y, width, height)
         }
     }
 
-    fun Init.SettingText(p: Props<TextElement<ScreenDrawing, Component, Identifier, Identifier>>) = Text(p + { paddingLeft = 8 })
+    fun SettingText(p: Props<TextElement<ScreenDrawing, Component, Identifier, Identifier>>) = Text(p + { paddingLeft = 8 })
 }

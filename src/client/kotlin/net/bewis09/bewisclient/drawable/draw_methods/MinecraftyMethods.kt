@@ -44,7 +44,7 @@ object MinecraftyMethods : DrawMethods {
         )
     }
 
-    override fun renderSettingRenderableBackground(screenDrawing: ScreenDrawing, hover: Float, x: Int, y: Int, width: Int, height: Int, mouseX: Int, mouseY: Int) {
+    override fun renderSettingRenderableBackground(screenDrawing: ScreenDrawing, hover: Float, x: Int, y: Int, width: Int, height: Int) {
         renderButtonBackground(screenDrawing, hover, 0f, x, y, width, height, 1f)
     }
 

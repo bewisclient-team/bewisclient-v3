@@ -10,7 +10,7 @@ abstract class DescriptionFeature(id: Identifier, title: String, descriptionText
     val description = Translation(id.namespace, "category.${id.path}.description", descriptionText)
 
     override fun createRenderable() = object : SettingCategory() {
-        override fun Init.init() {
+        override fun init() {
             EnableButton()
             Text {
                 text = title()

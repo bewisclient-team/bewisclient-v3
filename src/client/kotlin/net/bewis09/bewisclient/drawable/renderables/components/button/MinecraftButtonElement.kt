@@ -1,12 +1,13 @@
 package net.bewis09.bewisclient.drawable.renderables.components.button
 
 import net.bewis09.bewisclient.common.Identifier
-import net.bewis09.bewisclient.drawable.Initializer
+import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.version.drawGuiTexture
 import net.bewis09.renderite.RenderiteElement
 import net.bewis09.renderite.logic.Color
 import net.bewis09.renderite.logic.TextAlign
+import net.bewis09.renderite.style.RenderiteChild
 import net.minecraft.network.chat.Component
 
 class MinecraftButtonElement(p: Props<MinecraftButtonElement>) : AbstractButtonElement<MinecraftButtonElement>(p) {
@@ -21,7 +22,7 @@ class MinecraftButtonElement(p: Props<MinecraftButtonElement>) : AbstractButtonE
         )
     }
 
-    override fun Init.init() {
+    override fun init() {
         Text {
             text = this@MinecraftButtonElement.text
             color = Color.WHITE
@@ -31,4 +32,5 @@ class MinecraftButtonElement(p: Props<MinecraftButtonElement>) : AbstractButtonE
     }
 }
 
-fun Initializer.MinecraftButton(p: RenderiteElement.Props<MinecraftButtonElement>) = MinecraftButtonElement(p).add()
+@RenderiteChild
+fun Renderable.MinecraftButton(p: RenderiteElement.Props<MinecraftButtonElement>) = MinecraftButtonElement(p).add()

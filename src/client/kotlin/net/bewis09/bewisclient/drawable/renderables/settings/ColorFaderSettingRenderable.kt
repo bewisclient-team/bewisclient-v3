@@ -24,7 +24,7 @@ class ColorFaderSettingRenderable(p: Props<ColorFaderSettingRenderable>) : Setti
         props()
     }
 
-    override fun Init.init() {
+    override fun init() {
         ResetButton<Nothing> {
             settable = {
                 setting.set(null)

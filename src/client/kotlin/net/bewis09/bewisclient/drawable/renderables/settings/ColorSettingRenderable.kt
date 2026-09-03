@@ -28,7 +28,7 @@ class ColorSettingRenderable(p: Props<ColorSettingRenderable>) : SettingRenderab
         isDefault = { this@ColorSettingRenderable.setting.isDefault() }
     }
 
-    override fun Init.init() {
+    override fun init() {
         ResetButton {
             settable = this@ColorSettingRenderable.setting
             isDefault = { this@ColorSettingRenderable.setting.isDefault() }

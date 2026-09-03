@@ -35,7 +35,7 @@ open class FaderSettingRenderable<T : Number, P: FaderSettingRenderable<T, P>>(p
         }
     }
 
-    override fun Init.init() {
+    override fun init() {
         ResetButton {
             settable = setting
             isDefault = { setting.get() == setting.getDefault() }

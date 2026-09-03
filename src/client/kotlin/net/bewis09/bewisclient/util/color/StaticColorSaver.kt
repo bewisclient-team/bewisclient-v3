@@ -83,7 +83,7 @@ open class StaticColorSaver(private val color: Color) : ColorSaver {
             set = { hue, sat -> this@SettingRenderable.set(StaticColorSaver(Color(hue, sat, this@SettingRenderable.get().getColor().brightness))) }
         }
 
-        override fun Init.init() {
+        override fun init() {
             addRenderable(colorPicker(x, y, height, height))
             Text {
                 text = changeBrightnessText()

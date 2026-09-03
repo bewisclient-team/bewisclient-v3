@@ -21,7 +21,7 @@ object FlatMethods : DrawMethods {
         }
     }
 
-    override fun renderSettingRenderableBackground(screenDrawing: ScreenDrawing, hover: Float, x: Int, y: Int, width: Int, height: Int, mouseX: Int, mouseY: Int) {
+    override fun renderSettingRenderableBackground(screenDrawing: ScreenDrawing, hover: Float, x: Int, y: Int, width: Int, height: Int) {
         screenDrawing.transform(x + width / 2f, y + height / 2f, 1f, 1f) {
             screenDrawing.translate(-width / 2f, -height / 2f)
             screenDrawing.fillRounded(0, 0, width, height, 5, General.getThemeColor(alpha = (hover + 1) * (0.15f)))

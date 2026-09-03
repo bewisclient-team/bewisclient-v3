@@ -36,7 +36,7 @@ class ColorChangePopup(val state: Gettable<ColorSaver>, val onChange: (ColorSave
         SelectiveScreenDrawer.renderPopupBackground(screenDrawing, x, y, width, height, 5, 0.3f)
     }
 
-    override fun Init.init() {
+    override fun init() {
         buttons.forEachIndexed { index, button ->
             button?.updateSize((width - ((buttons.size - 1) * 5) - 10) / buttons.size, 14)
             button?.addPositioned(x + 5 + index * (button.width + 5), y + height - 20)

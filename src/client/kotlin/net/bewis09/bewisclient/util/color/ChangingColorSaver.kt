@@ -95,7 +95,7 @@ class ChangingColorSaver : ColorSaver {
             }
         }
 
-        override fun Init.init() {
+        override fun init() {
             Text {
                 textProvider = { changeDuration(get().changingSpeed / 1000f) }
                 textAlign = TextAlign.CENTER

@@ -69,7 +69,7 @@ object Home : SidebarFeature(createIdentifier("bewisclient", "home"), "Bewisclie
             }
         }
 
-        override fun Init.init() {
+        override fun init() {
             Div {
                 gap = 5
                 fitType = FitType.SCROLL
@@ -142,7 +142,7 @@ object Home : SidebarFeature(createIdentifier("bewisclient", "home"), "Bewisclie
                 })
             }
 
-            override fun Init.init() {
+            override fun init() {
                 renderable.updateWidth(width - 20)
                 renderable.addPositioned(x + 20, y)
             }

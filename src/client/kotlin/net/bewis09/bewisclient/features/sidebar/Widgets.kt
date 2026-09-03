@@ -36,7 +36,7 @@ object Widgets : SidebarFeature(createIdentifier("bewisclient", "widgets"), "Wid
                 onClick = {
                     OptionScreen.currentInstance?.openPage(
                         createTranslation("general_setting", "General Widget Settings")(),
-                        net.bewis09.renderite.components.DivElement {
+                        DivElement {
                             onInit = { addRenderables(generalWidgetSettings) }
                             gap = 1
                             fitType = FitType.SCROLL

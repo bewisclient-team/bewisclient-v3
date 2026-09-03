@@ -8,7 +8,7 @@ interface DrawMethods: ClientInterface {
 
     fun renderButtonBackground(screenDrawing: ScreenDrawing, hover: Float, animation: Float, x: Int, y: Int, width: Int, height: Int, click: Float, dark: Boolean = false, small: Boolean = false)
 
-    fun renderSettingRenderableBackground(screenDrawing: ScreenDrawing, hover: Float, x: Int, y: Int, width: Int, height: Int, mouseX: Int, mouseY: Int)
+    fun renderSettingRenderableBackground(screenDrawing: ScreenDrawing, hover: Float, x: Int, y: Int, width: Int, height: Int)
 
     fun getSideButtonHeight(): Int
 

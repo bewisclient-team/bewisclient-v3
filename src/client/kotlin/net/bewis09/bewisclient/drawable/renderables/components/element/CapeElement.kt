@@ -1,11 +1,12 @@
 package net.bewis09.bewisclient.drawable.renderables.components.element
 
 import net.bewis09.bewisclient.common.Identifier
-import net.bewis09.bewisclient.drawable.Initializer
 import net.bewis09.bewisclient.drawable.PropedRenderable
+import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.version.drawCape
 import net.bewis09.renderite.RenderiteElement
+import net.bewis09.renderite.style.RenderiteChild
 
 class CapeElement(p: Props<CapeElement>): PropedRenderable<CapeElement>(p) {
     var idProvider: (() -> Identifier)? = null
@@ -17,4 +18,5 @@ class CapeElement(p: Props<CapeElement>): PropedRenderable<CapeElement>(p) {
     }
 }
 
-fun Initializer.Cape(p: RenderiteElement.Props<CapeElement>) = addRenderable(CapeElement(p))
+@RenderiteChild
+fun Renderable.Cape(p: RenderiteElement.Props<CapeElement>) = addRenderable(CapeElement(p))

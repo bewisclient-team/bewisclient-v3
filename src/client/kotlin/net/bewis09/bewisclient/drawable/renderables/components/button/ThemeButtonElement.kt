@@ -1,12 +1,13 @@
 package net.bewis09.bewisclient.drawable.renderables.components.button
 
-import net.bewis09.bewisclient.drawable.Initializer
+import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.renderite.RenderiteElement
 import net.bewis09.renderite.logic.Animator
 import net.bewis09.renderite.logic.TextAlign
+import net.bewis09.renderite.style.RenderiteChild
 import net.minecraft.network.chat.Component
 
 class ThemeButtonElement(p: Props<ThemeButtonElement>) : AbstractButtonElement<ThemeButtonElement>(p + {
@@ -30,7 +31,7 @@ class ThemeButtonElement(p: Props<ThemeButtonElement>) : AbstractButtonElement<T
         colorAnimation.set(if (selected()) 1f else 0f)
     }
 
-    override fun Init.init() {
+    override fun init() {
         Text {
             text = this@ThemeButtonElement.text
             color = General.getTextThemeColor()
@@ -47,4 +48,5 @@ class ThemeButtonElement(p: Props<ThemeButtonElement>) : AbstractButtonElement<T
     }
 }
 
-fun Initializer.ThemeButton(p: RenderiteElement.Props<ThemeButtonElement>): ThemeButtonElement = ThemeButtonElement(p).add()
+@RenderiteChild
+fun Renderable.ThemeButton(p: RenderiteElement.Props<ThemeButtonElement>): ThemeButtonElement = ThemeButtonElement(p).add()

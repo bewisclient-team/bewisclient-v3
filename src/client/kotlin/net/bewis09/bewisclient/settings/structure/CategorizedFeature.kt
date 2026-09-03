@@ -109,7 +109,7 @@ abstract class CategorizedFeature(id: Identifier, titleText: String) : Feature(i
             state.pauseForOnce()
         }
 
-        fun Init.EnableButton() {
+        fun EnableButton() {
             TooltipHoverableText {
                 textProvider = { if (enabled) enabledText() else disabledText() }
                 color = 0xAAAAAA.color

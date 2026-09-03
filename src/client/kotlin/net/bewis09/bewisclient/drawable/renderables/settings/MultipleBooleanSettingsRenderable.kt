@@ -16,7 +16,7 @@ class MultipleBooleanSettingsRenderable(p: Props<MultipleBooleanSettingsRenderab
 
     init { props() }
 
-    override fun Init.init() {
+    override fun init() {
         var yOffset = 18
         for (setting in settings) {
             val renderable = setting.updatePosition(x, y + 4 + yOffset).updateWidth(width).add()
@@ -40,7 +40,7 @@ class MultipleBooleanSettingsRenderable(p: Props<MultipleBooleanSettingsRenderab
 
         init { props() }
 
-        override fun Init.init() {
+        override fun init() {
             ResetButton {
                 settable = setting
                 isDefault = { setting.get() == setting.getDefault() }

@@ -1,11 +1,12 @@
 package net.bewis09.bewisclient.drawable.renderables.components.element
 
-import net.bewis09.bewisclient.drawable.Initializer
+import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.renderite.logic.Color
 import net.bewis09.bewisclient.drawable.renderables.components.logic.TooltipElement
 import net.bewis09.renderite.RenderiteElement.Props
 import net.bewis09.renderite.logic.TextAlign
 import net.bewis09.renderite.logic.within
+import net.bewis09.renderite.style.RenderiteChild
 import net.minecraft.network.chat.Component
 
 class TooltipTextElement(p: Props<TooltipTextElement>) : TooltipElement<TooltipTextElement>(p) {
@@ -18,7 +19,7 @@ class TooltipTextElement(p: Props<TooltipTextElement>) : TooltipElement<TooltipT
 
     init { props() }
 
-    override fun Init.init() {
+    override fun init() {
         Text {
             textProvider = this@TooltipTextElement.textProvider
             colorProvider = { hoverFactor within (require { this@TooltipTextElement.color } to require { hoverColor }) }
@@ -29,4 +30,5 @@ class TooltipTextElement(p: Props<TooltipTextElement>) : TooltipElement<TooltipT
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean = onClick?.let { it() } != null
 }
 
-fun Initializer.TooltipHoverableText(p: Props<TooltipTextElement>) = TooltipTextElement(p).add()
+@RenderiteChild
+fun Renderable.TooltipHoverableText(p: Props<TooltipTextElement>) = TooltipTextElement(p).add()

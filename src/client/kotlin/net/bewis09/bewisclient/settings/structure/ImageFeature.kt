@@ -17,7 +17,7 @@ abstract class ImageFeature(id: Identifier, text: String) : CategorizedFeature(i
             screenDrawing.drawTexture(identifier, centerX - 20, y + 14 - if(isMinecrafty) 3 else 0, 40, 40, if (isMinecrafty) Color.WHITE else General.getThemeColor(white = state.get()))
         }
 
-        override fun Init.init() {
+        override fun init() {
             EnableButton()
             Text {
                 wrap = true

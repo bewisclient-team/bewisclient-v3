@@ -1,10 +1,11 @@
 package net.bewis09.bewisclient.drawable.renderables.components.button
 
-import net.bewis09.bewisclient.drawable.Initializer
+import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.renderite.RenderiteElement
 import net.bewis09.renderite.logic.TextAlign
+import net.bewis09.renderite.style.RenderiteChild
 import net.minecraft.network.chat.Component
 
 class ButtonElement(p: Props<ButtonElement>) : AbstractButtonElement<ButtonElement>(p) {
@@ -18,7 +19,7 @@ class ButtonElement(p: Props<ButtonElement>) : AbstractButtonElement<ButtonEleme
         SelectiveScreenDrawer.renderButtonBackground(screenDrawing, hoverAnimation.get(), if (selected?.invoke() == true) 1f else 0f, x, y, width, height, 1f, dark, false)
     }
 
-    override fun Init.init() {
+    override fun init() {
         Text {
             textProvider = { this@ButtonElement.text }
             textAlign = TextAlign.CENTER
@@ -26,4 +27,5 @@ class ButtonElement(p: Props<ButtonElement>) : AbstractButtonElement<ButtonEleme
     }
 }
 
-fun Initializer.Button(p: RenderiteElement.Props<ButtonElement>): ButtonElement = ButtonElement(p).add()
+@RenderiteChild
+fun Renderable.Button(p: RenderiteElement.Props<ButtonElement>): ButtonElement = ButtonElement(p).add()

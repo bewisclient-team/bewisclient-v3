@@ -3,7 +3,6 @@ package net.bewis09.bewisclient.features.sidebar
 import net.bewis09.bewisclient.common.Util
 import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.data.Constants
-import net.bewis09.bewisclient.drawable.Initializer
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.ThemeButton
@@ -18,6 +17,7 @@ import net.bewis09.renderite.logic.Animator
 import net.bewis09.renderite.logic.Color
 import net.bewis09.renderite.logic.FitType
 import net.bewis09.renderite.logic.alpha
+import net.bewis09.renderite.style.RenderiteChild
 import kotlin.math.roundToInt
 
 object Contact : SidebarFeature(
@@ -91,7 +91,7 @@ object Contact : SidebarFeature(
             updateHeight(simpleHeight + (menuAnimation.get() * (5 + SelectiveScreenDrawer.getSideButtonHeight())).roundToInt())
         }
 
-        override fun Init.init() {
+        override fun init() {
             ThemeButton {
                 text = copyToClipboardText()
                 onClick = {
@@ -113,5 +113,6 @@ object Contact : SidebarFeature(
         }
     }
 
-    fun Initializer.ContactLinkElement(p: RenderiteElement.Props<ContactLinkElement>): ContactLinkElement = Contact.ContactLinkElement(p).also(::addRenderable)
+    @RenderiteChild
+    fun Renderable.ContactLinkElement(p: RenderiteElement.Props<ContactLinkElement>): ContactLinkElement = Contact.ContactLinkElement(p).also(::addRenderable)
 }

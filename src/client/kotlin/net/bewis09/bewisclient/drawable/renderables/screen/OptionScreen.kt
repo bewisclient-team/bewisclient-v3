@@ -31,7 +31,6 @@ import net.bewis09.renderite.logic.TextAlign
 import net.minecraft.network.chat.CommonComponents
 import net.minecraft.network.chat.Component
 import org.lwjgl.glfw.GLFW
-import net.bewis09.bewisclient.drawable.Initializer
 
 class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(), BackgroundEffectProvider {
     val editHudTranslation = Translation("options.edit_hud", "Edit HUD")
@@ -118,7 +117,7 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
             }
         }
 
-        override fun Init.init() {
+        override fun init() {
             Text {
                 text = (SECURITY_MESSAGE + "\n\nError message: ${(Security.verificationState as? Security.ILLEGAL)?.reason ?: "Unknown"}").toText()
                 textAlign = TextAlign.CENTER
@@ -148,7 +147,7 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
         }
     }
 
-    fun Initializer.createTopButton(identifier: Identifier, padding: Int, onClick: () -> Unit) = ImageButton {
+    fun Renderable.createTopButton(identifier: Identifier, padding: Int, onClick: () -> Unit) = ImageButton {
         image = identifier
         this.onClick = { onClick() }
         imagePadding = padding
@@ -156,7 +155,7 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
         height = SelectiveScreenDrawer.getSideButtonHeight()
     }
 
-    override fun Init.init() {
+    override fun init() {
         Div(0) {
             cacheChildren = true
             gap = (General.isMinecrafty then 2) ?: 5

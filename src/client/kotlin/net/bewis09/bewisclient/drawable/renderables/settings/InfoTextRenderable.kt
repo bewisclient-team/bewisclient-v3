@@ -1,12 +1,13 @@
 package net.bewis09.bewisclient.drawable.renderables.settings
 
-import net.bewis09.bewisclient.drawable.Initializer
 import net.bewis09.bewisclient.drawable.PropedRenderable
+import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.renderite.RenderiteElement
 import net.bewis09.renderite.logic.Color
 import net.bewis09.renderite.logic.TextAlign
+import net.bewis09.renderite.style.RenderiteChild
 import net.minecraft.network.chat.Component
 import kotlin.also
 
@@ -24,7 +25,7 @@ class InfoTextRenderable(p: Props<InfoTextRenderable>) : PropedRenderable<InfoTe
         if (selfResize) updateHeight(lines.size * 9 + padding * 2)
     }
 
-    override fun Init.init() {
+    override fun init() {
         Text {
             text = this@InfoTextRenderable.text
             wrap = true
@@ -36,4 +37,5 @@ class InfoTextRenderable(p: Props<InfoTextRenderable>) : PropedRenderable<InfoTe
     }
 }
 
-fun Initializer.InfoTextRenderable(p: RenderiteElement.Props<InfoTextRenderable>) = net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable(p).also(::addRenderable)
+@RenderiteChild
+fun Renderable.InfoTextRenderable(p: RenderiteElement.Props<InfoTextRenderable>) = net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable(p).also(::addRenderable)

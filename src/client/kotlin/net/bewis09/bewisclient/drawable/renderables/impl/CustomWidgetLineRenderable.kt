@@ -74,7 +74,7 @@ class CustomWidgetLineRenderable : PropedRenderable<CustomWidgetLineRenderable>(
         height = if (CustomWidget.lines.isEmpty()) 30 else CustomWidget.lines.size * 10 + 31
     }
 
-    override fun Init.init() {
+    override fun init() {
         Rectangle {
             backgroundColor = { General.getThemeColor(alpha = 0.5f) }
         }(x, y + 3, width, 1)
@@ -141,7 +141,7 @@ class CustomWidgetLineRenderable : PropedRenderable<CustomWidgetLineRenderable>(
         }(x + width - 14, y + 9 + lines.size * 10 - if (CustomWidget.lines.isEmpty()) 1 else 0, 14, 14)
     }
 
-    fun CustomWidgetHelpPopup() = DivElement {
+    fun CustomWidgetHelpPopup(): Renderable = DivElement {
         gap = 3
         fitType = FitType.SCROLL
         background = { SelectiveScreenDrawer.renderPopupBackground(it, x, y, width, height, 10, 0.15f) }

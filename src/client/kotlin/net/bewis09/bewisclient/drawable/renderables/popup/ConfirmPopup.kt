@@ -28,7 +28,7 @@ class ConfirmPopup(p: Props<ConfirmPopup>) : PropedRenderable<ConfirmPopup>(p + 
         SelectiveScreenDrawer.renderPopupBackground(screenDrawing, x, y, width, height, 5, 0.3f)
     }
 
-    override fun Init.init() {
+    override fun init() {
         Button {
             text = cancelText
             onClick = { OptionScreen.currentInstance?.closePopup() }

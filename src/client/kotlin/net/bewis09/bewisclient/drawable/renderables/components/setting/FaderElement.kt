@@ -1,12 +1,13 @@
 package net.bewis09.bewisclient.drawable.renderables.components.setting
 
-import net.bewis09.bewisclient.drawable.Initializer
 import net.bewis09.bewisclient.drawable.PropedRenderable
+import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.util.interfaces.Gettable
 import net.bewis09.bewisclient.util.number.Precision
 import net.bewis09.renderite.RenderiteElement
+import net.bewis09.renderite.style.RenderiteChild
 
 class FaderElement(p: Props<FaderElement>) : PropedRenderable<FaderElement>(p + {
     width = 100
@@ -39,4 +40,5 @@ class FaderElement(p: Props<FaderElement>) : PropedRenderable<FaderElement>(p + 
     }
 }
 
-fun Initializer.Fader(p: RenderiteElement.Props<FaderElement>) = FaderElement(p).add()
+@RenderiteChild
+fun Renderable.Fader(p: RenderiteElement.Props<FaderElement>) = FaderElement(p).add()

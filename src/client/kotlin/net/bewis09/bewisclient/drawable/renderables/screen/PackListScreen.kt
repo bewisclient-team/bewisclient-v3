@@ -65,7 +65,7 @@ class PackListScreen(p: Props<PackListScreen>) : PropedRenderable<PackListScreen
         }
     }
 
-    override fun Init.init() {
+    override fun init() {
         Rectangle { backgroundColor = { Color.WHITE alpha (51 / 255f) } }(centerX - 150, 47, 300, 1)
         Rectangle { backgroundColor = { Color.WHITE alpha (51 / 255f) } }(centerX - 150, y2 - 32, 300, 1)
         Rectangle { backgroundColor = { Color.BLACK alpha (191 / 255f) } }(centerX - 150, 48, 300, 1)

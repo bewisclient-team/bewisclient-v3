@@ -23,7 +23,7 @@ class EnableOnlineModeSettingsRenderable(p: Props<EnableOnlineModeSettingsRender
         val needToAccept = Translation("menu.cosmetics.need_to_accept_privacy_notice", "You need to accept the privacy notice to enable online mode.")
     }
 
-    override fun Init.init() {
+    override fun init() {
         ResetButton {
             settable = setting
             isDefault = setting::isDefault

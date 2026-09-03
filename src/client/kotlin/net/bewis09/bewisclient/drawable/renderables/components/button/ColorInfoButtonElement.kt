@@ -1,7 +1,7 @@
 package net.bewis09.bewisclient.drawable.renderables.components.button
 
 import net.bewis09.bewisclient.common.toText
-import net.bewis09.bewisclient.drawable.Initializer
+import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.renderite.logic.TextAlign
 import net.bewis09.bewisclient.drawable.renderables.popup.ColorChangePopup
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
@@ -12,6 +12,7 @@ import net.bewis09.bewisclient.util.color.ColorSaver
 import net.bewis09.bewisclient.util.interfaces.Gettable
 import net.bewis09.renderite.RenderiteElement
 import net.bewis09.renderite.logic.Color
+import net.bewis09.renderite.style.RenderiteChild
 
 class ColorInfoButtonElement(p: Props<ColorInfoButtonElement>) : AbstractButtonElement<ColorInfoButtonElement>(p + {
     tooltip = changeColorTranslation()
@@ -34,7 +35,7 @@ class ColorInfoButtonElement(p: Props<ColorInfoButtonElement>) : AbstractButtonE
         screenDrawing.fillWithBorderRounded(x, y, width, height, if (General.isMinecrafty) 0 else 5, colorSaver.getColor() alpha hoverFactor * 0.3f + 0.3f, colorSaver.getColor() alpha hoverFactor * 0.5f + 0.5f)
     }
 
-    override fun Init.init() {
+    override fun init() {
         Text {
             textProvider = { state.get().toInfoString().toText() }
             color = Color.WHITE
@@ -43,4 +44,5 @@ class ColorInfoButtonElement(p: Props<ColorInfoButtonElement>) : AbstractButtonE
     }
 }
 
-fun Initializer.ColorInfoButton(p: RenderiteElement.Props<ColorInfoButtonElement>) = ColorInfoButtonElement(p).add()
+@RenderiteChild
+fun Renderable.ColorInfoButton(p: RenderiteElement.Props<ColorInfoButtonElement>) = ColorInfoButtonElement(p).add()

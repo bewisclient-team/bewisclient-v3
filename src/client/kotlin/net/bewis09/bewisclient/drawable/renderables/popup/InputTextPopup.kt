@@ -31,7 +31,7 @@ class InputTextPopup(p: Props<InputTextPopup>) : PropedRenderable<InputTextPopup
         updateHeight(60 + screenDrawing.drawWrappedText(text, x + width / 2, y + 10, width - 20).size * 9)
     }
 
-    override fun Init.init() {
+    override fun init() {
         Button {
             text = cancelText
             onClick = { OptionScreen.currentInstance?.closePopup() }

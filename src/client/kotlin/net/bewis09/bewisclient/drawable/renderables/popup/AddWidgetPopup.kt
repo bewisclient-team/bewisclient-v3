@@ -28,7 +28,7 @@ class AddWidgetPopup : PropedRenderable<AddWidgetPopup>({
         SelectiveScreenDrawer.renderPopupBackground(screenDrawing, x, y, width, height, 10, 0.15f)
     }
 
-    override fun Init.init() {
+    override fun init() {
         Text {
             text = addText()
             textAlign = TextAlign.CENTER
@@ -67,7 +67,7 @@ class AddWidgetPopup : PropedRenderable<AddWidgetPopup>({
             SelectiveScreenDrawer.renderSettingsCategoryBackground(screenDrawing, x, y, width, height, 1f, hoverFactor, mouseX, mouseY)
         }
 
-        override fun Init.init() {
+        override fun init() {
             Text {
                 text = title
                 wrap = true

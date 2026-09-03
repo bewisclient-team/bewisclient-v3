@@ -57,7 +57,7 @@ class TiwylaInfoSettingsRenderable : PropedRenderable<TiwylaInfoSettingsRenderab
         updateHeight(blockInfoList.height.coerceAtLeast(entityInfoList.height) + 5)
     }
 
-    override fun Init.init() {
+    override fun init() {
         Rectangle {
             backgroundColor = { 0xFFFFFF alpha 0.25f }
         }(centerX, y + 5, 1, height)

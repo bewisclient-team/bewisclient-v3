@@ -40,7 +40,7 @@ class SelectCapeElement(p: Props<SelectCapeElement>) : PropedRenderable<SelectCa
         }
     }
 
-    override fun Init.init() {
+    override fun init() {
         Cape {
             overflowVisible = true
             idProvider = { cosmetic.getIdentifier() }

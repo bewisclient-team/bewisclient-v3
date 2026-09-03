@@ -4,14 +4,15 @@ import com.mojang.blaze3d.platform.NativeImage
 import net.bewis09.bewisclient.common.Identifier
 import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.common.then
-import net.bewis09.bewisclient.drawable.Initializer
 import net.bewis09.bewisclient.drawable.PropedRenderable
+import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.features.sidebar.Screenshot.ScreenshotElement
 import net.bewis09.bewisclient.version.registerTexture
 import net.bewis09.renderite.RenderiteElement
 import net.bewis09.renderite.logic.Color
 import net.bewis09.renderite.logic.TextAlign
+import net.bewis09.renderite.style.RenderiteChild
 import net.minecraft.client.Minecraft
 import java.io.File
 
@@ -74,4 +75,5 @@ class ExternalImageElement(p: Props<ExternalImageElement>): PropedRenderable<Ext
     class ImageFileData(val nativeImage: NativeImage?, val identifier: Identifier?, val failed: Boolean)
 }
 
-fun Initializer.ExternalImage(p: RenderiteElement.Props<ExternalImageElement>) = ExternalImageElement(p).add()
+@RenderiteChild
+fun Renderable.ExternalImage(p: RenderiteElement.Props<ExternalImageElement>) = ExternalImageElement(p).add()

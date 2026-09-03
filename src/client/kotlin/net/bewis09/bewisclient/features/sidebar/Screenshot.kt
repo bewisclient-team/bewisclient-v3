@@ -137,7 +137,7 @@ object Screenshot : SidebarFeature(createIdentifier("bewisclient", "screenshot")
             } ?: ExternalImageElement.ImageFileData(null, null, true)
         }
 
-        override fun Init.init() {
+        override fun init() {
             Div(0) {
                 load()
                 gap = 5
@@ -211,7 +211,7 @@ object Screenshot : SidebarFeature(createIdentifier("bewisclient", "screenshot")
             }
         }
 
-        override fun Init.init() {
+        override fun init() {
             height = (width - 2) * 9 / 16 + 2
         }
 
@@ -260,7 +260,7 @@ object Screenshot : SidebarFeature(createIdentifier("bewisclient", "screenshot")
 
         init { props() }
 
-        override fun Init.init() {
+        override fun init() {
             Div(0) {
                 gap = 5
                 onInit = {

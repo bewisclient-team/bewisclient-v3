@@ -119,7 +119,7 @@ object Panorama : ImageFeature("panorama", "Panorama"), EventEntrypoint, Bewiscl
             }
         }
 
-        override fun Init.init() {
+        override fun init() {
             ImageButton {
                 image = createIdentifier("bewisclient", "textures/gui/sprites/select.png")
                 imagePadding = 2

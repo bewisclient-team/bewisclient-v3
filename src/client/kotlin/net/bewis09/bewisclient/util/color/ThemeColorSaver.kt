@@ -71,7 +71,7 @@ class ThemeColorSaver : ColorSaver {
     }
 
     class SettingRenderable(val get: () -> ThemeColorSaver, val set: (ColorSaver) -> Unit) : SimpleRenderable() {
-        override fun Init.init() {
+        override fun init() {
             Text {
                 textProvider = { StaticColorSaver.changeBrightnessText() }
                 textAlign = TextAlign.CENTER

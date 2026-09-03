@@ -13,7 +13,7 @@ class BooleanSettingRenderable(p: Props<BooleanSettingRenderable>) : SettingRend
 
     init { props() }
 
-    override fun Init.init() {
+    override fun init() {
         ResetButton {
             this.settable = setting
             this.isDefault = setting::isDefault

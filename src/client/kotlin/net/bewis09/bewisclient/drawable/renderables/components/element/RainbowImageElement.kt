@@ -1,12 +1,13 @@
 package net.bewis09.bewisclient.drawable.renderables.components.element
 
 import net.bewis09.bewisclient.drawable.ImageIdentifier.iconIdentifier
-import net.bewis09.bewisclient.drawable.Initializer
 import net.bewis09.bewisclient.drawable.PropedRenderable
+import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.renderite.logic.Color
 import net.bewis09.renderite.logic.not
 import net.bewis09.renderite.logic.within
+import net.bewis09.renderite.style.RenderiteChild
 
 class RainbowImageElement(p: Props<RainbowImageElement> = {}) : PropedRenderable<RainbowImageElement>(p) {
     init { props() }
@@ -21,4 +22,5 @@ class RainbowImageElement(p: Props<RainbowImageElement> = {}) : PropedRenderable
     }
 }
 
-fun Initializer.RainbowImage() = RainbowImageElement().add()
+@RenderiteChild
+fun Renderable.RainbowImage() = RainbowImageElement().add()

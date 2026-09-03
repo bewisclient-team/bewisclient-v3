@@ -70,7 +70,7 @@ abstract class PopupScreen(p: Props<PopupScreen> = {}) : PropedRenderable<PopupS
             screenDrawing.setDefaultFont()
         }
 
-        override fun Init.init() {
+        override fun init() {
             child.addPositioned((width - child.width) / 2, (height - child.height) / 2)
         }
 
@@ -91,7 +91,7 @@ abstract class PopupScreen(p: Props<PopupScreen> = {}) : PropedRenderable<PopupS
         override fun onCharTyped(character: Char, modifiers: Int) = true
     }
 
-    override fun Init.init() {
+    override fun init() {
         popup?.invoke(0, 0, width, height)?.add()
     }
 
@@ -118,7 +118,7 @@ abstract class PopupScreen(p: Props<PopupScreen> = {}) : PropedRenderable<PopupS
         selectedElement = popup
     }
 
-    fun Init.VersionText() {
+    fun VersionText() {
         Text {
             text = "Bewisclient ${BuildInfo.VERSION} by Bewis09".toText()
             color = General.getThemeColor(alpha = 0.5f)

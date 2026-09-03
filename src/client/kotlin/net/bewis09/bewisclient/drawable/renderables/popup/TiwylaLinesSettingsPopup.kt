@@ -52,7 +52,7 @@ class TiwylaLinesSettingsPopup<T>(p: Props<TiwylaLinesSettingsPopup<T>>) : Prope
         SelectiveScreenDrawer.renderPopupBackground(screenDrawing, x, y, width, height, 5, 0.3f)
     }
 
-    override fun Init.init() {
+    override fun init() {
         Text {
             text = selectText()
             textAlign = TextAlign.CENTER
