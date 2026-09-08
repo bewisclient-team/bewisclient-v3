@@ -3,7 +3,6 @@ package net.bewis09.bewisclient.drawable.renderables.impl
 import net.bewis09.bewisclient.common.*
 import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.bewisclient.drawable.renderables.settings.MultipleBooleanSettingsRenderable
-import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.settings.logic.SettingInterfaceWithDefault
 import net.bewis09.bewisclient.widget.impl.TiwylaWidget
@@ -14,6 +13,7 @@ import net.minecraft.network.chat.Component
 
 class TiwylaInfoSettingsRenderable : PropedRenderable<TiwylaInfoSettingsRenderable>({
     minWidth = 22
+    heightProvider = { blockInfoList.height.coerceAtLeast(entityInfoList.height) + 5 }
 }) {
     init { props() }
 
@@ -53,14 +53,12 @@ class TiwylaInfoSettingsRenderable : PropedRenderable<TiwylaInfoSettingsRenderab
         }
     }
 
-    override fun renderLogic(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        updateHeight(blockInfoList.height.coerceAtLeast(entityInfoList.height) + 5)
-    }
-
     override fun init() {
         Rectangle {
             backgroundColor = { 0xFFFFFF alpha 0.25f }
-        }(centerX, y + 5, 1, height)
+            width = 1
+            heightProvider = { this@TiwylaInfoSettingsRenderable.height }
+        }.updatePosition(centerX, y + 5)
         addRenderable(entityInfoList.updatePosition(x, y + 5).updateWidth((width - 11) / 2))
         addRenderable(blockInfoList.updatePosition(x2 - (width - 11) / 2, y + 5).updateWidth((width - 11) / 2))
     }

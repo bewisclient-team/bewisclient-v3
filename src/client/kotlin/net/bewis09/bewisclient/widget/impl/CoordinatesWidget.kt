@@ -52,7 +52,7 @@ object CoordinatesWidget : LineWidget(
 
     override fun isCentered(): Boolean = false
 
-    override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
+    override fun appendSettingsRenderables(list: Renderable) {
         list.menuQuick(showBiome, "Show Biome")
         list.menuQuick(colorCodeBiome, "Color Code Biome", "Whether to color code the biome name")
         list.menuQuick(showDirection, "Show Direction")

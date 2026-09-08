@@ -13,10 +13,10 @@ import net.minecraft.network.chat.Component
 class ThemeButtonElement(p: Props<ThemeButtonElement>) : AbstractButtonElement<ThemeButtonElement>(p + {
     val oldClick = onClick
     onClick = {
-        if (!General.isMinecrafty) colorAnimation.set(1f)
         oldClick(this)
         if (!General.isMinecrafty) clickAnimation.set(0f) { set(1f) }
     }
+    height = SelectiveScreenDrawer.getSideButtonHeight()
 }) {
     lateinit var text: Component
     var selected: () -> Boolean = { false }
@@ -24,12 +24,7 @@ class ThemeButtonElement(p: Props<ThemeButtonElement>) : AbstractButtonElement<T
     init { props() }
 
     val clickAnimation: Animator = Animator({ General.animationDuration }, Animator.EASE_IN_OUT, 1f)
-    val colorAnimation: Animator = Animator({ General.animationDuration }, Animator.EASE_IN_OUT, 0f)
-
-    override fun renderLogic(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        super.renderLogic(screenDrawing, mouseX, mouseY)
-        colorAnimation.set(if (selected()) 1f else 0f)
-    }
+    val colorAnimation: Animator = Animator({ General.animationDuration }, Animator.EASE_IN_OUT, { if (selected()) 1f else 0f })
 
     override fun init() {
         Text {
@@ -43,8 +38,7 @@ class ThemeButtonElement(p: Props<ThemeButtonElement>) : AbstractButtonElement<T
     }
 
     override fun renderBackground(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        val click = if (General.isMinecrafty) 1f else clickAnimation.get()
-        SelectiveScreenDrawer.renderButtonBackground(screenDrawing, hoverFactor, colorAnimation.get(), x, y, width, height, click)
+        SelectiveScreenDrawer.renderButtonBackground(screenDrawing, hoverFactor, colorAnimation.get(), x, y, width, height, clickAnimation.get())
     }
 }
 

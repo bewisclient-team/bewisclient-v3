@@ -9,7 +9,6 @@ import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
 import net.minecraft.world.phys.Vec3
-import java.util.*
 
 object SpeedWidget : LineWidget(
     createIdentifier("bewisclient", "speed_widget"),
@@ -39,7 +38,7 @@ object SpeedWidget : LineWidget(
     }
 
     override fun appendSettingsRenderables(
-        list: ArrayList<Renderable>
+        list: Renderable
     ) {
         list.menuQuick(verticalSpeed, "Include Vertical Speed")
         super.appendSettingsRenderables(list)

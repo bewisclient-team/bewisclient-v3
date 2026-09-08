@@ -4,11 +4,9 @@ import net.bewis09.renderite.logic.Color
 import net.bewis09.bewisclient.common.Identifier
 import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.drawable.PropedRenderable
-import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.util.Bewisclient
-import net.bewis09.renderite.style.RenderiteChild
 
 class ColorPicker(p: Props<ColorPicker>) : PropedRenderable<ColorPicker>(p) {
     lateinit var get: () -> Color
@@ -43,7 +41,6 @@ class ColorPicker(p: Props<ColorPicker>) : PropedRenderable<ColorPicker>(p) {
         screenDrawing.drawBorder(x, y, width, height, General.getThemeColor(alpha = 0.3f))
     }
 
-    @RenderiteChild
     override fun init() {
         Image {
             colorModifier = { Color(get().brightness, get().brightness, get().brightness, 1f) }

@@ -1,19 +1,18 @@
 package net.bewis09.bewisclient.drawable.renderables.screen
 
 import net.bewis09.bewisclient.api.APIEntrypointLoader
-import net.bewis09.bewisclient.common.*
-import net.bewis09.bewisclient.data.Constants
+import net.bewis09.bewisclient.common.Identifier
+import net.bewis09.bewisclient.common.createIdentifier
+import net.bewis09.bewisclient.common.then
 import net.bewis09.bewisclient.drawable.BackgroundEffectProvider
 import net.bewis09.bewisclient.drawable.ImageIdentifier.setRenderableScreen
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.ImageButton
-import net.bewis09.bewisclient.drawable.renderables.components.button.MinecraftButton
 import net.bewis09.bewisclient.drawable.renderables.components.button.ThemeButton
 import net.bewis09.bewisclient.drawable.renderables.components.element.RainbowImage
 import net.bewis09.bewisclient.drawable.renderables.components.setting.Switch
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
-import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing.Companion.DEFAULT_FONT
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.features.sidebar.Home
 import net.bewis09.bewisclient.game.translations.Translation
@@ -23,12 +22,8 @@ import net.bewis09.bewisclient.settings.types.Setting
 import net.bewis09.bewisclient.util.Bewisclient
 import net.bewis09.bewisclient.version.setScreen
 import net.bewis09.renderite.components.TextElement
-import net.bewis09.renderite.logic.Animator
-import net.bewis09.renderite.logic.Color
-import net.bewis09.renderite.logic.Direction
-import net.bewis09.renderite.logic.FitType
-import net.bewis09.renderite.logic.TextAlign
-import net.minecraft.network.chat.CommonComponents
+import net.bewis09.renderite.logic.*
+import net.bewis09.renderite.style.RenderiteChild
 import net.minecraft.network.chat.Component
 import org.lwjgl.glfw.GLFW
 
@@ -86,7 +81,7 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
     }
 
     override fun renderLogic(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        checkValidVersion()
+        if (!Security.verificationState.allowed) setRenderableScreen(VersionInvalidScreen)
         screenDrawing.setBewisclientFont()
     }
 
@@ -98,56 +93,8 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
         SelectiveScreenDrawer.renderMenuBackground(screenDrawing, width, height)
     }
 
-    fun checkValidVersion() {
-        if (!Security.verificationState.allowed) setRenderableScreen(VersionInvalidScreen)
-    }
-
-    object VersionInvalidScreen : PopupScreen() {
-        const val SECURITY_MESSAGE =
-            "Your version of Bewisclient could not be verified. This probably means that the file your are using was changed after downloading or the version you are using was removed from Modrinth due to a critical bug.\n\nPlease download the newest version from Modrinth to ensure you are using a safe version.\n\nIf you believe this is an error, please let us know on GitHub."
-
-        override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-            screenDrawing.wrapText((SECURITY_MESSAGE + "\n\nError message: ${(Security.verificationState as? Security.ILLEGAL)?.reason ?: "Unknown"}").toText(), 300).let {
-                screenDrawing.drawWrappedText(it, width / 2, height / 2 - it.size * 9 / 2 - 30) {
-                    textAlign = TextAlign.CENTER
-                    color = Color.WHITE
-                    font = DEFAULT_FONT
-                    shadow = true
-                }
-            }
-        }
-
-        override fun init() {
-            Text {
-                text = (SECURITY_MESSAGE + "\n\nError message: ${(Security.verificationState as? Security.ILLEGAL)?.reason ?: "Unknown"}").toText()
-                textAlign = TextAlign.CENTER
-                color = Color.WHITE
-                font = DEFAULT_FONT
-                shadow = true
-                paddingBottom = 60
-                width = 300
-            }.updateX(width / 2 - 150)
-            MinecraftButton {
-                text = CommonComponents.GUI_BACK
-                onClick = { setScreen(null) }
-            }(width / 2 - 102, height / 2 + 50, 100, 20)
-            MinecraftButton {
-                text = modrinthButtonText()
-                onClick = { Util.getPlatform().openUri(Constants.MODRINTH_URL) }
-            }(width / 2 + 2, height / 2 + 50, 100, 20)
-            VersionText()
-        }
-
-        override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {
-            if (key == GLFW.GLFW_KEY_ESCAPE) {
-                setScreen(null)
-                return true
-            }
-            return super.onKeyPress(key, scanCode, modifiers)
-        }
-    }
-
-    fun Renderable.createTopButton(identifier: Identifier, padding: Int, onClick: () -> Unit) = ImageButton {
+    @RenderiteChild
+    fun Renderable.TopButton(identifier: Identifier, padding: Int, onClick: () -> Unit) = ImageButton {
         image = identifier
         this.onClick = { onClick() }
         imagePadding = padding
@@ -158,33 +105,37 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
     override fun init() {
         Div(0) {
             cacheChildren = true
-            gap = (General.isMinecrafty then 2) ?: 5
-            fitType = FitType.SCROLL
+            gap = 5
+            fitType = FitType.FILL_ITEM
             onInit = {
                 Div {
-                    gap = if (General.isMinecrafty) 1 else 5
-                    direction = Direction.HORIZONTAL
+                    gap = (General.isMinecrafty then 2) ?: 5
+                    fitType = FitType.SCROLL
+                    fillParent = true
+                    cacheChildren = true
                     onInit = {
-                        createTopButton(backIdentifier, 1, ::goBack)
-                        Home.createButton().updateWidth(82).add()
-                        createTopButton(closeIdentifier, 3, ::close)
+                        Div {
+                            gap = if (General.isMinecrafty) 1 else 5
+                            direction = Direction.HORIZONTAL
+                            cacheChildren = true
+                            onInit = {
+                                TopButton(backIdentifier, 1, ::goBack)
+                                Home.createButton().updateWidth(82).add()
+                                TopButton(closeIdentifier, 3, ::close)
+                            }
+                        }.updateHeight(SelectiveScreenDrawer.getSideButtonHeight())
+                        HorizontalLine { backgroundColor = { General.getThemeColor(alpha = 0.3f) } }
+                        APIEntrypointLoader.mapEntrypoint { a -> a.getSidebarCategories().forEach { b -> b.createButton().add() } }
+                        HorizontalLine { backgroundColor = { General.getThemeColor(alpha = 0.3f) } }
+                        ThemeButton {
+                            text = editHudTranslation()
+                            onClick = { alphaMainAnimation.set(0f) { Bewisclient.setRenderableScreen(HudEditScreen()) } }
+                        }
                     }
-                }.updateHeight(SelectiveScreenDrawer.getSideButtonHeight())
-                Rectangle {
-                     backgroundColor = { General.getThemeColor(alpha = 0.3f) }
-                }.updateHeight(1)
-                APIEntrypointLoader.mapEntrypoint { a -> a.getSidebarCategories().forEach { b -> b.createButton().add() } }
-                Rectangle {
-                    backgroundColor = { General.getThemeColor(alpha = 0.3f) }
-                }.updateHeight(1)
-                ThemeButton {
-                    text = editHudTranslation()
-                    onClick = { alphaMainAnimation.set(0f) { Bewisclient.setRenderableScreen(HudEditScreen()) } }
-                }.updateHeight(SelectiveScreenDrawer.getSideButtonHeight())
+                }
+                RainbowImage()
             }
-        }(37, 37, 120, height - 101)
-
-        RainbowImage()(37, height - 59, 120, 22)
+        }(37, 37, 120, height - 74)
 
         if (page.setting != null) {
             Switch {
@@ -194,11 +145,20 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
             }.updatePosition(width - 61, 37)
         }
 
-        page.header.updatePosition(175, 37).updateWidth(width - 211).add()
-        page.pane.invoke(175, 37 + (page.header.height + 5), width - 211, height - 74 - (page.header.height + 5)).add()
-
-        page.header.colorModifier = { Color(1f, 1f, 1f, insideMainAnimation.get()) }
-        page.pane.colorModifier = { Color(1f, 1f, 1f, insideMainAnimation.get()) }
+        Div {
+            gap = 5
+            fitType = FitType.FILL_ITEM
+            cacheChildren = true
+            onInit = {
+                page.header.add()
+                Div {
+                    fillParent = true
+                    cacheChildren = true
+                    fitType = FitType.FIT
+                    onInit = { page.pane.add() }
+                }
+            }
+        }(175, 37, width - 211, height - 74)
 
         VersionText()
     }
@@ -214,7 +174,8 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
 
         insideMainAnimation.set(0f) {
             pageStack.removeAll { pageStack[0] != it }
-            pageStack.add(Page(category.title(), category.getRenderable()))
+            if (category != Home)
+                pageStack.add(Page(category.title(), category.getRenderable()))
             resize()
             insideMainAnimation.set(1f)
         }
@@ -256,21 +217,23 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
         }
     }
 
-    class Page(header: Component, val pane: Renderable, val setting: Setting<Boolean>? = null, ) {
+    inner class Page(header: Component, val pane: Renderable, val setting: Setting<Boolean>? = null) {
         val header: Renderable = TextElement {
             text = header
             fontSize = if (General.isMinecrafty) 12f else 9f
             textAlign = TextAlign.CENTER
             height = if (General.isMinecrafty) 18 else 14
         }
+
+        init {
+            this.header.colorModifier = { Color(1f, 1f, 1f, insideMainAnimation.get()) }
+            pane.colorModifier = { Color(1f, 1f, 1f, insideMainAnimation.get()) }
+        }
     }
 
     override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {
         if (key == GLFW.GLFW_KEY_ESCAPE) {
-            if (General.goBackEscape())
-                goBack()
-            else
-                close()
+            if (General.goBackEscape()) goBack() else close()
             return true
         }
         return super.onKeyPress(key, scanCode, modifiers)

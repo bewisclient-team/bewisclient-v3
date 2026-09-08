@@ -109,14 +109,14 @@ abstract class LineWidget(id: Identifier, title: String, description: String) : 
         return lines.size * (9 + lineSpacing.get()) + 2 * paddingSize.get() - lineSpacing.get() - 2
     }
 
-     override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
-        list.add(backgroundColorRenderable(backgroundColor, backgroundOpacity))
-        list.add(borderColorRenderable(borderColor, borderOpacity))
-        list.add(paddingSizeRenderable(paddingSize))
-        if (hasMultipleLines()) list.add(lineSpacingRenderable(lineSpacing))
-        list.add(textColorRenderable(textColor))
-        list.add(borderRadiusRenderable(borderRadius))
-        list.add(shadowRenderable(shadow))
+     override fun appendSettingsRenderables(list: Renderable) {
+        list.addRenderable(backgroundColorRenderable(backgroundColor, backgroundOpacity))
+        list.addRenderable(borderColorRenderable(borderColor, borderOpacity))
+        list.addRenderable(paddingSizeRenderable(paddingSize))
+        if (hasMultipleLines()) list.addRenderable(lineSpacingRenderable(lineSpacing))
+        list.addRenderable(textColorRenderable(textColor))
+        list.addRenderable(borderRadiusRenderable(borderRadius))
+        list.addRenderable(shadowRenderable(shadow))
         super.appendSettingsRenderables(list)
     }
 }

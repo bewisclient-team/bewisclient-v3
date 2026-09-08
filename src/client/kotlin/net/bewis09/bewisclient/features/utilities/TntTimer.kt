@@ -21,8 +21,8 @@ object TntTimer : ImageFeature("tnt_timer", "TNT Timer") {
 
     fun getFuseForEntity(entity: Entity) = entityTypes.firstOrNull { it.type == entity.type }?.invoke(entity)
 
-    override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
-        list.add(MultipleBooleanSettingsRenderable {
+    override fun appendSettingsRenderables(list: Renderable) {
+        list.addRenderable(MultipleBooleanSettingsRenderable {
             title = createTranslation("entities", "Show Timer For:")
             settings = entityTypes.map {
                 MultipleBooleanSettingsRenderable.Part {

@@ -47,7 +47,7 @@ object DaytimeWidget : LineWidget(
         return pattern.indexOf('h') >= 0 || pattern.indexOf('K') >= 0 || pattern.indexOf('a') >= 0
     }
 
-    override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
+    override fun appendSettingsRenderables(list: Renderable) {
         list.menuQuick(format12Hours, "Use 12-Hour Format")
         super.appendSettingsRenderables(list)
     }

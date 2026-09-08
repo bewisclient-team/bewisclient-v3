@@ -19,18 +19,10 @@ class SwitchElement(p: Props<SwitchElement>) : PropedRenderable<SwitchElement>(p
 
     init { props() }
 
-    val stateAnimation = Animator({ General.animationDuration }, Animator.EASE_IN_OUT, if (state.get()) 1f else 0f)
-
-    override fun renderLogic(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        stateAnimation.set(if (state.get()) 1f else 0f)
-    }
+    val stateAnimation = Animator({ General.animationDuration }, Animator.EASE_IN_OUT, { if (state.get()) 1f else 0f })
 
     override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         SelectiveScreenDrawer.renderSwitch(screenDrawing, x, y, width, height, hoverFactor, stateAnimation.get(), mouseX, mouseY)
-    }
-
-    override fun initLogic() {
-        stateAnimation.pauseForOnce()
     }
 
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean = onChange(!state.get()).let { true }

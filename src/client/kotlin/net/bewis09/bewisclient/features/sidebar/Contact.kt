@@ -84,7 +84,7 @@ object Contact : SidebarFeature(
         var simpleHeight = 22
 
         override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-            screenDrawing.drawText(titleTranslation(), x + 32, y + 7, { color = Color.WHITE })
+            screenDrawing.drawText(titleTranslation(), x + 32, y + 7) { color = Color.WHITE }
             val lines = screenDrawing.drawWrappedText(descriptionTranslation(), x + 32, y + 17, width - 40) { color = 0xAAAAAA alpha 0.8f }
             screenDrawing.drawTexture(identifier, x + 8, y + height / 2 - 8, 0f, 0f, 16, 16, 16, 16)
             simpleHeight = 22 + lines.size * 9 + 1
@@ -94,15 +94,17 @@ object Contact : SidebarFeature(
         override fun init() {
             ThemeButton {
                 text = copyToClipboardText()
+                width = 100
                 onClick = {
                     client.keyboardHandler.clipboard = this@ContactLinkElement.url
                     NotificationManager.addNotification(SimpleTextNotification { text = copyLinkSuccessText() })
                 }
-            }(x + width - 210, y + simpleHeight, 100, SelectiveScreenDrawer.getSideButtonHeight())
+            }.updatePosition(x + width - 210, y + simpleHeight)
             ThemeButton {
                 text = openLinkText()
+                width = 100
                 onClick = { Util.getPlatform().openUri(url) }
-            }(x + width - 105, y + simpleHeight, 100, SelectiveScreenDrawer.getSideButtonHeight())
+            }.updatePosition(x + width - 105, y + simpleHeight)
         }
 
         override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {

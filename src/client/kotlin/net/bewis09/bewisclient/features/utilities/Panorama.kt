@@ -2,9 +2,9 @@ package net.bewis09.bewisclient.features.utilities
 
 import com.mojang.blaze3d.platform.NativeImage
 import net.bewis09.bewisclient.common.*
+import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.components.button.ImageButton
-import net.bewis09.renderite.components.DivElement
 import net.bewis09.bewisclient.drawable.renderables.notification.NotificationManager
 import net.bewis09.bewisclient.drawable.renderables.notification.SimpleTextNotification
 import net.bewis09.bewisclient.drawable.renderables.popup.ConfirmPopup
@@ -21,7 +21,7 @@ import net.bewis09.bewisclient.settings.structure.ImageFeature
 import net.bewis09.bewisclient.util.EventEntrypoint
 import net.bewis09.bewisclient.version.registerTexture
 import net.bewis09.bewisclient.version.takePanoramaFull
-import net.bewis09.bewisclient.drawable.PropedRenderable
+import net.bewis09.renderite.components.DivElement
 import net.bewis09.renderite.logic.FitType
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.network.chat.Component
@@ -60,19 +60,17 @@ object Panorama : ImageFeature("panorama", "Panorama"), EventEntrypoint, Bewiscl
 
     val images = mutableMapOf<File, PanoramaScreenshots>()
 
-    override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
-        list.add(
-            InfoTextRenderable {
-                text = createTranslation("info_text", "The panorama functionality allows you to set a custom panorama background for the main menu. You can create the panorama by pressing the \"%s\" button [%s]. After taking the screenshot select the screenshot below.")(Component.translatable("bewisclient.key.screenshot.take_panorama"), Component.keybind("bewisclient.key.screenshot.take_panorama"))
-                centered = true
-            }
-        )
+    override fun appendSettingsRenderables(list: Renderable) {
+        list.InfoTextRenderable {
+            text = createTranslation("info_text", "The panorama functionality allows you to set a custom panorama background for the main menu. You can create the panorama by pressing the \"%s\" button [%s]. After taking the screenshot select the screenshot below.")(Component.translatable("bewisclient.key.screenshot.take_panorama"), Component.keybind("bewisclient.key.screenshot.take_panorama"))
+            centered = true
+        }
     }
 
     override fun getPane(): Renderable {
         return DivElement {
             onInit = {
-                addRenderables(getSettingRenderables())
+                appendSettingsRenderables(this)
                 FabricLoader.getInstance().gameDir.resolve("screenshots").toFile().listFiles {
                     it.isDirectory && it.resolve("screenshots").exists() && it.resolve("screenshots").listFiles().map { f -> f.name }.let { name ->
                         name.contains("panorama_0.png") && name.contains("panorama_1.png") && name.contains("panorama_2.png") && name.contains("panorama_3.png") && name.contains("panorama_4.png") && name.contains("panorama_5.png")
@@ -99,7 +97,9 @@ object Panorama : ImageFeature("panorama", "Panorama"), EventEntrypoint, Bewiscl
         var index: Int = -1
         var length: Int = -1
 
-        init { props() }
+        init {
+            props()
+        }
 
         override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             if (!images.containsKey(file)) {

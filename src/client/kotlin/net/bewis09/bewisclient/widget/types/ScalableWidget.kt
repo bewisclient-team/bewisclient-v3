@@ -21,7 +21,7 @@ abstract class ScalableWidget(id: Identifier, title: String, description: String
         return scale.get()
     }
 
-    override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
-        list.add(scale.createRenderable(feature, "scale", "Scale", "Set the scale of the widget"))
+    override fun appendSettingsRenderables(list: Renderable) {
+        list.addRenderable(scale.createRenderable(feature, "scale", "Scale", "Set the scale of the widget"))
     }
 }

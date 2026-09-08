@@ -7,6 +7,7 @@ import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.Button
 import net.bewis09.renderite.components.DivElement
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
+import net.bewis09.bewisclient.settings.logic.Settings
 import net.bewis09.bewisclient.settings.structure.CategorizedFeature
 import net.bewis09.bewisclient.settings.structure.Feature
 import net.bewis09.bewisclient.settings.structure.SidebarFeature
@@ -23,7 +24,7 @@ object Widgets : SidebarFeature(createIdentifier("bewisclient", "widgets"), "Wid
         create("widgets", WidgetLoader)
     }
 
-    val widgetRenderables = widgets.map(CategorizedFeature::createRenderable)
+    val widgetRenderables by Settings.after { widgets.map(CategorizedFeature::createRenderable) }
 
     val generalWidgetSettings = APIEntrypointLoader.mapEntrypoint { it.getGeneralWidgetSettings() }.flatten()
 

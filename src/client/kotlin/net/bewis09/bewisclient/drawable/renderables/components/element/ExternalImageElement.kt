@@ -11,20 +11,21 @@ import net.bewis09.bewisclient.features.sidebar.Screenshot.ScreenshotElement
 import net.bewis09.bewisclient.version.registerTexture
 import net.bewis09.renderite.RenderiteElement
 import net.bewis09.renderite.logic.Color
+import net.bewis09.renderite.logic.Padding
 import net.bewis09.renderite.logic.TextAlign
 import net.bewis09.renderite.style.RenderiteChild
 import net.minecraft.client.Minecraft
 import java.io.File
 
-class ExternalImageElement(p: Props<ExternalImageElement>): PropedRenderable<ExternalImageElement>(p) {
+class ExternalImageElement(p: Props<ExternalImageElement>): PropedRenderable<ExternalImageElement>(p), Padding {
     lateinit var file: File
-    var padding: Int = 0
-    var verticalPadding: Int? = null
-    var horizontalPadding: Int? = null
-    var paddingLeft: Int? = null
-    var paddingTop: Int? = null
-    var paddingRight: Int? = null
-    var paddingBottom: Int? = null
+    override var padding: Int = 0
+    override var verticalPadding: Int? = null
+    override var horizontalPadding: Int? = null
+    override var paddingLeft: Int? = null
+    override var paddingTop: Int? = null
+    override var paddingRight: Int? = null
+    override var paddingBottom: Int? = null
 
     init { props() }
 
@@ -48,24 +49,17 @@ class ExternalImageElement(p: Props<ExternalImageElement>): PropedRenderable<Ext
         val data = contents.getOrDefault(file, null) ?: return
 
         data.identifier?.also {
-            val paddingTop = paddingTop ?: verticalPadding ?: padding
-            val paddingBottom = paddingBottom ?: verticalPadding ?: padding
-            val paddingLeft = paddingLeft ?: horizontalPadding ?: padding
-            val paddingRight = paddingRight ?: horizontalPadding ?: padding
+            val aspectRatio = (data.nativeImage ?: return@also).width.toFloat() / data.nativeImage.height.toFloat()
 
-            val nativeImage = data.nativeImage ?: return@also
-
-            val aspectRatio = nativeImage.width.toFloat() / nativeImage.height.toFloat()
-
-            val imgHeight = ((width - paddingLeft - paddingRight) * (1 / aspectRatio)).coerceAtMost((height - paddingTop - paddingBottom).toFloat())
+            val imgHeight = ((width - paddingLeft() - paddingRight()) * (1 / aspectRatio)).coerceAtMost((height - paddingTop() - paddingBottom()).toFloat())
             val imgWidth = (imgHeight * aspectRatio).toInt()
 
-            screenDrawing.drawTexture(it, (x + width / 2 - imgWidth / 2) + paddingLeft / 2 - paddingRight / 2, (y + height / 2 - imgHeight.toInt() / 2) + paddingTop / 2 - paddingBottom / 2, imgWidth, imgHeight.toInt())
+            screenDrawing.drawTexture(it, (x + width / 2 - imgWidth / 2) + paddingLeft() / 2 - paddingRight() / 2, (y + height / 2 - imgHeight.toInt() / 2) + paddingTop() / 2 - paddingBottom() / 2, imgWidth, imgHeight.toInt())
         } ?: run {
-            screenDrawing.drawText((data.failed then { ScreenshotElement.loadingFailed() }) ?: ScreenshotElement.loading(), x + width / 2, y + (height - 19) / 2 - 5, {
+            screenDrawing.drawText((data.failed then { ScreenshotElement.loadingFailed() }) ?: ScreenshotElement.loading(), x + width / 2, y + (height - 19) / 2 - 5) {
                 color = Color.WHITE
                 textAlign = TextAlign.CENTER
-            })
+            }
             if (!data.failed && (data.nativeImage != null)) {
                 loadTexture(file, data.nativeImage)
             }

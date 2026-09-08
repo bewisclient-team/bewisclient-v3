@@ -24,9 +24,9 @@ object HeldItemTooltip : ImageFeature("held_item_tooltip", "Held Item Info") {
 
     val moreLinesText = createTranslation("more_lines", "and %s more...")
 
-    override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
+    override fun appendSettingsRenderables(list: Renderable) {
         super.appendSettingsRenderables(list)
-        list.add(
+        list.addRenderable(
             MultipleBooleanSettingsRenderable.create(
                 this, "multiple_boolean_settings", "Data Component Tooltips:", "Select which information to show in the held item tooltip", componentRenderableParts
             )

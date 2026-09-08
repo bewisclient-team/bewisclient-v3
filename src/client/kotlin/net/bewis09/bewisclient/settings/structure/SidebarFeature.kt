@@ -2,7 +2,6 @@ package net.bewis09.bewisclient.settings.structure
 
 import net.bewis09.bewisclient.common.Identifier
 import net.bewis09.bewisclient.drawable.Renderable
-import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.ThemeButtonElement
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
 import net.bewis09.bewisclient.game.translations.Translation
@@ -17,7 +16,7 @@ abstract class SidebarFeature(id: Identifier, titleText: String) : Feature(id) {
         text = title()
         selected = { OptionScreen.currentInstance?.category == id.toString() }
         onClick = { OptionScreen.currentInstance?.changeCategory(this@SidebarFeature) }
-    }.updateHeight(SelectiveScreenDrawer.getSideButtonHeight()) as ThemeButtonElement
+    }
 
     abstract fun getRenderable(): Renderable
 

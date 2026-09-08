@@ -11,10 +11,10 @@ import net.bewis09.bewisclient.features.cosmetics.AcceptPrivacyPage
 import net.bewis09.bewisclient.features.cosmetics.EnableOnlineModeSettingsRenderable
 import net.bewis09.bewisclient.game.BewisclientResourcePack
 import net.bewis09.bewisclient.server.Modrinth
-import net.bewis09.bewisclient.settings.structure.CategorizedFeature
 import net.bewis09.bewisclient.settings.structure.SidebarFeature
 import net.bewis09.bewisclient.util.EventEntrypoint
 import net.bewis09.bewisclient.util.color.colors
+import net.bewis09.renderite.components.DivElement
 
 @Suppress("unusedExpression")
 object TranslationLoader : EventEntrypoint {
@@ -25,8 +25,8 @@ object TranslationLoader : EventEntrypoint {
         HudEditScreen
         TiwylaLinesSettingsPopup
         Modrinth
-        APIEntrypointLoader.mapEntrypointForList(BewisclientAPIEntrypoint::getWidgets).forEach(CategorizedFeature::getSettingRenderables)
-        APIEntrypointLoader.mapEntrypointForList(BewisclientAPIEntrypoint::getUtilities).forEach(CategorizedFeature::getSettingRenderables)
+        APIEntrypointLoader.mapEntrypointForList(BewisclientAPIEntrypoint::getWidgets).forEach { it.appendSettingsRenderables(DivElement {}) }
+        APIEntrypointLoader.mapEntrypointForList(BewisclientAPIEntrypoint::getUtilities).forEach { it.appendSettingsRenderables(DivElement {}) }
         APIEntrypointLoader.mapEntrypointForList(BewisclientAPIEntrypoint::getSidebarCategories).forEach(SidebarFeature::getRenderable)
         BewisclientResourcePack
         PackListScreen.Companion

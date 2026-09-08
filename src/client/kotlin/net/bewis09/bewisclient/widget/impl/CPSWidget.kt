@@ -40,7 +40,7 @@ object CPSWidget : LineWidget(
         return list.size
     }
 
-    override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
+    override fun appendSettingsRenderables(list: Renderable) {
         list.menuQuick(leftEnabled, "Show Left Mouse Button CPS")
         list.menuQuick(rightEnabled, "Show Right Mouse Button CPS")
         super.appendSettingsRenderables(list)

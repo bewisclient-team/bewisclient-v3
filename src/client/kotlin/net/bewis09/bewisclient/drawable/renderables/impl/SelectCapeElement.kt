@@ -23,12 +23,7 @@ class SelectCapeElement(p: Props<SelectCapeElement>) : PropedRenderable<SelectCa
 
     init { props() }
 
-    val selected = Animator({ General.animationDuration }, Animator.EASE_IN_OUT, 0f)
-
-    override fun renderLogic(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        super.renderLogic(screenDrawing, mouseX, mouseY)
-        selected.set(if (CosmeticLoader.selected[CosmeticType.CAPE.id] == identifier.id) 1f else 0f)
-    }
+    val selected = Animator({ General.animationDuration }, Animator.EASE_IN_OUT, { if (CosmeticLoader.selected[CosmeticType.CAPE.id] == identifier.id) 1f else 0f })
 
     override fun renderBackground(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
         if (General.isMinecrafty) {

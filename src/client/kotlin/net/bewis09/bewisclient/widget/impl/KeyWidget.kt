@@ -152,8 +152,8 @@ object KeyWidget : ScalableWidget(
         return y
     }
 
-    override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
-        list.add(
+    override fun appendSettingsRenderables(list: Renderable) {
+        list.addRenderable(
             MultipleBooleanSettingsRenderable {
                 title = createTranslation("keys", "Select which keys should be shown")
                 settings = listOf(
@@ -167,18 +167,18 @@ object KeyWidget : ScalableWidget(
         list.menuQuick(showCPS, "Show CPS", "Shows your clicks per second (CPS) for the attack/use keys")
         list.menu(backgroundColor, "Background", "Set the color of the widget's background")
 
-        list.add(LineWidget.backgroundColorRenderable(backgroundColor, backgroundOpacity))
-        list.add(LineWidget.borderColorRenderable(borderColor, borderOpacity))
-        list.add(LineWidget.textColorRenderable(textColor))
+        list.addRenderable(LineWidget.backgroundColorRenderable(backgroundColor, backgroundOpacity))
+        list.addRenderable(LineWidget.borderColorRenderable(borderColor, borderOpacity))
+        list.addRenderable(LineWidget.textColorRenderable(textColor))
 
         list.colorAlphaMenu(pressedBackgroundColor, pressedBackgroundOpacity, "pressed_background", "Pressed Background", "Set the color and opacity of the widget when a key is pressed")
         list.colorAlphaMenu(pressedBorderColor, pressedBorderOpacity, "pressed_border", "Pressed Border", "Set the color and opacity of the widget's border when a key is pressed")
         list.menu(pressedTextColor, "Pressed Text Color", "Set the color of the text in the widget when a key is pressed")
 
-        list.add(LineWidget.shadowRenderable(shadow))
+        list.addRenderable(LineWidget.shadowRenderable(shadow))
         list.menu(gap, "Gap", "Set the gap between the keys in the widget")
-        list.add(LineWidget.paddingSizeRenderable(paddingSize))
-        list.add(LineWidget.borderRadiusRenderable(borderRadius))
+        list.addRenderable(LineWidget.paddingSizeRenderable(paddingSize))
+        list.addRenderable(LineWidget.borderRadiusRenderable(borderRadius))
 
         super.appendSettingsRenderables(list)
     }

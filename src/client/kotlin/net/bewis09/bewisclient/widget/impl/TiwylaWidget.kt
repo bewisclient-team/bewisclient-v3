@@ -178,23 +178,23 @@ object TiwylaWidget : ScalableWidget(
 
     override fun getHeight(): Int = 9 + getSublines().size * 6 + lineSpacing.get() * (getSublines().size) + 2 * paddingSize.get()
 
-    override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
+    override fun appendSettingsRenderables(list: Renderable) {
         list.menu(topTextColor, "Top Text Color", "Set the color of the top text in the widget")
         list.menu(bottomTextColor, "Bottom Text Color", "Set the color of the bottom text in the widget")
 
-        list.add(TiwylaLinesSettingsRenderable().addToQuickSettings(this, "lines"))
-        list.add(InfoTextRenderable({ text = healthInfoText(); color = 0xAAAAAA.color; centered = true }))
+        list.addRenderable(TiwylaLinesSettingsRenderable().addToQuickSettings(this, "lines"))
+        list.addRenderable(InfoTextRenderable({ text = healthInfoText(); color = 0xAAAAAA.color; centered = true }))
 
-        list.add(LineWidget.backgroundColorRenderable(backgroundColor, backgroundOpacity))
-        list.add(LineWidget.borderColorRenderable(borderColor, borderOpacity))
-        list.add(LineWidget.paddingSizeRenderable(paddingSize))
-        list.add(LineWidget.lineSpacingRenderable(lineSpacing))
-        list.add(LineWidget.borderRadiusRenderable(borderRadius))
-        list.add(LineWidget.shadowRenderable(shadow))
+        list.addRenderable(LineWidget.backgroundColorRenderable(backgroundColor, backgroundOpacity))
+        list.addRenderable(LineWidget.borderColorRenderable(borderColor, borderOpacity))
+        list.addRenderable(LineWidget.paddingSizeRenderable(paddingSize))
+        list.addRenderable(LineWidget.lineSpacingRenderable(lineSpacing))
+        list.addRenderable(LineWidget.borderRadiusRenderable(borderRadius))
+        list.addRenderable(LineWidget.shadowRenderable(shadow))
 
         super.appendSettingsRenderables(list)
 
-        list.add(TiwylaInfoSettingsRenderable())
+        list.addRenderable(TiwylaInfoSettingsRenderable())
     }
 
     fun loadBlockInformation(first: String, second: String? = null): Information<BlockData> {

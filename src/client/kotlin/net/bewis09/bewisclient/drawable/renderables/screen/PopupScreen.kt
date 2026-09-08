@@ -10,6 +10,7 @@ import net.bewis09.bewisclient.generated.BuildInfo
 import net.bewis09.bewisclient.version.translateToTopOptional
 import net.bewis09.renderite.logic.Color
 import net.bewis09.renderite.logic.TextAlign
+import net.bewis09.renderite.style.RenderiteChild
 import org.lwjgl.glfw.GLFW
 
 abstract class PopupScreen(p: Props<PopupScreen> = {}) : PropedRenderable<PopupScreen>(p) {
@@ -118,6 +119,7 @@ abstract class PopupScreen(p: Props<PopupScreen> = {}) : PropedRenderable<PopupS
         selectedElement = popup
     }
 
+    @RenderiteChild
     fun VersionText() {
         Text {
             text = "Bewisclient ${BuildInfo.VERSION} by Bewis09".toText()
@@ -125,6 +127,8 @@ abstract class PopupScreen(p: Props<PopupScreen> = {}) : PropedRenderable<PopupS
             textAlign = TextAlign.END
             fontSize = 7f
             overflowVisible = true
-        }.updatePosition(width - 5, height - 11)
+            heightResize = true
+            paddingRight = 5
+        }.updatePosition(0, height - 11)
     }
 }

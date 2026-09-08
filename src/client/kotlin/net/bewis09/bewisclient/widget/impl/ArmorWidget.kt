@@ -135,8 +135,8 @@ object ArmorWidget : ScalableWidget(
         return Color(255.coerceAtMost(511 - (durability * 511) / maxDurability), 255.coerceAtMost((durability * 511) / maxDurability), 0).argb
     }
 
-    override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
-        list.add(
+    override fun appendSettingsRenderables(list: Renderable) {
+        list.addRenderable(
             MultipleBooleanSettingsRenderable {
                 title = createTranslation("armor_slots", "Armor Slots")
                 settings = listOf(
@@ -155,12 +155,12 @@ object ArmorWidget : ScalableWidget(
         list.menuQuick(showEmptySlotIcon, "Show Empty Slot Icon", "Toggle whether to show an icon for empty armor slots")
         list.menuQuick(colorCodeText, "Color Code Text", "Toggle whether to color code the durability text")
 
-        list.add(LineWidget.backgroundColorRenderable(backgroundColor, backgroundOpacity))
-        list.add(LineWidget.borderColorRenderable(borderColor, borderOpacity))
-        list.add(LineWidget.paddingSizeRenderable(paddingSize))
-        list.add(LineWidget.textColorRenderable(textColor))
-        list.add(LineWidget.borderRadiusRenderable(borderRadius))
-        list.add(LineWidget.shadowRenderable(shadow))
+        list.addRenderable(LineWidget.backgroundColorRenderable(backgroundColor, backgroundOpacity))
+        list.addRenderable(LineWidget.borderColorRenderable(borderColor, borderOpacity))
+        list.addRenderable(LineWidget.paddingSizeRenderable(paddingSize))
+        list.addRenderable(LineWidget.textColorRenderable(textColor))
+        list.addRenderable(LineWidget.borderRadiusRenderable(borderRadius))
+        list.addRenderable(LineWidget.shadowRenderable(shadow))
 
         super.appendSettingsRenderables(list)
     }

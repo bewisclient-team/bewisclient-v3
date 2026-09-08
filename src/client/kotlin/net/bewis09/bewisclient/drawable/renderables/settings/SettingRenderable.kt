@@ -6,6 +6,7 @@ import net.bewis09.bewisclient.drawable.renderables.components.logic.TooltipElem
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.renderite.components.TextElement
 import net.bewis09.renderite.drawer.pushColor
+import net.bewis09.renderite.style.RenderiteChild
 import net.minecraft.network.chat.Component
 
 abstract class SettingRenderable<P: SettingRenderable<P>>(p: Props<P>) : TooltipElement<P>(p) {
@@ -15,5 +16,6 @@ abstract class SettingRenderable<P: SettingRenderable<P>>(p: Props<P>) : Tooltip
         }
     }
 
+    @RenderiteChild
     fun SettingText(p: Props<TextElement<ScreenDrawing, Component, Identifier, Identifier>>) = Text(p + { paddingLeft = 8 })
 }

@@ -7,12 +7,15 @@ import net.bewis09.bewisclient.api.APIEntrypointLoader
 import net.bewis09.bewisclient.settings.types.ObjectSetting
 import net.bewis09.bewisclient.util.EventEntrypoint
 import net.bewis09.bewisclient.util.logic.ClientInterface
+import kotlin.reflect.KProperty
 
 object Settings : ObjectSetting(), ClientInterface, EventEntrypoint {
     val gson: Gson = GsonBuilder().setPrettyPrinting().create()
 
     var isLoading = true
     var dirty: Boolean = false
+
+    val afterLoad = arrayListOf<AfterImpl<*>>()
 
     init {
         for (feature in APIEntrypointLoader.mapEntrypoint { it.getOtherSettings() + it.getUtilities() + it.getSidebarCategories() }.flatten()) {
@@ -25,6 +28,8 @@ object Settings : ObjectSetting(), ClientInterface, EventEntrypoint {
         val data = readRelativeFile("bewisclient", "bewisclient.json")
         setFromElement(gson.fromJson(data, JsonElement::class.java))
         isLoading = false
+        afterLoad.forEach { it.value }
+        afterLoad.clear()
     }
 
     fun setDirty() {
@@ -43,4 +48,12 @@ object Settings : ObjectSetting(), ClientInterface, EventEntrypoint {
     override fun onInitializeClient() = load()
 
     override fun onClientTickStart() = saveAll()
+
+    fun <T> after(func: () -> T) = AfterImpl(func).also(afterLoad::add)
+
+    class AfterImpl<T>(val func: () -> T) {
+        val value by lazy { func() }
+
+        operator fun getValue(thisRef: Any?, property: KProperty<*>): T = value
+    }
 }

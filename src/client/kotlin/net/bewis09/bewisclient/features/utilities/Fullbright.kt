@@ -53,13 +53,13 @@ object Fullbright : ImageFeature(createIdentifier("bewisclient", "fullbright"), 
         showFullbrightMessage()
     })
 
-    override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
+    override fun appendSettingsRenderables(list: Renderable) {
         super.appendSettingsRenderables(list)
-        list.add(InfoTextRenderable {
+        list.InfoTextRenderable {
             text = infoText()
             color = 0xAAAAAA.color * General.getThemeColor()
             centered = true
-        })
+        }
     }
 
     fun showFullbrightMessage() {

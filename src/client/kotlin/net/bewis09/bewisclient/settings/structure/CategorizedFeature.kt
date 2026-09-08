@@ -29,15 +29,13 @@ abstract class CategorizedFeature(id: Identifier, titleText: String) : Feature(i
 
     val title = Translation(id.namespace, "category.${id.path}", titleText)
 
-    private val settingAppliers: MutableList<(ArrayList<Renderable>) -> Unit> = mutableListOf()
+    private val settingAppliers: MutableList<(Renderable) -> Unit> = mutableListOf()
 
     open val enabledByDefault = false
     val enabledSetting = boolean("enabled", enabledByDefault) { oldValue, newValue -> enabledListener(oldValue, newValue) }
     var enabled by enabledSetting
 
-    fun getSettingRenderables(): List<Renderable> = arrayListOf<Renderable>().also(::appendSettingsRenderables)
-
-    open fun appendSettingsRenderables(list: ArrayList<Renderable>) {
+    open fun appendSettingsRenderables(list: Renderable) {
         settingAppliers.forEach { it(list) }
     }
 
@@ -67,7 +65,7 @@ abstract class CategorizedFeature(id: Identifier, titleText: String) : Feature(i
     abstract fun createRenderable(): SettingCategory
 
     open fun getPane(): Renderable = DivElement {
-        onInit = { addRenderables(getSettingRenderables()) }
+        onInit = { appendSettingsRenderables(this) }
         gap = 1
         fitType = FitType.SCROLL
     }
@@ -80,14 +78,14 @@ abstract class CategorizedFeature(id: Identifier, titleText: String) : Feature(i
             props()
         }
 
-        val state = Animator({ animationDuration }, Animator.EASE_IN_OUT, if (enabled) 1f else 0f)
+        val state = Animator({ animationDuration }, Animator.EASE_IN_OUT, { if (enabled) 1f else 0f })
 
         init {
             BooleanSettingRenderable { title = enabledText; setting = enabledSetting }.addToQuickSettings(this@CategorizedFeature, "enabled")
         }
 
         override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
-            if (getSettingRenderables().isEmpty()) {
+            if (getPane().apply { resize() }.renderables.isEmpty()) {
                 enabled = !enabled
             } else {
                 OptionScreen.currentInstance?.openPage(title(), getPane(), enabledSetting)
@@ -96,17 +94,8 @@ abstract class CategorizedFeature(id: Identifier, titleText: String) : Feature(i
             return true
         }
 
-        override fun renderLogic(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-            super.renderLogic(screenDrawing, mouseX, mouseY)
-            state.set(if (enabled) 1f else 0f)
-        }
-
         override fun renderBackground(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             SelectiveScreenDrawer.renderSettingsCategoryBackground(screenDrawing, x, y, width, height, state.get(), hoverFactor, mouseX, mouseY)
-        }
-
-        override fun initLogic() {
-            state.pauseForOnce()
         }
 
         fun EnableButton() {
@@ -121,20 +110,20 @@ abstract class CategorizedFeature(id: Identifier, titleText: String) : Feature(i
         }
     }
 
-    fun <T> ArrayList<Renderable>.menuQuick(setting: T, title: String, description: String? = null) where T : RenderableCreator<*>, T : Setting<*> {
+    fun <T> Renderable.menuQuick(setting: T, title: String, description: String? = null) where T : RenderableCreator<*>, T : Setting<*> {
         return menu(setting, title, description, true)
     }
 
-    fun <T> ArrayList<Renderable>.menu(setting: T, title: String, description: String? = null, quickSettings: Boolean = false) where T : RenderableCreator<*>, T : Setting<*> {
+    fun <T> Renderable.menu(setting: T, title: String, description: String? = null, quickSettings: Boolean = false) where T : RenderableCreator<*>, T : Setting<*> {
         val id = idLookup[setting] ?: throw IllegalArgumentException("Setting not in id lookup: $setting")
         val renderable = setting.createRenderable(this@CategorizedFeature, id, title, description)
         if (quickSettings) renderable.addToQuickSettings(this@CategorizedFeature, id)
-        this.add(renderable)
+        addRenderable(renderable)
     }
 
-    fun ArrayList<Renderable>.colorAlphaMenu(setting: ColorSetting, alpha: FloatSetting, id: String, title: String, description: String? = null, quickSettingsId: String? = null) {
+    fun Renderable.colorAlphaMenu(setting: ColorSetting, alpha: FloatSetting, id: String, title: String, description: String? = null, quickSettingsId: String? = null) {
         val renderable = setting.createRenderableWithFader(this@CategorizedFeature, id, title, description, alpha)
         if (quickSettingsId != null) renderable.addToQuickSettings(this@CategorizedFeature, quickSettingsId)
-        this.add(renderable)
+        addRenderable(renderable)
     }
 }

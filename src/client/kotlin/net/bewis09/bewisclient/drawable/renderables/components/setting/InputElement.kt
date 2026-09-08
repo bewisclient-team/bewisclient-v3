@@ -3,9 +3,12 @@ package net.bewis09.bewisclient.drawable.renderables.components.setting
 import net.bewis09.bewisclient.common.Identifier
 import net.bewis09.bewisclient.common.toText
 import net.bewis09.bewisclient.drawable.PropedRenderable
+import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.util.Bewisclient
+import net.bewis09.renderite.RenderiteElement
 import net.bewis09.renderite.logic.Color
+import net.bewis09.renderite.style.RenderiteChild
 import net.minecraft.client.Minecraft
 import org.lwjgl.glfw.GLFW
 
@@ -67,35 +70,28 @@ class InputElement(p: Props<InputElement>) : PropedRenderable<InputElement>(p) {
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean = true
 
     override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {
-        return when (key) {
+        when (key) {
             GLFW.GLFW_KEY_BACKSPACE -> {
                 if (text.isNotEmpty()) {
                     text = (text.substring(0, (cursor - 1).coerceAtLeast(0)) + text.substring(cursor))
                     if (cursor > 0) cursor--
                     onChange?.invoke(text)
                 }
-                true
             }
-
             GLFW.GLFW_KEY_DELETE -> {
                 if (text.isNotEmpty()) {
                     text = (text.substring(0, cursor) + text.substring((cursor + 1).coerceAtMost(text.length)))
                     onChange?.invoke(text)
                 }
-                true
             }
-
-            GLFW.GLFW_KEY_LEFT -> {
-                if (cursor > 0) cursor--
-                true
-            }
-
-            GLFW.GLFW_KEY_RIGHT -> {
-                if (cursor < text.length) cursor++
-                true
-            }
-
-            else -> false
+            GLFW.GLFW_KEY_LEFT -> { if (cursor > 0) cursor-- }
+            GLFW.GLFW_KEY_RIGHT -> { if (cursor < text.length) cursor++ }
+            else -> return false
         }
+
+        return true
     }
 }
+
+@RenderiteChild
+fun Renderable.Input(p: RenderiteElement.Props<InputElement>) { InputElement(p).also(::addRenderable)}

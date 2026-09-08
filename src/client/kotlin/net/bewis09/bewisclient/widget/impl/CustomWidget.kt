@@ -61,11 +61,11 @@ object CustomWidget : LineWidget(
 
     override fun defaultPosition(): WidgetPosition = SidedPosition(5, 5, SidedPosition.START, SidedPosition.START)
 
-    override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
-        list.add(minimumWidth.createIntRenderable(this, "minimum_width", "Minimum Width", "The minimum width of the widget"))
-        list.add(maximumWidth.createIntRenderable(this, "maximum_width", "Maximum Width", "The maximum width of the widget"))
-        list.add(centered.createRenderable(this, "centered", "Centered", "Whether the text should be centered"))
-        list.add(CustomWidgetLineRenderable())
+    override fun appendSettingsRenderables(list: Renderable) {
+        list.addRenderable(minimumWidth.createIntRenderable(this, "minimum_width", "Minimum Width", "The minimum width of the widget"))
+        list.addRenderable(maximumWidth.createIntRenderable(this, "maximum_width", "Maximum Width", "The maximum width of the widget"))
+        list.addRenderable(centered.createRenderable(this, "centered", "Centered", "Whether the text should be centered"))
+        list.CustomWidgetLineRenderable()
         super.appendSettingsRenderables(list)
     }
 

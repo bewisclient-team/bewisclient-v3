@@ -84,7 +84,7 @@ object BiomeWidget : LineWidget(
         ))?.unwrap()?.map({ biomeKey -> biomeKey.id().toString() }, null)
     }
 
-    override fun appendSettingsRenderables(list: ArrayList<Renderable>) {
+    override fun appendSettingsRenderables(list: Renderable) {
         list.menu(colorCodeBiome, "Color Code Biome", "Whether to color code the biome name")
         super.appendSettingsRenderables(list)
     }
