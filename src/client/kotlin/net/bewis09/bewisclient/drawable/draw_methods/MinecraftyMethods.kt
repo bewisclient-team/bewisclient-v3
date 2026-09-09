@@ -10,11 +10,6 @@ import net.bewis09.renderite.drawer.translate
 import net.bewis09.renderite.logic.within
 
 object MinecraftyMethods : DrawMethods {
-    override fun renderMenuBackground(screenDrawing: ScreenDrawing, screenWidth: Int, screenHeight: Int) {
-        renderMenuBackground(screenDrawing, 30, 30, 134, screenHeight - 60)
-        renderMenuBackground(screenDrawing, 169, 30, screenWidth - 199, screenHeight - 60)
-    }
-
     fun renderWithBorders(screenDrawing: ScreenDrawing, x: Int, y: Int, width: Int, height: Int, backgroundColor: Color, borderColors: Array<Color>, brightness: Float = 1f) {
         screenDrawing.darken(brightness) {
             screenDrawing.fill(x + borderColors.size, y + borderColors.size, width - borderColors.size * 2, height - borderColors.size * 2, backgroundColor)
@@ -24,7 +19,7 @@ object MinecraftyMethods : DrawMethods {
         }
     }
 
-    fun renderMenuBackground(screenDrawing: ScreenDrawing, x: Int, y: Int, width: Int, height: Int) {
+    override fun renderMenuBackground(screenDrawing: ScreenDrawing, x: Int, y: Int, width: Int, height: Int) {
         renderWithBorders(
             screenDrawing, x, y, width, height, 0x151515 alpha 0.9f, arrayOf(
                 !0x222222,

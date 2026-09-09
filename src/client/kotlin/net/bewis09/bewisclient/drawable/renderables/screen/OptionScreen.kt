@@ -9,6 +9,7 @@ import net.bewis09.bewisclient.drawable.ImageIdentifier.setRenderableScreen
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.ImageButton
+import net.bewis09.bewisclient.drawable.renderables.components.button.SidebarButton
 import net.bewis09.bewisclient.drawable.renderables.components.button.ThemeButton
 import net.bewis09.bewisclient.drawable.renderables.components.element.RainbowImage
 import net.bewis09.bewisclient.drawable.renderables.components.setting.Switch
@@ -89,10 +90,6 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
         screenDrawing.setDefaultFont()
     }
 
-    override fun renderBackground(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
-        SelectiveScreenDrawer.renderMenuBackground(screenDrawing, width, height)
-    }
-
     @RenderiteChild
     fun Renderable.TopButton(identifier: Identifier, padding: Int, onClick: () -> Unit) = ImageButton {
         image = identifier
@@ -104,38 +101,67 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
 
     override fun init() {
         Div(0) {
+            padding = 30
             cacheChildren = true
-            gap = 5
+            gap = 4
+            direction = Direction.HORIZONTAL
             fitType = FitType.FILL_ITEM
             onInit = {
                 Div {
-                    gap = (General.isMinecrafty then 2) ?: 5
-                    fitType = FitType.SCROLL
-                    fillParent = true
                     cacheChildren = true
+                    gap = 5
+                    fitType = FitType.FILL_ITEM
+                    width = 134
+                    padding = 7
+                    background = { SelectiveScreenDrawer.renderMenuBackground(it, x, y, width, height) }
                     onInit = {
                         Div {
-                            gap = if (General.isMinecrafty) 1 else 5
-                            direction = Direction.HORIZONTAL
+                            gap = (General.isMinecrafty then 2) ?: 5
+                            fitType = FitType.SCROLL
+                            fillParent = true
                             cacheChildren = true
                             onInit = {
-                                TopButton(backIdentifier, 1, ::goBack)
-                                Home.createButton().updateWidth(82).add()
-                                TopButton(closeIdentifier, 3, ::close)
+                                Div {
+                                    gap = if (General.isMinecrafty) 1 else 5
+                                    direction = Direction.HORIZONTAL
+                                    fitType = FitType.FILL_ITEM
+                                    cacheChildren = true
+                                    onInit = {
+                                        TopButton(backIdentifier, 1, ::goBack)
+                                        SidebarButton(Home) { fillParent = true }
+                                        TopButton(closeIdentifier, 3, ::close)
+                                    }
+                                }.updateHeight(SelectiveScreenDrawer.getSideButtonHeight())
+                                HorizontalLine { backgroundColor = { General.getThemeColor(alpha = 0.3f) } }
+                                APIEntrypointLoader.mapEntrypoint { a -> a.getSidebarCategories().forEach(::SidebarButton) }
+                                HorizontalLine { backgroundColor = { General.getThemeColor(alpha = 0.3f) } }
+                                ThemeButton {
+                                    text = editHudTranslation()
+                                    onClick = { alphaMainAnimation.set(0f) { Bewisclient.setRenderableScreen(HudEditScreen()) } }
+                                }
                             }
-                        }.updateHeight(SelectiveScreenDrawer.getSideButtonHeight())
-                        HorizontalLine { backgroundColor = { General.getThemeColor(alpha = 0.3f) } }
-                        APIEntrypointLoader.mapEntrypoint { a -> a.getSidebarCategories().forEach { b -> b.createButton().add() } }
-                        HorizontalLine { backgroundColor = { General.getThemeColor(alpha = 0.3f) } }
-                        ThemeButton {
-                            text = editHudTranslation()
-                            onClick = { alphaMainAnimation.set(0f) { Bewisclient.setRenderableScreen(HudEditScreen()) } }
+                        }
+                        RainbowImage()
+                    }
+                }
+                Div {
+                    gap = 5
+                    fitType = FitType.FILL_ITEM
+                    fillParent = true
+                    padding = 7
+                    background = { SelectiveScreenDrawer.renderMenuBackground(it, x, y, width, height) }
+                    onInit = {
+                        page.header.add()
+                        Div {
+                            fillParent = true
+                            cacheChildren = true
+                            fitType = FitType.FIT
+                            onInit = { page.pane.add() }
                         }
                     }
                 }
-                RainbowImage()
             }
-        }(37, 37, 120, height - 74)
+        }(x, y, width, height)
 
         if (page.setting != null) {
             Switch {
@@ -144,21 +170,6 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
                 onChange = { page.setting?.set(it) }
             }.updatePosition(width - 61, 37)
         }
-
-        Div {
-            gap = 5
-            fitType = FitType.FILL_ITEM
-            cacheChildren = true
-            onInit = {
-                page.header.add()
-                Div {
-                    fillParent = true
-                    cacheChildren = true
-                    fitType = FitType.FIT
-                    onInit = { page.pane.add() }
-                }
-            }
-        }(175, 37, width - 211, height - 74)
 
         VersionText()
     }
@@ -239,7 +250,5 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
         return super.onKeyPress(key, scanCode, modifiers)
     }
 
-    override fun getBackgroundEffectFactor(): Float {
-        return blurMainAnimation.get()
-    }
+    override fun getBackgroundEffectFactor(): Float = blurMainAnimation.get()
 }

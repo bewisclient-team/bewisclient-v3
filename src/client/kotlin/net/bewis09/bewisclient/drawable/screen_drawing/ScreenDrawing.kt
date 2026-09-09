@@ -11,7 +11,6 @@ import net.bewis09.renderite.drawer.TextDrawing
 import net.bewis09.renderite.logic.color
 import net.minecraft.client.gui.Font
 import net.minecraft.network.chat.Component
-import net.minecraft.network.chat.MutableComponent
 import net.minecraft.world.item.ItemStack
 import java.awt.image.BufferedImage
 

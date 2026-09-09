@@ -9,9 +9,8 @@ import net.bewis09.renderite.logic.within
 import kotlin.math.abs
 
 object FlatMethods : DrawMethods {
-    override fun renderMenuBackground(screenDrawing: ScreenDrawing, screenWidth: Int, screenHeight: Int) {
-        screenDrawing.fillWithBorderRounded(30, 30, 134, screenHeight - 60, 5, General.getBackgroundColor(), General.getThemeColor(alpha = 0.3f))
-        screenDrawing.fillWithBorderRounded(169, 30, screenWidth - 199, screenHeight - 60, 5, General.getBackgroundColor(), General.getThemeColor(alpha = 0.3f))
+    override fun renderMenuBackground(screenDrawing: ScreenDrawing, x: Int, y: Int, width: Int, height: Int) {
+        screenDrawing.fillWithBorderRounded(x, y, width, height, 5, General.getBackgroundColor(), General.getThemeColor(alpha = 0.3f))
     }
 
     override fun renderButtonBackground(screenDrawing: ScreenDrawing, hover: Float, animation: Float, x: Int, y: Int, width: Int, height: Int, click: Float, dark: Boolean, small: Boolean) {

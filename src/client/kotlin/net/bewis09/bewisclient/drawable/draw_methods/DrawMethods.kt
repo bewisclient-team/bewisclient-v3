@@ -4,7 +4,7 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.util.logic.ClientInterface
 
 interface DrawMethods: ClientInterface {
-    fun renderMenuBackground(screenDrawing: ScreenDrawing, screenWidth: Int, screenHeight: Int)
+    fun renderMenuBackground(screenDrawing: ScreenDrawing, x: Int, y: Int, width: Int, height: Int)
 
     fun renderButtonBackground(screenDrawing: ScreenDrawing, hover: Float, animation: Float, x: Int, y: Int, width: Int, height: Int, click: Float, dark: Boolean = false, small: Boolean = false)
 
