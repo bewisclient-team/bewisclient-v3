@@ -2,6 +2,7 @@
 
 package net.bewis09.bewisclient.mixin.client
 
+import com.mojang.blaze3d.platform.InputConstants
 import net.bewis09.bewisclient.features.utilities.Zoom.factorAnimation
 import net.bewis09.bewisclient.features.utilities.Zoom.isUsed
 import net.bewis09.bewisclient.widget.impl.CPSWidget.leftMouseList
@@ -22,8 +23,8 @@ class MouseMixin {
 
         // @[1.21.8] button @[] rawButtonInfo.button()
         when (/*[@]*/rawButtonInfo.button()/*[!@]*/) {
-            0 -> leftMouseList.add(System.currentTimeMillis())
-            1 -> rightMouseList.add(System.currentTimeMillis())
+            InputConstants.MOUSE_BUTTON_LEFT -> leftMouseList.add(System.currentTimeMillis())
+            InputConstants.MOUSE_BUTTON_RIGHT -> rightMouseList.add(System.currentTimeMillis())
         }
     }
 

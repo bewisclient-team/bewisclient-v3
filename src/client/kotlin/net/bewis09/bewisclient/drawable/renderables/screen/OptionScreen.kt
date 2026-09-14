@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.drawable.renderables.screen
 
+import com.mojang.blaze3d.platform.InputConstants
 import net.bewis09.bewisclient.api.APIEntrypointLoader
 import net.bewis09.bewisclient.common.Identifier
 import net.bewis09.bewisclient.common.createIdentifier
@@ -26,7 +27,6 @@ import net.bewis09.renderite.components.TextElement
 import net.bewis09.renderite.logic.*
 import net.bewis09.renderite.style.RenderiteChild
 import net.minecraft.network.chat.Component
-import org.lwjgl.glfw.GLFW
 
 class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(), BackgroundEffectProvider {
     val editHudTranslation = Translation("options.edit_hud", "Edit HUD")
@@ -233,7 +233,8 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
             text = header
             fontSize = if (General.isMinecrafty) 12f else 9f
             textAlign = TextAlign.CENTER
-            height = if (General.isMinecrafty) 18 else 14
+            height = 14
+            verticalAlign = if (General.isMinecrafty) TextAlign.END else TextAlign.CENTER
         }
 
         init {
@@ -243,7 +244,7 @@ class OptionScreen(startBlur: Float = 0f, startAlpha: Float = 0f) : PopupScreen(
     }
 
     override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {
-        if (key == GLFW.GLFW_KEY_ESCAPE) {
+        if (key == InputConstants.KEY_ESCAPE) {
             if (General.goBackEscape()) goBack() else close()
             return true
         }

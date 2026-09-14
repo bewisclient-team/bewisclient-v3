@@ -77,6 +77,7 @@ class ChangingColorSaver : ColorSaver {
                         Text {
                             textProvider = { changeDuration(get().changingSpeed / 1000f) }
                             textAlign = TextAlign.CENTER
+                            height = 9
                         }
                         Fader {
                             value = { get().changingSpeed.toFloat() }

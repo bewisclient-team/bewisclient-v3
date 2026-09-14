@@ -7,7 +7,6 @@ import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.ButtonElement
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
-import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.settings.structure.SidebarFeature
 import net.bewis09.bewisclient.settings.types.ListSetting
@@ -16,6 +15,7 @@ import net.bewis09.renderite.components.DivElement
 import net.bewis09.renderite.logic.Color
 import net.bewis09.renderite.logic.FitType
 import net.bewis09.renderite.logic.ItemAlign
+import net.bewis09.renderite.logic.TextAlign
 import net.minecraft.network.chat.Component
 
 object Home : SidebarFeature(createIdentifier("bewisclient", "home"), "Bewisclient") {
@@ -41,18 +41,7 @@ object Home : SidebarFeature(createIdentifier("bewisclient", "home"), "Bewisclie
                     DivElement {
                         onInit = {
                             quickSettingsOptions.forEach {
-                                Empty {
-                                    height = 5
-                                }
-                                InfoTextRenderable {
-                                    text = Component.translatable(it.key)
-                                    centered = true
-                                    color = General.getTextThemeColor()
-                                    padding = 0
-                                }.add()
-                                Empty {
-                                    height = 3
-                                }
+                                HomeElement(it.key)
                                 it.value.forEach { a ->
                                     ConfigureRenderableVisibilityPlane {
                                         category = it.key
@@ -69,8 +58,20 @@ object Home : SidebarFeature(createIdentifier("bewisclient", "home"), "Bewisclie
             }
         }
 
+        fun Renderable.HomeElement(key: String) {
+            Empty { height = 5 }
+            Text {
+                text = Component.translatable(key)
+                textAlign = TextAlign.CENTER
+                heightResize = true
+                color = General.getTextThemeColor()
+                padding = 0
+            }
+            Empty { height = 3 }
+        }
+
         override fun init() {
-            Div {
+            Div outer@{
                 gap = 5
                 fitType = FitType.SCROLL
                 onInit = {
@@ -80,24 +81,25 @@ object Home : SidebarFeature(createIdentifier("bewisclient", "home"), "Bewisclie
                         onInit = {
                             (quickSettings.asSequence().filter { it.split("/").size >= 2 }.groupBy { it.split("/")[0] }).forEach {
                                 val options = it.value.mapNotNull { a -> quickSettingsOptions[it.key]?.get(a.split("/")[1]) }.ifEmpty { return@forEach }
-
-                                Empty { height = 5 }
-                                InfoTextRenderable {
-                                    text = Component.translatable(it.key)
-                                    centered = true
-                                    color = General.getTextThemeColor()
-                                    padding = 0
-                                }.updateHeight(14)
-                                Empty { height = 3 }
+                                HomeElement(it.key)
                                 addRenderables(options)
                             }
 
-                            renderables.ifEmpty {
-                                InfoTextRenderable {
-                                    text = no_quick_settings()
-                                    centered = true
-                                    color = General.getTextThemeColor() alpha 0.66f
-                                }(x + width / 2 - 100, y + height / 4, 200, 0)
+                            if (renderables.isEmpty()) {
+                                Div {
+                                    itemAlign = ItemAlign.CENTER
+                                    onInit = {
+                                        Text {
+                                            text = no_quick_settings()
+                                            textAlign = TextAlign.CENTER
+                                            color = General.getTextThemeColor() alpha 0.66f
+                                            width = 200
+                                            heightResize = true
+                                            wrap = true
+                                        }
+                                    }
+                                }
+                                this@outer.paddingTop = this@outer.height / 5
                             }
                         }
                     }
@@ -135,11 +137,7 @@ object Home : SidebarFeature(createIdentifier("bewisclient", "home"), "Bewisclie
             override fun renderAccessories(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
                 if (!quickSettings.contains("$category/$id")) return
 
-                screenDrawing.afterDraw("selection:$category/$id", {
-                    screenDrawing.enableScissors(this@HomePlane.x, this@HomePlane.y, this@HomePlane.width, this@HomePlane.height) {
-                        screenDrawing.drawTexture(checkTexture, x + if (isMinecrafty) 2 else 1, y + height / 2 - 7, 14, 14, if (isMinecrafty) Color.WHITE else General.getThemeColor())
-                    }
-                })
+                screenDrawing.drawTexture(checkTexture, x + if (isMinecrafty) 2 else 1, y + height / 2 - 7, 14, 14, if (isMinecrafty) Color.WHITE else General.getThemeColor())
             }
 
             override fun init() {

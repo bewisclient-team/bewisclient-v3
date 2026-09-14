@@ -46,4 +46,4 @@ fun snake_toCamelCase(str: String): String {
     }
 }
 
-fun getModrinthVersion() = SharedConstants.getCurrentVersion().name.replace(" ", "-").lowercase().replace("release-", "")
+fun getMinecraftVersion() = SharedConstants.getCurrentVersion().name.replace(" ", "-").lowercase().replace("release-", "")

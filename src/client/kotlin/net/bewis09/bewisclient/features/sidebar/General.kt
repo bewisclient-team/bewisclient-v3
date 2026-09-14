@@ -24,7 +24,7 @@ object General : SidebarFeature(createIdentifier("bewisclient", "options_menu"),
     val themeColor = color("theme_color", StaticColorSaver(!0xFFFFFF), ColorSetting.STATIC)
     val menuBackgroundColor = color("background_color", ThemeColorSaver(0.2f), ColorSetting.STATIC, ColorSetting.THEME)
     val backgroundOpacity = float("background_opacity", 0.8f, 0f, 1f, 0.01f, 2)
-    val minecraftyOptionsMenu: BooleanSetting = boolean("minecrafty_options_menu", true) { _, _ ->
+    val oldOptionsMenu: BooleanSetting = boolean("minecrafty_options_menu", false) { _, _ ->
         if (Bewisclient.getCurrentRenderableScreen()?.renderable !is OptionScreen) return@boolean
 
         setRenderableScreen(OptionScreen(1f, 1f).apply { changeCategory(General, true) })
@@ -40,7 +40,7 @@ object General : SidebarFeature(createIdentifier("bewisclient", "options_menu"),
     fun getBackgroundColor(): Color = 0.3f within (Color.BLACK to menuBackgroundColor.get().getColor()) alpha backgroundOpacity.get()
 
     fun getThemeColor(white: Float = 1f, alpha: Float = 1f, black: Float = 1f) = (black within (Color.BLACK to if (isMinecrafty) Color.WHITE else (white within (Color.WHITE to themeColor.get().getColor())))) alpha alpha
-    fun getTextThemeColor() = if (!minecraftyOptionsMenu) (0.5f within (Color.WHITE to themeColor.get().getColor())) else Color.WHITE
+    fun getTextThemeColor() = if (!isMinecrafty) (0.5f within (Color.WHITE to themeColor.get().getColor())) else Color.WHITE
 
     override fun getRenderable(): Renderable {
         return DivElement {
@@ -51,7 +51,7 @@ object General : SidebarFeature(createIdentifier("bewisclient", "options_menu"),
                     title = createTranslation("menu_options", "Menu Options")
                     settings = listOf(
                         blurBackground.createRenderablePart(this@General, "blur_background", "Blur Background", "Whether to blur the background when opening menus").addToQuickSettings(this@General, "blur"),
-                        minecraftyOptionsMenu.createRenderablePart(this@General, "minecrafty_options_menu", "Minecrafty Options Menu", "Whether to use a Minecrafty style options menu instead of the default flat design"),
+                        oldOptionsMenu.createRenderablePart(this@General, "old_options_menu", "Old Options Menu", "Whether to use the old options menu instead of the new minecrafty design"),
                         goBackEscape.createRenderablePart(this@General, "go_back_escape", "Go back instead of closing", "Go back one page instead of closing the screen when pressing escape in the option screen"),
                         restoreTab.createRenderablePart(this@General, "restore_tab", "Reopen last page", "Open the last page of the option screen after closing and reopening it"),
                         buttonInTitleScreen.createRenderablePart(this@General, "button_in_title_screen", "Button in Title Screen", "Whether to show the Bewisclient button in the title screen").addToQuickSettings(this@General, "title"),

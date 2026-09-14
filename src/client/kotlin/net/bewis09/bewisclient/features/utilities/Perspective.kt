@@ -1,8 +1,8 @@
 package net.bewis09.bewisclient.features.utilities
 
+import com.mojang.blaze3d.platform.InputConstants
 import net.bewis09.bewisclient.game.keybinds.Keybind
 import net.bewis09.bewisclient.settings.structure.ImageFeature
-import org.lwjgl.glfw.GLFW
 
 object Perspective : ImageFeature("perspective", "Perspective") {
     @JvmField
@@ -11,5 +11,5 @@ object Perspective : ImageFeature("perspective", "Perspective") {
     @JvmField
     var cameraAddYaw: Float = 0f
 
-    object EnablePerspective : Keybind(GLFW.GLFW_KEY_LEFT_ALT, "perspective.enable_perspective", "Perspective", {})
+    object EnablePerspective : Keybind(InputConstants.KEY_LALT, "perspective.enable_perspective", "Perspective", {})
 }

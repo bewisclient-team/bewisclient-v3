@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import net.bewis09.bewisclient.common.Util
 import Updater
 import net.bewis09.bewisclient.common.catch
-import net.bewis09.bewisclient.common.getModrinthVersion
+import net.bewis09.bewisclient.common.getMinecraftVersion
 import net.bewis09.bewisclient.generated.BuildInfo
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.util.EventEntrypoint
@@ -29,7 +29,7 @@ object AutoUpdater : EventEntrypoint {
     fun checkForUpdates() {
         val versions = downloadSync("https://api.modrinth.com/v2/project/bewisclient/version").decodeToString()
         val bcVersion = BuildInfo.VERSION
-        val mrVersion = getModrinthVersion()
+        val mrVersion = getMinecraftVersion()
         var found = false
         var version: Modrinth.Version? = null
         for (it in Gson().fromJson(versions, Array<Modrinth.Version>::class.java).sortedByDescending(Modrinth.Version::date_published)) {

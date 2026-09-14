@@ -3,7 +3,6 @@ package net.bewis09.bewisclient.features.cosmetics
 import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.Button
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
-import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.game.translations.Translation
 import net.bewis09.bewisclient.util.Bewisclient
@@ -47,7 +46,7 @@ object AcceptPrivacyPage {
                 fitType = FitType.SCROLL
                 cacheChildren = true
                 onInit = {
-                    InfoTextRenderable { text = Component.literal(notice) }
+                    Text { text = Component.literal(notice); heightResize = true; color = General.getThemeColor() }
                     Empty()
                     Button {
                         text = decline()

@@ -11,6 +11,7 @@ import net.bewis09.bewisclient.features.sidebar.Widgets
 import net.bewis09.bewisclient.mixin.client.accessor.KeyMappingAccessor
 import net.bewis09.bewisclient.settings.types.BooleanSetting
 import net.bewis09.bewisclient.util.color.StaticColorSaver
+import net.bewis09.bewisclient.version.INPUT_KEYBOARD
 import net.bewis09.bewisclient.version.isKeyPressed
 import net.bewis09.bewisclient.widget.logic.RelativePosition
 import net.bewis09.bewisclient.widget.logic.TOP
@@ -21,7 +22,6 @@ import net.bewis09.renderite.drawer.translate
 import net.bewis09.renderite.logic.Color
 import net.bewis09.renderite.logic.TextAlign
 import net.minecraft.client.KeyMapping
-import org.lwjgl.glfw.GLFW
 
 object KeyWidget : ScalableWidget(
     createIdentifier("bewisclient", "key_widget"), "Key Widget", "Displays your movement and attack/use keys."
@@ -102,14 +102,14 @@ object KeyWidget : ScalableWidget(
 
         val key = (keyBinding as KeyMappingAccessor).getKey()
 
-        if (key.type == InputConstants.Type.KEYSYM) return client.isKeyPressed(key.value)
+        if (key.type == INPUT_KEYBOARD) return client.isKeyPressed(key.value)
         if (key.type == InputConstants.Type.MOUSE) return d.mouseMap[key.value] == true
         return keyBinding.isDown
     }
 
     fun KeyMapping.getKeyText(): String = when ((this as KeyMappingAccessor).getKey().value) {
-        GLFW.GLFW_MOUSE_BUTTON_LEFT -> "LMB"
-        GLFW.GLFW_MOUSE_BUTTON_RIGHT -> "RMB"
+        InputConstants.MOUSE_BUTTON_LEFT -> "LMB"
+        InputConstants.MOUSE_BUTTON_RIGHT -> "RMB"
         else -> this.translatedKeyMessage.string
     }
 

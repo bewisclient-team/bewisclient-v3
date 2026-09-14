@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.drawable.renderables.impl
 
+import com.mojang.blaze3d.platform.InputConstants
 import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.common.`snake_toWord With Spaces`
 import net.bewis09.bewisclient.common.toText
@@ -78,7 +79,7 @@ class SelectCapeElement(p: Props<SelectCapeElement>) : PropedRenderable<SelectCa
     }
 
     override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
-        if (button != 0) return false
+        if (button != InputConstants.MOUSE_BUTTON_LEFT) return false
         CosmeticLoader.selected[CosmeticType.CAPE.id] = if (CosmeticLoader.selected[CosmeticType.CAPE.id] == identifier.id) null else identifier.id
         CosmeticLoader.timestamp.set(System.currentTimeMillis())
         return true

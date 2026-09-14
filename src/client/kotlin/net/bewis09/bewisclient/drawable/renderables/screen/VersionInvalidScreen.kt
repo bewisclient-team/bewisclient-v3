@@ -1,6 +1,6 @@
 package net.bewis09.bewisclient.drawable.renderables.screen
 
-import net.bewis09.bewisclient.common.Util
+import com.mojang.blaze3d.platform.InputConstants
 import net.bewis09.bewisclient.common.toText
 import net.bewis09.bewisclient.data.Constants
 import net.bewis09.bewisclient.drawable.renderables.components.button.MinecraftButton
@@ -8,11 +8,11 @@ import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen.Companio
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing.Companion.DEFAULT_FONT
 import net.bewis09.bewisclient.server.Security
+import net.bewis09.bewisclient.version.openURI
 import net.bewis09.bewisclient.version.setScreen
 import net.bewis09.renderite.logic.Color
 import net.bewis09.renderite.logic.TextAlign
 import net.minecraft.network.chat.CommonComponents
-import org.lwjgl.glfw.GLFW
 
 object VersionInvalidScreen : PopupScreen() {
     const val SECURITY_MESSAGE =
@@ -45,13 +45,13 @@ object VersionInvalidScreen : PopupScreen() {
         }(width / 2 - 102, height / 2 + 50, 100, 20)
         MinecraftButton {
             text = modrinthButtonText()
-            onClick = { Util.getPlatform().openUri(Constants.MODRINTH_URL) }
+            onClick = { openURI(Constants.MODRINTH_URL) }
         }(width / 2 + 2, height / 2 + 50, 100, 20)
         VersionText()
     }
 
     override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {
-        if (key == GLFW.GLFW_KEY_ESCAPE) {
+        if (key == InputConstants.KEY_ESCAPE) {
             setScreen(null)
             return true
         }

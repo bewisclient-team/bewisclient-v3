@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.drawable.renderables.screen
 
+import com.mojang.blaze3d.platform.InputConstants
 import net.bewis09.bewisclient.common.Identifier
 import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.drawable.BackgroundEffectProvider
@@ -21,7 +22,6 @@ import net.bewis09.bewisclient.widget.types.ScalableWidget
 import net.bewis09.renderite.logic.Color
 import net.bewis09.renderite.logic.alpha
 import net.minecraft.network.chat.Component
-import org.lwjgl.glfw.GLFW
 import kotlin.math.abs
 
 class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
@@ -45,14 +45,14 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
         WidgetLoader.getEnabledWidgets().forEach {
             if (it.isInBox(mouseX, mouseY)) {
                 if (isMouseOver(mouseX.toInt(), mouseY.toInt(), (it.getX() + it.getScaledWidth() - 8).toInt(), (it.getY()).toInt(), 8, 8)) {
-                    if (button == 0) {
+                    if (button == InputConstants.MOUSE_BUTTON_LEFT) {
                         it.enabled = false
 
                         return true
                     }
                 }
 
-                if (button == 1) {
+                if (button == InputConstants.MOUSE_BUTTON_RIGHT) {
                     Bewisclient.setRenderableScreen(OptionScreen.getOrCreateInstance().apply {
                         val widgetsCategory = widgets.firstOrNull { b -> b.enabledSetting == it.enabledSetting } ?: return@apply
 
@@ -154,7 +154,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
     }
 
     override fun onMouseDrag(mouseX: Double, mouseY: Double, startX: Double, startY: Double, button: Int): Boolean {
-        if (button != 0) return false
+        if (button != InputConstants.MOUSE_BUTTON_LEFT) return false
 
         val widget = selectedWidget
 
@@ -177,7 +177,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
     }
 
     fun possibleAppendArea(widget: Widget, appendWidget: Widget, mouseX: Int, mouseY: Int): RelativePosition? {
-        if (widget == appendWidget || Bewisclient.client.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT)) return null
+        if (widget == appendWidget || Bewisclient.client.isKeyPressed(InputConstants.KEY_LSHIFT)) return null
 
         val sides = arrayOf("top", "right", "bottom", "left")
 
@@ -225,7 +225,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
         var xTransform = if (right) SidedPosition.END else SidedPosition.START
         val yTransform = if (end) SidedPosition.END else SidedPosition.START
 
-        if (!Bewisclient.client.isKeyPressed(GLFW.GLFW_KEY_LEFT_SHIFT)) {
+        if (!Bewisclient.client.isKeyPressed(InputConstants.KEY_LSHIFT)) {
             if (abs(x - Widgets.Default.screenEdgeDistance.get()) < 10) {
                 x = Widgets.Default.screenEdgeDistance.get().toDouble()
             }
@@ -250,7 +250,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
     override fun onMouseRelease(mouseX: Double, mouseY: Double, button: Int) {
         mouseMap[button] = false
 
-        if (button != 0) return
+        if (button != InputConstants.MOUSE_BUTTON_LEFT) return
 
         selectedWidget = null
         startOffsetX = null
@@ -270,7 +270,7 @@ class HudEditScreen : PopupScreen(), BackgroundEffectProvider {
     }
 
     override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {
-        if (key == GLFW.GLFW_KEY_ESCAPE) {
+        if (key == InputConstants.KEY_ESCAPE) {
             Bewisclient.setRenderableScreen(OptionScreen.getOrCreateInstance())
             return true
         }

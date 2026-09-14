@@ -63,10 +63,10 @@ class RenderableScreen(val renderable: Renderable) : Screen("".toText()) {
     // @[1.21.8] (mouseX: Double, mouseY: Double, button: Int, deltaX: Double, deltaY: Double): Boolean = onMouseDrag(mouseX, mouseY, button) @[] (click: net.minecraft.client.input.MouseButtonEvent, offsetX: Double, offsetY: Double): Boolean = onMouseDrag(click.x, click.y, click.button())
     override fun mouseDragged/*[@]*/(click: net.minecraft.client.input.MouseButtonEvent, offsetX: Double, offsetY: Double): Boolean = onMouseDrag(click.x, click.y, click.button())/*[!@]*/
     override fun mouseScrolled(mouseX: Double, mouseY: Double, horizontalAmount: Double, verticalAmount: Double): Boolean = onMouseScroll(mouseX, mouseY, horizontalAmount, verticalAmount)
-    // @[1.21.8] (keyCode: Int, scanCode: Int, modifiers: Int): Boolean = onKeyPress(keyCode, scanCode, modifiers) @[] (input: net.minecraft.client.input.KeyEvent): Boolean = onKeyPress(input.key, input.scancode, input.modifiers)
-    override fun keyPressed/*[@]*/(input: net.minecraft.client.input.KeyEvent): Boolean = onKeyPress(input.key, input.scancode, input.modifiers)/*[!@]*/
-    // @[1.21.8] (keyCode: Int, scanCode: Int, modifiers: Int): Boolean = onKeyRelease(keyCode, scanCode, modifiers) @[] (input: net.minecraft.client.input.KeyEvent): Boolean = onKeyRelease(input.key, input.scancode, input.modifiers)
-    override fun keyReleased/*[@]*/(input: net.minecraft.client.input.KeyEvent): Boolean = onKeyRelease(input.key, input.scancode, input.modifiers)/*[!@]*/
+    // @[1.21.8] (keyCode: Int, scanCode: Int, modifiers: Int): Boolean = onKeyPress(keyCode, scanCode, modifiers) @[26.2] (input: net.minecraft.client.input.KeyEvent): Boolean = onKeyPress(input.key, input.scancode, input.modifiers) @[] (input: net.minecraft.client.input.KeyEvent): Boolean = onKeyPress(input.key, input.keycode, input.modifiers)
+    override fun keyPressed/*[@]*/(input: net.minecraft.client.input.KeyEvent): Boolean = onKeyPress(input.key, input.keycode, input.modifiers)/*[!@]*/
+    // @[1.21.8] (keyCode: Int, scanCode: Int, modifiers: Int): Boolean = onKeyRelease(keyCode, scanCode, modifiers) @[26.2] (input: net.minecraft.client.input.KeyEvent): Boolean = onKeyRelease(input.key, input.scancode, input.modifiers) @[] (input: net.minecraft.client.input.KeyEvent): Boolean = onKeyRelease(input.key, input.keycode, input.modifiers)
+    override fun keyReleased/*[@]*/(input: net.minecraft.client.input.KeyEvent): Boolean = onKeyRelease(input.key, input.keycode, input.modifiers)/*[!@]*/
     // @[1.21.8] (chr: Char, modifiers: Int): Boolean = onCharTyped(chr, modifiers) @[] (input: net.minecraft.client.input.CharacterEvent): Boolean = onCharTyped(input.codepoint.toChar(), 0)
     override fun charTyped/*[@]*/(input: net.minecraft.client.input.CharacterEvent): Boolean = onCharTyped(input.codepoint.toChar(), 0)/*[!@]*/
 

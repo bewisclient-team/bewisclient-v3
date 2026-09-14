@@ -1,6 +1,5 @@
 package net.bewis09.bewisclient.features.sidebar
 
-import net.bewis09.bewisclient.common.Util
 import net.bewis09.bewisclient.common.createIdentifier
 import net.bewis09.bewisclient.data.Constants
 import net.bewis09.bewisclient.drawable.Renderable
@@ -11,6 +10,7 @@ import net.bewis09.bewisclient.drawable.renderables.notification.SimpleTextNotif
 import net.bewis09.bewisclient.drawable.renderables.settings.SettingRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.settings.structure.SidebarFeature
+import net.bewis09.bewisclient.version.openURI
 import net.bewis09.renderite.RenderiteElement
 import net.bewis09.renderite.components.DivElement
 import net.bewis09.renderite.logic.Animator
@@ -103,7 +103,7 @@ object Contact : SidebarFeature(
             ThemeButton {
                 text = openLinkText()
                 width = 100
-                onClick = { Util.getPlatform().openUri(url) }
+                onClick = { openURI(url) }
             }.updatePosition(x + width - 105, y + simpleHeight)
         }
 

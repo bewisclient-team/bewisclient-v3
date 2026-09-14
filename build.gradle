@@ -99,8 +99,8 @@ tasks.register("replaceVersionDependentSources") {
                         return
                     } else {
                         def compareVersions = { String a, String b ->
-                            def pa = a.tokenize('.').collect { try { it.toInteger() } catch(Exception e) { 0 } }
-                            def pb = b.tokenize('.').collect { try { it.toInteger() } catch(Exception e) { 0 } }
+                            def pa = a.tokenize('.').collect { try { it.toInteger() } catch (Exception e) { 0 } }
+                            def pb = b.tokenize('.').collect { try { it.toInteger() } catch (Exception e) { 0 } }
                             int len = Math.max(pa.size(), pb.size())
                             for (int i = 0; i < len; i++) {
                                 int ai = i < pa.size() ? pa[i] : 0
@@ -182,7 +182,8 @@ dependencies {
 
     implementation 'com.twelvemonkeys.imageio:imageio-core:3.12.0'
     implementation 'com.twelvemonkeys.imageio:imageio-webp:3.12.0'
-    implementation 'com.github.bewis09:renderite:v0.0.34'
+    implementation "com.github.bewis09:renderite:v${project.renderite_version}"
+    include "com.github.bewis09:renderite:v${project.renderite_version}"
 }
 
 processResources {
@@ -196,12 +197,12 @@ processResources {
 }
 
 tasks.withType(JavaCompile).configureEach {
-    it.options.release = 21
+    it.options.release = 25
 }
 
 tasks.withType(KotlinCompile).configureEach {
     kotlinOptions {
-        jvmTarget = 21
+        jvmTarget = 25
     }
 }
 
@@ -211,8 +212,8 @@ java {
     // If you remove this line, sources will not be generated.
     withSourcesJar()
 
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.VERSION_25
+    targetCompatibility = JavaVersion.VERSION_25
 }
 
 repositories {

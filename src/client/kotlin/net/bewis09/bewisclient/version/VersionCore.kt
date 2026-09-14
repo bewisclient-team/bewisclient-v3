@@ -23,6 +23,7 @@ import net.minecraft.world.item.Item
 import net.minecraft.world.item.ItemStack
 import net.minecraft.world.item.TooltipFlag
 import java.io.File
+import java.net.URI
 import java.util.function.Consumer
 
 fun GuiGraphics.pop() {
@@ -78,8 +79,8 @@ object Profiler {
 }
 
 fun Minecraft.isKeyPressed(key: Int): Boolean {
-    // @[1.21.8] this.window.window @[] this.window
-    return InputConstants.isKeyDown(/*[@]*/this.window/*[!@]*/, key)
+    // @[1.21.8] this.window.window,  @[26.2] this.window,  @[]
+    return InputConstants.isKeyDown(/*[@]*//*[!@]*/key)
 }
 
 // @[1.21.5] , 1024, 1024) @[] )
@@ -126,7 +127,7 @@ val model by lazy {
 fun GuiGraphics.translateToTopOptional() = /*[@]*/Unit/*[!@]*/
 
 fun Component.setFont(id: Identifier?): MutableComponent {
-    val font = (id ?: ScreenDrawing.BEWISCLIENT_FONT).let { if (General.isMinecrafty) ScreenDrawing.DEFAULT_FONT else it }
+    val font = (id ?: ScreenDrawing.BEWISCLIENT_FONT).let { if (General.isMinecrafty && it == ScreenDrawing.BEWISCLIENT_FONT) ScreenDrawing.DEFAULT_FONT else it }
     // @[1.21.8] font @[] net.minecraft.network.chat.FontDescription.Resource(font)
     return (this as? MutableComponent ?: this.copy()).withStyle { it.withFont(/*[@]*/net.minecraft.network.chat.FontDescription.Resource(font)/*[!@]*/) }
 }
@@ -193,3 +194,11 @@ fun ScreenDrawing.drawCape(identifier: Identifier, x: Int, y: Int, width: Int, h
     /*[@]*/this.guiGraphics.skin(model, identifier, height.toFloat() * 0.9f, 18f, -195f, -10f, x - xOffset, y, x + (width * 1.13).toInt() - xOffset, y + (height * 1.13).toInt())/*[!@]*/
     this.disableScissors()
 }
+
+// @[26.2] KEYSYM @[] KEYBOARD
+val INPUT_KEYBOARD = InputConstants.Type./*[@]*/KEYBOARD/*[!@]*/
+
+fun openURI(uri: String) = openURI(URI(uri))
+
+// @[26.2] net.minecraft.util.Util.getPlatform().openUri(uri) @[] com.mojang.blaze3d.Blaze3D.openUri(uri)
+fun openURI(uri: URI) = /*[@]*/com.mojang.blaze3d.Blaze3D.openUri(uri)/*[!@]*/

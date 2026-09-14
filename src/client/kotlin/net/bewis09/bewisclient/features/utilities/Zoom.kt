@@ -1,9 +1,9 @@
 package net.bewis09.bewisclient.features.utilities
 
+import com.mojang.blaze3d.platform.InputConstants
 import net.bewis09.renderite.logic.Animator
 import net.bewis09.bewisclient.game.keybinds.Keybind
 import net.bewis09.bewisclient.settings.structure.ImageFeature
-import org.lwjgl.glfw.GLFW
 
 object Zoom : ImageFeature("zoom", "Zoom") {
     val smooth by boolean("smooth", true) menuQuick ("Smooth Zoom" to "Enable or disable smooth zoom (Works as if smooth camera is enabled)")
@@ -11,7 +11,7 @@ object Zoom : ImageFeature("zoom", "Zoom") {
 
     var smoothCameraEnabledBefore: Boolean? = null
 
-    val ZoomKeybind = Keybind(GLFW.GLFW_KEY_C, "zoom.use", "Zoom", null, ::setUsed)
+    val ZoomKeybind = Keybind(InputConstants.KEY_C, "zoom.use", "Zoom", null, ::setUsed)
 
     var factorAnimation = Animator({ if (instant) 1 else 100 }, Animator.EASE_OUT, 1f)
 

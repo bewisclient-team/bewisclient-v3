@@ -1,16 +1,17 @@
 package net.bewis09.bewisclient.features.utilities
 
+import com.mojang.blaze3d.platform.InputConstants
 import com.mojang.blaze3d.platform.NativeImage
 import net.bewis09.bewisclient.common.*
 import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.drawable.draw_methods.SelectiveScreenDrawer
 import net.bewis09.bewisclient.drawable.renderables.components.button.ImageButton
 import net.bewis09.bewisclient.drawable.renderables.notification.NotificationManager
 import net.bewis09.bewisclient.drawable.renderables.notification.SimpleTextNotification
 import net.bewis09.bewisclient.drawable.renderables.popup.ConfirmPopup
 import net.bewis09.bewisclient.drawable.renderables.popup.InputTextPopup
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
-import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.features.sidebar.Screenshot
@@ -23,6 +24,7 @@ import net.bewis09.bewisclient.version.registerTexture
 import net.bewis09.bewisclient.version.takePanoramaFull
 import net.bewis09.renderite.components.DivElement
 import net.bewis09.renderite.logic.FitType
+import net.bewis09.renderite.logic.TextAlign
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.network.chat.Component
 import net.minecraft.server.packs.resources.IoSupplier
@@ -52,7 +54,7 @@ object Panorama : ImageFeature("panorama", "Panorama"), EventEntrypoint, Bewiscl
         }
     }
 
-    object TakePanoramaScreenshot : Keybind(-1, "screenshot.take_panorama", "Take Panorama Screenshot", {
+    object TakePanoramaScreenshot : Keybind(InputConstants.UNKNOWN.value, "screenshot.take_panorama", "Take Panorama Screenshot", {
         showSystemMessage(client.takePanoramaFull(FabricLoader.getInstance().gameDir.resolve("screenshots/panorama_" + (LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd_HH.mm.ss-S")))).toFile().apply {
             if (!exists()) mkdirs()
         }))
@@ -61,9 +63,12 @@ object Panorama : ImageFeature("panorama", "Panorama"), EventEntrypoint, Bewiscl
     val images = mutableMapOf<File, PanoramaScreenshots>()
 
     override fun appendSettingsRenderables(list: Renderable) {
-        list.InfoTextRenderable {
+        list.Text {
             text = createTranslation("info_text", "The panorama functionality allows you to set a custom panorama background for the main menu. You can create the panorama by pressing the \"%s\" button [%s]. After taking the screenshot select the screenshot below.")(Component.translatable("bewisclient.key.screenshot.take_panorama"), Component.keybind("bewisclient.key.screenshot.take_panorama"))
-            centered = true
+            textAlign = TextAlign.CENTER
+            heightResize = true
+            wrap = true
+            marginAfter = 5
         }
     }
 
@@ -101,6 +106,16 @@ object Panorama : ImageFeature("panorama", "Panorama"), EventEntrypoint, Bewiscl
             props()
         }
 
+        override fun renderBackground(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
+            if (!isMinecrafty) {
+                if (path.get() == file.absolutePath) screenDrawing.fillWithBorderRounded(x, y, width, height, 5, General.getThemeColor(alpha = 0.25f), General.getThemeColor(alpha = 0.5f), topLeft = index == 0, topRight = index == 0, bottomLeft = index == length - 1, bottomRight = index == length - 1)
+                else screenDrawing.fillRounded(x, y, width, height, 5, General.getThemeColor(alpha = hoverFactor * 0.15f + 0.1f), topLeft = index == 0, topRight = index == 0, bottomLeft = index == length - 1, bottomRight = index == length - 1)
+            } else {
+                if (path.get() == file.absolutePath) SelectiveScreenDrawer.renderButtonBackground(screenDrawing, 0f, 0f, x, y, width, height, 0f)
+                else SelectiveScreenDrawer.renderButtonBackground(screenDrawing, hoverFactor, 1f, x, y, width, height, 0f)
+            }
+        }
+
         override fun renderElement(screenDrawing: ScreenDrawing, mouseX: Int, mouseY: Int) {
             if (!images.containsKey(file)) {
                 images[file] = PanoramaScreenshots(file).apply { Util.ioPool().execute(::loadAll) }
@@ -108,8 +123,6 @@ object Panorama : ImageFeature("panorama", "Panorama"), EventEntrypoint, Bewiscl
 
             images[file]?.registerAll()
 
-            if (path.get() == file.absolutePath) screenDrawing.fillWithBorderRounded(x, y, width, height, 5, General.getThemeColor(alpha = 0.25f), General.getThemeColor(alpha = 0.5f), topLeft = index == 0, topRight = index == 0, bottomLeft = index == length - 1, bottomRight = index == length - 1)
-            else screenDrawing.fillRounded(x, y, width, height, 5, General.getThemeColor(alpha = hoverFactor * 0.15f + 0.1f), topLeft = index == 0, topRight = index == 0, bottomLeft = index == length - 1, bottomRight = index == length - 1)
             screenDrawing.drawText(file.name.toText(), x + 8, y + 8) { color = General.getTextThemeColor() }
 
             images[file]?.identifiers?.forEachIndexed { index, identifier ->

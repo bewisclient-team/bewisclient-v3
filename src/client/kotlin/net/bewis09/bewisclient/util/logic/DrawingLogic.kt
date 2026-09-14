@@ -13,7 +13,7 @@ import javax.imageio.ImageIO
 
 interface DrawingLogic : InGameLogic {
     val isMinecrafty: Boolean
-        get() = General.minecraftyOptionsMenu.get()
+        get() = !General.oldOptionsMenu.get()
 
     val animationDuration: Long
         get() = General.animationTime.get().toLong()

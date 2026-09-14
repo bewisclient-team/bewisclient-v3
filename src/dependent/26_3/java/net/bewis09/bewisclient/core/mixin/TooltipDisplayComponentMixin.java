@@ -1,0 +1,29 @@
+package net.bewis09.bewisclient.core.mixin;
+
+import net.bewis09.bewisclient.features.utilities.HeldItemTooltip;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.item.component.TooltipDisplay;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import java.util.Arrays;
+
+@Mixin(TooltipDisplay.class)
+public class TooltipDisplayComponentMixin {
+    @Inject(method = "shows", at = @At("RETURN"), cancellable = true)
+    public void bewisclient$shouldDisplay(DataComponentType<?> componentType, CallbackInfoReturnable<Boolean> cir) {
+        if (HeldItemTooltip.INSTANCE.isLookup()) {
+            HeldItemTooltip.INSTANCE.getComponentSet().add(componentType);
+            return;
+        }
+
+        if (!HeldItemTooltip.INSTANCE.isRendering() || !cir.getReturnValue()) return;
+
+        var id = BuiltInRegistries.DATA_COMPONENT_TYPE.getKey(componentType);
+        if (id == null) return;
+        cir.setReturnValue(HeldItemTooltip.INSTANCE.getShowMap().get(id.toString(), Arrays.stream(HeldItemTooltip.INSTANCE.getDefaultOff()).noneMatch(a -> a == componentType)));
+    }
+}

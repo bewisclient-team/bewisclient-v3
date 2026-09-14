@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.features.sidebar
 
+import com.mojang.blaze3d.platform.InputConstants
 import com.mojang.blaze3d.platform.NativeImage
 import net.bewis09.bewisclient.common.Util
 import net.bewis09.bewisclient.common.catch
@@ -21,6 +22,7 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.process.CopyImage
 import net.bewis09.bewisclient.process.ProcessCreator
 import net.bewis09.bewisclient.settings.structure.SidebarFeature
+import net.bewis09.bewisclient.version.openURI
 import net.bewis09.renderite.components.DivElement
 import net.bewis09.renderite.drawer.pushColor
 import net.bewis09.renderite.drawer.scale
@@ -216,7 +218,7 @@ object Screenshot : SidebarFeature(createIdentifier("bewisclient", "screenshot")
         }
 
         override fun onMouseClick(mouseX: Double, mouseY: Double, button: Int): Boolean {
-            if (button == 0) {
+            if (button == InputConstants.MOUSE_BUTTON_LEFT) {
                 openBigScreenshot(file)
                 return true
             }
@@ -274,7 +276,7 @@ object Screenshot : SidebarFeature(createIdentifier("bewisclient", "screenshot")
                         }
                         file = this@BigScreenshotViewElement.file
                         height = this@BigScreenshotViewElement.height - 5 - SelectiveScreenDrawer.getSideButtonHeight()
-                        verticalPadding = if (General.isMinecrafty) 3 else 1
+                        padding = if (General.isMinecrafty) 3 else 1
                     }
                     Div {
                         lines = 4
@@ -286,11 +288,11 @@ object Screenshot : SidebarFeature(createIdentifier("bewisclient", "screenshot")
                         onInit = {
                             Button {
                                 text = openButtonText()
-                                onClick = { Util.getPlatform().openFile(file) }
+                                onClick = { openURI(file.toURI()) }
                             }
                             Button {
                                 text = openFolderButtonText()
-                                onClick = { Util.getPlatform().openFile(file.parentFile) }
+                                onClick = { openURI(file.parentFile.toURI()) }
                             }
                             Button {
                                 text = copyButtonText()

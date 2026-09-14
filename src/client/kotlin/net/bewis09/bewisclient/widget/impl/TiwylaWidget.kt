@@ -8,7 +8,6 @@ import net.bewis09.bewisclient.common.*
 import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.impl.TiwylaInfoSettingsRenderable
 import net.bewis09.bewisclient.drawable.renderables.impl.TiwylaLinesSettingsRenderable
-import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.features.sidebar.Widgets
 import net.bewis09.bewisclient.mixin.client.MultiPlayerGameModeMixin
@@ -183,7 +182,7 @@ object TiwylaWidget : ScalableWidget(
         list.menu(bottomTextColor, "Bottom Text Color", "Set the color of the bottom text in the widget")
 
         list.addRenderable(TiwylaLinesSettingsRenderable().addToQuickSettings(this, "lines"))
-        list.addRenderable(InfoTextRenderable({ text = healthInfoText(); color = 0xAAAAAA.color; centered = true }))
+        list.Text { text = healthInfoText(); color = 0xAAAAAA.color; textAlign = TextAlign.CENTER; heightResize = true; wrap = true; marginBefore = 5; marginAfter = 5 }
 
         list.addRenderable(LineWidget.backgroundColorRenderable(backgroundColor, backgroundOpacity))
         list.addRenderable(LineWidget.borderColorRenderable(borderColor, borderOpacity))

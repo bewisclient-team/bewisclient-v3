@@ -3,7 +3,7 @@ package net.bewis09.bewisclient.server
 import com.mojang.blaze3d.platform.NativeImage
 import net.bewis09.bewisclient.common.Identifier
 import net.bewis09.bewisclient.common.createIdentifier
-import net.bewis09.bewisclient.common.getModrinthVersion
+import net.bewis09.bewisclient.common.getMinecraftVersion
 import net.bewis09.bewisclient.drawable.renderables.notification.NotificationManager
 import net.bewis09.bewisclient.drawable.renderables.notification.SimpleTextNotification
 import net.bewis09.bewisclient.game.translations.Translation
@@ -194,7 +194,7 @@ object Modrinth : ClientInterface {
 
         typeMaps[type to query]!!.first[page] = null to false
 
-        downloadFile("https://api.modrinth.com/v2/search?query=${URLEncoder.encode(query.replace(Regex("&\\?="), ""), "UTF-8")}&facets=%5B%5B%22project_type:${type.url}%22%5D,%5B%22versions:${getModrinthVersion()}%22%5D%5D&limit=20&offset=${page * 20}", {
+        downloadFile("https://api.modrinth.com/v2/search?query=${URLEncoder.encode(query.replace(Regex("&\\?="), ""), "UTF-8")}&facets=%5B%5B%22project_type:${type.url}%22%5D,%5B%22versions:${getMinecraftVersion()}%22%5D%5D&limit=20&offset=${page * 20}", {
             val json = gson.fromJson(String(it), ModrinthSearchResult::class.java)
             if (typeMaps[type to query]!!.second == null) {
                 typeMaps[type to query] = typeMaps[type to query]!!.first to json.total_hits

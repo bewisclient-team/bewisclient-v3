@@ -10,7 +10,6 @@ import net.bewis09.bewisclient.drawable.renderables.components.button.ImageButto
 import net.bewis09.bewisclient.drawable.renderables.components.button.ImageButtonElement
 import net.bewis09.bewisclient.drawable.renderables.components.setting.Input
 import net.bewis09.bewisclient.drawable.renderables.screen.OptionScreen
-import net.bewis09.bewisclient.drawable.renderables.settings.InfoTextRenderable
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.features.sidebar.General
 import net.bewis09.bewisclient.game.translations.Translation
@@ -183,10 +182,12 @@ fun CustomWidgetHelpPopup(): Renderable = DivElement {
     heightProvider = { Bewisclient.screenHeight - 100 }
     paddingOverflowVisible = false
     onInit = {
-        InfoTextRenderable {
+        Text {
             text = CustomWidget.customWidgetParamInfo()
-            centered = true
+            textAlign = TextAlign.CENTER
+            color = General.getThemeColor()
             padding = 0
+            heightResize = true
         }
         CustomWidget.widgetStringDataPoints.forEach { dataPoint ->
             Empty { height = 0 }

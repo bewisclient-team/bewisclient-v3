@@ -9,6 +9,7 @@ import net.bewis09.bewisclient.game.BewisclientResourcePack
 import net.bewis09.bewisclient.game.keybinds.Keybind
 import net.bewis09.bewisclient.settings.structure.CategorizedFeature
 import net.bewis09.bewisclient.settings.structure.Feature
+import net.bewis09.bewisclient.util.BewisclientDataGenerator
 import net.bewis09.bewisclient.util.EventEntrypoint
 import net.bewis09.bewisclient.util.logic.ClientInterface
 import net.bewis09.bewisclient.widget.Widget
@@ -31,6 +32,7 @@ open class BewisclientAPIEntrypoint : ClientInterface {
     open fun getExtensionDescription(modContainer: ModContainer): String = modContainer.metadata.description
 
     open fun getIcon(modContainer: ModContainer): Identifier? {
+        if (BewisclientDataGenerator.datagenEnabled) return null
         return iconIdentifier ?: modContainer.metadata.getIconPath(64).getOrNull()?.let {
             modContainer.findPath(it).getOrNull()?.let { path ->
                 createTexture(createIdentifier(modContainer.metadata.id, "extension_icon_${(1..99999).random()}"), path.toUri().toURL())

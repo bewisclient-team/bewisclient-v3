@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.drawable.renderables.components.setting
 
+import com.mojang.blaze3d.platform.InputConstants
 import net.bewis09.bewisclient.common.Identifier
 import net.bewis09.bewisclient.common.toText
 import net.bewis09.bewisclient.drawable.PropedRenderable
@@ -10,7 +11,6 @@ import net.bewis09.renderite.RenderiteElement
 import net.bewis09.renderite.logic.Color
 import net.bewis09.renderite.style.RenderiteChild
 import net.minecraft.client.Minecraft
-import org.lwjgl.glfw.GLFW
 
 class InputElement(p: Props<InputElement>) : PropedRenderable<InputElement>(p) {
     var maxTextLength: Int = -1
@@ -71,21 +71,21 @@ class InputElement(p: Props<InputElement>) : PropedRenderable<InputElement>(p) {
 
     override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {
         when (key) {
-            GLFW.GLFW_KEY_BACKSPACE -> {
+            InputConstants.KEY_BACKSPACE -> {
                 if (text.isNotEmpty()) {
                     text = (text.substring(0, (cursor - 1).coerceAtLeast(0)) + text.substring(cursor))
                     if (cursor > 0) cursor--
                     onChange?.invoke(text)
                 }
             }
-            GLFW.GLFW_KEY_DELETE -> {
+            InputConstants.KEY_DELETE -> {
                 if (text.isNotEmpty()) {
                     text = (text.substring(0, cursor) + text.substring((cursor + 1).coerceAtMost(text.length)))
                     onChange?.invoke(text)
                 }
             }
-            GLFW.GLFW_KEY_LEFT -> { if (cursor > 0) cursor-- }
-            GLFW.GLFW_KEY_RIGHT -> { if (cursor < text.length) cursor++ }
+            InputConstants.KEY_LEFT -> { if (cursor > 0) cursor-- }
+            InputConstants.KEY_RIGHT -> { if (cursor < text.length) cursor++ }
             else -> return false
         }
 

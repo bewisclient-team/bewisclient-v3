@@ -14,7 +14,8 @@ import net.bewis09.renderite.logic.LineType
 import net.minecraft.network.chat.Component
 
 class TiwylaLinesSettingsRenderable : PropedRenderable<TiwylaLinesSettingsRenderable>({
-    height = 78
+    minHeight = 78
+    maxHeight = 78
     minWidth = 12
 }) {
     init { props() }
@@ -30,6 +31,9 @@ class TiwylaLinesSettingsRenderable : PropedRenderable<TiwylaLinesSettingsRender
             gap = 11
             lines = 2
             lineType = LineType.DEFINITE
+            paddingTop = 5
+            cacheChildren = true
+            overflowVisible = true
             onInit = {
                 addForSide(entityText(), TiwylaWidget.entityLines)
                 addForSide(blockText(), TiwylaWidget.blockLines, right = true)
@@ -57,7 +61,7 @@ class TiwylaLinesSettingsRenderable : PropedRenderable<TiwylaLinesSettingsRender
                     text = title
                     textAlign = TextAlign.CENTER
                     verticalAlign = TextAlign.START
-                    height = 18
+                    marginAfter = 5
                 }
                 for (i in 0..2.coerceAtMost(list.size + 1)) {
                     val arr = arrayOf(list.get().getOrNull(i)?.first, list.get().getOrNull(i)?.second).filterNotNull().sortedBy { it.priority }
@@ -69,17 +73,23 @@ class TiwylaLinesSettingsRenderable : PropedRenderable<TiwylaLinesSettingsRender
                             height = 18
                         }
                     } else {
-                        Button {
-                            text = (arr.getOrNull(0)?.translation ?: none)()
-                            onClick = { openPopup(i, true) }
-                            dark = arr.isEmpty()
-                            height = 18
-                        }
-                        Button {
-                            text = (arr.getOrNull(1)?.translation ?: none)()
-                            onClick = { openPopup(i, false) }
-                            dark = arr.size < 2
-                            height = 18
+                        Div {
+                            lines = 2
+                            gap = 2
+                            onInit = {
+                                Button {
+                                    text = (arr.getOrNull(0)?.translation ?: none)()
+                                    onClick = { openPopup(i, true) }
+                                    dark = arr.isEmpty()
+                                    height = 18
+                                }
+                                Button {
+                                    text = (arr.getOrNull(1)?.translation ?: none)()
+                                    onClick = { openPopup(i, false) }
+                                    dark = arr.size < 2
+                                    height = 18
+                                }
+                            }
                         }
                     }
                 }

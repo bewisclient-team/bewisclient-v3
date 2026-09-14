@@ -1,3 +1,5 @@
+// @VersionReplacement
+
 package net.bewis09.bewisclient.game
 
 import net.bewis09.bewisclient.api.APIEntrypointLoader
@@ -41,8 +43,12 @@ object BewisclientResourcePack : PackResources, ClientInterface {
     val pack = Pack(
         packInfo,
         object : ResourcesSupplier {
-            override fun openPrimary(info: PackLocationInfo): PackResources = BewisclientResourcePack
-            override fun openFull(info: PackLocationInfo, metadata: Pack.Metadata): PackResources = openPrimary(info)
+            // @[26.2] openPrimary @[] openMetadata
+            override fun /*[@]*/openMetadata/*[!@]*/(info: PackLocationInfo) = BewisclientResourcePack
+            // @[26.2] openFull @[] openResources
+            override fun /*[@]*/openResources/*[!@]*/(info: PackLocationInfo, metadata: Pack.Metadata) =
+                // @[26.2] openPrimary(info) @[] listOf(openMetadata(info) as PackResources).stream()
+                /*[@]*/listOf(openMetadata(info) as PackResources).stream()/*[!@]*/
         },
         metadata,
         PackSelectionConfig(true, Pack.Position.TOP, true)

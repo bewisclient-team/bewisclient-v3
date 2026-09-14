@@ -7,6 +7,7 @@ import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.widget.logic.SidedPosition
 import net.bewis09.bewisclient.widget.logic.WidgetPosition
 import net.bewis09.bewisclient.widget.types.LineWidget
+import net.bewis09.renderite.logic.TextAlign
 import net.minecraft.network.chat.Component
 
 object CoordinatesWidget : LineWidget(
@@ -65,9 +66,9 @@ object CoordinatesWidget : LineWidget(
         if (showDirection.get()) {
             val direction = getCardinalDirection()
             val text = "- $direction -"
-            if (shadow.get()) screenDrawing.drawText(
+            screenDrawing.drawText(
                 text.toText(), getWidth() - paddingSize.get(), paddingSize.get()
-            ) { color = textColor.get().getColor(); shadow = CoordinatesWidget.shadow() }
+            ) { color = textColor.get().getColor(); shadow = CoordinatesWidget.shadow(); textAlign = TextAlign.END }
         }
     }
 

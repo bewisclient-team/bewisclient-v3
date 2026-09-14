@@ -7,6 +7,7 @@ import net.bewis09.bewisclient.common.EntityTypes
 import net.bewis09.bewisclient.common.id
 import net.bewis09.bewisclient.drawable.ImageIdentifier
 import net.bewis09.bewisclient.drawable.Renderable
+import net.bewis09.bewisclient.drawable.RenderiteData
 import net.bewis09.bewisclient.settings.structure.SidebarFeature
 import net.bewis09.bewisclient.features.sidebar.Contact
 import net.bewis09.bewisclient.features.cosmetics.CosmeticLoader
@@ -41,7 +42,7 @@ import kotlin.jvm.optionals.getOrNull
 
 class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint() {
     override fun getEventEntrypoints(): List<EventEntrypoint> = listOf(
-        WidgetLoader, Settings, KeybindingImplementer, TranslationLoader, BiomeWidget, SpeedWidget, TiwylaWidget, ShulkerBoxTooltipComponent.Entrypoint, CosmeticLoader, BewisclientCommand, Security, ImageIdentifier, Panorama, Ticker, AutoUpdater, Authorization
+        WidgetLoader, Settings, KeybindingImplementer, TranslationLoader, BiomeWidget, SpeedWidget, TiwylaWidget, ShulkerBoxTooltipComponent.Entrypoint, CosmeticLoader, BewisclientCommand, Security, ImageIdentifier, Panorama, Ticker, AutoUpdater, Authorization, RenderiteData
     )
 
     override fun getKeybinds(): List<Keybind> = listOf(

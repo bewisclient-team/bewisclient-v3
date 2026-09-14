@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.drawable.renderables.screen
 
+import com.mojang.blaze3d.platform.InputConstants
 import net.bewis09.bewisclient.common.*
 import net.bewis09.bewisclient.drawable.PropedRenderable
 import net.bewis09.bewisclient.drawable.SimpleRenderable
@@ -20,7 +21,6 @@ import net.bewis09.renderite.logic.color
 import net.minecraft.client.gui.screens.Screen
 import net.minecraft.network.chat.CommonComponents
 import net.minecraft.network.chat.Component
-import org.lwjgl.glfw.GLFW
 import java.net.URI
 import java.nio.file.Path
 import kotlin.io.path.writeBytes
@@ -147,7 +147,7 @@ class PackListScreen(p: Props<PackListScreen>) : PropedRenderable<PackListScreen
     }
 
     override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {
-        if (key == GLFW.GLFW_KEY_ESCAPE) {
+        if (key == InputConstants.KEY_ESCAPE) {
             setScreen(parent)
             return true
         }
@@ -186,7 +186,7 @@ class PackListScreen(p: Props<PackListScreen>) : PropedRenderable<PackListScreen
             if (isMouseOver(mouseX.toInt(), mouseY.toInt(), x + 4, y, 32, 32)) {
                 Modrinth.loadPack(pack.slug) { p ->
                     Modrinth.loadVersions(p) { map ->
-                        map.values.filter { it.loaders.contains(type.loader) && it.game_versions.contains(getModrinthVersion()) }.maxByOrNull { it.date_published }?.let { version ->
+                        map.values.filter { it.loaders.contains(type.loader) && it.game_versions.contains(getMinecraftVersion()) }.maxByOrNull { it.date_published }?.let { version ->
                             version.files.firstOrNull { it.primary }?.also { file ->
                                 val progressNotification = ProgressNotification { text = Modrinth.downloading(pack.title) }
                                 NotificationManager.addNotification(progressNotification)

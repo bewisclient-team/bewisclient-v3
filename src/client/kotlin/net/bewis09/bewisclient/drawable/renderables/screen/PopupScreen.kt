@@ -1,5 +1,6 @@
 package net.bewis09.bewisclient.drawable.renderables.screen
 
+import com.mojang.blaze3d.platform.InputConstants
 import net.bewis09.bewisclient.common.toText
 import net.bewis09.renderite.logic.Animator
 import net.bewis09.bewisclient.drawable.PropedRenderable
@@ -11,7 +12,6 @@ import net.bewis09.bewisclient.version.translateToTopOptional
 import net.bewis09.renderite.logic.Color
 import net.bewis09.renderite.logic.TextAlign
 import net.bewis09.renderite.style.RenderiteChild
-import org.lwjgl.glfw.GLFW
 
 abstract class PopupScreen(p: Props<PopupScreen> = {}) : PropedRenderable<PopupScreen>(p) {
     var popup: Popup? = null
@@ -45,7 +45,7 @@ abstract class PopupScreen(p: Props<PopupScreen> = {}) : PropedRenderable<PopupS
         }
 
         override fun onKeyPress(key: Int, scanCode: Int, modifiers: Int): Boolean {
-            if (key == GLFW.GLFW_KEY_ESCAPE) {
+            if (key == InputConstants.KEY_ESCAPE) {
                 alphaAnimation.set(0f) {
                     screen.popup?.let { a ->
                         screen.renderables.remove(a)
