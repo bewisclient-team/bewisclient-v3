@@ -8,6 +8,8 @@ import net.bewis09.bewisclient.drawable.Renderable
 import net.bewis09.bewisclient.drawable.renderables.notification.NotificationManager
 import net.bewis09.bewisclient.drawable.screen_drawing.ScreenDrawing
 import net.bewis09.bewisclient.version.GuiGraphics
+import net.minecraft.client.gui.components.EditBox
+import net.minecraft.client.gui.components.events.GuiEventListener
 import net.minecraft.client.gui.screens.Screen
 
 class RenderableScreen(val renderable: Renderable) : Screen("".toText()) {
@@ -76,6 +78,16 @@ class RenderableScreen(val renderable: Renderable) : Screen("".toText()) {
     fun onKeyPress(keyCode: Int, scanCode: Int, modifiers: Int): Boolean = renderable.keyPress(keyCode, scanCode, modifiers)
     fun onKeyRelease(keyCode: Int, scanCode: Int, modifiers: Int): Boolean = renderable.keyRelease(keyCode, scanCode, modifiers)
     fun onCharTyped(chr: Char, modifiers: Int): Boolean = renderable.charTyped(chr, modifiers)
+
+    // @[26.2] @[] override fun isInputCaptured(): Boolean = true
+    /*[@]*/override fun isInputCaptured(): Boolean = true/*[!@]*/
+
+    val editBox = EditBox(font, 0, 0, 100, 100, "".toText())
+
+    override fun getFocused(): GuiEventListener {
+        editBox.isFocused = true
+        return editBox
+    }
 
     @Suppress("unused")
     // @[1.21.5] = super.renderBackground(context, mouseX, mouseY, deltaTicks) @[] {}

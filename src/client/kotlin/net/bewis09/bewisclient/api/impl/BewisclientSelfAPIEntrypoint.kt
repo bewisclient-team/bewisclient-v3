@@ -42,19 +42,19 @@ import kotlin.jvm.optionals.getOrNull
 
 class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint() {
     override fun getEventEntrypoints(): List<EventEntrypoint> = listOf(
-        WidgetLoader, Settings, KeybindingImplementer, TranslationLoader, BiomeWidget, SpeedWidget, TiwylaWidget, ShulkerBoxTooltipComponent.Entrypoint, CosmeticLoader, BewisclientCommand, Security, ImageIdentifier, Panorama, Ticker, AutoUpdater, Authorization, RenderiteData
+        WidgetLoader, Settings, KeybindingImplementer, TranslationLoader, BiomeWidget, SpeedWidget, TiwylaWidget, ShulkerBoxTooltipComponent.Entrypoint, CosmeticLoader, BewisclientCommand, Security, ImageIdentifier, Ticker, AutoUpdater, Authorization, RenderiteData
     )
 
     override fun getKeybinds(): List<Keybind> = listOf(
-        OpenOptionScreen, Fullbright.ToggleNightVision, Fullbright.ToggleFullbright, Fullbright.IncreaseBrightness, Fullbright.DecreaseBrightness, Zoom.ZoomKeybind, Perspective.EnablePerspective, Panorama.TakePanoramaScreenshot
+        OpenOptionScreen, Fullbright.ToggleNightVision, Fullbright.ToggleFullbright, Fullbright.IncreaseBrightness, Fullbright.DecreaseBrightness, Zoom.ZoomKeybind, Perspective.EnablePerspective
     )
 
     override fun getWidgets(): List<Widget> = listOf(
-        CoordinatesWidget, FPSWidget, BiomeWidget, DayWidget, DaytimeWidget, PingWidget, CPSWidget, KeyWidget, InventoryWidget, SpeedWidget, TiwylaWidget, CustomWidget, ServerWidget, ArmorWidget
+        CoordinatesWidget, FPSWidget, BiomeWidget, DayWidget, DaytimeWidget, PingWidget, CPSWidget, KeyWidget, InventoryWidget, SpeedWidget, TiwylaWidget, ServerWidget, ArmorWidget
     )
 
     override fun getUtilities(): List<CategorizedFeature> = listOf(
-        Fullbright, BlockHighlight, EntityHighlight, HeldItemTooltip, Zoom, PumpkinOverlay, BetterVisibility, Scoreboard, ShulkerBoxTooltip, Perspective, FireHeight, Panorama, TntTimer, PackAdder
+        Fullbright, BlockHighlight, EntityHighlight, HeldItemTooltip, Zoom, PumpkinOverlay, BetterVisibility, Scoreboard, ShulkerBoxTooltip, Perspective, FireHeight, TntTimer, PackAdder
     )
 
     override fun getOtherSettings(): List<Feature> {
@@ -88,7 +88,7 @@ class BewisclientSelfAPIEntrypoint : BewisclientAPIEntrypoint() {
     )
 
     override fun getCustomResourceProviders(): List<BewisclientResourcePack.CustomResourceProvider> = listOf(
-        Panorama
+//        Panorama
     )
 
     override fun getTntTimerEntities() = listOf(

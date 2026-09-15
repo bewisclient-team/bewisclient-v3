@@ -76,11 +76,11 @@ object Panorama : ImageFeature("panorama", "Panorama"), EventEntrypoint, Bewiscl
         return DivElement {
             onInit = {
                 appendSettingsRenderables(this)
-                FabricLoader.getInstance().gameDir.resolve("screenshots").toFile().listFiles {
+                (FabricLoader.getInstance().gameDir.resolve("screenshots").toFile().listFiles {
                     it.isDirectory && it.resolve("screenshots").exists() && it.resolve("screenshots").listFiles().map { f -> f.name }.let { name ->
                         name.contains("panorama_0.png") && name.contains("panorama_1.png") && name.contains("panorama_2.png") && name.contains("panorama_3.png") && name.contains("panorama_4.png") && name.contains("panorama_5.png")
                     }
-                }.mapIndexedWithSelf { index, file ->
+                } ?: emptyArray()).mapIndexedWithSelf { index, file ->
                     PanoramaElement {
                         this.file = file
                         this.index = index
